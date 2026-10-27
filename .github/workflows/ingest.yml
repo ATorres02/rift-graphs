@@ -1,0 +1,64 @@
+name: Ingest tournament data
+
+on:
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Rewrite the data files even when nothing changed"
+        type: boolean
+        default: false
+  schedule:
+    # Match days (Worlds 2026, times in UTC): every 15 minutes between 17:00 and 04:00 UTC.
+    # Swiss rounds 4-5: 28-31 Oct · Quarterfinals and semifinals: 3-8 Nov · Final: 14 Nov.
+    - cron: "*/15 17-23 28-31 10 *"
+    - cron: "*/15 0-4 29-31 10 *"
+    - cron: "*/15 0-4 1 11 *"
+    - cron: "*/15 17-23 3-8 11 *"
+    - cron: "*/15 0-4 4-9 11 *"
+    - cron: "*/15 17-23 14 11 *"
+    - cron: "*/15 0-4 15 11 *"
+    # Everything else: every 6 hours.
+    - cron: "0 */6 * * *"
+
+concurrency:
+  group: ingest
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Run ingest
+        run: pnpm ingest ${{ inputs.force && '--force' || '' }}
+        env:
+          LEAGUEPEDIA_TRANSPORT: ${{ vars.LEAGUEPEDIA_TRANSPORT || 'export' }}
+          LEAGUEPEDIA_BOT_USER: ${{ secrets.LEAGUEPEDIA_BOT_USER }}
+          LEAGUEPEDIA_BOT_PASSWORD: ${{ secrets.LEAGUEPEDIA_BOT_PASSWORD }}
+          INGEST_USER_AGENT: ${{ vars.INGEST_USER_AGENT }}
+
+      - name: Commit data when it changed
+        run: |
+          git add data
+          if git diff --cached --quiet; then
+            echo "No data changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "data: update $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git push
