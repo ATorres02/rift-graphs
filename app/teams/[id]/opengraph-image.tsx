@@ -28,9 +28,7 @@ export default async function Image({ params }: { params: Promise<{ id: string }
           <div style={{ display: "flex", padding: "16px 36px", borderRadius: 18, fontSize: 72, fontWeight: 800, color: "#1a1a1a", background: REGION_HEX[region.cssVar] ?? "#cfcfcf", letterSpacing: 2 }}>{t?.short ?? "?"}</div>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             <div style={{ fontSize: 56, fontWeight: 700 }}>{t?.name ?? "Team"}</div>
-            <div style={{ fontSize: 28, color: "#a1a1aa" }}>
-              {region.code} · {t?.location ?? region.name}
-            </div>
+            <div style={{ fontSize: 28, color: "#a1a1aa" }}>{`${region.code} · ${t?.location ?? region.name}`}</div>
           </div>
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 12, fontSize: 24 }}>
