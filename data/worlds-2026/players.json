@@ -638,13 +638,13 @@
   {
     "id": "kyeahoo",
     "name": "kyeahoo",
-    "page": "kyeahoo",
+    "page": "Kyeahoo",
     "teamId": "karmine-corp",
     "role": "mid",
-    "country": null,
-    "realName": null,
-    "nativeName": null,
-    "residency": null,
+    "country": "South Korea",
+    "realName": "Kang Ye-hoo",
+    "nativeName": "강예후",
+    "residency": "Korea",
     "fromScoreboardOnly": false
   },
   {
@@ -994,18 +994,6 @@
     "nativeName": "박승규",
     "residency": "Korea",
     "fromScoreboardOnly": false
-  },
-  {
-    "id": "thanatos-park-seung-kyu",
-    "name": "Thanatos",
-    "page": "Thanatos (Park Seung-kyu)",
-    "teamId": "cloud9",
-    "role": "top",
-    "country": null,
-    "realName": null,
-    "nativeName": null,
-    "residency": null,
-    "fromScoreboardOnly": true
   },
   {
     "id": "theshy",

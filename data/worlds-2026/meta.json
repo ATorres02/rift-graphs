@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-27T18:58:21Z",
+  "updatedAt": "2026-10-27T19:03:33Z",
   "tournamentId": "worlds-2026",
   "source": {
     "name": "Leaguepedia",
@@ -11,14 +11,12 @@
   "ddragonVersion": "16.20.1",
   "counts": {
     "teams": 19,
-    "players": 97,
+    "players": 96,
     "series": 46,
     "games": 51,
     "playerGames": 510,
     "drafts": 51
   },
   "pendingGameIds": [],
-  "warnings": [
-    "player \"Thanatos (Park Seung-kyu)\" appears in scoreboards but not on a roster; added from scoreboard data"
-  ]
+  "warnings": []
 }

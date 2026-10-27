@@ -212,6 +212,33 @@ async function fetchAll(client: LeaguepediaClient) {
     where: inStages,
   });
 
+  // Resolve player page redirects: scoreboards sometimes link an alternative spelling of a player page.
+  const linkCandidates = new Set<string>();
+  for (const r of [...tournamentPlayers, ...players]) {
+    const v = asString(r.Link);
+    if (v) linkCandidates.add(v);
+  }
+  log(`querying PlayerRedirects (${linkCandidates.size})`);
+  const redirectMap = new Map<string, string>();
+  for (const part of chunk(Array.from(linkCandidates), 60)) {
+    const rows = await client.query({ tables: "PlayerRedirects", fields: "AllName,OverviewPage", where: `AllName IN (${sqlIn(part)})` });
+    for (const r of rows) {
+      const from = asString(r.AllName);
+      const to = asString(r.OverviewPage);
+      if (from && to) redirectMap.set(from.toLowerCase(), to);
+    }
+  }
+  let redirected = 0;
+  for (const r of [...tournamentPlayers, ...players]) {
+    const v = asString(r.Link);
+    const canonical = v ? redirectMap.get(v.toLowerCase()) : undefined;
+    if (v && canonical && canonical !== v) {
+      r.Link = canonical;
+      redirected += 1;
+    }
+  }
+  if (redirected) log(`resolved ${redirected} player links through PlayerRedirects`);
+
   const teamPages = new Set<string>();
   for (const r of [...rosters, ...schedule]) {
     for (const k of ["Team", "Team1", "Team2"]) {
