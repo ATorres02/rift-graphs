@@ -4,9 +4,9 @@ import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { ChartColumnIcon, TableIcon } from "lucide-react";
+import { SpecTable } from "@/components/charts/chart-table";
 import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { formatUnit, type ChartSpec, type ChartTable } from "@/lib/charts/spec";
+import type { ChartSpec, ChartTable } from "@/lib/charts/spec";
 import { cn } from "@/lib/utils";
 
 const EChart = dynamic(() => import("./echart").then((m) => m.EChart), {
@@ -24,12 +24,18 @@ export interface ChartProps {
   className?: string;
 }
 
-/** Every chart ships with a "View as table" alternative and a textual description. */
-export function Chart({ spec, description, table, title, height = 320, className }: ChartProps) {
-  const [view, setView] = useState<"chart" | "table">("chart");
+/** Hook that re-reads the CSS palette when the theme flips. */
+export function useThemeKey(): string {
   const { resolvedTheme } = useTheme();
   const [themeKey, setThemeKey] = useState("dark");
   useEffect(() => setThemeKey(resolvedTheme ?? "dark"), [resolvedTheme]);
+  return themeKey;
+}
+
+/** Every chart ships with a "View as table" alternative and a textual description. */
+export function Chart({ spec, description, table, title, height = 320, className }: ChartProps) {
+  const [view, setView] = useState<"chart" | "table">("chart");
+  const themeKey = useThemeKey();
 
   return (
     <figure className={cn("rounded-xl border bg-card p-3 sm:p-4", className)}>
@@ -45,38 +51,9 @@ export function Chart({ spec, description, table, title, height = 320, className
           <EChart spec={spec} themeKey={themeKey} />
         </div>
       ) : (
-        <div className="scroll-x max-h-[480px] overflow-y-auto">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                {table.columns.map((c, i) => (
-                  <TableHead key={c} className={cn(i > 0 && "text-right")}>
-                    {c}
-                  </TableHead>
-                ))}
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {table.rows.map((row, ri) => (
-                <TableRow key={ri}>
-                  {row.map((cell, ci) => (
-                    <TableCell key={ci} className={cn("tabular", ci > 0 && "text-right")}>
-                      {typeof cell === "number" ? formatUnit(cell, unitForColumn(spec, ci)) : (cell ?? "–")}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+        <SpecTable spec={spec} table={table} />
       )}
       <p className="sr-only">{description}</p>
     </figure>
   );
-}
-
-function unitForColumn(spec: ChartSpec, columnIndex: number) {
-  if (spec.type === "scatter") return columnIndex === 1 ? spec.xUnit : spec.yUnit;
-  if (spec.type === "radar") return "decimal1";
-  return spec.unit;
 }

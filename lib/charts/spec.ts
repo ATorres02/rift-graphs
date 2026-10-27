@@ -1,7 +1,6 @@
 /**
- * Serialisable chart specifications. Server components build a spec; the
- * client `Chart` component turns it into ECharts options. Phase 2's chart
- * builder will produce the same specs from `runQuery` rows.
+ * Serialisable chart specifications. Server components (and the chart builder)
+ * produce a spec; the client `Chart`/`EChart` components turn it into ECharts options.
  */
 export type Unit = "number" | "percent" | "decimal1" | "decimal2" | "minutes" | "seconds" | "gold";
 
@@ -10,6 +9,8 @@ export interface ChartSeries {
   values: (number | null)[];
   /** CSS colour (any value accepted by canvas). Defaults to the palette. */
   color?: string;
+  /** Per-point colours (bars/scatter), overriding `color`. */
+  colors?: (string | null)[];
 }
 
 export interface BarSpec {
@@ -57,7 +58,27 @@ export interface RadarSpec {
   series: ChartSeries[];
 }
 
-export type ChartSpec = BarSpec | LineSpec | ScatterSpec | RadarSpec;
+export interface HeatmapSpec {
+  type: "heatmap";
+  /** Column labels (X). */
+  xLabels: string[];
+  /** Row labels (Y). */
+  yLabels: string[];
+  /** values[y][x] */
+  values: (number | null)[][];
+  unit?: Unit;
+}
+
+export interface BoxplotSpec {
+  type: "boxplot";
+  categories: string[];
+  /** [min, q1, median, q3, max] per category. */
+  stats: [number, number, number, number, number][];
+  unit?: Unit;
+  reference?: { value: number; label: string };
+}
+
+export type ChartSpec = BarSpec | LineSpec | ScatterSpec | RadarSpec | HeatmapSpec | BoxplotSpec;
 
 export interface ChartTable {
   columns: string[];
@@ -87,10 +108,39 @@ export function formatUnit(value: number | null, unit: Unit = "number"): string 
   }
 }
 
+/** Short unit label for axes. */
+export function unitLabel(unit: Unit | undefined): string {
+  switch (unit) {
+    case "percent":
+      return "%";
+    case "seconds":
+      return "min:sec";
+    case "minutes":
+      return "min";
+    case "gold":
+      return "gold";
+    default:
+      return "";
+  }
+}
+
 /** Builds the table alternative of a bar/line spec. */
 export function tableFromSeries(spec: BarSpec | LineSpec, firstColumn = "Category"): ChartTable {
   return {
     columns: [firstColumn, ...spec.series.map((s) => s.name)],
     rows: spec.categories.map((c, i) => [c, ...spec.series.map((s) => s.values[i] ?? null)]),
   };
+}
+
+/** Five-number summary for box plots. */
+export function boxStats(values: number[]): [number, number, number, number, number] | null {
+  if (!values.length) return null;
+  const s = [...values].sort((a, b) => a - b);
+  const q = (p: number) => {
+    const pos = (s.length - 1) * p;
+    const lo = Math.floor(pos);
+    const hi = Math.ceil(pos);
+    return s[lo] + (s[hi] - s[lo]) * (pos - lo);
+  };
+  return [s[0], q(0.25), q(0.5), q(0.75), s[s.length - 1]];
 }
