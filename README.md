@@ -23,7 +23,7 @@ pnpm lint
 pnpm build
 ```
 
-Copy `.env.example` to `.env.local` and fill in the public variables (author, LinkedIn, imprint, site URL).
+Copy `.env.example` to `.env.local` and fill in the public variables (author, LinkedIn, imprint, site URL). `.env.local` and every other `.env*` file are ignored by git and must never be committed; `NEXT_PUBLIC_*` values end up in the public bundle, so they hold only public information. Leaguepedia bot credentials go in GitHub Actions secrets.
 
 ## Data pipeline
 
