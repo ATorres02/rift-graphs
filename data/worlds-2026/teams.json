@@ -1,0 +1,638 @@
+[
+  {
+    "id": "anyones-legend",
+    "name": "Anyone's Legend",
+    "short": "AL",
+    "page": "Anyone's Legend",
+    "region": "China",
+    "location": "China",
+    "stages": [
+      "main"
+    ],
+    "roster": [
+      {
+        "playerId": "breathe",
+        "role": "top"
+      },
+      {
+        "playerId": "tarzan",
+        "role": "jungle"
+      },
+      {
+        "playerId": "shanks",
+        "role": "mid"
+      },
+      {
+        "playerId": "hope",
+        "role": "bot"
+      },
+      {
+        "playerId": "kael",
+        "role": "support"
+      }
+    ]
+  },
+  {
+    "id": "bilibili-gaming",
+    "name": "Bilibili Gaming",
+    "short": "BLG",
+    "page": "Bilibili Gaming",
+    "region": "China",
+    "location": "China",
+    "stages": [
+      "main"
+    ],
+    "roster": [
+      {
+        "playerId": "bin",
+        "role": "top"
+      },
+      {
+        "playerId": "xun",
+        "role": "jungle"
+      },
+      {
+        "playerId": "knight",
+        "role": "mid"
+      },
+      {
+        "playerId": "viper",
+        "role": "bot"
+      },
+      {
+        "playerId": "on",
+        "role": "support"
+      }
+    ]
+  },
+  {
+    "id": "ctbc-flying-oyster",
+    "name": "CTBC Flying Oyster",
+    "short": "CFO",
+    "page": "CTBC Flying Oyster",
+    "region": "Asia Pacific",
+    "location": "Taiwan",
+    "stages": [
+      "main"
+    ],
+    "roster": [
+      {
+        "playerId": "rest",
+        "role": "top"
+      },
+      {
+        "playerId": "shad0w",
+        "role": "jungle"
+      },
+      {
+        "playerId": "pout",
+        "role": "mid"
+      },
+      {
+        "playerId": "doggo",
+        "role": "bot"
+      },
+      {
+        "playerId": "kino",
+        "role": "support"
+      }
+    ]
+  },
+  {
+    "id": "cloud9",
+    "name": "Cloud9",
+    "short": "C9",
+    "page": "Cloud9",
+    "region": "North America",
+    "location": "United States",
+    "stages": [
+      "playin"
+    ],
+    "roster": [
+      {
+        "playerId": "thanatos",
+        "role": "top"
+      },
+      {
+        "playerId": "blaber",
+        "role": "jungle"
+      },
+      {
+        "playerId": "loki",
+        "role": "mid"
+      },
+      {
+        "playerId": "tactical",
+        "role": "bot"
+      },
+      {
+        "playerId": "vulcan",
+        "role": "support"
+      },
+      {
+        "playerId": "thanatos-park-seung-kyu",
+        "role": "top"
+      }
+    ]
+  },
+  {
+    "id": "dplus-kia",
+    "name": "Dplus Kia",
+    "short": "DK",
+    "page": "Dplus Kia",
+    "region": "Korea",
+    "location": "South Korea",
+    "stages": [
+      "main"
+    ],
+    "roster": [
+      {
+        "playerId": "siwoo",
+        "role": "top"
+      },
+      {
+        "playerId": "lucid",
+        "role": "jungle"
+      },
+      {
+        "playerId": "showmaker",
+        "role": "mid"
+      },
+      {
+        "playerId": "smash",
+        "role": "bot"
+      },
+      {
+        "playerId": "career",
+        "role": "support"
+      }
+    ]
+  },
+  {
+    "id": "furia",
+    "name": "FURIA",
+    "short": "FUR",
+    "page": "FURIA",
+    "region": "Brazil",
+    "location": "Brazil",
+    "stages": [
+      "playin"
+    ],
+    "roster": [
+      {
+        "playerId": "guigo",
+        "role": "top"
+      },
+      {
+        "playerId": "tatu",
+        "role": "jungle"
+      },
+      {
+        "playerId": "tutsz",
+        "role": "mid"
+      },
+      {
+        "playerId": "ayu",
+        "role": "bot"
+      },
+      {
+        "playerId": "jojo",
+        "role": "support"
+      }
+    ]
+  },
+  {
+    "id": "g2-esports",
+    "name": "G2 Esports",
+    "short": "G2",
+    "page": "G2 Esports",
+    "region": "EMEA",
+    "location": "Germany",
+    "stages": [
+      "main"
+    ],
+    "roster": [
+      {
+        "playerId": "brokenblade",
+        "role": "top"
+      },
+      {
+        "playerId": "skewmond",
+        "role": "jungle"
+      },
+      {
+        "playerId": "caps",
+        "role": "mid"
+      },
+      {
+        "playerId": "hans-sama",
+        "role": "bot"
+      },
+      {
+        "playerId": "labrov",
+        "role": "support"
+      }
+    ]
+  },
+  {
+    "id": "gen-g",
+    "name": "Gen.G",
+    "short": "GEN",
+    "page": "Gen.G",
+    "region": "Korea",
+    "location": "South Korea",
+    "stages": [
+      "main"
+    ],
+    "roster": [
+      {
+        "playerId": "kiin",
+        "role": "top"
+      },
+      {
+        "playerId": "canyon",
+        "role": "jungle"
+      },
+      {
+        "playerId": "chovy",
+        "role": "mid"
+      },
+      {
+        "playerId": "ruler",
+        "role": "bot"
+      },
+      {
+        "playerId": "duro",
+        "role": "support"
+      }
+    ]
+  },
+  {
+    "id": "hanwha-life-esports",
+    "name": "Hanwha Life Esports",
+    "short": "HLE",
+    "page": "Hanwha Life Esports",
+    "region": "Korea",
+    "location": "South Korea",
+    "stages": [
+      "main"
+    ],
+    "roster": [
+      {
+        "playerId": "zeus",
+        "role": "top"
+      },
+      {
+        "playerId": "kanavi",
+        "role": "jungle"
+      },
+      {
+        "playerId": "zeka",
+        "role": "mid"
+      },
+      {
+        "playerId": "gumayusi",
+        "role": "bot"
+      },
+      {
+        "playerId": "delight",
+        "role": "support"
+      }
+    ]
+  },
+  {
+    "id": "invictus-gaming",
+    "name": "Invictus Gaming",
+    "short": "iG",
+    "page": "Invictus Gaming",
+    "region": "China",
+    "location": "China",
+    "stages": [
+      "main"
+    ],
+    "roster": [
+      {
+        "playerId": "theshy",
+        "role": "top"
+      },
+      {
+        "playerId": "wei",
+        "role": "jungle"
+      },
+      {
+        "playerId": "rookie",
+        "role": "mid"
+      },
+      {
+        "playerId": "jiaqi",
+        "role": "bot"
+      },
+      {
+        "playerId": "meiko",
+        "role": "support"
+      }
+    ]
+  },
+  {
+    "id": "karmine-corp",
+    "name": "Karmine Corp",
+    "short": "KC",
+    "page": "Karmine Corp",
+    "region": "EMEA",
+    "location": "France",
+    "stages": [
+      "main",
+      "playin"
+    ],
+    "roster": [
+      {
+        "playerId": "canna",
+        "role": "top"
+      },
+      {
+        "playerId": "yike",
+        "role": "jungle"
+      },
+      {
+        "playerId": "kyeahoo",
+        "role": "mid"
+      },
+      {
+        "playerId": "caliste",
+        "role": "bot"
+      },
+      {
+        "playerId": "busio",
+        "role": "support"
+      }
+    ]
+  },
+  {
+    "id": "lyon",
+    "name": "LYON",
+    "short": "LYON",
+    "page": "LYON (2024 American Team)",
+    "region": "North America",
+    "location": "Mexico",
+    "stages": [
+      "main"
+    ],
+    "roster": [
+      {
+        "playerId": "dhokla",
+        "role": "top"
+      },
+      {
+        "playerId": "inspired",
+        "role": "jungle"
+      },
+      {
+        "playerId": "saint",
+        "role": "mid"
+      },
+      {
+        "playerId": "berserker",
+        "role": "bot"
+      },
+      {
+        "playerId": "isles",
+        "role": "support"
+      }
+    ]
+  },
+  {
+    "id": "los",
+    "name": "LØS",
+    "short": "LOS",
+    "page": "LØS",
+    "region": "Brazil",
+    "location": "Brazil",
+    "stages": [
+      "main"
+    ],
+    "roster": [
+      {
+        "playerId": "zest",
+        "role": "top"
+      },
+      {
+        "playerId": "curse",
+        "role": "jungle"
+      },
+      {
+        "playerId": "feisty",
+        "role": "mid"
+      },
+      {
+        "playerId": "duduhh",
+        "role": "bot"
+      },
+      {
+        "playerId": "ackerman",
+        "role": "support"
+      }
+    ]
+  },
+  {
+    "id": "mvk-esports",
+    "name": "MVK Esports",
+    "short": "MVK",
+    "page": "MVK Esports",
+    "region": "Asia Pacific",
+    "location": "Vietnam",
+    "stages": [
+      "playin"
+    ],
+    "roster": [
+      {
+        "playerId": "kratos",
+        "role": "top"
+      },
+      {
+        "playerId": "gury",
+        "role": "jungle"
+      },
+      {
+        "playerId": "sansan",
+        "role": "jungle"
+      },
+      {
+        "playerId": "chika",
+        "role": "mid"
+      },
+      {
+        "playerId": "harky",
+        "role": "bot"
+      },
+      {
+        "playerId": "siuloong",
+        "role": "support"
+      }
+    ]
+  },
+  {
+    "id": "movistar-koi",
+    "name": "Movistar KOI",
+    "short": "MKOI",
+    "page": "Movistar KOI",
+    "region": "EMEA",
+    "location": "Spain",
+    "stages": [
+      "main"
+    ],
+    "roster": [
+      {
+        "playerId": "myrwn",
+        "role": "top"
+      },
+      {
+        "playerId": "elyoya",
+        "role": "jungle"
+      },
+      {
+        "playerId": "jojopyun",
+        "role": "mid"
+      },
+      {
+        "playerId": "supa",
+        "role": "bot"
+      },
+      {
+        "playerId": "alvaro",
+        "role": "support"
+      }
+    ]
+  },
+  {
+    "id": "t1",
+    "name": "T1",
+    "short": "T1",
+    "page": "T1",
+    "region": "Korea",
+    "location": "South Korea",
+    "stages": [
+      "main"
+    ],
+    "roster": [
+      {
+        "playerId": "doran",
+        "role": "top"
+      },
+      {
+        "playerId": "oner",
+        "role": "jungle"
+      },
+      {
+        "playerId": "faker",
+        "role": "mid"
+      },
+      {
+        "playerId": "peyz",
+        "role": "bot"
+      },
+      {
+        "playerId": "keria",
+        "role": "support"
+      }
+    ]
+  },
+  {
+    "id": "team-liquid",
+    "name": "Team Liquid",
+    "short": "TL",
+    "page": "Team Liquid",
+    "region": "North America",
+    "location": "Netherlands",
+    "stages": [
+      "main"
+    ],
+    "roster": [
+      {
+        "playerId": "morgan",
+        "role": "top"
+      },
+      {
+        "playerId": "josedeodo",
+        "role": "jungle"
+      },
+      {
+        "playerId": "quid",
+        "role": "mid"
+      },
+      {
+        "playerId": "yeon",
+        "role": "bot"
+      },
+      {
+        "playerId": "corejj",
+        "role": "support"
+      }
+    ]
+  },
+  {
+    "id": "team-secret-whales",
+    "name": "Team Secret Whales",
+    "short": "TSW",
+    "page": "Team Secret Whales",
+    "region": "Asia Pacific",
+    "location": "Vietnam",
+    "stages": [
+      "main"
+    ],
+    "roster": [
+      {
+        "playerId": "pun",
+        "role": "top"
+      },
+      {
+        "playerId": "hizto",
+        "role": "jungle"
+      },
+      {
+        "playerId": "dire",
+        "role": "mid"
+      },
+      {
+        "playerId": "eddie",
+        "role": "bot"
+      },
+      {
+        "playerId": "bie",
+        "role": "support"
+      }
+    ]
+  },
+  {
+    "id": "top-esports",
+    "name": "Top Esports",
+    "short": "TES",
+    "page": "Top Esports",
+    "region": "China",
+    "location": "China",
+    "stages": [
+      "main"
+    ],
+    "roster": [
+      {
+        "playerId": "369",
+        "role": "top"
+      },
+      {
+        "playerId": "tian",
+        "role": "jungle"
+      },
+      {
+        "playerId": "creme",
+        "role": "mid"
+      },
+      {
+        "playerId": "jackeylove",
+        "role": "bot"
+      },
+      {
+        "playerId": "zhuo",
+        "role": "support"
+      }
+    ]
+  }
+]

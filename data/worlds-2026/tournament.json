@@ -1,0 +1,69 @@
+{
+  "id": "worlds-2026",
+  "name": "Worlds 2026",
+  "overviewPage": "2026 Season World Championship",
+  "dateStart": "2026-10-15",
+  "dateEnd": "2026-11-14",
+  "country": "United States",
+  "patch": "26.20",
+  "ddragonVersion": "16.20.1",
+  "officialUrl": "https://lolesports.com",
+  "stages": [
+    {
+      "id": "playin",
+      "name": "Play-In",
+      "overviewPage": "2026 Season World Championship/Play-In",
+      "dateStart": "2026-10-15",
+      "dateEnd": "2026-10-18",
+      "bestOf": [
+        5
+      ],
+      "seriesCount": 6
+    },
+    {
+      "id": "swiss",
+      "name": "Swiss Stage",
+      "overviewPage": "2026 Season World Championship/Main Event",
+      "dateStart": "2026-10-23",
+      "dateEnd": "2026-10-31",
+      "bestOf": [
+        1,
+        3
+      ],
+      "seriesCount": 33
+    },
+    {
+      "id": "quarterfinals",
+      "name": "Quarterfinals",
+      "overviewPage": "2026 Season World Championship/Main Event",
+      "dateStart": "2026-11-03",
+      "dateEnd": "2026-11-06",
+      "bestOf": [
+        5
+      ],
+      "seriesCount": 4
+    },
+    {
+      "id": "semifinals",
+      "name": "Semifinals",
+      "overviewPage": "2026 Season World Championship/Main Event",
+      "dateStart": "2026-11-07",
+      "dateEnd": "2026-11-08",
+      "bestOf": [
+        5
+      ],
+      "seriesCount": 2
+    },
+    {
+      "id": "final",
+      "name": "Final",
+      "overviewPage": "2026 Season World Championship/Main Event",
+      "dateStart": "2026-11-14",
+      "dateEnd": "2026-11-14",
+      "bestOf": [
+        5
+      ],
+      "seriesCount": 1
+    }
+  ]
+}

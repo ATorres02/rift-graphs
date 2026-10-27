@@ -1,0 +1,2552 @@
+[
+  {
+    "gameId": "play-in-round-1-1-1",
+    "blue": {
+      "bans": [
+        "Vi",
+        "K'Sante",
+        "Skarner",
+        "Orianna",
+        "Sylas"
+      ],
+      "picks": [
+        "Rumble",
+        "Lee Sin",
+        "Nautilus",
+        "Syndra",
+        "Miss Fortune"
+      ],
+      "picksByRole": [
+        "Rumble",
+        "Lee Sin",
+        "Syndra",
+        "Miss Fortune",
+        "Nautilus"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Seraphine",
+        "Nocturne",
+        "Qiyana",
+        "Jhin",
+        "Akali"
+      ],
+      "picks": [
+        "Karma",
+        "Ezreal",
+        "Gnar",
+        "Locke",
+        "Xin Zhao"
+      ],
+      "picksByRole": [
+        "Gnar",
+        "Xin Zhao",
+        "Locke",
+        "Ezreal",
+        "Karma"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "play-in-round-1-1-2",
+    "blue": {
+      "bans": [
+        "Seraphine",
+        "Caitlyn",
+        "Qiyana",
+        "Lucian",
+        "Rakan"
+      ],
+      "picks": [
+        "Kalista",
+        "Renata Glasc",
+        "Akali",
+        "Wukong",
+        "Camille"
+      ],
+      "picksByRole": [
+        "Camille",
+        "Wukong",
+        "Akali",
+        "Kalista",
+        "Renata Glasc"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Nocturne",
+        "K'Sante",
+        "Lulu",
+        "Olaf",
+        "Jarvan IV"
+      ],
+      "picks": [
+        "Vi",
+        "Cassiopeia",
+        "Jayce",
+        "Vel'Koz",
+        "Varus"
+      ],
+      "picksByRole": [
+        "Jayce",
+        "Vi",
+        "Cassiopeia",
+        "Varus",
+        "Vel'Koz"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "play-in-round-1-1-3",
+    "blue": {
+      "bans": [
+        "Orianna",
+        "Lulu",
+        "Qiyana",
+        "K'Sante",
+        "Aurora"
+      ],
+      "picks": [
+        "Lucian",
+        "Nami",
+        "Naafiri",
+        "Anivia",
+        "Kled"
+      ],
+      "picksByRole": [
+        "Kled",
+        "Naafiri",
+        "Anivia",
+        "Lucian",
+        "Nami"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Seraphine",
+        "Caitlyn",
+        "Viktor",
+        "Vayne",
+        "Sylas"
+      ],
+      "picks": [
+        "Jarvan IV",
+        "Jhin",
+        "Alistar",
+        "Annie",
+        "Olaf"
+      ],
+      "picksByRole": [
+        "Olaf",
+        "Jarvan IV",
+        "Annie",
+        "Jhin",
+        "Alistar"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "play-in-round-1-1-4",
+    "blue": {
+      "bans": [
+        "Seraphine",
+        "Caitlyn",
+        "Viktor",
+        "Aphelios",
+        "Draven"
+      ],
+      "picks": [
+        "Yunara",
+        "Lulu",
+        "Sylas",
+        "Zaahen",
+        "Sejuani"
+      ],
+      "picksByRole": [
+        "Zaahen",
+        "Sejuani",
+        "Sylas",
+        "Yunara",
+        "Lulu"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Nocturne",
+        "K'Sante",
+        "Pantheon",
+        "Vayne",
+        "Skarner"
+      ],
+      "picks": [
+        "Qiyana",
+        "Orianna",
+        "Renekton",
+        "Xayah",
+        "Rakan"
+      ],
+      "picksByRole": [
+        "Renekton",
+        "Qiyana",
+        "Orianna",
+        "Xayah",
+        "Rakan"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "play-in-round-1-1-5",
+    "blue": {
+      "bans": [
+        "Nocturne",
+        "Maokai",
+        "Pantheon",
+        "Poppy",
+        "Kindred"
+      ],
+      "picks": [
+        "Ambessa",
+        "Kai'Sa",
+        "Rell",
+        "Ahri",
+        "Trundle"
+      ],
+      "picksByRole": [
+        "Ambessa",
+        "Trundle",
+        "Ahri",
+        "Kai'Sa",
+        "Rell"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Seraphine",
+        "Caitlyn",
+        "Vayne",
+        "LeBlanc",
+        "Kha'Zix"
+      ],
+      "picks": [
+        "K'Sante",
+        "Ziggs",
+        "Yone",
+        "Shen",
+        "Lillia"
+      ],
+      "picksByRole": [
+        "K'Sante",
+        "Lillia",
+        "Yone",
+        "Ziggs",
+        "Shen"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "play-in-round-1-2-1",
+    "blue": {
+      "bans": [
+        "Ezreal",
+        "Pantheon",
+        "Akali",
+        "Sylas",
+        "Locke"
+      ],
+      "picks": [
+        "Olaf",
+        "Ashe",
+        "Seraphine",
+        "Cassiopeia",
+        "Vi"
+      ],
+      "picksByRole": [
+        "Olaf",
+        "Vi",
+        "Cassiopeia",
+        "Ashe",
+        "Seraphine"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Pyke",
+        "Nocturne",
+        "Jarvan IV",
+        "Maokai",
+        "Lee Sin"
+      ],
+      "picks": [
+        "Yunara",
+        "Lulu",
+        "Trundle",
+        "Jax",
+        "Galio"
+      ],
+      "picksByRole": [
+        "Jax",
+        "Trundle",
+        "Galio",
+        "Yunara",
+        "Lulu"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "play-in-round-1-2-2",
+    "blue": {
+      "bans": [
+        "Ezreal",
+        "Renata Glasc",
+        "Akali",
+        "Pantheon",
+        "Ambessa"
+      ],
+      "picks": [
+        "Lucian",
+        "Milio",
+        "Lee Sin",
+        "Rumble",
+        "Viktor"
+      ],
+      "picksByRole": [
+        "Rumble",
+        "Lee Sin",
+        "Viktor",
+        "Lucian",
+        "Milio"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Nocturne",
+        "Jarvan IV",
+        "Caitlyn",
+        "Locke",
+        "LeBlanc"
+      ],
+      "picks": [
+        "Xayah",
+        "Rakan",
+        "Syndra",
+        "Wukong",
+        "Ornn"
+      ],
+      "picksByRole": [
+        "Ornn",
+        "Wukong",
+        "Syndra",
+        "Xayah",
+        "Rakan"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "play-in-round-1-2-3",
+    "blue": {
+      "bans": [
+        "Ezreal",
+        "Renata Glasc",
+        "Sylas",
+        "Poppy",
+        "Shen"
+      ],
+      "picks": [
+        "Jarvan IV",
+        "Jhin",
+        "Camille",
+        "Kog'Maw",
+        "Zaahen"
+      ],
+      "picksByRole": [
+        "Zaahen",
+        "Jarvan IV",
+        "Kog'Maw",
+        "Jhin",
+        "Camille"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Locke",
+        "Nocturne",
+        "Yone",
+        "Orianna",
+        "Vayne"
+      ],
+      "picks": [
+        "Ryze",
+        "Kai'Sa",
+        "Naafiri",
+        "Leona",
+        "K'Sante"
+      ],
+      "picksByRole": [
+        "K'Sante",
+        "Naafiri",
+        "Ryze",
+        "Kai'Sa",
+        "Leona"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "play-in-round-2-1-1",
+    "blue": {
+      "bans": [
+        "Nocturne",
+        "Olaf",
+        "Lee Sin",
+        "Yone",
+        "Yunara"
+      ],
+      "picks": [
+        "Vi",
+        "Syndra",
+        "Nautilus",
+        "Jayce",
+        "Draven"
+      ],
+      "picksByRole": [
+        "Jayce",
+        "Vi",
+        "Syndra",
+        "Draven",
+        "Nautilus"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Rumble",
+        "Seraphine",
+        "Cassiopeia",
+        "Gnar",
+        "Ezreal"
+      ],
+      "picks": [
+        "Tristana",
+        "Lulu",
+        "Maokai",
+        "K'Sante",
+        "Ambessa"
+      ],
+      "picksByRole": [
+        "Ambessa",
+        "Maokai",
+        "K'Sante",
+        "Tristana",
+        "Lulu"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "play-in-round-2-1-2",
+    "blue": {
+      "bans": [
+        "Olaf",
+        "Nocturne",
+        "Cassiopeia",
+        "Wukong",
+        "Yone"
+      ],
+      "picks": [
+        "Ashe",
+        "Seraphine",
+        "Galio",
+        "Lee Sin",
+        "Ahri"
+      ],
+      "picksByRole": [
+        "Galio",
+        "Lee Sin",
+        "Ahri",
+        "Ashe",
+        "Seraphine"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Pantheon",
+        "Karma",
+        "Orianna",
+        "Ryze",
+        "Jax"
+      ],
+      "picks": [
+        "Rumble",
+        "Ezreal",
+        "Pyke",
+        "Qiyana",
+        "Twisted Fate"
+      ],
+      "picksByRole": [
+        "Twisted Fate",
+        "Qiyana",
+        "Rumble",
+        "Ezreal",
+        "Pyke"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "play-in-round-2-1-3",
+    "blue": {
+      "bans": [
+        "Orianna",
+        "Caitlyn",
+        "Gnar",
+        "Cassiopeia",
+        "Renekton"
+      ],
+      "picks": [
+        "Wukong",
+        "Lucian",
+        "Milio",
+        "Kog'Maw",
+        "Yorick"
+      ],
+      "picksByRole": [
+        "Yorick",
+        "Wukong",
+        "Kog'Maw",
+        "Lucian",
+        "Milio"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Nocturne",
+        "Camille",
+        "Olaf",
+        "Vayne",
+        "Taliyah"
+      ],
+      "picks": [
+        "Jarvan IV",
+        "Xayah",
+        "Rakan",
+        "Viktor",
+        "Kennen"
+      ],
+      "picksByRole": [
+        "Kennen",
+        "Jarvan IV",
+        "Viktor",
+        "Xayah",
+        "Rakan"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "play-in-round-1-3-1",
+    "blue": {
+      "bans": [
+        "Nocturne",
+        "Cassiopeia",
+        "Karma",
+        "Xin Zhao",
+        "Maokai"
+      ],
+      "picks": [
+        "Kalista",
+        "Renata Glasc",
+        "Ambessa",
+        "Jarvan IV",
+        "Ahri"
+      ],
+      "picksByRole": [
+        "Ambessa",
+        "Jarvan IV",
+        "Ahri",
+        "Kalista",
+        "Renata Glasc"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Seraphine",
+        "Skarner",
+        "K'Sante",
+        "Vi",
+        "Akali"
+      ],
+      "picks": [
+        "Rumble",
+        "Lucian",
+        "Milio",
+        "Qiyana",
+        "Syndra"
+      ],
+      "picksByRole": [
+        "Rumble",
+        "Qiyana",
+        "Syndra",
+        "Lucian",
+        "Milio"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "play-in-round-1-3-2",
+    "blue": {
+      "bans": [
+        "Seraphine",
+        "Ezreal",
+        "Pantheon",
+        "Skarner",
+        "Gnar"
+      ],
+      "picks": [
+        "Caitlyn",
+        "Bard",
+        "Lee Sin",
+        "K'Sante",
+        "Sylas"
+      ],
+      "picksByRole": [
+        "K'Sante",
+        "Lee Sin",
+        "Sylas",
+        "Caitlyn",
+        "Bard"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Maokai",
+        "Nocturne",
+        "Vi",
+        "Camille",
+        "Twisted Fate"
+      ],
+      "picks": [
+        "Lulu",
+        "Olaf",
+        "Yunara",
+        "Sejuani",
+        "Akali"
+      ],
+      "picksByRole": [
+        "Olaf",
+        "Sejuani",
+        "Akali",
+        "Yunara",
+        "Lulu"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "play-in-round-1-3-3",
+    "blue": {
+      "bans": [
+        "Nocturne",
+        "Cassiopeia",
+        "Locke",
+        "Seraphine",
+        "Gnar"
+      ],
+      "picks": [
+        "Sivir",
+        "Karma",
+        "Cho'Gath",
+        "Viktor",
+        "Volibear"
+      ],
+      "picksByRole": [
+        "Volibear",
+        "Cho'Gath",
+        "Viktor",
+        "Sivir",
+        "Karma"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Ashe",
+        "Xayah",
+        "Jayce",
+        "Vayne",
+        "Varus"
+      ],
+      "picks": [
+        "Ezreal",
+        "Naafiri",
+        "Orianna",
+        "Renekton",
+        "Alistar"
+      ],
+      "picksByRole": [
+        "Renekton",
+        "Naafiri",
+        "Orianna",
+        "Ezreal",
+        "Alistar"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "play-in-round-1-3-4",
+    "blue": {
+      "bans": [
+        "Nocturne",
+        "Yone",
+        "Jayce",
+        "Xin Zhao",
+        "Gnar"
+      ],
+      "picks": [
+        "Vi",
+        "Miss Fortune",
+        "Rell",
+        "Jax",
+        "Twisted Fate"
+      ],
+      "picksByRole": [
+        "Jax",
+        "Vi",
+        "Twisted Fate",
+        "Miss Fortune",
+        "Rell"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Seraphine",
+        "Galio",
+        "Skarner",
+        "Aurora",
+        "Cassiopeia"
+      ],
+      "picks": [
+        "Ziggs",
+        "Nautilus",
+        "Locke",
+        "Trundle",
+        "Aatrox"
+      ],
+      "picksByRole": [
+        "Aatrox",
+        "Trundle",
+        "Locke",
+        "Ziggs",
+        "Nautilus"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "play-in-round-2-2-1",
+    "blue": {
+      "bans": [
+        "Karma",
+        "Vi",
+        "Olaf",
+        "Akali",
+        "Jax"
+      ],
+      "picks": [
+        "Ezreal",
+        "Jarvan IV",
+        "Lulu",
+        "Cassiopeia",
+        "Zaahen"
+      ],
+      "picksByRole": [
+        "Zaahen",
+        "Jarvan IV",
+        "Cassiopeia",
+        "Ezreal",
+        "Lulu"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Nocturne",
+        "Pyke",
+        "Lee Sin",
+        "Jayce",
+        "Renekton"
+      ],
+      "picks": [
+        "Lucian",
+        "Milio",
+        "Sejuani",
+        "Syndra",
+        "Camille"
+      ],
+      "picksByRole": [
+        "Camille",
+        "Sejuani",
+        "Syndra",
+        "Lucian",
+        "Milio"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "play-in-round-2-2-2",
+    "blue": {
+      "bans": [
+        "Akali",
+        "Renata Glasc",
+        "Olaf",
+        "Locke",
+        "Jax"
+      ],
+      "picks": [
+        "Vi",
+        "Kog'Maw",
+        "Jhin",
+        "Gnar",
+        "Bard"
+      ],
+      "picksByRole": [
+        "Gnar",
+        "Vi",
+        "Kog'Maw",
+        "Jhin",
+        "Bard"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Nocturne",
+        "Caitlyn",
+        "Seraphine",
+        "Neeko",
+        "Rumble"
+      ],
+      "picks": [
+        "Xayah",
+        "Rakan",
+        "Nasus",
+        "Viktor",
+        "Ambessa"
+      ],
+      "picksByRole": [
+        "Ambessa",
+        "Nasus",
+        "Viktor",
+        "Xayah",
+        "Rakan"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "play-in-round-2-2-3",
+    "blue": {
+      "bans": [
+        "Renata Glasc",
+        "Olaf",
+        "Pantheon",
+        "Jax",
+        "Naafiri"
+      ],
+      "picks": [
+        "Ziggs",
+        "Jayce",
+        "Mel",
+        "Leona",
+        "K'Sante"
+      ],
+      "picksByRole": [
+        "K'Sante",
+        "Jayce",
+        "Mel",
+        "Ziggs",
+        "Leona"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Nocturne",
+        "Pyke",
+        "Lee Sin",
+        "Nautilus",
+        "Maokai"
+      ],
+      "picks": [
+        "Seraphine",
+        "Miss Fortune",
+        "Twisted Fate",
+        "Rumble",
+        "Skarner"
+      ],
+      "picksByRole": [
+        "Rumble",
+        "Skarner",
+        "Twisted Fate",
+        "Miss Fortune",
+        "Seraphine"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "play-in-round-2-2-4",
+    "blue": {
+      "bans": [
+        "Renata Glasc",
+        "Akali",
+        "Trundle",
+        "Kai'Sa",
+        "Sylas"
+      ],
+      "picks": [
+        "Olaf",
+        "Corki",
+        "Shen",
+        "Wukong",
+        "Ryze"
+      ],
+      "picksByRole": [
+        "Olaf",
+        "Wukong",
+        "Ryze",
+        "Corki",
+        "Shen"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Nocturne",
+        "Lee Sin",
+        "Karma",
+        "Zyra",
+        "Maokai"
+      ],
+      "picks": [
+        "Jax",
+        "Pantheon",
+        "Alistar",
+        "Sivir",
+        "Taliyah"
+      ],
+      "picksByRole": [
+        "Jax",
+        "Pantheon",
+        "Taliyah",
+        "Sivir",
+        "Alistar"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "play-in-round-3-1-1",
+    "blue": {
+      "bans": [
+        "Nocturne",
+        "Olaf",
+        "Ezreal",
+        "Viktor",
+        "K'Sante"
+      ],
+      "picks": [
+        "Lee Sin",
+        "Jayce",
+        "Cassiopeia",
+        "Zeri",
+        "Yuumi"
+      ],
+      "picksByRole": [
+        "Jayce",
+        "Lee Sin",
+        "Cassiopeia",
+        "Zeri",
+        "Yuumi"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Syndra",
+        "Rumble",
+        "Vi",
+        "Nautilus",
+        "Jhin"
+      ],
+      "picks": [
+        "Ashe",
+        "Seraphine",
+        "Jarvan IV",
+        "Yorick",
+        "Akali"
+      ],
+      "picksByRole": [
+        "Yorick",
+        "Jarvan IV",
+        "Akali",
+        "Ashe",
+        "Seraphine"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "play-in-round-3-1-2",
+    "blue": {
+      "bans": [
+        "Olaf",
+        "Vi",
+        "Nocturne",
+        "Kog'Maw",
+        "Yone"
+      ],
+      "picks": [
+        "Qiyana",
+        "Galio",
+        "Ryze",
+        "Lulu",
+        "Yunara"
+      ],
+      "picksByRole": [
+        "Galio",
+        "Qiyana",
+        "Ryze",
+        "Yunara",
+        "Lulu"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Syndra",
+        "Renata Glasc",
+        "Nautilus",
+        "Caitlyn",
+        "Jhin"
+      ],
+      "picks": [
+        "Rumble",
+        "Lucian",
+        "Milio",
+        "Malphite",
+        "Hwei"
+      ],
+      "picksByRole": [
+        "Rumble",
+        "Malphite",
+        "Hwei",
+        "Lucian",
+        "Milio"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "play-in-round-3-1-3",
+    "blue": {
+      "bans": [
+        "Renata Glasc",
+        "Syndra",
+        "Jax",
+        "Renekton",
+        "Trundle"
+      ],
+      "picks": [
+        "Camille",
+        "Locke",
+        "Twitch",
+        "Yone",
+        "Aatrox"
+      ],
+      "picksByRole": [
+        "Yone",
+        "Aatrox",
+        "Locke",
+        "Twitch",
+        "Camille"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Olaf",
+        "Vi",
+        "Nocturne",
+        "Rakan",
+        "Wukong"
+      ],
+      "picks": [
+        "Viktor",
+        "Ezreal",
+        "Leona",
+        "Naafiri",
+        "Zaahen"
+      ],
+      "picksByRole": [
+        "Zaahen",
+        "Naafiri",
+        "Viktor",
+        "Ezreal",
+        "Leona"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-1-1-1",
+    "blue": {
+      "bans": [
+        "Vi",
+        "Lee Sin",
+        "Cassiopeia",
+        "Renata Glasc",
+        "Lucian"
+      ],
+      "picks": [
+        "Jarvan IV",
+        "Rumble",
+        "Aurora",
+        "Jhin",
+        "Alistar"
+      ],
+      "picksByRole": [
+        "Rumble",
+        "Jarvan IV",
+        "Aurora",
+        "Jhin",
+        "Alistar"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Nocturne",
+        "Syndra",
+        "Galio",
+        "Lulu",
+        "Ezreal"
+      ],
+      "picks": [
+        "Qiyana",
+        "Ornn",
+        "Akali",
+        "Corki",
+        "Nautilus"
+      ],
+      "picksByRole": [
+        "Ornn",
+        "Qiyana",
+        "Akali",
+        "Corki",
+        "Nautilus"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-1-2-1",
+    "blue": {
+      "bans": [
+        "Olaf",
+        "Vi",
+        "Jayce",
+        "Nautilus",
+        "Bard"
+      ],
+      "picks": [
+        "Orianna",
+        "Lee Sin",
+        "Alistar",
+        "Ezreal",
+        "K'Sante"
+      ],
+      "picksByRole": [
+        "K'Sante",
+        "Lee Sin",
+        "Orianna",
+        "Ezreal",
+        "Alistar"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Cassiopeia",
+        "Qiyana",
+        "Akali",
+        "Corki",
+        "Renekton"
+      ],
+      "picks": [
+        "Nocturne",
+        "Locke",
+        "Jhin",
+        "Shen",
+        "Ambessa"
+      ],
+      "picksByRole": [
+        "Ambessa",
+        "Nocturne",
+        "Locke",
+        "Jhin",
+        "Shen"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-1-3-1",
+    "blue": {
+      "bans": [
+        "Vi",
+        "Rumble",
+        "Cassiopeia",
+        "Lee Sin",
+        "Skarner"
+      ],
+      "picks": [
+        "Jarvan IV",
+        "Ezreal",
+        "Karma",
+        "Sylas",
+        "Renekton"
+      ],
+      "picksByRole": [
+        "Renekton",
+        "Jarvan IV",
+        "Sylas",
+        "Ezreal",
+        "Karma"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Galio",
+        "Nocturne",
+        "Qiyana",
+        "Twisted Fate",
+        "Olaf"
+      ],
+      "picks": [
+        "Seraphine",
+        "Ashe",
+        "Akali",
+        "Pantheon",
+        "Ambessa"
+      ],
+      "picksByRole": [
+        "Ambessa",
+        "Pantheon",
+        "Akali",
+        "Ashe",
+        "Seraphine"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-1-4-1",
+    "blue": {
+      "bans": [
+        "Vi",
+        "Qiyana",
+        "Cassiopeia",
+        "Seraphine",
+        "Nautilus"
+      ],
+      "picks": [
+        "Jarvan IV",
+        "Orianna",
+        "Jax",
+        "Renata Glasc",
+        "Kalista"
+      ],
+      "picksByRole": [
+        "Jax",
+        "Jarvan IV",
+        "Orianna",
+        "Kalista",
+        "Renata Glasc"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Jayce",
+        "Rumble",
+        "Syndra",
+        "Ezreal",
+        "Lulu"
+      ],
+      "picks": [
+        "Nocturne",
+        "Olaf",
+        "Akali",
+        "Miss Fortune",
+        "Neeko"
+      ],
+      "picksByRole": [
+        "Olaf",
+        "Nocturne",
+        "Akali",
+        "Miss Fortune",
+        "Neeko"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-1-5-1",
+    "blue": {
+      "bans": [
+        "Locke",
+        "Nocturne",
+        "Draven",
+        "Kled",
+        "Orianna"
+      ],
+      "picks": [
+        "Vi",
+        "Syndra",
+        "Olaf",
+        "Ziggs",
+        "Poppy"
+      ],
+      "picksByRole": [
+        "Olaf",
+        "Vi",
+        "Syndra",
+        "Ziggs",
+        "Poppy"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Lucian",
+        "Karma",
+        "Caitlyn",
+        "Lulu",
+        "Seraphine"
+      ],
+      "picks": [
+        "Kalista",
+        "Renata Glasc",
+        "Jarvan IV",
+        "Viktor",
+        "K'Sante"
+      ],
+      "picksByRole": [
+        "K'Sante",
+        "Jarvan IV",
+        "Viktor",
+        "Kalista",
+        "Renata Glasc"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-1-6-1",
+    "blue": {
+      "bans": [
+        "Akali",
+        "Vi",
+        "Cassiopeia",
+        "Ashe",
+        "Draven"
+      ],
+      "picks": [
+        "Lee Sin",
+        "Galio",
+        "Syndra",
+        "Jhin",
+        "Rakan"
+      ],
+      "picksByRole": [
+        "Galio",
+        "Lee Sin",
+        "Syndra",
+        "Jhin",
+        "Rakan"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Orianna",
+        "Ezreal",
+        "Renata Glasc",
+        "Nautilus",
+        "Lulu"
+      ],
+      "picks": [
+        "Rumble",
+        "Qiyana",
+        "Viktor",
+        "Alistar",
+        "Aphelios"
+      ],
+      "picksByRole": [
+        "Rumble",
+        "Qiyana",
+        "Viktor",
+        "Aphelios",
+        "Alistar"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-1-7-1",
+    "blue": {
+      "bans": [
+        "Bard",
+        "Vi",
+        "Qiyana",
+        "Locke",
+        "Akali"
+      ],
+      "picks": [
+        "Syndra",
+        "Pantheon",
+        "K'Sante",
+        "Tristana",
+        "Rakan"
+      ],
+      "picksByRole": [
+        "K'Sante",
+        "Pantheon",
+        "Syndra",
+        "Tristana",
+        "Rakan"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Nocturne",
+        "Cassiopeia",
+        "Poppy",
+        "Kalista",
+        "Nautilus"
+      ],
+      "picks": [
+        "Lee Sin",
+        "Jhin",
+        "Jayce",
+        "Alistar",
+        "LeBlanc"
+      ],
+      "picksByRole": [
+        "Jayce",
+        "Lee Sin",
+        "LeBlanc",
+        "Jhin",
+        "Alistar"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-1-8-1",
+    "blue": {
+      "bans": [
+        "Vi",
+        "Qiyana",
+        "Cassiopeia",
+        "Jhin",
+        "Corki"
+      ],
+      "picks": [
+        "Ezreal",
+        "Nocturne",
+        "Alistar",
+        "Anivia",
+        "K'Sante"
+      ],
+      "picksByRole": [
+        "K'Sante",
+        "Nocturne",
+        "Anivia",
+        "Ezreal",
+        "Alistar"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Syndra",
+        "Renata Glasc",
+        "Olaf",
+        "Orianna",
+        "Galio"
+      ],
+      "picks": [
+        "Ryze",
+        "Lee Sin",
+        "Nautilus",
+        "Kai'Sa",
+        "Rumble"
+      ],
+      "picksByRole": [
+        "Rumble",
+        "Lee Sin",
+        "Ryze",
+        "Kai'Sa",
+        "Nautilus"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-2-1-1",
+    "blue": {
+      "bans": [
+        "Olaf",
+        "Qiyana",
+        "Cassiopeia",
+        "Jhin",
+        "Ashe"
+      ],
+      "picks": [
+        "Nocturne",
+        "Renata Glasc",
+        "Kalista",
+        "Locke",
+        "Ambessa"
+      ],
+      "picksByRole": [
+        "Ambessa",
+        "Nocturne",
+        "Locke",
+        "Kalista",
+        "Renata Glasc"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Akali",
+        "Ezreal",
+        "Vi",
+        "Ornn",
+        "Yone"
+      ],
+      "picks": [
+        "Orianna",
+        "Jarvan IV",
+        "Rumble",
+        "Lucian",
+        "Milio"
+      ],
+      "picksByRole": [
+        "Rumble",
+        "Jarvan IV",
+        "Orianna",
+        "Lucian",
+        "Milio"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-2-2-1",
+    "blue": {
+      "bans": [
+        "Lucian",
+        "Rumble",
+        "Nocturne",
+        "Aphelios",
+        "Caitlyn"
+      ],
+      "picks": [
+        "Cassiopeia",
+        "Kalista",
+        "Renata Glasc",
+        "Trundle",
+        "Qiyana"
+      ],
+      "picksByRole": [
+        "Trundle",
+        "Qiyana",
+        "Cassiopeia",
+        "Kalista",
+        "Renata Glasc"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Ezreal",
+        "Vi",
+        "Anivia",
+        "Skarner",
+        "K'Sante"
+      ],
+      "picks": [
+        "Akali",
+        "Lee Sin",
+        "Olaf",
+        "Lulu",
+        "Tristana"
+      ],
+      "picksByRole": [
+        "Olaf",
+        "Lee Sin",
+        "Akali",
+        "Tristana",
+        "Lulu"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-2-3-1",
+    "blue": {
+      "bans": [
+        "Olaf",
+        "Jarvan IV",
+        "Galio",
+        "Akali",
+        "LeBlanc"
+      ],
+      "picks": [
+        "Nocturne",
+        "Jayce",
+        "Orianna",
+        "Kalista",
+        "Renata Glasc"
+      ],
+      "picksByRole": [
+        "Jayce",
+        "Nocturne",
+        "Orianna",
+        "Kalista",
+        "Renata Glasc"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Vi",
+        "Seraphine",
+        "Syndra",
+        "Nautilus",
+        "Sivir"
+      ],
+      "picks": [
+        "Ezreal",
+        "Karma",
+        "K'Sante",
+        "Locke",
+        "Lee Sin"
+      ],
+      "picksByRole": [
+        "K'Sante",
+        "Lee Sin",
+        "Locke",
+        "Ezreal",
+        "Karma"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-2-4-1",
+    "blue": {
+      "bans": [
+        "Ezreal",
+        "Nocturne",
+        "K'Sante",
+        "Seraphine",
+        "Caitlyn"
+      ],
+      "picks": [
+        "Lee Sin",
+        "Rumble",
+        "Cassiopeia",
+        "Renata Glasc",
+        "Kalista"
+      ],
+      "picksByRole": [
+        "Rumble",
+        "Lee Sin",
+        "Cassiopeia",
+        "Kalista",
+        "Renata Glasc"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Jayce",
+        "Vi",
+        "Qiyana",
+        "Jhin",
+        "Olaf"
+      ],
+      "picks": [
+        "Wukong",
+        "Galio",
+        "Syndra",
+        "Yunara",
+        "Lulu"
+      ],
+      "picksByRole": [
+        "Galio",
+        "Wukong",
+        "Syndra",
+        "Yunara",
+        "Lulu"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-2-5-1",
+    "blue": {
+      "bans": [
+        "Syndra",
+        "Rumble",
+        "Jayce",
+        "Lulu",
+        "Renata Glasc"
+      ],
+      "picks": [
+        "Qiyana",
+        "Ezreal",
+        "Locke",
+        "Alistar",
+        "Shen"
+      ],
+      "picksByRole": [
+        "Shen",
+        "Qiyana",
+        "Locke",
+        "Ezreal",
+        "Alistar"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Olaf",
+        "Galio",
+        "Vi",
+        "Nautilus",
+        "Volibear"
+      ],
+      "picks": [
+        "Nocturne",
+        "Orianna",
+        "K'Sante",
+        "Ashe",
+        "Seraphine"
+      ],
+      "picksByRole": [
+        "K'Sante",
+        "Nocturne",
+        "Orianna",
+        "Ashe",
+        "Seraphine"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-2-6-1",
+    "blue": {
+      "bans": [
+        "Vi",
+        "Cassiopeia",
+        "Kalista",
+        "Anivia",
+        "Poppy"
+      ],
+      "picks": [
+        "Jhin",
+        "Pantheon",
+        "Alistar",
+        "Ambessa",
+        "Taliyah"
+      ],
+      "picksByRole": [
+        "Ambessa",
+        "Pantheon",
+        "Taliyah",
+        "Jhin",
+        "Alistar"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Jayce",
+        "Nocturne",
+        "Galio",
+        "Locke",
+        "Akali"
+      ],
+      "picks": [
+        "Qiyana",
+        "Rumble",
+        "Ezreal",
+        "Syndra",
+        "Leona"
+      ],
+      "picksByRole": [
+        "Rumble",
+        "Qiyana",
+        "Syndra",
+        "Ezreal",
+        "Leona"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-2-7-1",
+    "blue": {
+      "bans": [
+        "Nocturne",
+        "Locke",
+        "Rumble",
+        "Akali",
+        "Taliyah"
+      ],
+      "picks": [
+        "Kalista",
+        "Renata Glasc",
+        "Jarvan IV",
+        "Viktor",
+        "K'Sante"
+      ],
+      "picksByRole": [
+        "K'Sante",
+        "Jarvan IV",
+        "Viktor",
+        "Kalista",
+        "Renata Glasc"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Syndra",
+        "Cassiopeia",
+        "Qiyana",
+        "Orianna",
+        "Olaf"
+      ],
+      "picks": [
+        "Vi",
+        "Neeko",
+        "Caitlyn",
+        "Anivia",
+        "Jayce"
+      ],
+      "picksByRole": [
+        "Jayce",
+        "Vi",
+        "Anivia",
+        "Caitlyn",
+        "Neeko"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-2-8-1",
+    "blue": {
+      "bans": [
+        "Cassiopeia",
+        "Vi",
+        "Nocturne",
+        "Ziggs",
+        "Gnar"
+      ],
+      "picks": [
+        "Ezreal",
+        "Jarvan IV",
+        "Karma",
+        "Locke",
+        "K'Sante"
+      ],
+      "picksByRole": [
+        "K'Sante",
+        "Jarvan IV",
+        "Locke",
+        "Ezreal",
+        "Karma"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Renata Glasc",
+        "Qiyana",
+        "Galio",
+        "Syndra",
+        "Olaf"
+      ],
+      "picks": [
+        "Lee Sin",
+        "Orianna",
+        "Camille",
+        "Jhin",
+        "Nautilus"
+      ],
+      "picksByRole": [
+        "Camille",
+        "Lee Sin",
+        "Orianna",
+        "Jhin",
+        "Nautilus"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-3-1-1",
+    "blue": {
+      "bans": [
+        "Jayce",
+        "Cassiopeia",
+        "Jhin",
+        "Galio",
+        "Locke"
+      ],
+      "picks": [
+        "Yunara",
+        "Lulu",
+        "Nocturne",
+        "Annie",
+        "Kled"
+      ],
+      "picksByRole": [
+        "Kled",
+        "Nocturne",
+        "Annie",
+        "Yunara",
+        "Lulu"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Syndra",
+        "Orianna",
+        "Vi",
+        "Rumble",
+        "Aurora"
+      ],
+      "picks": [
+        "Qiyana",
+        "Kalista",
+        "Renata Glasc",
+        "Olaf",
+        "Lissandra"
+      ],
+      "picksByRole": [
+        "Olaf",
+        "Qiyana",
+        "Lissandra",
+        "Kalista",
+        "Renata Glasc"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-3-2-1",
+    "blue": {
+      "bans": [
+        "Olaf",
+        "Galio",
+        "Renata Glasc",
+        "Jarvan IV",
+        "Renekton"
+      ],
+      "picks": [
+        "Nocturne",
+        "Orianna",
+        "Nautilus",
+        "Varus",
+        "Ambessa"
+      ],
+      "picksByRole": [
+        "Ambessa",
+        "Nocturne",
+        "Orianna",
+        "Varus",
+        "Nautilus"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Qiyana",
+        "Lee Sin",
+        "Vi",
+        "Kai'Sa",
+        "Jhin"
+      ],
+      "picks": [
+        "Ezreal",
+        "Karma",
+        "Akali",
+        "Wukong",
+        "Shen"
+      ],
+      "picksByRole": [
+        "Shen",
+        "Wukong",
+        "Akali",
+        "Ezreal",
+        "Karma"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-3-3-1",
+    "blue": {
+      "bans": [
+        "Vi",
+        "Jarvan IV",
+        "Syndra",
+        "Jhin",
+        "K'Sante"
+      ],
+      "picks": [
+        "Ezreal",
+        "Karma",
+        "Anivia",
+        "Jayce",
+        "Trundle"
+      ],
+      "picksByRole": [
+        "Jayce",
+        "Trundle",
+        "Anivia",
+        "Ezreal",
+        "Karma"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Nocturne",
+        "Olaf",
+        "Locke",
+        "Pantheon",
+        "Skarner"
+      ],
+      "picks": [
+        "Cassiopeia",
+        "Lee Sin",
+        "Nautilus",
+        "Ornn",
+        "Kai'Sa"
+      ],
+      "picksByRole": [
+        "Ornn",
+        "Lee Sin",
+        "Cassiopeia",
+        "Kai'Sa",
+        "Nautilus"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-3-3-2",
+    "blue": {
+      "bans": [
+        "Nocturne",
+        "Rumble",
+        "Lucian",
+        "Locke",
+        "Akali"
+      ],
+      "picks": [
+        "Bard",
+        "Jarvan IV",
+        "Caitlyn",
+        "Syndra",
+        "Irelia"
+      ],
+      "picksByRole": [
+        "Irelia",
+        "Jarvan IV",
+        "Syndra",
+        "Caitlyn",
+        "Bard"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Olaf",
+        "Renata Glasc",
+        "Orianna",
+        "Vayne",
+        "Renekton"
+      ],
+      "picks": [
+        "Vi",
+        "Yunara",
+        "Lulu",
+        "Gnar",
+        "Diana"
+      ],
+      "picksByRole": [
+        "Gnar",
+        "Vi",
+        "Diana",
+        "Yunara",
+        "Lulu"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-3-4-1",
+    "blue": {
+      "bans": [
+        "Cassiopeia",
+        "Akali",
+        "Syndra",
+        "K'Sante",
+        "Jax"
+      ],
+      "picks": [
+        "Kalista",
+        "Renata Glasc",
+        "Olaf",
+        "Xin Zhao",
+        "Ahri"
+      ],
+      "picksByRole": [
+        "Olaf",
+        "Xin Zhao",
+        "Ahri",
+        "Kalista",
+        "Renata Glasc"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Nocturne",
+        "Ezreal",
+        "Vi",
+        "Lee Sin",
+        "LeBlanc"
+      ],
+      "picks": [
+        "Qiyana",
+        "Jhin",
+        "Alistar",
+        "Anivia",
+        "Rumble"
+      ],
+      "picksByRole": [
+        "Rumble",
+        "Qiyana",
+        "Anivia",
+        "Jhin",
+        "Alistar"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-3-4-2",
+    "blue": {
+      "bans": [
+        "Jarvan IV",
+        "Ezreal",
+        "Wukong",
+        "Sylas",
+        "Renekton"
+      ],
+      "picks": [
+        "Nocturne",
+        "Ashe",
+        "Seraphine",
+        "Ambessa",
+        "Lissandra"
+      ],
+      "picksByRole": [
+        "Ambessa",
+        "Nocturne",
+        "Lissandra",
+        "Ashe",
+        "Seraphine"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Cassiopeia",
+        "Syndra",
+        "Orianna",
+        "Galio",
+        "Twisted Fate"
+      ],
+      "picks": [
+        "Vi",
+        "Lulu",
+        "Yunara",
+        "Akali",
+        "Shen"
+      ],
+      "picksByRole": [
+        "Shen",
+        "Vi",
+        "Akali",
+        "Yunara",
+        "Lulu"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-3-4-3",
+    "blue": {
+      "bans": [
+        "Wukong",
+        "Jarvan IV",
+        "Sivir",
+        "Pantheon",
+        "Trundle"
+      ],
+      "picks": [
+        "Ezreal",
+        "Jayce",
+        "Nautilus",
+        "Camille",
+        "Galio"
+      ],
+      "picksByRole": [
+        "Camille",
+        "Jayce",
+        "Galio",
+        "Ezreal",
+        "Nautilus"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Cassiopeia",
+        "Syndra",
+        "Lee Sin",
+        "Gnar",
+        "Gwen"
+      ],
+      "picks": [
+        "Lucian",
+        "Milio",
+        "K'Sante",
+        "Maokai",
+        "Tristana"
+      ],
+      "picksByRole": [
+        "K'Sante",
+        "Maokai",
+        "Tristana",
+        "Lucian",
+        "Milio"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-3-5-1",
+    "blue": {
+      "bans": [
+        "K'Sante",
+        "Draven",
+        "Syndra",
+        "Poppy",
+        "Nautilus"
+      ],
+      "picks": [
+        "Vi",
+        "Galio",
+        "Jhin",
+        "Ambessa",
+        "Rakan"
+      ],
+      "picksByRole": [
+        "Ambessa",
+        "Vi",
+        "Galio",
+        "Jhin",
+        "Rakan"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Renata Glasc",
+        "Nocturne",
+        "Cassiopeia",
+        "Anivia",
+        "Ahri"
+      ],
+      "picks": [
+        "Rumble",
+        "Qiyana",
+        "Ryze",
+        "Alistar",
+        "Kai'Sa"
+      ],
+      "picksByRole": [
+        "Rumble",
+        "Qiyana",
+        "Ryze",
+        "Kai'Sa",
+        "Alistar"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-3-6-1",
+    "blue": {
+      "bans": [
+        "Renata Glasc",
+        "Vi",
+        "Qiyana",
+        "Syndra",
+        "Cassiopeia"
+      ],
+      "picks": [
+        "Orianna",
+        "Jarvan IV",
+        "Ambessa",
+        "Nautilus",
+        "Kai'Sa"
+      ],
+      "picksByRole": [
+        "Ambessa",
+        "Jarvan IV",
+        "Orianna",
+        "Kai'Sa",
+        "Nautilus"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Locke",
+        "Nocturne",
+        "Camille",
+        "Ezreal",
+        "Lulu"
+      ],
+      "picks": [
+        "Lee Sin",
+        "Rumble",
+        "Jhin",
+        "Alistar",
+        "Viktor"
+      ],
+      "picksByRole": [
+        "Rumble",
+        "Lee Sin",
+        "Viktor",
+        "Jhin",
+        "Alistar"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-3-7-1",
+    "blue": {
+      "bans": [
+        "Syndra",
+        "Nocturne",
+        "Jayce",
+        "Rumble",
+        "Jarvan IV"
+      ],
+      "picks": [
+        "Lee Sin",
+        "Caitlyn",
+        "Elise",
+        "Akali",
+        "Shen"
+      ],
+      "picksByRole": [
+        "Shen",
+        "Lee Sin",
+        "Akali",
+        "Caitlyn",
+        "Elise"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Cassiopeia",
+        "Qiyana",
+        "Vi",
+        "Locke",
+        "Ryze"
+      ],
+      "picks": [
+        "Kalista",
+        "Renata Glasc",
+        "Orianna",
+        "Wukong",
+        "Gnar"
+      ],
+      "picksByRole": [
+        "Gnar",
+        "Wukong",
+        "Orianna",
+        "Kalista",
+        "Renata Glasc"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-3-7-2",
+    "blue": {
+      "bans": [
+        "Syndra",
+        "Nocturne",
+        "Jayce",
+        "Jarvan IV",
+        "K'Sante"
+      ],
+      "picks": [
+        "Vi",
+        "Locke",
+        "Nautilus",
+        "Miss Fortune",
+        "Jax"
+      ],
+      "picksByRole": [
+        "Jax",
+        "Vi",
+        "Locke",
+        "Miss Fortune",
+        "Nautilus"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Cassiopeia",
+        "Qiyana",
+        "Olaf",
+        "Jhin",
+        "Rumble"
+      ],
+      "picks": [
+        "Ashe",
+        "Seraphine",
+        "Galio",
+        "Trundle",
+        "Kennen"
+      ],
+      "picksByRole": [
+        "Kennen",
+        "Trundle",
+        "Galio",
+        "Ashe",
+        "Seraphine"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-3-8-1",
+    "blue": {
+      "bans": [
+        "Qiyana",
+        "Nautilus",
+        "Renata Glasc",
+        "Syndra",
+        "Locke"
+      ],
+      "picks": [
+        "Yunara",
+        "Lulu",
+        "Orianna",
+        "Ambessa",
+        "Skarner"
+      ],
+      "picksByRole": [
+        "Ambessa",
+        "Skarner",
+        "Orianna",
+        "Yunara",
+        "Lulu"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Cassiopeia",
+        "Vi",
+        "Nocturne",
+        "Naafiri",
+        "Renekton"
+      ],
+      "picks": [
+        "Lee Sin",
+        "Lucian",
+        "Nami",
+        "Camille",
+        "Galio"
+      ],
+      "picksByRole": [
+        "Camille",
+        "Lee Sin",
+        "Galio",
+        "Lucian",
+        "Nami"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-3-8-2",
+    "blue": {
+      "bans": [
+        "Cassiopeia",
+        "Vi",
+        "Qiyana",
+        "Seraphine",
+        "Nautilus"
+      ],
+      "picks": [
+        "Xayah",
+        "Rakan",
+        "Kled",
+        "Pantheon",
+        "Akali"
+      ],
+      "picksByRole": [
+        "Kled",
+        "Pantheon",
+        "Akali",
+        "Xayah",
+        "Rakan"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Jarvan IV",
+        "Ezreal",
+        "Renata Glasc",
+        "Wukong",
+        "Syndra"
+      ],
+      "picks": [
+        "Nocturne",
+        "Olaf",
+        "Annie",
+        "Jinx",
+        "Tahm Kench"
+      ],
+      "picksByRole": [
+        "Olaf",
+        "Nocturne",
+        "Annie",
+        "Jinx",
+        "Tahm Kench"
+      ]
+    },
+    "complete": true
+  }
+]
