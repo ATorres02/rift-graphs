@@ -128,3 +128,117 @@
     @apply font-sans;
   }
 }
+/* ------------------------------------------------------------------ Rift Ledger tokens */
+
+:root {
+  /* Single accent colour ("analysis room": data first, one highlight). */
+  --brand: oklch(0.55 0.15 170);
+  --brand-foreground: oklch(0.99 0 0);
+  --brand-soft: oklch(0.55 0.15 170 / 12%);
+  /* Map sides: the only place where blue and red are used. */
+  --side-blue: oklch(0.52 0.17 255);
+  --side-red: oklch(0.56 0.2 25);
+  /* Region colours (pill backgrounds with dark text, AA in both modes). */
+  --region-lck: oklch(0.8 0.14 165);
+  --region-lpl: oklch(0.82 0.16 75);
+  --region-lec: oklch(0.78 0.14 300);
+  --region-lcs: oklch(0.8 0.14 45);
+  --region-lcp: oklch(0.82 0.11 210);
+  --region-cblol: oklch(0.84 0.17 120);
+  --region-other: oklch(0.85 0 0);
+  --region-foreground: oklch(0.18 0 0);
+  /* Chart palette (ordered, distinct in both modes). */
+  --viz-1: oklch(0.55 0.15 170);
+  --viz-2: oklch(0.62 0.17 45);
+  --viz-3: oklch(0.55 0.17 300);
+  --viz-4: oklch(0.6 0.14 210);
+  --viz-5: oklch(0.62 0.17 75);
+  --viz-6: oklch(0.6 0.17 120);
+  --viz-grid: oklch(0.9 0 0);
+  --win: oklch(0.55 0.15 150);
+  --loss: oklch(0.56 0.16 20);
+}
+
+.dark {
+  --background: oklch(0.16 0.008 250);
+  --card: oklch(0.2 0.008 250);
+  --popover: oklch(0.2 0.008 250);
+  --secondary: oklch(0.26 0.008 250);
+  --muted: oklch(0.26 0.008 250);
+  --accent: oklch(0.26 0.008 250);
+  --brand: oklch(0.8 0.15 170);
+  --brand-foreground: oklch(0.15 0 0);
+  --brand-soft: oklch(0.8 0.15 170 / 14%);
+  --side-blue: oklch(0.72 0.14 255);
+  --side-red: oklch(0.72 0.17 25);
+  --region-lck: oklch(0.84 0.14 165);
+  --region-lpl: oklch(0.86 0.16 75);
+  --region-lec: oklch(0.82 0.13 300);
+  --region-lcs: oklch(0.84 0.14 45);
+  --region-lcp: oklch(0.86 0.11 210);
+  --region-cblol: oklch(0.88 0.17 120);
+  --region-other: oklch(0.8 0 0);
+  --viz-1: oklch(0.8 0.15 170);
+  --viz-2: oklch(0.78 0.15 45);
+  --viz-3: oklch(0.76 0.13 300);
+  --viz-4: oklch(0.78 0.11 210);
+  --viz-5: oklch(0.82 0.16 75);
+  --viz-6: oklch(0.8 0.17 120);
+  --viz-grid: oklch(0.3 0.008 250);
+  --win: oklch(0.78 0.15 150);
+  --loss: oklch(0.72 0.17 20);
+}
+
+@theme inline {
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-brand-soft: var(--brand-soft);
+  --color-side-blue: var(--side-blue);
+  --color-side-red: var(--side-red);
+  --color-win: var(--win);
+  --color-loss: var(--loss);
+  --color-region-foreground: var(--region-foreground);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    min-height: 100dvh;
+  }
+  a {
+    @apply underline-offset-4;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand;
+  }
+}
+
+@layer utilities {
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+  /* Spoiler mode: before hydration the results are blurred, afterwards React swaps them for a button. */
+  html[data-spoilers="hidden"] .spoiler-blur {
+    filter: blur(7px);
+    user-select: none;
+    pointer-events: none;
+  }
+  .scroll-x {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
