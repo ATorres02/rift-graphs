@@ -2,18 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { HomeIcon, SwordsIcon, ShieldIcon, UsersIcon, SparklesIcon, TrophyIcon, InfoIcon } from "lucide-react";
+import { NAV } from "@/components/layout/nav-items";
 import { cn } from "@/lib/utils";
-
-export const NAV = [
-  { href: "/", label: "Home", icon: HomeIcon },
-  { href: "/tournament", label: "Tournament", icon: TrophyIcon },
-  { href: "/matches", label: "Matches", icon: SwordsIcon },
-  { href: "/teams", label: "Teams", icon: ShieldIcon },
-  { href: "/players", label: "Players", icon: UsersIcon },
-  { href: "/champions", label: "Champions", icon: SparklesIcon },
-  { href: "/about", label: "About", icon: InfoIcon },
-] as const;
 
 function isActive(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
@@ -42,7 +32,8 @@ export function TopNav() {
 
 export function BottomNav() {
   const pathname = usePathname();
-  const items = NAV.filter((n) => n.href !== "/about");
+  // Six slots on mobile; champions, compare and about are reachable from the footer and in-page links.
+  const items = NAV.filter((n) => ["/", "/tournament", "/matches", "/teams", "/players", "/charts"].includes(n.href));
   return (
     <nav aria-label="Main (mobile)" className="fixed inset-x-0 bottom-0 z-40 border-t bg-background/95 backdrop-blur md:hidden" style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
       <ul className="grid grid-cols-6">

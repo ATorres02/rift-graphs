@@ -10,6 +10,8 @@ import { fmt, STAGE_LABEL } from "@/lib/format";
 import { aggregateByPlayer, DEFAULT_MIN_GAMES, rankPlayers } from "@/lib/metrics";
 import { site } from "@/lib/site";
 import { swissGroups, swissStandings } from "@/lib/standings";
+import { TEMPLATES } from "@/lib/charts/templates";
+import { serializeConfig } from "@/lib/charts/url";
 import { playerLabel, seriesView } from "@/lib/views";
 
 export default function HomePage() {
@@ -102,7 +104,7 @@ export default function HomePage() {
           </Section>
         </div>
 
-        <aside className="space-y-4">
+        <aside className="space-y-10">
           <Section
             title="Swiss Stage"
             description={`${qualified} qualified · ${eliminated} eliminated · ${mainTeamIds.length - qualified - eliminated} still playing`}
@@ -127,6 +129,26 @@ export default function HomePage() {
                 ))}
               </ol>
             </Spoiler>
+          </Section>
+
+          <Section title="Build your own chart" description="Pick a measure, group, filter and chart type; share the link." action={<Link href="/charts" className="text-sm text-brand underline">Open the builder</Link>}>
+            <ul className="space-y-1.5">
+              {TEMPLATES.map((t) => (
+                <li key={t.id}>
+                  <Link href={`/charts?${serializeConfig(t.config)}`} className="block rounded-lg border bg-card px-3 py-2 text-sm no-underline transition-colors hover:border-brand/60">
+                    <span className="font-medium">{t.name}</span>
+                    <span className="block text-xs text-muted-foreground">{t.description}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <p className="text-xs text-muted-foreground">
+              Or compare two teams or players head to head on the{" "}
+              <Link href="/compare" className="underline hover:text-foreground">
+                comparison page
+              </Link>
+              .
+            </p>
           </Section>
         </aside>
       </div>

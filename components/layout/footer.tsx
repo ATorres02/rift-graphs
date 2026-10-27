@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { NAV } from "@/components/layout/nav-items";
 import { riotNotice, site } from "@/lib/site";
 
 /** Legal footer, as required by the SPEC's "Marco legal" section. */
@@ -29,6 +30,13 @@ export function Footer() {
           )}
           . Free, no ads, no accounts.
         </p>
+        <nav aria-label="Site" className="flex flex-wrap gap-x-4 gap-y-1">
+          {NAV.map((item) => (
+            <Link key={item.href} href={item.href} className="hover:text-foreground">
+              {item.label}
+            </Link>
+          ))}
+        </nav>
         <nav aria-label="Legal" className="flex flex-wrap gap-x-4 gap-y-1">
           <Link href="/about" className="underline hover:text-foreground">
             About
