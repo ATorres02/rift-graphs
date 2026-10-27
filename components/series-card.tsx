@@ -30,16 +30,19 @@ export function SeriesCard({ series: s, team1, team2, pending = false, compact =
         </span>
         <LocalTime iso={s.dateTimeUtc} mode={compact ? "time" : "datetime"} hasTime={s.hasTime} />
       </div>
-      <Link href={`/matches/${s.id}`} className="mt-2 block no-underline" aria-label={`${team1?.name ?? "TBD"} vs ${team2?.name ?? "TBD"}`}>
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
-          <TeamSide team={team1} winner={winner1} align="left" />
-          <ScoreBlock series={s} />
-          <TeamSide team={team2} winner={winner2} align="right" />
-        </div>
-      </Link>
+      <div className="mt-2 grid grid-cols-[1fr_auto_1fr] items-center gap-2">
+        <TeamSide team={team1} winner={winner1} align="left" />
+        <ScoreBlock series={s} />
+        <TeamSide team={team2} winner={winner2} align="right" />
+      </div>
       <div className="mt-2 flex items-center justify-between gap-2 text-xs">
-        <StatusLabel series={s} />
-        {pending ? <PendingData /> : null}
+        <span className="flex items-center gap-2">
+          <StatusLabel series={s} />
+          {pending ? <PendingData /> : null}
+        </span>
+        <Link href={`/matches/${s.id}`} className="font-medium text-muted-foreground underline hover:text-foreground" aria-label={`Details: ${team1?.name ?? "TBD"} vs ${team2?.name ?? "TBD"}`}>
+          Details
+        </Link>
       </div>
     </article>
   );

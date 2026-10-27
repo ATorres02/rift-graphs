@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import { MatchList } from "@/components/match-list";
 import { PageHeader } from "@/components/page-header";
 import { getData, teamRef } from "@/lib/data/load";
@@ -18,9 +17,7 @@ export default function MatchesPage() {
   return (
     <div>
       <PageHeader title="Matches" description="Every series of the tournament, grouped by day in your time zone. Scores stay hidden while spoiler mode is on." />
-      <Suspense fallback={<p className="text-sm text-muted-foreground">Loading schedule…</p>}>
-        <MatchList views={views} teams={teams} stages={stages} />
-      </Suspense>
+      <MatchList views={views} teams={teams} stages={stages} />
     </div>
   );
 }

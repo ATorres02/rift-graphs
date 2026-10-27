@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { LocalTime } from "@/components/local-time";
 import { SeriesCard } from "@/components/series-card";
@@ -30,21 +29,26 @@ const selectClass = "h-9 rounded-md border bg-background px-2 text-sm focus-visi
 
 /** Filterable schedule grouped by day in the visitor's time zone (UTC until hydration). */
 export function MatchList({ views, teams, stages }: MatchListProps) {
-  const router = useRouter();
-  const params = useSearchParams();
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const [filters, setFilters] = useState<Record<string, string>>({});
+  useEffect(() => {
+    // Filters live in the query string (?stage=swiss&team=t1) so a filtered view can be shared.
+    setFilters(Object.fromEntries(new URLSearchParams(window.location.search)));
+    setMounted(true);
+  }, []);
 
-  const stage = params.get("stage") ?? "all";
-  const team = params.get("team") ?? "all";
-  const status = params.get("status") ?? "all";
-  const day = params.get("day") ?? "all";
+  const stage = filters.stage ?? "all";
+  const team = filters.team ?? "all";
+  const status = filters.status ?? "all";
+  const day = filters.day ?? "all";
 
   const setParam = (key: string, value: string) => {
-    const next = new URLSearchParams(params.toString());
-    if (value === "all") next.delete(key);
-    else next.set(key, value);
-    router.replace(`/matches${next.toString() ? `?${next.toString()}` : ""}`, { scroll: false });
+    const next = { ...filters };
+    if (value === "all") delete next[key];
+    else next[key] = value;
+    setFilters(next);
+    const qs = new URLSearchParams(next).toString();
+    window.history.replaceState(null, "", `/matches${qs ? `?${qs}` : ""}`);
   };
 
   const dayKey = (iso: string) => (mounted ? localDayKey(iso) : iso.slice(0, 10));

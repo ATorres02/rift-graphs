@@ -75,7 +75,11 @@ export function Spoiler({ children, label = "Reveal", className, as = "span" }: 
     return (
       <button
         type="button"
-        onClick={() => setRevealed(true)}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setRevealed(true);
+        }}
         className={cn(
           "inline-flex items-center gap-1 rounded-md border border-dashed border-border px-2 py-0.5 text-xs font-medium text-muted-foreground transition-colors hover:border-brand hover:text-foreground",
           className,
