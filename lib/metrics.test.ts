@@ -57,7 +57,6 @@ const stats = (teamId: string, o: Partial<GameTeamStats> = {}): GameTeamStats =>
   barons: 1,
   heralds: 1,
   voidGrubs: 3,
-  atakhans: null,
   bans: [],
   picks: [],
   ...o,

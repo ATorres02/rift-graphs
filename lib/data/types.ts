@@ -119,7 +119,6 @@ export interface GameTeamStats {
   barons: number;
   heralds: number;
   voidGrubs: number;
-  atakhans: number | null;
   bans: string[];
   picks: string[];
 }

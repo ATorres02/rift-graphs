@@ -156,7 +156,6 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
                     { label: "Barons", blue: g.blue.barons, red: g.red.barons },
                     { label: "Rift Heralds", blue: g.blue.heralds, red: g.red.heralds },
                     { label: "Void grubs", blue: g.blue.voidGrubs, red: g.red.voidGrubs },
-                    ...(g.blue.atakhans !== null && g.red.atakhans !== null ? [{ label: "Atakhan", blue: g.blue.atakhans, red: g.red.atakhans }] : []),
                   ]}
                 />
               </div>

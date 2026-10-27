@@ -99,7 +99,6 @@ const gameTeamStatsSchema = z.object({
   barons: z.number().int().nonnegative(),
   heralds: z.number().int().nonnegative(),
   voidGrubs: z.number().int().nonnegative(),
-  atakhans: z.number().int().nonnegative().nullable(),
   bans: z.array(z.string()),
   picks: z.array(z.string()),
 });

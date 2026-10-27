@@ -176,7 +176,7 @@ async function fetchAll(client: LeaguepediaClient) {
   const games = await client.query({
     tables: "ScoreboardGames",
     fields:
-      "GameId,MatchId,OverviewPage,Team1,Team2,WinTeam,DateTime_UTC=DateTimeUTC,Winner,Gamelength,Gamelength_Number=GamelengthNumber,Team1Bans,Team2Bans,Team1Picks,Team2Picks,Team1Dragons,Team2Dragons,Team1Elders,Team2Elders,Team1Barons,Team2Barons,Team1Towers,Team2Towers,Team1Inhibitors,Team2Inhibitors,Team1Gold,Team2Gold,Team1Kills,Team2Kills,Team1RiftHeralds,Team2RiftHeralds,Team1VoidGrubs,Team2VoidGrubs,Team1Atakhans,Team2Atakhans,CONCAT('v',Patch)=PatchV,N_GameInMatch=NGameInMatch,RiotPlatformGameId,VOD",
+      "GameId,MatchId,OverviewPage,Team1,Team2,WinTeam,DateTime_UTC=DateTimeUTC,Winner,Gamelength,Gamelength_Number=GamelengthNumber,Team1Bans,Team2Bans,Team1Picks,Team2Picks,Team1Dragons,Team2Dragons,Team1Elders,Team2Elders,Team1Barons,Team2Barons,Team1Towers,Team2Towers,Team1Inhibitors,Team2Inhibitors,Team1Gold,Team2Gold,Team1Kills,Team2Kills,Team1RiftHeralds,Team2RiftHeralds,Team1VoidGrubs,Team2VoidGrubs,CONCAT('v',Patch)=PatchV,N_GameInMatch=NGameInMatch,RiotPlatformGameId,VOD",
     where: inStages,
     orderBy: "DateTime_UTC,GameId",
   });
@@ -551,7 +551,6 @@ function buildGames(raw: Raw, series: Series[], teamIdByPage: Map<string, string
       barons: asInt(r[`Team${n}Barons`]) ?? 0,
       heralds: asInt(r[`Team${n}RiftHeralds`]) ?? 0,
       voidGrubs: asInt(r[`Team${n}VoidGrubs`]) ?? 0,
-      atakhans: asInt(r[`Team${n}Atakhans`]),
       bans: asList(r[`Team${n}Bans`]),
       picks: asList(r[`Team${n}Picks`]),
     });

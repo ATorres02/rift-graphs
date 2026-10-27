@@ -20,7 +20,6 @@
       "barons": 0,
       "heralds": 1,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Vi",
         "K'Sante",
@@ -47,7 +46,6 @@
       "barons": 2,
       "heralds": 0,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Seraphine",
         "Nocturne",
@@ -87,7 +85,6 @@
       "barons": 1,
       "heralds": 0,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Seraphine",
         "Caitlyn",
@@ -114,7 +111,6 @@
       "barons": 0,
       "heralds": 1,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Nocturne",
         "K'Sante",
@@ -154,7 +150,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 1,
-      "atakhans": null,
       "bans": [
         "Orianna",
         "Lulu",
@@ -181,7 +176,6 @@
       "barons": 2,
       "heralds": 1,
       "voidGrubs": 2,
-      "atakhans": null,
       "bans": [
         "Seraphine",
         "Caitlyn",
@@ -221,7 +215,6 @@
       "barons": 0,
       "heralds": 1,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Seraphine",
         "Caitlyn",
@@ -248,7 +241,6 @@
       "barons": 1,
       "heralds": 0,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Nocturne",
         "K'Sante",
@@ -288,7 +280,6 @@
       "barons": 2,
       "heralds": 1,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Nocturne",
         "Maokai",
@@ -315,7 +306,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Seraphine",
         "Caitlyn",
@@ -355,7 +345,6 @@
       "barons": 1,
       "heralds": 1,
       "voidGrubs": 1,
-      "atakhans": null,
       "bans": [
         "Ezreal",
         "Pantheon",
@@ -382,7 +371,6 @@
       "barons": 1,
       "heralds": 0,
       "voidGrubs": 2,
-      "atakhans": null,
       "bans": [
         "Pyke",
         "Nocturne",
@@ -422,7 +410,6 @@
       "barons": 2,
       "heralds": 1,
       "voidGrubs": 1,
-      "atakhans": null,
       "bans": [
         "Ezreal",
         "Renata Glasc",
@@ -449,7 +436,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 2,
-      "atakhans": null,
       "bans": [
         "Nocturne",
         "Jarvan IV",
@@ -489,7 +475,6 @@
       "barons": 1,
       "heralds": 1,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Ezreal",
         "Renata Glasc",
@@ -516,7 +501,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Locke",
         "Nocturne",
@@ -556,7 +540,6 @@
       "barons": 1,
       "heralds": 1,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Nocturne",
         "Olaf",
@@ -583,7 +566,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Rumble",
         "Seraphine",
@@ -623,7 +605,6 @@
       "barons": 1,
       "heralds": 1,
       "voidGrubs": 1,
-      "atakhans": null,
       "bans": [
         "Olaf",
         "Nocturne",
@@ -650,7 +631,6 @@
       "barons": 1,
       "heralds": 0,
       "voidGrubs": 2,
-      "atakhans": null,
       "bans": [
         "Pantheon",
         "Karma",
@@ -690,7 +670,6 @@
       "barons": 1,
       "heralds": 0,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Orianna",
         "Caitlyn",
@@ -717,7 +696,6 @@
       "barons": 1,
       "heralds": 1,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Nocturne",
         "Camille",
@@ -757,7 +735,6 @@
       "barons": 0,
       "heralds": 1,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Nocturne",
         "Cassiopeia",
@@ -784,7 +761,6 @@
       "barons": 1,
       "heralds": 0,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Seraphine",
         "Skarner",
@@ -824,7 +800,6 @@
       "barons": 0,
       "heralds": 1,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Seraphine",
         "Ezreal",
@@ -851,7 +826,6 @@
       "barons": 2,
       "heralds": 0,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Maokai",
         "Nocturne",
@@ -891,7 +865,6 @@
       "barons": 2,
       "heralds": 1,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Nocturne",
         "Cassiopeia",
@@ -918,7 +891,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Ashe",
         "Xayah",
@@ -958,7 +930,6 @@
       "barons": 1,
       "heralds": 1,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Nocturne",
         "Yone",
@@ -985,7 +956,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Seraphine",
         "Galio",
@@ -1025,7 +995,6 @@
       "barons": 0,
       "heralds": 1,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Karma",
         "Vi",
@@ -1052,7 +1021,6 @@
       "barons": 1,
       "heralds": 0,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Nocturne",
         "Pyke",
@@ -1092,7 +1060,6 @@
       "barons": 1,
       "heralds": 1,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Akali",
         "Renata Glasc",
@@ -1119,7 +1086,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Nocturne",
         "Caitlyn",
@@ -1159,7 +1125,6 @@
       "barons": 0,
       "heralds": 1,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Renata Glasc",
         "Olaf",
@@ -1186,7 +1151,6 @@
       "barons": 1,
       "heralds": 0,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Nocturne",
         "Pyke",
@@ -1226,7 +1190,6 @@
       "barons": 1,
       "heralds": 1,
       "voidGrubs": 2,
-      "atakhans": null,
       "bans": [
         "Renata Glasc",
         "Akali",
@@ -1253,7 +1216,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 1,
-      "atakhans": null,
       "bans": [
         "Nocturne",
         "Lee Sin",
@@ -1293,7 +1255,6 @@
       "barons": 0,
       "heralds": 1,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Nocturne",
         "Olaf",
@@ -1320,7 +1281,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Syndra",
         "Rumble",
@@ -1360,7 +1320,6 @@
       "barons": 1,
       "heralds": 1,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Olaf",
         "Vi",
@@ -1387,7 +1346,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Syndra",
         "Renata Glasc",
@@ -1427,7 +1385,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Renata Glasc",
         "Syndra",
@@ -1454,7 +1411,6 @@
       "barons": 1,
       "heralds": 1,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Olaf",
         "Vi",
@@ -1494,7 +1450,6 @@
       "barons": 0,
       "heralds": 1,
       "voidGrubs": 2,
-      "atakhans": null,
       "bans": [
         "Vi",
         "Lee Sin",
@@ -1521,7 +1476,6 @@
       "barons": 1,
       "heralds": 0,
       "voidGrubs": 1,
-      "atakhans": null,
       "bans": [
         "Nocturne",
         "Syndra",
@@ -1561,7 +1515,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Olaf",
         "Vi",
@@ -1588,7 +1541,6 @@
       "barons": 1,
       "heralds": 1,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Cassiopeia",
         "Qiyana",
@@ -1628,7 +1580,6 @@
       "barons": 2,
       "heralds": 0,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Vi",
         "Rumble",
@@ -1655,7 +1606,6 @@
       "barons": 0,
       "heralds": 1,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Galio",
         "Nocturne",
@@ -1695,7 +1645,6 @@
       "barons": 2,
       "heralds": 0,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Vi",
         "Qiyana",
@@ -1722,7 +1671,6 @@
       "barons": 0,
       "heralds": 1,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Jayce",
         "Rumble",
@@ -1762,7 +1710,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 2,
-      "atakhans": null,
       "bans": [
         "Locke",
         "Nocturne",
@@ -1789,7 +1736,6 @@
       "barons": 1,
       "heralds": 1,
       "voidGrubs": 1,
-      "atakhans": null,
       "bans": [
         "Lucian",
         "Karma",
@@ -1829,7 +1775,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Akali",
         "Vi",
@@ -1856,7 +1801,6 @@
       "barons": 1,
       "heralds": 1,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Orianna",
         "Ezreal",
@@ -1896,7 +1840,6 @@
       "barons": 0,
       "heralds": 1,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Bard",
         "Vi",
@@ -1923,7 +1866,6 @@
       "barons": 1,
       "heralds": 0,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Nocturne",
         "Cassiopeia",
@@ -1963,7 +1905,6 @@
       "barons": 1,
       "heralds": 1,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Vi",
         "Qiyana",
@@ -1990,7 +1931,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Syndra",
         "Renata Glasc",
@@ -2030,7 +1970,6 @@
       "barons": 1,
       "heralds": 0,
       "voidGrubs": 1,
-      "atakhans": null,
       "bans": [
         "Olaf",
         "Qiyana",
@@ -2057,7 +1996,6 @@
       "barons": 0,
       "heralds": 1,
       "voidGrubs": 2,
-      "atakhans": null,
       "bans": [
         "Akali",
         "Ezreal",
@@ -2097,7 +2035,6 @@
       "barons": 1,
       "heralds": 0,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Lucian",
         "Rumble",
@@ -2124,7 +2061,6 @@
       "barons": 1,
       "heralds": 1,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Ezreal",
         "Vi",
@@ -2164,7 +2100,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Olaf",
         "Jarvan IV",
@@ -2191,7 +2126,6 @@
       "barons": 1,
       "heralds": 1,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Vi",
         "Seraphine",
@@ -2231,7 +2165,6 @@
       "barons": 0,
       "heralds": 1,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Ezreal",
         "Nocturne",
@@ -2258,7 +2191,6 @@
       "barons": 1,
       "heralds": 0,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Jayce",
         "Vi",
@@ -2298,7 +2230,6 @@
       "barons": 0,
       "heralds": 1,
       "voidGrubs": 1,
-      "atakhans": null,
       "bans": [
         "Syndra",
         "Rumble",
@@ -2325,7 +2256,6 @@
       "barons": 1,
       "heralds": 0,
       "voidGrubs": 2,
-      "atakhans": null,
       "bans": [
         "Olaf",
         "Galio",
@@ -2365,7 +2295,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 1,
-      "atakhans": null,
       "bans": [
         "Vi",
         "Cassiopeia",
@@ -2392,7 +2321,6 @@
       "barons": 1,
       "heralds": 1,
       "voidGrubs": 2,
-      "atakhans": null,
       "bans": [
         "Jayce",
         "Nocturne",
@@ -2432,7 +2360,6 @@
       "barons": 1,
       "heralds": 1,
       "voidGrubs": 2,
-      "atakhans": null,
       "bans": [
         "Nocturne",
         "Locke",
@@ -2459,7 +2386,6 @@
       "barons": 1,
       "heralds": 0,
       "voidGrubs": 1,
-      "atakhans": null,
       "bans": [
         "Syndra",
         "Cassiopeia",
@@ -2499,7 +2425,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Cassiopeia",
         "Vi",
@@ -2526,7 +2451,6 @@
       "barons": 1,
       "heralds": 1,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Renata Glasc",
         "Qiyana",
@@ -2566,7 +2490,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 2,
-      "atakhans": null,
       "bans": [
         "Jayce",
         "Cassiopeia",
@@ -2593,7 +2516,6 @@
       "barons": 1,
       "heralds": 1,
       "voidGrubs": 1,
-      "atakhans": null,
       "bans": [
         "Syndra",
         "Orianna",
@@ -2633,7 +2555,6 @@
       "barons": 2,
       "heralds": 0,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Olaf",
         "Galio",
@@ -2660,7 +2581,6 @@
       "barons": 0,
       "heralds": 1,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Qiyana",
         "Lee Sin",
@@ -2700,7 +2620,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 2,
-      "atakhans": null,
       "bans": [
         "Vi",
         "Jarvan IV",
@@ -2727,7 +2646,6 @@
       "barons": 2,
       "heralds": 1,
       "voidGrubs": 1,
-      "atakhans": null,
       "bans": [
         "Nocturne",
         "Olaf",
@@ -2767,7 +2685,6 @@
       "barons": 1,
       "heralds": 0,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Nocturne",
         "Rumble",
@@ -2794,7 +2711,6 @@
       "barons": 0,
       "heralds": 1,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Olaf",
         "Renata Glasc",
@@ -2834,7 +2750,6 @@
       "barons": 2,
       "heralds": 1,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Cassiopeia",
         "Akali",
@@ -2861,7 +2776,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Nocturne",
         "Ezreal",
@@ -2901,7 +2815,6 @@
       "barons": 1,
       "heralds": 1,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Jarvan IV",
         "Ezreal",
@@ -2928,7 +2841,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Cassiopeia",
         "Syndra",
@@ -2968,7 +2880,6 @@
       "barons": 0,
       "heralds": 1,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Wukong",
         "Jarvan IV",
@@ -2995,7 +2906,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Cassiopeia",
         "Syndra",
@@ -3035,7 +2945,6 @@
       "barons": 1,
       "heralds": 1,
       "voidGrubs": 1,
-      "atakhans": null,
       "bans": [
         "K'Sante",
         "Draven",
@@ -3062,7 +2971,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 2,
-      "atakhans": null,
       "bans": [
         "Renata Glasc",
         "Nocturne",
@@ -3102,7 +3010,6 @@
       "barons": 1,
       "heralds": 0,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Renata Glasc",
         "Vi",
@@ -3129,7 +3036,6 @@
       "barons": 0,
       "heralds": 1,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Locke",
         "Nocturne",
@@ -3169,7 +3075,6 @@
       "barons": 1,
       "heralds": 1,
       "voidGrubs": 2,
-      "atakhans": null,
       "bans": [
         "Syndra",
         "Nocturne",
@@ -3196,7 +3101,6 @@
       "barons": 2,
       "heralds": 0,
       "voidGrubs": 1,
-      "atakhans": null,
       "bans": [
         "Cassiopeia",
         "Qiyana",
@@ -3236,7 +3140,6 @@
       "barons": 1,
       "heralds": 1,
       "voidGrubs": 1,
-      "atakhans": null,
       "bans": [
         "Syndra",
         "Nocturne",
@@ -3263,7 +3166,6 @@
       "barons": 1,
       "heralds": 0,
       "voidGrubs": 2,
-      "atakhans": null,
       "bans": [
         "Cassiopeia",
         "Qiyana",
@@ -3303,7 +3205,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 3,
-      "atakhans": null,
       "bans": [
         "Qiyana",
         "Nautilus",
@@ -3330,7 +3231,6 @@
       "barons": 2,
       "heralds": 1,
       "voidGrubs": 0,
-      "atakhans": null,
       "bans": [
         "Cassiopeia",
         "Vi",
@@ -3370,7 +3270,6 @@
       "barons": 2,
       "heralds": 1,
       "voidGrubs": 1,
-      "atakhans": null,
       "bans": [
         "Cassiopeia",
         "Vi",
@@ -3397,7 +3296,6 @@
       "barons": 0,
       "heralds": 0,
       "voidGrubs": 2,
-      "atakhans": null,
       "bans": [
         "Jarvan IV",
         "Ezreal",
