@@ -1,0 +1,96 @@
+import type { Metadata } from "next";
+import { ChampionIcon } from "@/components/champion-icon";
+import { ChampionsTable, type ChampionRow } from "@/components/champions-table";
+import { Chart } from "@/components/charts/chart";
+import { Headlines, type Headline } from "@/components/headlines";
+import { PageHeader, Section } from "@/components/page-header";
+import { Spoiler } from "@/components/spoilers";
+import type { BarSpec } from "@/lib/charts/spec";
+import { getData } from "@/lib/data/load";
+import { fmt, ROLE_LABEL } from "@/lib/format";
+import { aggregateChampions, ROLES } from "@/lib/metrics";
+import { normalizeChampionName } from "@/lib/sources/ddragon";
+import { champIcon } from "@/lib/views";
+
+export const metadata: Metadata = {
+  title: "Champions",
+  description: "Champion presence, pick and ban rates and win rates at the 2026 World Championship, by role, plus the champions nobody has touched.",
+};
+
+const MIN_PICKS_FOR_WINRATE = 3;
+
+export default function ChampionsPage() {
+  const data = getData();
+  const champs = aggregateChampions(data.games, data.playerGames);
+  const games = data.games.length;
+
+  const used = new Set(champs.map((c) => normalizeChampionName(c.champion)));
+  const unused = data.champions.champions.filter((c) => !used.has(normalizeChampionName(c.name)));
+
+  const bestWinRate = champs.filter((c) => c.picks >= MIN_PICKS_FOR_WINRATE).sort((a, b) => (b.winRate ?? 0) - (a.winRate ?? 0) || b.picks - a.picks)[0];
+  const mostBanned = [...champs].sort((a, b) => b.bans - a.bans || b.picks - a.picks)[0];
+  const headlines: Headline[] = [
+    champs[0] ? { label: "Highest presence", value: fmt.pct(champs[0].presence), detail: `${champs[0].champion} · ${champs[0].picks} picks, ${champs[0].bans} bans in ${games} games` } : { label: "Highest presence", value: "–" },
+    mostBanned ? { label: "Most banned", value: String(mostBanned.bans), detail: `${mostBanned.champion} · ${fmt.pct(mostBanned.banRate)} of games` } : { label: "Most banned", value: "–" },
+    bestWinRate
+      ? { label: `Best win rate (${MIN_PICKS_FOR_WINRATE}+ picks)`, value: fmt.pct(bestWinRate.winRate), detail: `${bestWinRate.champion} · ${bestWinRate.wins}–${bestWinRate.picks - bestWinRate.wins}` }
+      : { label: "Best win rate", value: "–" },
+  ];
+
+  const top = champs.slice(0, 20);
+  const bar: BarSpec = {
+    type: "bar",
+    stacked: true,
+    categories: top.map((c) => c.champion),
+    series: [
+      { name: "Picks", values: top.map((c) => c.picks) },
+      { name: "Bans", values: top.map((c) => c.bans) },
+    ],
+  };
+
+  const rows: ChampionRow[] = champs.map((c) => ({
+    champion: champIcon(data, c.champion),
+    presence: c.presence,
+    picks: c.picks,
+    bans: c.bans,
+    wins: c.wins,
+    winRate: c.winRate,
+    roles: ROLES.filter((r) => c.byRole[r])
+      .map((r) => `${ROLE_LABEL[r]} ${c.byRole[r]!.games}`)
+      .join(" · "),
+    byRole: c.byRole,
+  }));
+
+  return (
+    <div className="space-y-8">
+      <PageHeader title="Champions" description={`${champs.length} champions picked or banned across ${games} games on patch ${data.tournament.patch ?? "?"}; ${unused.length} never appeared in a draft.`} />
+      <Headlines items={headlines} />
+
+      <Section title="Presence: picks + bans" description="Top 20 champions by presence. Presence is the share of games where a champion was picked or banned.">
+        <Chart
+          spec={bar}
+          table={{ columns: ["Champion", "Picks", "Bans"], rows: top.map((c) => [c.champion, c.picks, c.bans]) }}
+          height={360}
+          description={`Stacked bars of picks and bans for the 20 most present champions; ${top[0]?.champion ?? "none"} leads with ${top[0] ? fmt.pct(top[0].presence) : "–"} presence.`}
+        />
+      </Section>
+
+      <Section title="All champions" description="Pick a role to see games and win rates in that role only.">
+        <Spoiler as="div" label="Reveal table (win rates reveal results)">
+          <ChampionsTable rows={rows} />
+        </Spoiler>
+      </Section>
+
+      <Section title="Never picked or banned" description={`${unused.length} champions available on patch ${data.tournament.patch ?? "?"} that no team has drafted.`}>
+        <ul className="flex flex-wrap gap-1.5">
+          {unused.map((c) => (
+            <li key={c.id} className="flex items-center gap-1.5 rounded-md border bg-card px-1.5 py-1 text-xs" title={c.name}>
+              <ChampionIcon champion={{ name: c.name, ddragonId: c.id, version: data.champions.version }} size="xs" />
+              <span className="hidden sm:inline">{c.name}</span>
+            </li>
+          ))}
+        </ul>
+      </Section>
+    </div>
+  );
+}
