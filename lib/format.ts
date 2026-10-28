@@ -51,9 +51,9 @@ export const STAGE_SHORT: Record<StageId, string> = {
 };
 
 export function roundLabel(stage: StageId, round: number | null, tab: string): string {
-  if (stage === "swiss" && round) return `Swiss · Round ${round}`;
-  if (stage === "playin" && round) return `Play-In · Round ${round}`;
-  if (stage === "playin") return `Play-In · ${tab}`;
+  if (stage === "swiss" && round) return `Swiss, Round ${round}`;
+  if (stage === "playin" && round) return `Play-In, Round ${round}`;
+  if (stage === "playin") return `Play-In, ${tab}`;
   return STAGE_LABEL[stage];
 }
 

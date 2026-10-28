@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   return {
     title,
     description: `${roundLabel(s.stage, s.round, s.tab)} (${bestOfLabel(s.bestOf)}) of the 2026 World Championship: draft, scoreboard and objectives for every game.`,
-    openGraph: { title: `${title} · ${STAGE_LABEL[s.stage]}` },
+    openGraph: { title: `${title}, ${STAGE_LABEL[s.stage]}` },
   };
 }
 
@@ -53,7 +53,7 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SportsEvent",
-    name: `${team1?.name ?? "TBD"} vs ${team2?.name ?? "TBD"} · ${roundLabel(s.stage, s.round, s.tab)}`,
+    name: `${team1?.name ?? "TBD"} vs ${team2?.name ?? "TBD"}, ${roundLabel(s.stage, s.round, s.tab)}`,
     startDate: s.dateTimeUtc,
     eventStatus: s.status === "finished" ? "https://schema.org/EventScheduled" : "https://schema.org/EventScheduled",
     competitor: [team1, team2].filter(Boolean).map((t) => ({ "@type": "SportsTeam", name: t!.name })),
@@ -66,7 +66,7 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <PageHeader
         art={seriesArt(data, s, games)}
-        eyebrow={`${roundLabel(s.stage, s.round, s.tab)} · ${bestOfLabel(s.bestOf)}${s.patch ? ` · Patch ${s.patch}` : ""}`}
+        eyebrow={`${roundLabel(s.stage, s.round, s.tab)} / ${bestOfLabel(s.bestOf)}${s.patch ? ` / Patch ${s.patch}` : ""}`}
         title={
           <span className="flex flex-wrap items-center gap-3">
             <TeamPill team={team1} size="lg" withName />

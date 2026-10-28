@@ -211,7 +211,7 @@ export default function TournamentPage() {
             .filter((t) => t.stages.includes("main"))
             .map((t) => t.name)
             .join(", ") || "none yet"}{" "}
-          · {fmt.int(playinTeams.length - playinTeams.filter((t) => t.stages.includes("main")).length)} eliminated.
+          , {fmt.int(playinTeams.length - playinTeams.filter((t) => t.stages.includes("main")).length)} eliminated.
         </p>
       </Section>
     </div>

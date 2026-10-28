@@ -20,7 +20,7 @@ export interface CompareMetric {
 export interface CompareEntity {
   id: string;
   label: string;
-  /** Secondary line (team · role, or region). */
+  /** Secondary line (team, role, or region). */
   detail: string;
   games: number;
   color: string;
@@ -117,7 +117,7 @@ export function CompareTool({ groups }: { groups: CompareGroup[] }) {
             <select className={selectClass} value={s.value} onChange={(e) => s.set(e.target.value)}>
               {group.entities.map((e) => (
                 <option key={e.id} value={e.id}>
-                  {e.label} · {e.detail}
+                  {e.label}, {e.detail}
                 </option>
               ))}
             </select>

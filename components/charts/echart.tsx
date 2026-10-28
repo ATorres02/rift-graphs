@@ -255,7 +255,7 @@ export function buildOption(spec: ChartSpec, p: Palette, css: CSSStyleDeclaratio
         formatter: (params) => {
           const item = Array.isArray(params) ? params[0] : params;
           const v = item.value as [number, number, number];
-          return `<b>${spec.yLabels[v[1]]}</b> · ${spec.xLabels[v[0]]}<br/>${formatUnit(v[2], spec.unit)}`;
+          return `<b>${spec.yLabels[v[1]]}</b>, ${spec.xLabels[v[0]]}<br/>${formatUnit(v[2], spec.unit)}`;
         },
       },
       xAxis: {
@@ -311,7 +311,7 @@ export function buildOption(spec: ChartSpec, p: Palette, css: CSSStyleDeclaratio
         const item = Array.isArray(params) ? params[0] : params;
         const v = item.value as number[];
         const f = (n: number) => formatUnit(n, spec.unit);
-        return `<b>${item.name}</b><br/>Min ${f(v[1])} · Q1 ${f(v[2])} · Median ${f(v[3])} · Q3 ${f(v[4])} · Max ${f(v[5])}`;
+        return `<b>${item.name}</b><br/>Min ${f(v[1])}, Q1 ${f(v[2])}, Median ${f(v[3])}, Q3 ${f(v[4])}, Max ${f(v[5])}`;
       },
     },
     xAxis: {

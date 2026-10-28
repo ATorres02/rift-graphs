@@ -40,7 +40,7 @@ const SOURCE_DEFAULTS: Record<DataSource, Partial<QueryConfig>> = {
   games: { measures: ["duration"], groupBy: "day", chart: "line", topN: null },
 };
 
-const WATERMARK = `${site.name} · Data: Leaguepedia (CC BY-SA)`;
+const WATERMARK = `${site.name}  |  Data: Leaguepedia (CC BY-SA)`;
 
 export function ChartBuilder({ version, catalog }: { version: string; catalog: FilterCatalog }) {
   const [config, setConfig] = useState<QueryConfig>(DEFAULT_CONFIG);
@@ -284,7 +284,7 @@ export function ChartBuilder({ version, catalog }: { version: string; catalog: F
           ) : null}
           {built && result?.rows.length ? (
             <p className="mt-3 text-xs text-muted-foreground">
-              {built.description} · {result.universeGames} games in the selection.
+              {built.description} {result.universeGames} games in the selection.
             </p>
           ) : null}
         </figure>

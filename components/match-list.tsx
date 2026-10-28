@@ -140,7 +140,7 @@ export function MatchList({ views, teams, stages }: MatchListProps) {
 
       {Array.from(groups).map(([key, list]) => (
         <section key={key} className="space-y-3">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+          <h2 className="kicker text-xs text-brand">
             <LocalTime iso={list[0].series.dateTimeUtc} mode="weekday" />
           </h2>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">

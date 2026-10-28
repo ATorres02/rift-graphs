@@ -46,7 +46,7 @@ export default function ComparePage() {
         return {
           id: p.id,
           label: p.name,
-          detail: `${team?.short ?? ""} · ${ROLE_LABEL[p.role]}`,
+          detail: `${team?.short ?? ""}, ${ROLE_LABEL[p.role]}`,
           games: a.games,
           color: `var(${regionInfo(team?.region ?? "").cssVar})`,
           values: {

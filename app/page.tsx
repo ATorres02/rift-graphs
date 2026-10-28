@@ -2,13 +2,14 @@ import Link from "next/link";
 import { Headlines, type Headline } from "@/components/headlines";
 import { LocalTime } from "@/components/local-time";
 import { Section } from "@/components/page-header";
+import { Rift3D, type RiftLeader, type RiftObjective } from "@/components/rift/rift-3d";
 import { SeriesCard } from "@/components/series-card";
 import { Spoiler, SpoilerToggle } from "@/components/spoilers";
 import { TeamPill } from "@/components/team-pill";
 import { championRef, getData, teamRef } from "@/lib/data/load";
-import { championSplashUrl } from "@/lib/sources/ddragon";
+import { championLoadingUrl, championSplashUrl } from "@/lib/sources/ddragon";
 import { fmt, STAGE_LABEL } from "@/lib/format";
-import { aggregateByPlayer, aggregateChampions, DEFAULT_MIN_GAMES, rankPlayers } from "@/lib/metrics";
+import { aggregateByPlayer, aggregateChampions, DEFAULT_MIN_GAMES, rankPlayers, ROLES } from "@/lib/metrics";
 import { site } from "@/lib/site";
 import { swissGroups, swissStandings } from "@/lib/standings";
 import { TEMPLATES } from "@/lib/charts/templates";
@@ -39,11 +40,71 @@ export default function HomePage() {
   };
 
   const next = upcoming[0];
+
+  // The Rift: KDA leader per role (minimum games threshold, relaxed when nobody reaches it) and objective control per team.
+  const riftLeaders: RiftLeader[] = ROLES.flatMap((role) => {
+    const ids = new Set(data.players.filter((p) => p.role === role).map((p) => p.id));
+    const pool = new Map(Array.from(byPlayer).filter(([id]) => ids.has(id)));
+    const top =
+      rankPlayers(pool, (a) => a.kda, { limit: 1 })[0] ?? rankPlayers(pool, (a) => a.kda, { minGames: 1, limit: 1 })[0];
+    if (!top) return [];
+    const player = data.playersById.get(top.playerId);
+    const team = player ? data.teamsById.get(player.teamId) : undefined;
+    const champs = new Map<string, number>();
+    for (const r of data.playerGamesByPlayer.get(top.playerId) ?? [])
+      champs.set(r.champion, (champs.get(r.champion) ?? 0) + 1);
+    const champion = Array.from(champs).sort((a, b) => b[1] - a[1])[0]?.[0] ?? "";
+    return [
+      {
+        role,
+        playerId: top.playerId,
+        name: player?.name ?? top.playerId,
+        teamShort: team?.short ?? "",
+        teamId: team?.id ?? "",
+        champion,
+        ddragonId: champion ? (championRef(data, champion)?.id ?? null) : null,
+        stat: `KDA ${fmt.dec(top.value, 1)}`,
+        statLabel: "KDA",
+        games: top.aggregate.games,
+      },
+    ];
+  });
+  const control = (key: "dragons" | "barons"): RiftObjective => {
+    const taken = new Map<string, { own: number; all: number }>();
+    for (const g of data.confirmedGames) {
+      const total = g.blue[key] + g.red[key];
+      for (const side of ["blue", "red"] as const) {
+        const t = taken.get(g[side].teamId) ?? { own: 0, all: 0 };
+        t.own += g[side][key];
+        t.all += total;
+        taken.set(g[side].teamId, t);
+      }
+    }
+    const best = Array.from(taken)
+      .filter(([, v]) => v.all >= 3)
+      .map(([id, v]) => ({ id, share: v.own / v.all, own: v.own, all: v.all }))
+      .sort((a, b) => b.share - a.share || b.own - a.own)[0];
+    const team = best ? data.teamsById.get(best.id) : undefined;
+    return {
+      kind: key === "dragons" ? "dragon" : "baron",
+      teamId: team?.id ?? null,
+      teamName: team?.name ?? null,
+      stat: best ? fmt.pct(best.share) : "",
+      statLabel: best ? `of the ${key} in its games (${best.own} of ${best.all})` : "",
+    };
+  };
+  const riftObjectives = [control("dragons"), control("barons")];
   const mostPicked = aggregateChampions(data.confirmedGames, data.playerGames)
     .filter((c) => c.picks > 0)
     .sort((a, b) => b.picks - a.picks)[0];
   const mostPickedRef = mostPicked ? championRef(data, mostPicked.champion) : null;
-  const heroArt = mostPickedRef ? { name: mostPickedRef.name, splash: championSplashUrl(mostPickedRef.id) } : null;
+  const heroArt = mostPickedRef
+    ? {
+        name: mostPickedRef.name,
+        splash: championSplashUrl(mostPickedRef.id),
+        portrait: championLoadingUrl(mostPickedRef.id),
+      }
+    : null;
   const headlines: Headline[] = [
     live.length
       ? {
@@ -55,7 +116,7 @@ export default function HomePage() {
       : next
         ? {
             label: "Next up",
-            value: STAGE_LABEL[next.stage] + (next.round ? ` · Round ${next.round}` : ""),
+            value: STAGE_LABEL[next.stage] + (next.round ? ` / Round ${next.round}` : ""),
             detail: <LocalTime iso={next.dateTimeUtc} hasTime={next.hasTime} />,
             href: `/matches/${next.id}`,
           }
@@ -64,7 +125,7 @@ export default function HomePage() {
       ? {
           label: "KDA leader",
           value: fmt.dec(leaders.kda.value, 1),
-          detail: `${playerLabel(data, leaders.kda.playerId)} · ${leaders.kda.aggregate.games} games`,
+          detail: `${playerLabel(data, leaders.kda.playerId)}, ${leaders.kda.aggregate.games} games`,
           href: `/players/${leaders.kda.playerId}`,
         }
       : { label: "KDA leader", value: "–", detail: `Needs ${DEFAULT_MIN_GAMES}+ games` },
@@ -72,7 +133,7 @@ export default function HomePage() {
       ? {
           label: "Damage per minute",
           value: fmt.int(leaders.dpm.value),
-          detail: `${playerLabel(data, leaders.dpm.playerId)} · ${leaders.dpm.aggregate.games} games`,
+          detail: `${playerLabel(data, leaders.dpm.playerId)}, ${leaders.dpm.aggregate.games} games`,
           href: `/players/${leaders.dpm.playerId}`,
         }
       : { label: "Damage per minute", value: "–" },
@@ -80,7 +141,7 @@ export default function HomePage() {
       ? {
           label: "Kill participation",
           value: fmt.pct(leaders.kp.value),
-          detail: `${playerLabel(data, leaders.kp.playerId)} · ${leaders.kp.aggregate.games} games`,
+          detail: `${playerLabel(data, leaders.kp.playerId)}, ${leaders.kp.aggregate.games} games`,
           href: `/players/${leaders.kp.playerId}`,
         }
       : { label: "Kill participation", value: "–" },
@@ -92,16 +153,19 @@ export default function HomePage() {
         <div className="relative -mx-4 overflow-hidden bg-black sm:mx-0 sm:rounded-md">
           {heroArt ? (
             <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-full sm:w-3/5">
-              {/* eslint-disable-next-line @next/next/no-img-element -- remote splash art, decorative */}
-              <img
-                src={heroArt.splash}
-                alt=""
-                width={1215}
-                height={717}
-                fetchPriority="high"
-                decoding="async"
-                className="size-full object-cover object-[70%_20%] opacity-80"
-              />
+              <picture>
+                <source media="(max-width: 640px)" srcSet={heroArt.portrait} />
+                {/* eslint-disable-next-line @next/next/no-img-element -- remote splash art, decorative; phones get the 55 KB portrait */}
+                <img
+                  src={heroArt.splash}
+                  alt=""
+                  width={1215}
+                  height={717}
+                  fetchPriority="high"
+                  decoding="async"
+                  className="size-full object-cover object-[70%_20%] opacity-80"
+                />
+              </picture>
               <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-black/10 sm:via-black/40" />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
             </div>
@@ -110,7 +174,7 @@ export default function HomePage() {
           <div className="relative flex min-h-[380px] flex-col justify-end p-5 sm:min-h-[460px] sm:p-10">
             <p className="kicker text-xs text-brand sm:text-sm">
               {tournament.name}
-              {next ? ` · ${STAGE_LABEL[next.stage]}${next.round ? ` · Round ${next.round}` : ""}` : ""}
+              {next ? ` / ${STAGE_LABEL[next.stage]}${next.round ? ` / Round ${next.round}` : ""}` : ""}
             </p>
             <h1 className="display mt-2 max-w-3xl text-5xl font-extrabold text-white sm:text-7xl lg:text-8xl">
               {site.tagline}
@@ -135,7 +199,7 @@ export default function HomePage() {
             </div>
             {heroArt ? (
               <p className="kicker mt-6 text-[10px] text-zinc-500">
-                {heroArt.name} · most picked champion of the tournament
+                {heroArt.name}, most picked champion of the tournament
               </p>
             ) : null}
           </div>
@@ -149,6 +213,13 @@ export default function HomePage() {
           <SpoilerToggle />
         </div>
       </section>
+
+      <Section
+        title="Pick your lane"
+        description="The Rift, role by role: tap a position to see who leads it so far, or Dragon and Baron for the teams that control them."
+      >
+        <Rift3D leaders={riftLeaders} objectives={riftObjectives} />
+      </Section>
 
       <div className="grid gap-10 lg:grid-cols-[2fr_1fr]">
         <div className="space-y-10">
@@ -188,7 +259,7 @@ export default function HomePage() {
         <aside className="space-y-10">
           <Section
             title="Swiss Stage"
-            description={`${qualified} qualified · ${eliminated} eliminated · ${mainTeamIds.length - qualified - eliminated} still playing`}
+            description={`${qualified} qualified, ${eliminated} eliminated, ${mainTeamIds.length - qualified - eliminated} still playing`}
             action={
               <Link href="/tournament" className="text-sm text-brand underline">
                 Full format

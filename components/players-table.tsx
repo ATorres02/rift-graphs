@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DataTable, type TableColumn, type TableRowData } from "@/components/data-table";
 import { Switch } from "@/components/ui/switch";
 import type { Role } from "@/lib/data/types";
@@ -34,6 +34,10 @@ const selectClass =
 /** Sortable player table with a role filter and the minimum-games threshold. */
 export function PlayersTable({ rows }: { rows: TableRowData[] }) {
   const [role, setRole] = useState<Role | "all">("all");
+  useEffect(() => {
+    const r = new URLSearchParams(window.location.search).get("role");
+    if (r === "top" || r === "jungle" || r === "mid" || r === "bot" || r === "support") setRole(r);
+  }, []);
   const [threshold, setThreshold] = useState(true);
 
   const filtered = rows.filter(

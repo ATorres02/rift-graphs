@@ -52,7 +52,7 @@ export default function PlayersPage() {
       ? {
           label: "Best KDA",
           value: fmt.dec(kda.value, 1),
-          detail: `${playerLabel(data, kda.playerId)} · ${kda.aggregate.games} games`,
+          detail: `${playerLabel(data, kda.playerId)}, ${kda.aggregate.games} games`,
           href: `/players/${kda.playerId}`,
         }
       : { label: "Best KDA", value: "–" },
@@ -60,7 +60,7 @@ export default function PlayersPage() {
       ? {
           label: "Most damage per minute",
           value: fmt.int(dpm.value),
-          detail: `${playerLabel(data, dpm.playerId)} · ${dpm.aggregate.games} games`,
+          detail: `${playerLabel(data, dpm.playerId)}, ${dpm.aggregate.games} games`,
           href: `/players/${dpm.playerId}`,
         }
       : { label: "Most damage per minute", value: "–" },
@@ -68,7 +68,7 @@ export default function PlayersPage() {
       ? {
           label: "Best CS per minute",
           value: fmt.dec(cspm.value, 1),
-          detail: `${playerLabel(data, cspm.playerId)} · ${cspm.aggregate.games} games`,
+          detail: `${playerLabel(data, cspm.playerId)}, ${cspm.aggregate.games} games`,
           href: `/players/${cspm.playerId}`,
         }
       : { label: "Best CS per minute", value: "–" },

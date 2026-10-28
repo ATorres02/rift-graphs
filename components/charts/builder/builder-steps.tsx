@@ -112,7 +112,7 @@ export function MeasureStep({
   return (
     <div className="space-y-2">
       <p className="text-xs text-muted-foreground">
-        {selected.length} selected ·{" "}
+        {selected.length} selected,{" "}
         {config.chart === "scatter"
           ? "first = X axis, second = Y axis"
           : config.chart === "radar"

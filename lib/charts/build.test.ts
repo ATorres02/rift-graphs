@@ -162,7 +162,7 @@ describe("buildChart", () => {
 describe("autoTitle and CSV", () => {
   it("writes a readable title", () => {
     const r = result({ config: { ...DEFAULT_CONFIG, filters: { stages: ["swiss"] }, topN: 10 } });
-    expect(autoTitle(r)).toBe("Top 10 Damage per minute by player · Swiss Stage");
+    expect(autoTitle(r)).toBe("Top 10 Damage per minute by player, Swiss Stage");
   });
   it("escapes CSV cells", () => {
     expect(

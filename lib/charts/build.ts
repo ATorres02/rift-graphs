@@ -35,7 +35,7 @@ export function autoTitle(result: QueryResult): string {
   const by = dimension ? ` by ${dimension.label.toLowerCase()}` : "";
   const series = seriesDimension ? ` and ${seriesDimension.label.toLowerCase()}` : "";
   const stages = config.filters.stages?.length
-    ? ` · ${config.filters.stages.map((s) => STAGE_LABEL[s]).join(", ")}`
+    ? `, ${config.filters.stages.map((s) => STAGE_LABEL[s]).join(", ")}`
     : "";
   return `${top}${measureText}${agg}${by}${series}${stages}`;
 }

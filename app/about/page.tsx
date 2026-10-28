@@ -18,7 +18,7 @@ export default function AboutPage() {
         description="A free, fan-made statistics site for the 2026 World Championship. Not affiliated with Riot Games or any team."
       />
 
-      <h2 className="text-lg font-semibold">What it is</h2>
+      <h2 className="display text-2xl font-bold text-foreground">What it is</h2>
       <p className="text-muted-foreground">
         {site.name} turns the public match data of the 2026 League of Legends World Championship into something you can
         read in a minute: results in your time zone, team and player profiles, champion presence and full drafts. Every
@@ -26,7 +26,7 @@ export default function AboutPage() {
         agree.
       </p>
 
-      <h2 className="mt-8 text-lg font-semibold">Data sources</h2>
+      <h2 className="display mt-8 text-2xl font-bold text-foreground">Data sources</h2>
       <ul className="list-disc space-y-2 pl-5 text-muted-foreground">
         <li>
           Match, team, player and draft data comes from{" "}
@@ -65,7 +65,7 @@ export default function AboutPage() {
         </li>
       </ul>
 
-      <h2 className="mt-8 text-lg font-semibold">How fresh is the data</h2>
+      <h2 className="display mt-8 text-2xl font-bold text-foreground">How fresh is the data</h2>
       <p className="text-muted-foreground">
         Results are published within minutes of each game and carry a &ldquo;Provisional&rdquo; tag. Detailed stats
         (drafts, scoreboards, objectives) arrive when Leaguepedia publishes them, usually the same day, and the tag
@@ -74,14 +74,14 @@ export default function AboutPage() {
         wins.
       </p>
 
-      <h2 className="mt-8 text-lg font-semibold">Legal notice</h2>
+      <h2 className="display mt-8 text-2xl font-bold text-foreground">Legal notice</h2>
       <p className="rounded-xl border bg-card p-4 text-sm">{riotNotice}</p>
       <p className="text-muted-foreground">
         This is a non-commercial community project: no paywall, no donations, no company behind it. Team names and
         player aliases belong to their respective owners and are used descriptively.
       </p>
 
-      <h2 className="mt-8 text-lg font-semibold">Who made it</h2>
+      <h2 className="display mt-8 text-2xl font-bold text-foreground">Who made it</h2>
       <p className="text-muted-foreground">
         Developed with AI by{" "}
         {site.author.linkedin ? (
@@ -94,7 +94,7 @@ export default function AboutPage() {
         {site.repoUrl ? (
           <>
             {" "}
-            · the source code is{" "}
+            . The source code is{" "}
             <a href={site.repoUrl} target="_blank" rel="noopener noreferrer" className="underline">
               public
             </a>
@@ -103,7 +103,7 @@ export default function AboutPage() {
         .
       </p>
 
-      <h2 className="mt-8 text-lg font-semibold">Privacy and imprint</h2>
+      <h2 className="display mt-8 text-2xl font-bold text-foreground">Privacy and imprint</h2>
       <p className="text-muted-foreground">
         The site sets no cookies and has no accounts. Read the{" "}
         <Link href="/privacy" className="underline">

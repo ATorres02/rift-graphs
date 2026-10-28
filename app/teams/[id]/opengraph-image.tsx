@@ -49,7 +49,7 @@ export default async function Image({ params }: { params: Promise<{ id: string }
     >
       <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 24, color: "#a1a1aa" }}>
         <div style={{ width: 14, height: 14, background: "#5fd3b0", borderRadius: 3 }} />
-        {site.name} · {data.tournament.name}
+        {site.name} / {data.tournament.name}
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 40 }}>
         <div
@@ -68,7 +68,7 @@ export default async function Image({ params }: { params: Promise<{ id: string }
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           <div style={{ fontSize: 56, fontWeight: 700 }}>{t?.name ?? "Team"}</div>
-          <div style={{ fontSize: 28, color: "#a1a1aa" }}>{`${region.code} · ${t?.location ?? region.name}`}</div>
+          <div style={{ fontSize: 28, color: "#a1a1aa" }}>{`${region.code} / ${t?.location ?? region.name}`}</div>
         </div>
       </div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 12, fontSize: 24 }}>
@@ -82,7 +82,7 @@ export default async function Image({ params }: { params: Promise<{ id: string }
           </div>
         ))}
       </div>
-      <div style={{ fontSize: 22, color: "#a1a1aa" }}>Data: Leaguepedia (CC BY-SA) · no logos, no photos</div>
+      <div style={{ fontSize: 22, color: "#a1a1aa" }}>Data: Leaguepedia (CC BY-SA) / no logos, no photos</div>
     </div>,
     size,
   );

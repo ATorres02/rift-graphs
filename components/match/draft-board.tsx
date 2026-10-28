@@ -122,7 +122,7 @@ export function DraftBoard({ draft, blue, red, icon, locked }: DraftBoardProps) 
       {locked.length ? (
         <div className="rounded-xl border border-dashed p-3">
           <p className="text-xs text-muted-foreground">
-            Fearless draft · unavailable in this game (picked earlier in the series)
+            Fearless draft, unavailable in this game (picked earlier in the series)
           </p>
           <ul className="mt-2 flex flex-wrap gap-1.5">
             {locked.map((c) => (

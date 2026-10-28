@@ -112,12 +112,12 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
     {
       label: "Game record",
       value: <Spoiler>{fmt.record(agg.wins, agg.losses)}</Spoiler>,
-      detail: agg.games ? `${fmt.pct(agg.winRate)} win rate · ${agg.games} games` : "No games yet",
+      detail: agg.games ? `${fmt.pct(agg.winRate)} win rate, ${agg.games} games` : "No games yet",
     },
     {
       label: "Series record",
       value: <Spoiler>{fmt.record(rec.wins, rec.losses)}</Spoiler>,
-      detail: swissRec ? `Swiss ${swissRec.wins}–${swissRec.losses} · ${swissRec.status}` : STAGE_LABEL.playin,
+      detail: swissRec ? `Swiss ${swissRec.wins}–${swissRec.losses}, ${swissRec.status}` : STAGE_LABEL.playin,
     },
     {
       label: "Average game length",
@@ -140,9 +140,7 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
         description={
           <span className="flex flex-wrap items-center gap-x-3">
             <span>{team.location ?? regionInfo(team.region).name}</span>
-            <span>·</span>
             <span>{team.stages.map((s) => (s === "playin" ? "Play-In" : "Main Event")).join(" + ")}</span>
-            <span>·</span>
             <Spoiler label="Status">
               <span className={status === "eliminated" ? "" : "text-brand"}>
                 {status === "champion"
@@ -223,7 +221,7 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
               {
                 label: "Towers / game",
                 value: fmt.dec(agg.towersPerGame, 1),
-                detail: `${fmt.dec(agg.heraldsPerGame, 1)} heralds · ${fmt.dec(agg.voidGrubsPerGame, 1)} grubs`,
+                detail: `${fmt.dec(agg.heraldsPerGame, 1)} heralds, ${fmt.dec(agg.voidGrubsPerGame, 1)} grubs`,
               },
             ].map((m) => (
               <div key={m.label} className="rounded-xl border bg-card p-3">

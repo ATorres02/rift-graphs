@@ -39,21 +39,21 @@ export default function ChampionsPage() {
       ? {
           label: "Highest presence",
           value: fmt.pct(champs[0].presence),
-          detail: `${champs[0].champion} · ${champs[0].picks} picks, ${champs[0].bans} bans in ${games} games`,
+          detail: `${champs[0].champion}, ${champs[0].picks} picks, ${champs[0].bans} bans in ${games} games`,
         }
       : { label: "Highest presence", value: "–" },
     mostBanned
       ? {
           label: "Most banned",
           value: String(mostBanned.bans),
-          detail: `${mostBanned.champion} · ${fmt.pct(mostBanned.banRate)} of games`,
+          detail: `${mostBanned.champion}, ${fmt.pct(mostBanned.banRate)} of games`,
         }
       : { label: "Most banned", value: "–" },
     bestWinRate
       ? {
           label: `Best win rate (${MIN_PICKS_FOR_WINRATE}+ picks)`,
           value: fmt.pct(bestWinRate.winRate),
-          detail: `${bestWinRate.champion} · ${bestWinRate.wins}–${bestWinRate.picks - bestWinRate.wins}`,
+          detail: `${bestWinRate.champion}, ${bestWinRate.wins}–${bestWinRate.picks - bestWinRate.wins}`,
           spoiler: true,
         }
       : { label: "Best win rate", value: "–" },
@@ -94,7 +94,7 @@ export default function ChampionsPage() {
     winRate: c.winRate,
     roles: ROLES.filter((r) => c.byRole[r])
       .map((r) => `${ROLE_LABEL[r]} ${c.byRole[r]!.games}`)
-      .join(" · "),
+      .join(", "),
     byRole: c.byRole,
   }));
 

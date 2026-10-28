@@ -80,7 +80,7 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
     {
       label: "Damage per minute",
       value: agg.games ? fmt.int(agg.dpm) : "–",
-      detail: `${fmt.dec(agg.cspm, 1)} CSPM · ${fmt.int(agg.gpm)} GPM`,
+      detail: `${fmt.dec(agg.cspm, 1)} CSPM, ${fmt.int(agg.gpm)} GPM`,
     },
   ];
 
@@ -155,7 +155,7 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
             <TeamPill team={teamRef(team)} size="md" />
           </span>
         }
-        description={[p.realName, p.nativeName, p.country].filter(Boolean).join(" · ") || undefined}
+        description={[p.realName, p.nativeName, p.country].filter(Boolean).join(", ") || undefined}
       />
       <Headlines items={headlines} />
 

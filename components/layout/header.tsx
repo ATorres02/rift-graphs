@@ -12,7 +12,7 @@ export function Header({ updatedAt }: { updatedAt: string }) {
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-2 no-underline">
             <span className="inline-block size-2.5 rounded-sm bg-brand" aria-hidden />
-            <span className="text-base font-semibold tracking-tight">{site.name}</span>
+            <span className="display text-xl font-bold">{site.name}</span>
           </Link>
           <TopNav />
         </div>

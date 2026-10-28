@@ -120,7 +120,7 @@ export function TeamsExplorer({ regions }: { regions: RegionPanel[] }) {
               style={{ backgroundColor: `var(${hovered.cssVar})` }}
               aria-hidden
             />
-            {hovered.code} · {hovered.name} · {hovered.teams.length} {hovered.teams.length === 1 ? "team" : "teams"}
+            {hovered.code} {hovered.name}, {hovered.teams.length} {hovered.teams.length === 1 ? "team" : "teams"}
           </div>
         ) : null}
       </div>
@@ -154,7 +154,7 @@ export function TeamsExplorer({ regions }: { regions: RegionPanel[] }) {
               style={{ backgroundColor: `var(${r.cssVar})` }}
               aria-hidden
             />
-            {r.code} · {r.name} · {r.teams.length}
+            {r.code} {r.name} ({r.teams.length})
           </button>
         ))}
       </div>
@@ -201,7 +201,7 @@ function TeamCard({ view: v }: { view: TeamCardView }) {
           <span className="font-semibold text-foreground">
             {v.seed.league} #{v.seed.seed}
           </span>
-          {v.seed.pool ? ` · Pool ${v.seed.pool}` : " · Play-In"} · {v.seed.path}
+          {v.seed.pool ? `, Pool ${v.seed.pool}` : ", Play-In"}: {v.seed.path}
         </p>
       ) : null}
       <dl className="mt-3 grid grid-cols-3 gap-2 text-sm">
@@ -249,7 +249,7 @@ function TeamCard({ view: v }: { view: TeamCardView }) {
       ) : null}
       <p className="mt-3 text-xs text-muted-foreground">
         {v.location ?? ""}
-        {v.location ? " · " : ""}
+        {v.location ? ", " : ""}
         <Link href={`/teams/${v.team.id}`} className="underline hover:text-foreground">
           Team page
         </Link>

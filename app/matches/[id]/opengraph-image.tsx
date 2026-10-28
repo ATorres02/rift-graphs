@@ -65,7 +65,7 @@ export default async function Image({ params }: { params: Promise<{ id: string }
     >
       <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 24, color: "#a1a1aa" }}>
         <div style={{ width: 14, height: 14, background: "#5fd3b0", borderRadius: 3 }} />
-        {site.name} · {data.tournament.name}
+        {site.name} / {data.tournament.name}
       </div>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 72 }}>
         {pill(team1)}
@@ -75,7 +75,7 @@ export default async function Image({ params }: { params: Promise<{ id: string }
       <div style={{ display: "flex", justifyContent: "space-between", fontSize: 26, color: "#a1a1aa" }}>
         <div>
           {s
-            ? `${roundLabel(s.stage, s.round, s.tab)} · ${bestOfLabel(s.bestOf)} · ${s.dateTimeUtc.slice(0, 10)}`
+            ? `${roundLabel(s.stage, s.round, s.tab)} / ${bestOfLabel(s.bestOf)} / ${s.dateTimeUtc.slice(0, 10)}`
             : "Series"}
         </div>
         <div>Data: Leaguepedia (CC BY-SA)</div>

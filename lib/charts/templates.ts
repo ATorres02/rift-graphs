@@ -12,7 +12,7 @@ export const TEMPLATES: ChartTemplate[] = [
   {
     id: "top-dpm-swiss",
     name: "Top 10 DPM in the Swiss stage",
-    description: "Bars · players · damage per minute",
+    description: "Bars, players, damage per minute",
     config: {
       source: "players",
       measures: ["dpm"],
@@ -31,7 +31,7 @@ export const TEMPLATES: ChartTemplate[] = [
   {
     id: "damage-vs-gold",
     name: "Damage vs. gold per player",
-    description: "Scatter · colour by role",
+    description: "Scatter, colour by role",
     config: {
       source: "players",
       measures: ["gpm", "dpm"],
@@ -50,7 +50,7 @@ export const TEMPLATES: ChartTemplate[] = [
   {
     id: "presence-knockouts",
     name: "Champion presence in the knockouts",
-    description: "Stacked bars · picks + bans",
+    description: "Stacked bars, picks + bans",
     config: {
       source: "champions",
       measures: ["picks", "bans"],
@@ -69,7 +69,7 @@ export const TEMPLATES: ChartTemplate[] = [
   {
     id: "duration-by-region",
     name: "Average game length by region",
-    description: "Bars · teams · game length",
+    description: "Bars, teams, game length",
     config: {
       source: "teams",
       measures: ["duration"],
@@ -88,7 +88,7 @@ export const TEMPLATES: ChartTemplate[] = [
   {
     id: "compare-midlaners",
     name: "Compare midlaners",
-    description: "Radar · top 4 mids by KDA",
+    description: "Radar, top 4 mids by KDA",
     config: {
       source: "players",
       measures: ["kda", "kp", "cspm", "dpm", "damageShare", "vspm"],
@@ -107,7 +107,7 @@ export const TEMPLATES: ChartTemplate[] = [
   {
     id: "winrate-by-side",
     name: "Win rate by side and team",
-    description: "Heat map · teams × side",
+    description: "Heat map, teams × side",
     config: {
       source: "teams",
       measures: ["winRate"],

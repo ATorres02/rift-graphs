@@ -35,7 +35,7 @@ export function SeriesCard({ series: s, team1, team2, pending = false, compact =
     >
       <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
         <span className="truncate">
-          {roundLabel(s.stage, s.round, s.tab)} · {bestOfLabel(s.bestOf)}
+          {roundLabel(s.stage, s.round, s.tab)} / {bestOfLabel(s.bestOf)}
         </span>
         <span className="shrink-0">
           <LocalTime iso={s.dateTimeUtc} mode={compact ? "time" : "datetime"} hasTime={s.hasTime} />

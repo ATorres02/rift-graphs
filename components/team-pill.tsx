@@ -41,7 +41,7 @@ export function TeamPill({ team, size = "md", withName = false, link = true, cla
         SIZES[size],
       )}
       style={{ backgroundColor: `var(${region.cssVar})` }}
-      title={`${team.name} · ${region.code}`}
+      title={`${team.name}, ${region.code}`}
     >
       {team.short}
     </span>

@@ -85,7 +85,7 @@ export function Scoreboard({ rows, players, icon, side, teamName }: ScoreboardPr
                         {p?.name ?? r.playerId}
                       </Link>
                       <span className="text-[10px] text-muted-foreground">
-                        {ROLE_LABEL[r.role]} · {r.champion}
+                        {ROLE_LABEL[r.role]}, {r.champion}
                       </span>
                     </span>
                   </span>

@@ -170,7 +170,8 @@
   --border: oklch(0.7 0.22 262 / 22%);
   --input: oklch(0.7 0.22 262 / 25%);
   --brand: oklch(0.7 0.22 262);
-  --brand-foreground: oklch(0.99 0 0);
+  /* Near-black on the electric blue: AA contrast on buttons (white would be about 3:1). */
+  --brand-foreground: oklch(0.12 0.02 262);
   --brand-soft: oklch(0.7 0.22 262 / 20%);
   --side-blue: oklch(0.82 0.1 220);
   --side-red: oklch(0.72 0.17 25);

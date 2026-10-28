@@ -11,7 +11,7 @@ export interface DraftStep {
 
 /**
  * Standard tournament draft order (5 bans + 5 picks per side):
- * ban phase 1 B R B R B R · pick phase 1 B R R B B R · ban phase 2 R B R B · pick phase 2 R B B R.
+ * ban phase 1 B R B R B R, pick phase 1 B R R B B R, ban phase 2 R B R B, pick phase 2 R B B R.
  */
 const ORDER: { side: Side; type: "ban" | "pick"; phase: 1 | 2; slot: number }[] = [
   { side: "blue", type: "ban", phase: 1, slot: 0 },

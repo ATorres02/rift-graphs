@@ -27,7 +27,7 @@ export default function Image() {
     >
       <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 24, color: "#a1a1aa" }}>
         <div style={{ width: 14, height: 14, background: accent, borderRadius: 3 }} />
-        <div>{`${site.name} · ${data.tournament.name}`}</div>
+        <div>{`${site.name} / ${data.tournament.name}`}</div>
       </div>
       <div style={{ fontSize: 56, fontWeight: 700, marginTop: 16, lineHeight: 1.1 }}>Chart builder</div>
       <div style={{ fontSize: 26, color: "#d4d4d8", marginTop: 12 }}>
@@ -48,7 +48,7 @@ export default function Image() {
         ))}
       </div>
       <div style={{ fontSize: 20, color: "#a1a1aa", marginTop: 24 }}>
-        Data: Leaguepedia (CC BY-SA) · not affiliated with Riot Games
+        Data: Leaguepedia (CC BY-SA) / not affiliated with Riot Games
       </div>
     </div>,
     { ...size },

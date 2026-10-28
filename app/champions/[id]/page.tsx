@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   return {
     title: c.name,
     description: `${c.name}${c.title ? `, ${c.title}` : ""} at the 2026 World Championship: presence, picks, bans, win rate by role and every game it was played in.`,
-    openGraph: { title: `${c.name} · Worlds 2026 stats` },
+    openGraph: { title: `${c.name}, Worlds 2026 stats` },
   };
 }
 
@@ -109,7 +109,6 @@ export default async function ChampionPage({ params }: { params: Promise<{ id: s
         <div className="absolute inset-0">
           <picture>
             <source media="(max-width: 640px)" srcSet={championLoadingUrl(c.id)} />
-            {/* eslint-disable-next-line @next/next/no-img-element -- remote splash art, fixed box; phones get the 55 KB portrait instead of the 160 KB splash */}
             <img
               src={splash}
               alt=""
@@ -125,7 +124,7 @@ export default async function ChampionPage({ params }: { params: Promise<{ id: s
         </div>
         <div className="relative flex min-h-[320px] flex-col justify-end p-5 sm:min-h-[420px] sm:p-8">
           <p className="text-xs font-medium uppercase tracking-wider text-brand">
-            Champion · patch {data.tournament.patch ?? "?"}
+            Champion / patch {data.tournament.patch ?? "?"}
           </p>
           <h1 className="font-heading mt-1 text-4xl font-bold tracking-tight sm:text-6xl">{c.name}</h1>
           {c.title ? <p className="mt-1 text-base capitalize text-muted-foreground sm:text-lg">{c.title}</p> : null}
@@ -135,7 +134,7 @@ export default async function ChampionPage({ params }: { params: Promise<{ id: s
                 key={r}
                 className="rounded-full border border-white/20 bg-black/40 px-2.5 py-0.5 text-xs font-medium text-white backdrop-blur"
               >
-                {ROLE_LABEL[r]} · {agg.byRole[r]!.games} {agg.byRole[r]!.games === 1 ? "game" : "games"}
+                {ROLE_LABEL[r]}: {agg.byRole[r]!.games} {agg.byRole[r]!.games === 1 ? "game" : "games"}
               </span>
             ))}
           </p>
@@ -209,15 +208,15 @@ export default async function ChampionPage({ params }: { params: Promise<{ id: s
               return (
                 <li key={r.gameId} className="flex flex-wrap items-center gap-x-3 gap-y-1 px-3 py-2 text-sm">
                   <Link href={`/matches/${s.id}`} className="font-medium hover:underline">
-                    {team1?.short ?? "TBD"} vs {team2?.short ?? "TBD"} · G{g.gameNumber}
+                    {team1?.short ?? "TBD"} vs {team2?.short ?? "TBD"}, game {g.gameNumber}
                   </Link>
                   <span className="text-xs text-muted-foreground">{roundLabel(s.stage, s.round, s.tab)}</span>
                   <span className="text-xs text-muted-foreground">
-                    {pl?.name ?? r.playerId} · {ROLE_LABEL[r.role]} · {r.side} side
+                    {pl?.name ?? r.playerId}, {ROLE_LABEL[r.role]}, {r.side} side
                   </span>
                   <Spoiler label="Result">
                     <span className={r.win ? "text-xs font-semibold text-win" : "text-xs font-semibold text-loss"}>
-                      {r.win ? "WIN" : "LOSS"} · {r.kills}/{r.deaths}/{r.assists}
+                      {r.win ? "WIN" : "LOSS"} {r.kills}/{r.deaths}/{r.assists}
                     </span>
                   </Spoiler>
                 </li>

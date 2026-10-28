@@ -63,7 +63,7 @@ export default function TeamsPage() {
       ? {
           label: "Best game win rate",
           value: fmt.pct(byTeam.get(best.id)!.winRate),
-          detail: `${best.name} · ${byTeam.get(best.id)!.wins}–${byTeam.get(best.id)!.losses} in games`,
+          detail: `${best.name}, ${byTeam.get(best.id)!.wins}–${byTeam.get(best.id)!.losses} in games`,
           href: `/teams/${best.id}`,
         }
       : { label: "Best game win rate", value: "–" },
@@ -71,7 +71,7 @@ export default function TeamsPage() {
       ? {
           label: "Fastest games",
           value: fmt.duration(byTeam.get(fastest.id)!.avgDurationSeconds),
-          detail: `${fastest.name} · tournament average ${fmt.duration(avgDuration)}`,
+          detail: `${fastest.name}, tournament average ${fmt.duration(avgDuration)}`,
           href: `/teams/${fastest.id}`,
         }
       : { label: "Fastest games", value: "–" },

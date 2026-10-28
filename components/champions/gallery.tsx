@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSpoilers } from "@/components/spoilers";
 import type { Role } from "@/lib/data/types";
 import { fmt, ROLE_LABEL } from "@/lib/format";
@@ -25,6 +25,10 @@ const ROLES: Role[] = ["top", "jungle", "mid", "bot", "support"];
 /** Portrait cards of every drafted champion, sorted by presence, with role filter and search. */
 export function ChampionGallery({ champions, games }: { champions: GalleryChampion[]; games: number }) {
   const [role, setRole] = useState<Role | "all">("all");
+  useEffect(() => {
+    const r = new URLSearchParams(window.location.search).get("role");
+    if (r === "top" || r === "jungle" || r === "mid" || r === "bot" || r === "support") setRole(r);
+  }, []);
   const [query, setQuery] = useState("");
   const { mode } = useSpoilers();
   const hideResults = mode === "hidden";
@@ -71,9 +75,9 @@ export function ChampionGallery({ champions, games }: { champions: GalleryChampi
       </div>
 
       <p className="text-xs text-muted-foreground">
-        {shown.length} champions{role !== "all" ? ` played ${ROLE_LABEL[role].toLowerCase()}` : ""} · presence = picked
+        {shown.length} champions{role !== "all" ? ` played ${ROLE_LABEL[role].toLowerCase()}` : ""}, presence = picked
         or banned share of {games} games
-        {hideResults ? " · win rates hidden by spoiler mode" : ""}
+        {hideResults ? ", win rates hidden by spoiler mode" : ""}
       </p>
 
       <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
@@ -105,7 +109,7 @@ export function ChampionGallery({ champions, games }: { champions: GalleryChampi
                   <span className="text-[10px] uppercase tracking-wide text-white/70">presence</span>
                 </p>
                 <p className="mt-1 text-[11px] text-white/80 tabular">
-                  {c.picks}P · {c.bans}B{wr !== null ? ` · ${fmt.pct(wr)} WR` : ""}
+                  {c.picks}P / {c.bans}B{wr !== null ? ` / ${fmt.pct(wr)} WR` : ""}
                 </p>
                 <p className="mt-1 flex flex-wrap gap-1">
                   {ROLES.filter((r) => c.byRole[r]).map((r) => (
