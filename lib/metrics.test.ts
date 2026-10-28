@@ -59,6 +59,7 @@ const stats = (teamId: string, o: Partial<GameTeamStats> = {}): GameTeamStats =>
   voidGrubs: 3,
   bans: [],
   picks: [],
+  lineup: null,
   ...o,
 });
 
@@ -76,6 +77,9 @@ const game = (o: Partial<Game> = {}): Game => ({
   red: stats("t2"),
   riotGameId: null,
   vodUrl: null,
+  source: "leaguepedia",
+  provisional: false,
+  statsComplete: true,
   ...o,
 });
 
@@ -194,7 +198,10 @@ describe("aggregateTeamGames", () => {
 
 describe("aggregateChampions", () => {
   const games = [
-    game({ blue: stats("t1", { picks: ["Ahri", "Jinx"], bans: ["Zed"] }), red: stats("t2", { picks: ["Azir"], bans: ["Ahri"] }) }),
+    game({
+      blue: stats("t1", { picks: ["Ahri", "Jinx"], bans: ["Zed"] }),
+      red: stats("t2", { picks: ["Azir"], bans: ["Ahri"] }),
+    }),
     game({
       id: "g2",
       winnerSide: "red",

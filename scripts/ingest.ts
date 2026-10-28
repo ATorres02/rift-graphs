@@ -10,9 +10,18 @@
  *   LEAGUEPEDIA_DELAY_MS    pause between requests (default 1500)
  *   INGEST_USER_AGENT       custom User-Agent (add a contact if you run this a lot)
  *   INGEST_MAX_STALE_HOURS  rewrite meta.json even without data changes after N hours (default 6)
+ *   LOLESPORTS_API_KEY      public key of lolesports.com; enables provisional series results (unset = skipped)
+ *
+ * Sources are merged by priority (lib/ingest/merge.ts): Leaguepedia > data/manual/ > lolesports.
  */
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+
+try {
+  process.loadEnvFile(".env.local");
+} catch {
+  /* no .env.local: rely on the environment (GitHub Actions) */
+}
 import { SCHEMA_VERSION, datasetFiles } from "../lib/data/schema";
 import { aliasFromPage, decodeEntities, idFromCargoKey, slugify } from "../lib/data/ids";
 import type {
@@ -43,7 +52,15 @@ import {
   type CargoRow,
   type Transport,
 } from "../lib/sources/leaguepedia";
-import { fetchChampionIndex, fetchDdragonVersions, normalizeChampionName, pickDdragonVersion } from "../lib/sources/ddragon";
+import {
+  fetchChampionIndex,
+  fetchDdragonVersions,
+  normalizeChampionName,
+  pickDdragonVersion,
+} from "../lib/sources/ddragon";
+import { mergeSources } from "../lib/ingest/merge";
+import { LolesportsClient, fetchLeagueId, fetchSchedule, type LolesportsMatch } from "../lib/sources/lolesports";
+import { loadManualDir } from "../lib/sources/manual";
 
 /* ------------------------------------------------------------------ config */
 
@@ -64,8 +81,13 @@ const SOURCE = {
 
 const args = process.argv.slice(2);
 const FORCE = args.includes("--force");
-const OUT_DIR = path.resolve(process.cwd(), args[args.indexOf("--out") + 1] && args.includes("--out") ? args[args.indexOf("--out") + 1] : `data/${TOURNAMENT.id}`);
+const OUT_DIR = path.resolve(
+  process.cwd(),
+  args[args.indexOf("--out") + 1] && args.includes("--out") ? args[args.indexOf("--out") + 1] : `data/${TOURNAMENT.id}`,
+);
 const MAX_STALE_HOURS = Number(process.env.INGEST_MAX_STALE_HOURS ?? 6);
+const MANUAL_DIR = path.resolve(process.cwd(), "data/manual");
+const LOLESPORTS_LEAGUE_SLUG = "worlds";
 const LIVE_WINDOW_MS = 12 * 60 * 60 * 1000;
 
 const log = (msg: string) => console.log(`[ingest] ${msg}`);
@@ -221,7 +243,11 @@ async function fetchAll(client: LeaguepediaClient) {
   log(`querying PlayerRedirects (${linkCandidates.size})`);
   const redirectMap = new Map<string, string>();
   for (const part of chunk(Array.from(linkCandidates), 60)) {
-    const rows = await client.query({ tables: "PlayerRedirects", fields: "AllName,OverviewPage", where: `AllName IN (${sqlIn(part)})` });
+    const rows = await client.query({
+      tables: "PlayerRedirects",
+      fields: "AllName,OverviewPage",
+      where: `AllName IN (${sqlIn(part)})`,
+    });
     for (const r of rows) {
       const from = asString(r.AllName);
       const to = asString(r.OverviewPage);
@@ -283,7 +309,18 @@ async function fetchAll(client: LeaguepediaClient) {
     );
   }
 
-  return { tournaments, schedule, scheduleGames, games, players, drafts, rosters, tournamentPlayers, teams, playerRows };
+  return {
+    tournaments,
+    schedule,
+    scheduleGames,
+    games,
+    players,
+    drafts,
+    rosters,
+    tournamentPlayers,
+    teams,
+    playerRows,
+  };
 }
 
 /* ------------------------------------------------------------------ normalise */
@@ -338,7 +375,11 @@ function buildTeams(raw: Raw): { teams: Team[]; teamIdByPage: Map<string, string
   return { teams: Array.from(byPage.values()), teamIdByPage };
 }
 
-function buildPlayers(raw: Raw, teams: Team[], teamIdByPage: Map<string, string>): { players: Player[]; playerIdByPage: Map<string, string> } {
+function buildPlayers(
+  raw: Raw,
+  teams: Team[],
+  teamIdByPage: Map<string, string>,
+): { players: Player[]; playerIdByPage: Map<string, string> } {
   const playerRowByPage = new Map(raw.playerRows.map((r) => [asString(r.OverviewPage) ?? "", r]));
   const byPage = new Map<string, Player>();
   const usedIds = new Map<string, string>();
@@ -486,13 +527,21 @@ function buildSeries(raw: Raw, teamIdByPage: Map<string, string>, now: Date): Se
       mvp: mvp && mvp !== "N/A" ? decodeEntities(mvp) : null,
       gameIds: [],
       gamesPlayed: playedBySeries.get(matchId) ?? (s1 !== null && s2 !== null ? s1 + s2 : 0),
+      source: "leaguepedia",
+      provisional: false,
+      lolesportsMatchId: null,
     });
   }
   out.sort((a, b) => a.dateTimeUtc.localeCompare(b.dateTimeUtc) || a.id.localeCompare(b.id));
   return out;
 }
 
-function buildGames(raw: Raw, series: Series[], teamIdByPage: Map<string, string>, playerIdByPage: Map<string, string>): { builds: GameBuild[]; pending: string[] } {
+function buildGames(
+  raw: Raw,
+  series: Series[],
+  teamIdByPage: Map<string, string>,
+  playerIdByPage: Map<string, string>,
+): { builds: GameBuild[]; pending: string[] } {
   const seriesByMatchId = new Map(series.map((s) => [s.matchId, s]));
   const scheduleGameById = new Map(raw.scheduleGames.map((r) => [asString(r.GameId) ?? "", r]));
   const draftByGameId = new Map(raw.drafts.map((r) => [asString(r.GameId) ?? "", r]));
@@ -528,7 +577,9 @@ function buildGames(raw: Raw, series: Series[], teamIdByPage: Map<string, string
     }
     const sched = scheduleGameById.get(cargoGameId);
     if (sched && asString(sched.Blue) && asString(sched.Blue) !== bluePage) {
-      warn(`game ${cargoGameId}: ScoreboardGames.Team1 (${bluePage}) differs from MatchScheduleGame.Blue (${asString(sched.Blue)}); using ScoreboardGames`);
+      warn(
+        `game ${cargoGameId}: ScoreboardGames.Team1 (${bluePage}) differs from MatchScheduleGame.Blue (${asString(sched.Blue)}); using ScoreboardGames`,
+      );
     }
     const durationSeconds = parseGamelength(asString(r.Gamelength), asNumber(r.GamelengthNumber));
     if (!durationSeconds || durationSeconds <= 0) {
@@ -553,6 +604,7 @@ function buildGames(raw: Raw, series: Series[], teamIdByPage: Map<string, string
       voidGrubs: asInt(r[`Team${n}VoidGrubs`]) ?? 0,
       bans: asList(r[`Team${n}Bans`]),
       picks: asList(r[`Team${n}Picks`]),
+      lineup: null,
     });
     const game: Game = {
       id,
@@ -568,6 +620,9 @@ function buildGames(raw: Raw, series: Series[], teamIdByPage: Map<string, string
       red: teamStats(2, redId),
       riotGameId: asString(r.RiotPlatformGameId),
       vodUrl: asString(r.VOD) ?? asString(sched?.Vod) ?? null,
+      source: "leaguepedia",
+      provisional: false,
+      statsComplete: true,
     };
 
     // Player rows + validation.
@@ -589,7 +644,9 @@ function buildGames(raw: Raw, series: Series[], teamIdByPage: Map<string, string
       const champion = asString(pr.Champion);
       const sideNum = asInt(pr.Side);
       if (!playerId || !teamId || !opponentTeamId || !role || !champion || (sideNum !== 1 && sideNum !== 2)) {
-        fail(`player row ${page ?? "?"} is incomplete (team ${teamPage}, role ${asString(pr.Role)}, champion ${champion}, side ${sideNum})`);
+        fail(
+          `player row ${page ?? "?"} is incomplete (team ${teamPage}, role ${asString(pr.Role)}, champion ${champion}, side ${sideNum})`,
+        );
         ok = false;
         break;
       }
@@ -640,7 +697,9 @@ function buildGames(raw: Raw, series: Series[], teamIdByPage: Map<string, string
     }
     const sum = (list: PlayerGame[], k: "kills" | "damageToChampions") => list.reduce((a, p) => a + p[k], 0);
     if (sum(bluePgs, "kills") !== game.blue.kills || sum(redPgs, "kills") !== game.red.kills) {
-      fail(`kills do not add up (players ${sum(bluePgs, "kills")}/${sum(redPgs, "kills")} vs game ${game.blue.kills}/${game.red.kills})`);
+      fail(
+        `kills do not add up (players ${sum(bluePgs, "kills")}/${sum(redPgs, "kills")} vs game ${game.blue.kills}/${game.red.kills})`,
+      );
       continue;
     }
     const blueDamage = sum(bluePgs, "damageToChampions");
@@ -658,20 +717,36 @@ function buildGames(raw: Raw, series: Series[], teamIdByPage: Map<string, string
       const blueN = switched ? 2 : 1;
       const redN = switched ? 1 : 2;
       const sideOf = (n: 1 | 2) => ({
-        bans: asSlots([1, 2, 3, 4, 5].map((i) => d[`Team${n}Ban${i}`] ?? ""), 5),
-        picks: asSlots([1, 2, 3, 4, 5].map((i) => d[`Team${n}Pick${i}`] ?? ""), 5),
+        bans: asSlots(
+          [1, 2, 3, 4, 5].map((i) => d[`Team${n}Ban${i}`] ?? ""),
+          5,
+        ),
+        picks: asSlots(
+          [1, 2, 3, 4, 5].map((i) => d[`Team${n}Pick${i}`] ?? ""),
+          5,
+        ),
         picksByRole: asSlots(d[`Team${n}PicksByRoleOrder`], 5),
       });
       const draftBluePage = asString(d[`Team${blueN}`]);
       if (draftBluePage && draftBluePage !== bluePage) {
-        warn(`game ${cargoGameId}: PicksAndBansS7 blue team (${draftBluePage}) differs from scoreboard (${bluePage}); draft skipped`);
+        warn(
+          `game ${cargoGameId}: PicksAndBansS7 blue team (${draftBluePage}) differs from scoreboard (${bluePage}); draft skipped`,
+        );
       } else {
-        draft = { gameId: id, blue: sideOf(blueN as 1 | 2), red: sideOf(redN as 1 | 2), complete: asBool(d.IsComplete) };
+        draft = {
+          gameId: id,
+          blue: sideOf(blueN as 1 | 2),
+          red: sideOf(redN as 1 | 2),
+          complete: asBool(d.IsComplete),
+        };
       }
     }
     builds.push({ game, draft, playerGames: pgs });
   }
-  builds.sort((a, b) => (a.game.dateTimeUtc ?? "").localeCompare(b.game.dateTimeUtc ?? "") || a.game.gameNumber - b.game.gameNumber);
+  builds.sort(
+    (a, b) =>
+      (a.game.dateTimeUtc ?? "").localeCompare(b.game.dateTimeUtc ?? "") || a.game.gameNumber - b.game.gameNumber,
+  );
   return { builds, pending };
 }
 
@@ -679,7 +754,9 @@ function buildTournament(raw: Raw, series: Series[], patch: string | null, ddrag
   const rows = new Map(raw.tournaments.map((r) => [asString(r.OverviewPage) ?? "", r]));
   const main = rows.get(TOURNAMENT.overviewPage) ?? rows.get(TOURNAMENT.stagePages.main);
   if (!main) throw new Error(`Tournaments row for ${TOURNAMENT.overviewPage} not found`);
-  const allDates = Array.from(rows.values()).flatMap((r) => [asString(r.DateStart), asString(r.Date)]).filter((d): d is string => !!d);
+  const allDates = Array.from(rows.values())
+    .flatMap((r) => [asString(r.DateStart), asString(r.Date)])
+    .filter((d): d is string => !!d);
   const stages: TournamentStage[] = STAGE_ORDER.map((id) => {
     const list = series.filter((s) => s.stage === id);
     const dates = list.map((s) => s.dateTimeUtc.slice(0, 10)).sort();
@@ -710,7 +787,35 @@ function buildTournament(raw: Raw, series: Series[], patch: string | null, ddrag
 
 /* ------------------------------------------------------------------ output */
 
-type Outputs = Record<keyof typeof datasetFiles, unknown>;
+type Outputs = Record<keyof typeof datasetFiles | "conflicts.json", unknown>;
+
+/** Provisional series results from lolesports; fails soft so Leaguepedia data is never blocked by it. */
+async function fetchLolesports(
+  series: Series[],
+): Promise<{ enabled: boolean; fetchedAt: string | null; error: string | null; matches: LolesportsMatch[] | null }> {
+  const apiKey = process.env.LOLESPORTS_API_KEY;
+  if (!apiKey) {
+    log("LOLESPORTS_API_KEY not set; provisional results from lolesports skipped");
+    return { enabled: false, fetchedAt: null, error: null, matches: null };
+  }
+  const dates = series.map((s) => s.dateTimeUtc).sort();
+  const dayMs = 24 * 3600 * 1000;
+  const since = new Date(Date.parse(dates[0] ?? new Date().toISOString()) - dayMs).toISOString();
+  const until = new Date(Date.parse(dates[dates.length - 1] ?? new Date().toISOString()) + 2 * dayMs).toISOString();
+  const client = new LolesportsClient({ apiKey, log });
+  try {
+    const leagueId = await fetchLeagueId(client, LOLESPORTS_LEAGUE_SLUG);
+    const matches = await fetchSchedule(client, leagueId, { since, until });
+    log(
+      `lolesports: ${matches.length} matches between ${since.slice(0, 10)} and ${until.slice(0, 10)} (${client.requestCount} requests)`,
+    );
+    return { enabled: true, fetchedAt: new Date().toISOString().replace(/\.\d{3}Z$/, "Z"), error: null, matches };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    warn(`lolesports unavailable (${message}); continuing without provisional results`);
+    return { enabled: true, fetchedAt: null, error: message, matches: null };
+  }
+}
 
 async function readExisting(file: string): Promise<unknown | null> {
   try {
@@ -732,7 +837,8 @@ async function main(): Promise<void> {
     process.env.LEAGUEPEDIA_BOT_USER && process.env.LEAGUEPEDIA_BOT_PASSWORD
       ? { username: process.env.LEAGUEPEDIA_BOT_USER, password: process.env.LEAGUEPEDIA_BOT_PASSWORD }
       : null;
-  if (credentials && transport !== "api") warn("bot credentials are set but LEAGUEPEDIA_TRANSPORT is not 'api'; they are ignored");
+  if (credentials && transport !== "api")
+    warn("bot credentials are set but LEAGUEPEDIA_TRANSPORT is not 'api'; they are ignored");
   const client = new LeaguepediaClient({
     transport,
     credentials,
@@ -777,11 +883,34 @@ async function main(): Promise<void> {
       if (!known.has(normalizeChampionName(name))) unresolved.add(name);
     }
   }
-  if (unresolved.size) warn(`champions not found in Data Dragon ${ddragonVersion}: ${Array.from(unresolved).join(", ")}`);
+  if (unresolved.size)
+    warn(`champions not found in Data Dragon ${ddragonVersion}: ${Array.from(unresolved).join(", ")}`);
 
-  const tournament = buildTournament(raw, series, patch, ddragonVersion);
-  const games = builds.map((b) => b.game);
-  const drafts = builds.flatMap((b) => (b.draft ? [b.draft] : []));
+  // Provisional sources: manual files and the lolesports schedule, merged by priority.
+  const manual = await loadManualDir(MANUAL_DIR);
+  log(`manual files: ${manual.entries.length} valid, ${manual.invalid.length} invalid`);
+  for (const { file, error } of manual.invalid) warn(`manual file ${file} ignored: ${error}`);
+  const lolesports = await fetchLolesports(series);
+  const canonicalChampion = new Map(champions.champions.map((c) => [normalizeChampionName(c.name), c.name]));
+  const merged = mergeSources({
+    series,
+    games: builds.map((b) => b.game),
+    drafts: builds.flatMap((b) => (b.draft ? [b.draft] : [])),
+    teams,
+    players,
+    manual: manual.entries,
+    lolesports: lolesports.matches,
+    resolveChampion: (name) => canonicalChampion.get(normalizeChampionName(name)) ?? null,
+  });
+  for (const w of merged.warnings) warn(w);
+  for (const { file, error } of merged.manual.invalid) warn(`manual file ${file} ignored: ${error}`);
+  log(
+    `merged: ${merged.manual.applied.length} manual games applied, ${merged.manual.superseded.length} superseded, ${merged.lolesports.matchedSeries} series matched on lolesports (${merged.lolesports.unmatchedEvents} unmatched), ${merged.provisional.seriesIds.length} provisional series, ${merged.provisional.gameIds.length} provisional games, ${merged.conflicts.length} conflicts`,
+  );
+
+  const tournament = buildTournament(raw, merged.series, patch, ddragonVersion);
+  const games = merged.games;
+  const drafts = merged.drafts;
   const playerGames = builds.flatMap((b) => b.playerGames);
 
   const meta: Meta = {
@@ -790,9 +919,32 @@ async function main(): Promise<void> {
     tournamentId: TOURNAMENT.id,
     source: { ...SOURCE, transport },
     ddragonVersion,
-    counts: { teams: teams.length, players: players.length, series: series.length, games: games.length, playerGames: playerGames.length, drafts: drafts.length },
+    counts: {
+      teams: teams.length,
+      players: players.length,
+      series: series.length,
+      games: games.length,
+      playerGames: playerGames.length,
+      drafts: drafts.length,
+    },
     pendingGameIds: pending,
     warnings,
+    sources: {
+      lolesports: {
+        enabled: lolesports.enabled,
+        fetchedAt: lolesports.fetchedAt,
+        matchedSeries: merged.lolesports.matchedSeries,
+        unmatchedEvents: merged.lolesports.unmatchedEvents,
+        error: lolesports.error,
+      },
+      manual: {
+        applied: merged.manual.applied,
+        superseded: merged.manual.superseded,
+        invalid: [...manual.invalid, ...merged.manual.invalid],
+      },
+    },
+    provisional: merged.provisional,
+    conflicts: merged.conflicts.length,
   };
 
   const outputs: Outputs = {
@@ -800,18 +952,24 @@ async function main(): Promise<void> {
     "tournament.json": tournament,
     "teams.json": teams,
     "players.json": players,
-    "series.json": series,
+    "series.json": merged.series,
     "games.json": games,
     "drafts.json": drafts,
     "player-games.json": playerGames,
     "champions.json": champions,
+    "conflicts.json": merged.conflicts,
   };
 
   // Validate everything before touching the disk.
   for (const [file, schema] of Object.entries(datasetFiles)) {
     const result = schema.safeParse(outputs[file as keyof Outputs]);
     if (!result.success) {
-      throw new Error(`${file} failed schema validation:\n${result.error.issues.slice(0, 10).map((i) => `  ${i.path.join(".")}: ${i.message}`).join("\n")}`);
+      throw new Error(
+        `${file} failed schema validation:\n${result.error.issues
+          .slice(0, 10)
+          .map((i) => `  ${i.path.join(".")}: ${i.message}`)
+          .join("\n")}`,
+      );
     }
   }
 
@@ -819,7 +977,7 @@ async function main(): Promise<void> {
   const existingMeta = (await readExisting("meta.json")) as Meta | null;
   let changed = FORCE || !existingMeta;
   if (!changed) {
-    for (const file of Object.keys(datasetFiles) as (keyof Outputs)[]) {
+    for (const file of Object.keys(outputs) as (keyof Outputs)[]) {
       if (file === "meta.json") continue;
       const prev = await readExisting(file);
       if (stableJson(prev) !== stableJson(outputs[file])) {
@@ -831,7 +989,9 @@ async function main(): Promise<void> {
   }
   const staleMs = existingMeta ? now.getTime() - Date.parse(existingMeta.updatedAt) : Infinity;
   if (!changed && staleMs < MAX_STALE_HOURS * 3600 * 1000) {
-    log(`no data changes (last update ${Math.round(staleMs / 60000)} min ago); nothing written · ${Math.round((Date.now() - started) / 1000)}s`);
+    log(
+      `no data changes (last update ${Math.round(staleMs / 60000)} min ago); nothing written · ${Math.round((Date.now() - started) / 1000)}s`,
+    );
     return;
   }
 

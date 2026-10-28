@@ -3,7 +3,15 @@ import { indexDataset } from "./data/index";
 import type { Dataset, Game, PlayerGame, Role } from "./data/types";
 import { DEFAULT_CONFIG, buildRows, runQuery, validateConfig, type QueryConfig } from "./query";
 
-const game = (id: string, blue: string, red: string, winnerSide: "blue" | "red", duration: number, blueBans: string[], redBans: string[]): Game => ({
+const game = (
+  id: string,
+  blue: string,
+  red: string,
+  winnerSide: "blue" | "red",
+  duration: number,
+  blueBans: string[],
+  redBans: string[],
+): Game => ({
   id,
   seriesId: "s1",
   stage: "swiss",
@@ -13,13 +21,55 @@ const game = (id: string, blue: string, red: string, winnerSide: "blue" | "red",
   patch: "26.20",
   winnerSide,
   winnerTeamId: winnerSide === "blue" ? blue : red,
-  blue: { teamId: blue, kills: 10, gold: 60000, towers: 8, inhibitors: 1, dragons: 3, elders: 0, barons: 1, heralds: 1, voidGrubs: 3, bans: blueBans, picks: [] },
-  red: { teamId: red, kills: 5, gold: 50000, towers: 3, inhibitors: 0, dragons: 1, elders: 0, barons: 0, heralds: 0, voidGrubs: 3, bans: redBans, picks: [] },
+  blue: {
+    teamId: blue,
+    kills: 10,
+    gold: 60000,
+    towers: 8,
+    inhibitors: 1,
+    dragons: 3,
+    elders: 0,
+    barons: 1,
+    heralds: 1,
+    voidGrubs: 3,
+    bans: blueBans,
+    picks: [],
+    lineup: null,
+  },
+  red: {
+    teamId: red,
+    kills: 5,
+    gold: 50000,
+    towers: 3,
+    inhibitors: 0,
+    dragons: 1,
+    elders: 0,
+    barons: 0,
+    heralds: 0,
+    voidGrubs: 3,
+    bans: redBans,
+    picks: [],
+    lineup: null,
+  },
   riotGameId: null,
   vodUrl: null,
+  source: "leaguepedia",
+  provisional: false,
+  statsComplete: true,
 });
 
-const pg = (gameId: string, playerId: string, teamId: string, side: "blue" | "red", role: Role, champion: string, win: boolean, kills: number, damage: number, duration: number): PlayerGame => ({
+const pg = (
+  gameId: string,
+  playerId: string,
+  teamId: string,
+  side: "blue" | "red",
+  role: Role,
+  champion: string,
+  win: boolean,
+  kills: number,
+  damage: number,
+  duration: number,
+): PlayerGame => ({
   gameId,
   seriesId: "s1",
   stage: "swiss",
@@ -52,20 +102,136 @@ const pg = (gameId: string, playerId: string, teamId: string, side: "blue" | "re
 });
 
 const dataset: Dataset = {
-  meta: { schemaVersion: 1, updatedAt: "2026-10-27T00:00:00Z", tournamentId: "t", source: { name: "", url: "", license: "", transport: "" }, ddragonVersion: "16.20.1", counts: { teams: 2, players: 4, series: 1, games: 2, playerGames: 8, drafts: 0 }, pendingGameIds: [], warnings: [] },
-  tournament: { id: "t", name: "T", overviewPage: "T", dateStart: "2026-10-21", dateEnd: "2026-10-22", country: null, patch: "26.20", ddragonVersion: "16.20.1", officialUrl: null, stages: [] },
+  meta: {
+    schemaVersion: 1,
+    updatedAt: "2026-10-27T00:00:00Z",
+    tournamentId: "t",
+    source: { name: "", url: "", license: "", transport: "" },
+    ddragonVersion: "16.20.1",
+    counts: { teams: 2, players: 4, series: 1, games: 2, playerGames: 8, drafts: 0 },
+    pendingGameIds: [],
+    warnings: [],
+    sources: {
+      lolesports: { enabled: false, fetchedAt: null, matchedSeries: 0, unmatchedEvents: 0, error: null },
+      manual: { applied: [], superseded: [], invalid: [] },
+    },
+    provisional: { seriesIds: [], gameIds: [] },
+    conflicts: 0,
+  },
+  tournament: {
+    id: "t",
+    name: "T",
+    overviewPage: "T",
+    dateStart: "2026-10-21",
+    dateEnd: "2026-10-22",
+    country: null,
+    patch: "26.20",
+    ddragonVersion: "16.20.1",
+    officialUrl: null,
+    stages: [],
+  },
   teams: [
-    { id: "t1", name: "Team One", short: "T1", page: "T1", region: "Korea", location: null, stages: ["main"], roster: [] },
-    { id: "t2", name: "Team Two", short: "T2", page: "T2", region: "China", location: null, stages: ["main"], roster: [] },
+    {
+      id: "t1",
+      name: "Team One",
+      short: "T1",
+      page: "T1",
+      region: "Korea",
+      location: null,
+      stages: ["main"],
+      roster: [],
+    },
+    {
+      id: "t2",
+      name: "Team Two",
+      short: "T2",
+      page: "T2",
+      region: "China",
+      location: null,
+      stages: ["main"],
+      roster: [],
+    },
   ],
   players: [
-    { id: "a", name: "A", page: "A", teamId: "t1", role: "mid", country: null, realName: null, nativeName: null, residency: null, fromScoreboardOnly: false },
-    { id: "b", name: "B", page: "B", teamId: "t1", role: "top", country: null, realName: null, nativeName: null, residency: null, fromScoreboardOnly: false },
-    { id: "c", name: "C", page: "C", teamId: "t2", role: "mid", country: null, realName: null, nativeName: null, residency: null, fromScoreboardOnly: false },
-    { id: "d", name: "D", page: "D", teamId: "t2", role: "top", country: null, realName: null, nativeName: null, residency: null, fromScoreboardOnly: false },
+    {
+      id: "a",
+      name: "A",
+      page: "A",
+      teamId: "t1",
+      role: "mid",
+      country: null,
+      realName: null,
+      nativeName: null,
+      residency: null,
+      fromScoreboardOnly: false,
+    },
+    {
+      id: "b",
+      name: "B",
+      page: "B",
+      teamId: "t1",
+      role: "top",
+      country: null,
+      realName: null,
+      nativeName: null,
+      residency: null,
+      fromScoreboardOnly: false,
+    },
+    {
+      id: "c",
+      name: "C",
+      page: "C",
+      teamId: "t2",
+      role: "mid",
+      country: null,
+      realName: null,
+      nativeName: null,
+      residency: null,
+      fromScoreboardOnly: false,
+    },
+    {
+      id: "d",
+      name: "D",
+      page: "D",
+      teamId: "t2",
+      role: "top",
+      country: null,
+      realName: null,
+      nativeName: null,
+      residency: null,
+      fromScoreboardOnly: false,
+    },
   ],
-  series: [{ id: "s1", matchId: "m", stage: "swiss", tab: "Round 1", round: 1, bestOf: 3, team1Id: "t1", team2Id: "t2", dateTimeUtc: "2026-10-21T18:00:00Z", hasTime: true, score: { team1: 1, team2: 1 }, winnerId: null, status: "live", matchDay: 1, patch: null, streamUrl: null, mvp: null, gameIds: ["g1", "g2"], gamesPlayed: 2 }],
-  games: [game("g1", "t1", "t2", "blue", 1800, ["Zed"], ["Ahri"]), game("g2", "t2", "t1", "blue", 2400, ["Ahri"], ["Lux"])],
+  series: [
+    {
+      id: "s1",
+      matchId: "m",
+      stage: "swiss",
+      tab: "Round 1",
+      round: 1,
+      bestOf: 3,
+      team1Id: "t1",
+      team2Id: "t2",
+      dateTimeUtc: "2026-10-21T18:00:00Z",
+      hasTime: true,
+      score: { team1: 1, team2: 1 },
+      winnerId: null,
+      status: "live",
+      matchDay: 1,
+      patch: null,
+      streamUrl: null,
+      mvp: null,
+      gameIds: ["g1", "g2"],
+      gamesPlayed: 2,
+      source: "leaguepedia",
+      provisional: false,
+      lolesportsMatchId: null,
+    },
+  ],
+  games: [
+    game("g1", "t1", "t2", "blue", 1800, ["Zed"], ["Ahri"]),
+    game("g2", "t2", "t1", "blue", 2400, ["Ahri"], ["Lux"]),
+  ],
   drafts: [],
   playerGames: [
     pg("g1", "a", "t1", "blue", "mid", "Ahri", true, 6, 24000, 1800),
@@ -108,7 +274,9 @@ describe("runQuery", () => {
     expect(res.overall.dpm).toBeCloseTo((24000 + 15000 + 18000 + 12000 + 16000 + 20000 + 30000 + 14000) / 280);
   });
   it("applies aggregations to sum-kind measures", () => {
-    const by = (aggregation: QueryConfig["aggregation"]) => runQuery(cfg({ measures: ["kills"], groupBy: "player", aggregation }), data).rows.find((r) => r.key === "a")!.values.kills;
+    const by = (aggregation: QueryConfig["aggregation"]) =>
+      runQuery(cfg({ measures: ["kills"], groupBy: "player", aggregation }), data).rows.find((r) => r.key === "a")!
+        .values.kills;
     expect(by("sum")).toBe(8);
     expect(by("mean")).toBe(4);
     expect(by("max")).toBe(6);
@@ -130,12 +298,22 @@ describe("runQuery", () => {
     expect(none.emptyReason).toContain("at least 3 games");
   });
   it("filters by team, role, side and result", () => {
-    const res = runQuery(cfg({ measures: ["kills"], groupBy: "player", filters: { teams: ["t1"], roles: ["mid"], side: "blue", result: "win" } }), data);
+    const res = runQuery(
+      cfg({
+        measures: ["kills"],
+        groupBy: "player",
+        filters: { teams: ["t1"], roles: ["mid"], side: "blue", result: "win" },
+      }),
+      data,
+    );
     expect(res.rows.map((r) => r.key)).toEqual(["a"]);
     expect(res.rows[0].values.kills).toBe(6);
   });
   it("computes team win rate per side as a pivot for heat maps", () => {
-    const res = runQuery(cfg({ source: "teams", measures: ["winRate"], groupBy: "team", series: "side", chart: "heatmap" }), data);
+    const res = runQuery(
+      cfg({ source: "teams", measures: ["winRate"], groupBy: "team", series: "side", chart: "heatmap" }),
+      data,
+    );
     expect(res.seriesLabels).toEqual(["Blue side", "Red side"]);
     const t1blue = res.rows.find((r) => r.key === "t1" && r.seriesKey === "blue")!;
     expect(t1blue.values.winRate).toBe(1);
@@ -143,7 +321,16 @@ describe("runQuery", () => {
     expect(t1red.values.winRate).toBe(0);
   });
   it("computes champion presence against games in scope", () => {
-    const res = runQuery(cfg({ source: "champions", measures: ["picks", "bans"], groupBy: "champion", chart: "stackedBar", aggregation: "sum" }), data);
+    const res = runQuery(
+      cfg({
+        source: "champions",
+        measures: ["picks", "bans"],
+        groupBy: "champion",
+        chart: "stackedBar",
+        aggregation: "sum",
+      }),
+      data,
+    );
     const ahri = res.rows.find((r) => r.key === "Ahri")!;
     expect(ahri.values.picks).toBe(1);
     expect(ahri.values.bans).toBe(2);
@@ -188,16 +375,28 @@ describe("runQuery", () => {
 
 describe("validateConfig", () => {
   it("rejects aggregations that do not apply to ratios", () => {
-    expect(validateConfig(cfg({ measures: ["kda"], groupBy: "player", aggregation: "sum" }))).toEqual([expect.stringContaining("does not apply")]);
+    expect(validateConfig(cfg({ measures: ["kda"], groupBy: "player", aggregation: "sum" }))).toEqual([
+      expect.stringContaining("does not apply"),
+    ]);
     expect(validateConfig(cfg({ measures: ["kda"], groupBy: "player", aggregation: "median" }))).toEqual([]);
   });
   it("enforces chart-specific rules", () => {
-    expect(validateConfig(cfg({ measures: ["kda", "dpm"], groupBy: "player", chart: "radar", topN: 4 }))).toEqual([expect.stringContaining("three and eight")]);
-    expect(validateConfig(cfg({ measures: ["kda", "dpm", "cspm"], groupBy: "player", chart: "radar", topN: null }))).toEqual([expect.stringContaining("at most 4")]);
-    expect(validateConfig(cfg({ measures: ["kda"], groupBy: "player", chart: "line" }))).toEqual([expect.stringContaining("ordered dimension")]);
+    expect(validateConfig(cfg({ measures: ["kda", "dpm"], groupBy: "player", chart: "radar", topN: 4 }))).toEqual([
+      expect.stringContaining("three and eight"),
+    ]);
+    expect(
+      validateConfig(cfg({ measures: ["kda", "dpm", "cspm"], groupBy: "player", chart: "radar", topN: null })),
+    ).toEqual([expect.stringContaining("at most 4")]);
+    expect(validateConfig(cfg({ measures: ["kda"], groupBy: "player", chart: "line" }))).toEqual([
+      expect.stringContaining("ordered dimension"),
+    ]);
     expect(validateConfig(cfg({ measures: ["kda"], groupBy: "round", chart: "line" }))).toEqual([]);
-    expect(validateConfig(cfg({ measures: ["kda"], groupBy: "team", chart: "heatmap" }))).toEqual([expect.stringContaining("series dimension")]);
-    expect(validateConfig(cfg({ measures: ["kda", "kp"], groupBy: "player", chart: "groupedBar" }))).toEqual([expect.stringContaining("share a unit")]);
+    expect(validateConfig(cfg({ measures: ["kda"], groupBy: "team", chart: "heatmap" }))).toEqual([
+      expect.stringContaining("series dimension"),
+    ]);
+    expect(validateConfig(cfg({ measures: ["kda", "kp"], groupBy: "player", chart: "groupedBar" }))).toEqual([
+      expect.stringContaining("share a unit"),
+    ]);
     expect(validateConfig(cfg({ measures: ["kp", "winRate"], groupBy: "player", chart: "groupedBar" }))).toEqual([]);
   });
   it("rejects measures and dimensions from another source", () => {

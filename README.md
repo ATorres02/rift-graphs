@@ -23,7 +23,7 @@ pnpm lint
 pnpm build
 ```
 
-Copy `.env.example` to `.env.local` and fill in the public variables (author, LinkedIn, imprint, site URL). `.env.local` and every other `.env*` file are ignored by git and must never be committed; `NEXT_PUBLIC_*` values end up in the public bundle, so they hold only public information. Leaguepedia bot credentials go in GitHub Actions secrets.
+Copy `.env.example` to `.env.local` and fill in the public variables (author, LinkedIn, imprint, site URL). `.env.local` and every other `.env*` file are ignored by git and must never be committed; `NEXT_PUBLIC_*` values end up in the public bundle, so they hold only public information. Leaguepedia bot credentials and the lolesports key go in GitHub Actions secrets.
 
 ## Data pipeline
 
@@ -37,9 +37,17 @@ exponential backoff), normalises the rows into seven entities, validates every g
 kills add up, duration > 0) and writes `data/worlds-2026/*.json` plus `meta.json`. Games that fail validation are
 left out and listed as pending so the site never shows zeros.
 
-`.github/workflows/ingest.yml` runs it every 15 minutes on match days (17:00–04:00 UTC) and every 6 hours
-otherwise; it commits only when the data changed and then calls the deploy workflow. See `NOTES.md` for Cargo
-quirks and decisions.
+Three sources are merged by priority in `lib/ingest/merge.ts`: **Leaguepedia** (validated, final) >
+**manual files** in `data/manual/` (one JSON per game typed by hand, see `data/manual/README.md`) > the
+**unofficial lolesports API** (series state, score and winner only, enabled by `LOLESPORTS_API_KEY`). Series and
+games carry `source` and `provisional`; disagreements between sources go to `data/worlds-2026/conflicts.json` and
+`meta.json` lists what was applied, superseded or ignored. Provisional results count for standings and the bracket
+but not for rankings or the chart builder.
+
+`.github/workflows/ingest.yml` runs it every 15 minutes on match days (17:00–06:59 UTC), every 6 hours otherwise
+and on every push that touches `data/manual/`; it commits only when the data changed and then calls the deploy
+workflow. See `NOTES.md` for Cargo quirks and decisions. `scripts/probe-lolesports.ts` dumps raw lolesports
+responses into the git-ignored `.ingest-cache/` when the API needs a look.
 
 ## Deployment
 
@@ -64,7 +72,7 @@ Every chart on `/charts` is described by a short URL, for example `/charts?d=pla
 - `components/` UI (spoiler mode, local times, team pills, champion icons, charts with table view, tables)
 - `lib/data/` dataset types, Zod schemas, loader and shared indexing; `lib/metrics.ts` derived metrics; `lib/draft.ts`, `lib/standings.ts`
 - `lib/query.ts` chart builder query engine (measures, dimensions, filters, validation); `lib/charts/` chart specs, builder, URL codec, templates
-- `lib/sources/` Leaguepedia Cargo client and Data Dragon helpers
-- `scripts/ingest.ts` pipeline; `data/worlds-2026/` generated dataset
+- `lib/sources/` Leaguepedia Cargo client, lolesports client, manual-file schema and Data Dragon helpers; `lib/ingest/merge.ts` source merging
+- `scripts/ingest.ts` pipeline; `data/worlds-2026/` generated dataset; `data/manual/` hand-typed provisional games
 - `wrangler.jsonc`, `public/_headers`, `.github/workflows/` ingest and deploy
 - `docs/SPEC.md` original specification (Spanish); `NOTES.md` implementation notes (Spanish)

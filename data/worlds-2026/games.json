@@ -33,7 +33,8 @@
         "Syndra",
         "Miss Fortune",
         "Nautilus"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "cloud9",
@@ -59,10 +60,14 @@
         "Locke",
         "Ezreal",
         "Karma"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_479621",
-    "vodUrl": "https://www.youtube.com/watch?v=MzoFIu6m4AU"
+    "vodUrl": "https://www.youtube.com/watch?v=MzoFIu6m4AU",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "play-in-round-1-1-2",
@@ -98,7 +103,8 @@
         "Akali",
         "Kalista",
         "Renata Glasc"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "karmine-corp",
@@ -124,10 +130,14 @@
         "Cassiopeia",
         "Varus",
         "Vel'Koz"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_479631",
-    "vodUrl": "https://youtu.be/MzoFIu6m4AU?t=2648"
+    "vodUrl": "https://youtu.be/MzoFIu6m4AU?t=2648",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "play-in-round-1-1-3",
@@ -163,7 +173,8 @@
         "Anivia",
         "Lucian",
         "Nami"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "cloud9",
@@ -189,10 +200,14 @@
         "Annie",
         "Jhin",
         "Alistar"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_479637",
-    "vodUrl": "https://youtu.be/MzoFIu6m4AU?t=5264"
+    "vodUrl": "https://youtu.be/MzoFIu6m4AU?t=5264",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "play-in-round-1-1-4",
@@ -228,7 +243,8 @@
         "Sylas",
         "Yunara",
         "Lulu"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "karmine-corp",
@@ -254,10 +270,14 @@
         "Orianna",
         "Xayah",
         "Rakan"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_479642",
-    "vodUrl": "https://youtu.be/MzoFIu6m4AU?t=7916"
+    "vodUrl": "https://youtu.be/MzoFIu6m4AU?t=7916",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "play-in-round-1-1-5",
@@ -293,7 +313,8 @@
         "Ahri",
         "Kai'Sa",
         "Rell"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "cloud9",
@@ -319,10 +340,14 @@
         "Yone",
         "Ziggs",
         "Shen"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_479649",
-    "vodUrl": "https://youtu.be/MzoFIu6m4AU?t=10744"
+    "vodUrl": "https://youtu.be/MzoFIu6m4AU?t=10744",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "play-in-round-1-2-1",
@@ -358,7 +383,8 @@
         "Cassiopeia",
         "Ashe",
         "Seraphine"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "furia",
@@ -384,10 +410,14 @@
         "Galio",
         "Yunara",
         "Lulu"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_478715",
-    "vodUrl": "https://www.youtube.com/watch?v=UWBRuboiCXk"
+    "vodUrl": "https://www.youtube.com/watch?v=UWBRuboiCXk",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "play-in-round-1-2-2",
@@ -423,7 +453,8 @@
         "Viktor",
         "Lucian",
         "Milio"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "furia",
@@ -449,10 +480,14 @@
         "Syndra",
         "Xayah",
         "Rakan"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_478718",
-    "vodUrl": "https://youtu.be/UWBRuboiCXk?t=2493"
+    "vodUrl": "https://youtu.be/UWBRuboiCXk?t=2493",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "play-in-round-1-2-3",
@@ -488,7 +523,8 @@
         "Kog'Maw",
         "Jhin",
         "Camille"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "furia",
@@ -514,10 +550,14 @@
         "Ryze",
         "Kai'Sa",
         "Leona"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_478726",
-    "vodUrl": "https://youtu.be/UWBRuboiCXk?t=4970"
+    "vodUrl": "https://youtu.be/UWBRuboiCXk?t=4970",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "play-in-round-2-1-1",
@@ -553,7 +593,8 @@
         "Syndra",
         "Draven",
         "Nautilus"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "mvk-esports",
@@ -579,10 +620,14 @@
         "K'Sante",
         "Tristana",
         "Lulu"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_479982",
-    "vodUrl": "https://youtu.be/ftCQbsVYrpk"
+    "vodUrl": "https://youtu.be/ftCQbsVYrpk",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "play-in-round-2-1-2",
@@ -618,7 +663,8 @@
         "Ahri",
         "Ashe",
         "Seraphine"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "mvk-esports",
@@ -644,10 +690,14 @@
         "Rumble",
         "Ezreal",
         "Pyke"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_480014",
-    "vodUrl": "https://youtu.be/ftCQbsVYrpk?t=2240"
+    "vodUrl": "https://youtu.be/ftCQbsVYrpk?t=2240",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "play-in-round-2-1-3",
@@ -683,7 +733,8 @@
         "Kog'Maw",
         "Lucian",
         "Milio"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "karmine-corp",
@@ -709,10 +760,14 @@
         "Viktor",
         "Xayah",
         "Rakan"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_480033",
-    "vodUrl": "https://youtu.be/ftCQbsVYrpk?t=4616"
+    "vodUrl": "https://youtu.be/ftCQbsVYrpk?t=4616",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "play-in-round-1-3-1",
@@ -748,7 +803,8 @@
         "Ahri",
         "Kalista",
         "Renata Glasc"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "cloud9",
@@ -774,10 +830,14 @@
         "Syndra",
         "Lucian",
         "Milio"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_480078",
-    "vodUrl": "https://youtu.be/5Ap6DXBEAQg"
+    "vodUrl": "https://youtu.be/5Ap6DXBEAQg",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "play-in-round-1-3-2",
@@ -813,7 +873,8 @@
         "Sylas",
         "Caitlyn",
         "Bard"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "furia",
@@ -839,10 +900,14 @@
         "Akali",
         "Yunara",
         "Lulu"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_480094",
-    "vodUrl": "https://youtu.be/5Ap6DXBEAQg?t=2777"
+    "vodUrl": "https://youtu.be/5Ap6DXBEAQg?t=2777",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "play-in-round-1-3-3",
@@ -878,7 +943,8 @@
         "Viktor",
         "Sivir",
         "Karma"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "cloud9",
@@ -904,10 +970,14 @@
         "Orianna",
         "Ezreal",
         "Alistar"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_480113",
-    "vodUrl": "https://youtu.be/5Ap6DXBEAQg?t=5268"
+    "vodUrl": "https://youtu.be/5Ap6DXBEAQg?t=5268",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "play-in-round-1-3-4",
@@ -943,7 +1013,8 @@
         "Twisted Fate",
         "Miss Fortune",
         "Rell"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "cloud9",
@@ -969,10 +1040,14 @@
         "Locke",
         "Ziggs",
         "Nautilus"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_480123",
-    "vodUrl": "https://youtu.be/5Ap6DXBEAQg?t=7672"
+    "vodUrl": "https://youtu.be/5Ap6DXBEAQg?t=7672",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "play-in-round-2-2-1",
@@ -1008,7 +1083,8 @@
         "Cassiopeia",
         "Ezreal",
         "Lulu"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "furia",
@@ -1034,10 +1110,14 @@
         "Syndra",
         "Lucian",
         "Milio"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_481268",
-    "vodUrl": "https://www.youtube.com/watch?v=6ja4BZuhV7M"
+    "vodUrl": "https://www.youtube.com/watch?v=6ja4BZuhV7M",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "play-in-round-2-2-2",
@@ -1073,7 +1153,8 @@
         "Kog'Maw",
         "Jhin",
         "Bard"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "furia",
@@ -1099,10 +1180,14 @@
         "Viktor",
         "Xayah",
         "Rakan"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_481282",
-    "vodUrl": "https://youtu.be/6ja4BZuhV7M?t=2383"
+    "vodUrl": "https://youtu.be/6ja4BZuhV7M?t=2383",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "play-in-round-2-2-3",
@@ -1138,7 +1223,8 @@
         "Mel",
         "Ziggs",
         "Leona"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "furia",
@@ -1164,10 +1250,14 @@
         "Twisted Fate",
         "Miss Fortune",
         "Seraphine"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_481295",
-    "vodUrl": "https://youtu.be/6ja4BZuhV7M?t=4378"
+    "vodUrl": "https://youtu.be/6ja4BZuhV7M?t=4378",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "play-in-round-2-2-4",
@@ -1203,7 +1293,8 @@
         "Ryze",
         "Corki",
         "Shen"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "furia",
@@ -1229,10 +1320,14 @@
         "Taliyah",
         "Sivir",
         "Alistar"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_481308",
-    "vodUrl": "https://youtu.be/6ja4BZuhV7M?t=6997"
+    "vodUrl": "https://youtu.be/6ja4BZuhV7M?t=6997",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "play-in-round-3-1-1",
@@ -1268,7 +1363,8 @@
         "Cassiopeia",
         "Zeri",
         "Yuumi"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "mvk-esports",
@@ -1294,10 +1390,14 @@
         "Akali",
         "Ashe",
         "Seraphine"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_480507",
-    "vodUrl": "https://youtu.be/4uxGpP2TG38?si=sklKyUKVky1xRk8u"
+    "vodUrl": "https://youtu.be/4uxGpP2TG38?si=sklKyUKVky1xRk8u",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "play-in-round-3-1-2",
@@ -1333,7 +1433,8 @@
         "Ryze",
         "Yunara",
         "Lulu"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "mvk-esports",
@@ -1359,10 +1460,14 @@
         "Hwei",
         "Lucian",
         "Milio"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_480508",
-    "vodUrl": "https://youtu.be/4uxGpP2TG38?si=sklKyUKVky1xRk8u&amp;t=2261"
+    "vodUrl": "https://youtu.be/4uxGpP2TG38?si=sklKyUKVky1xRk8u&amp;t=2261",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "play-in-round-3-1-3",
@@ -1398,7 +1503,8 @@
         "Locke",
         "Twitch",
         "Camille"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "karmine-corp",
@@ -1424,10 +1530,14 @@
         "Viktor",
         "Ezreal",
         "Leona"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_480511",
-    "vodUrl": "https://youtu.be/4uxGpP2TG38?si=sklKyUKVky1xRk8u&amp;t=4225"
+    "vodUrl": "https://youtu.be/4uxGpP2TG38?si=sklKyUKVky1xRk8u&amp;t=4225",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-1-1-1",
@@ -1463,7 +1573,8 @@
         "Aurora",
         "Jhin",
         "Alistar"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "gen-g",
@@ -1489,10 +1600,14 @@
         "Akali",
         "Corki",
         "Nautilus"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_482269",
-    "vodUrl": "https://youtu.be/qDDN87YowLE?si=DWmDsZYuPfnib3QD&amp;t=0"
+    "vodUrl": "https://youtu.be/qDDN87YowLE?si=DWmDsZYuPfnib3QD&amp;t=0",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-1-2-1",
@@ -1528,7 +1643,8 @@
         "Orianna",
         "Ezreal",
         "Alistar"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "hanwha-life-esports",
@@ -1554,10 +1670,14 @@
         "Locke",
         "Jhin",
         "Shen"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_483314",
-    "vodUrl": "https://youtu.be/jqW0Y4J4ThM?si=86ZT43bpOZv6-DVI&amp;t=0"
+    "vodUrl": "https://youtu.be/jqW0Y4J4ThM?si=86ZT43bpOZv6-DVI&amp;t=0",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-1-3-1",
@@ -1593,7 +1713,8 @@
         "Sylas",
         "Ezreal",
         "Karma"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "bilibili-gaming",
@@ -1619,10 +1740,14 @@
         "Akali",
         "Ashe",
         "Seraphine"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_483342",
-    "vodUrl": "https://youtu.be/OWhxaPciNq8?si=7Be1CzYuT2wgY2qg&amp;t=0"
+    "vodUrl": "https://youtu.be/OWhxaPciNq8?si=7Be1CzYuT2wgY2qg&amp;t=0",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-1-4-1",
@@ -1658,7 +1783,8 @@
         "Orianna",
         "Kalista",
         "Renata Glasc"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "anyones-legend",
@@ -1684,10 +1810,14 @@
         "Akali",
         "Miss Fortune",
         "Neeko"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_482292",
-    "vodUrl": "https://youtu.be/8txB9yg9FNc?si=XN4t6RYSzr2sAWLy&amp;t=0"
+    "vodUrl": "https://youtu.be/8txB9yg9FNc?si=XN4t6RYSzr2sAWLy&amp;t=0",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-1-5-1",
@@ -1723,7 +1853,8 @@
         "Syndra",
         "Ziggs",
         "Poppy"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "g2-esports",
@@ -1749,10 +1880,14 @@
         "Viktor",
         "Kalista",
         "Renata Glasc"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_482304",
-    "vodUrl": "https://youtu.be/jLbhlvybfiA?si=m10Id9XlSvk--_PZ&amp;t=0"
+    "vodUrl": "https://youtu.be/jLbhlvybfiA?si=m10Id9XlSvk--_PZ&amp;t=0",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-1-6-1",
@@ -1788,7 +1923,8 @@
         "Syndra",
         "Jhin",
         "Rakan"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "ctbc-flying-oyster",
@@ -1814,10 +1950,14 @@
         "Viktor",
         "Aphelios",
         "Alistar"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_482313",
-    "vodUrl": "https://youtu.be/FATvv4Lk7IU?si=119uz3og91JmIQjG&amp;t=0"
+    "vodUrl": "https://youtu.be/FATvv4Lk7IU?si=119uz3og91JmIQjG&amp;t=0",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-1-7-1",
@@ -1853,7 +1993,8 @@
         "Syndra",
         "Tristana",
         "Rakan"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "t1",
@@ -1879,10 +2020,14 @@
         "LeBlanc",
         "Jhin",
         "Alistar"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_482325",
-    "vodUrl": "https://youtu.be/VzymjkPh5wk?si=PC2eFPBGHefvONos&amp;t=0"
+    "vodUrl": "https://youtu.be/VzymjkPh5wk?si=PC2eFPBGHefvONos&amp;t=0",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-1-8-1",
@@ -1918,7 +2063,8 @@
         "Anivia",
         "Ezreal",
         "Alistar"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "team-secret-whales",
@@ -1944,10 +2090,14 @@
         "Ryze",
         "Kai'Sa",
         "Nautilus"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_482335",
-    "vodUrl": "https://youtu.be/XYD_5fN4VAk?si=Zh4pEEEci2Wp0P-B&amp;t=0"
+    "vodUrl": "https://youtu.be/XYD_5fN4VAk?si=Zh4pEEEci2Wp0P-B&amp;t=0",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-2-1-1",
@@ -1983,7 +2133,8 @@
         "Locke",
         "Kalista",
         "Renata Glasc"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "anyones-legend",
@@ -2009,10 +2160,14 @@
         "Orianna",
         "Lucian",
         "Milio"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_482539",
-    "vodUrl": "https://youtu.be/gLw65-r-MSI?si=XVl44yXXRpC0kPch&amp;t=0"
+    "vodUrl": "https://youtu.be/gLw65-r-MSI?si=XVl44yXXRpC0kPch&amp;t=0",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-2-2-1",
@@ -2048,7 +2203,8 @@
         "Cassiopeia",
         "Kalista",
         "Renata Glasc"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "ctbc-flying-oyster",
@@ -2074,10 +2230,14 @@
         "Akali",
         "Tristana",
         "Lulu"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_482559",
-    "vodUrl": "https://youtu.be/sLoG6iB0L2Q?si=7w-e5wHGkkCRG24I&amp;t=0"
+    "vodUrl": "https://youtu.be/sLoG6iB0L2Q?si=7w-e5wHGkkCRG24I&amp;t=0",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-2-3-1",
@@ -2113,7 +2273,8 @@
         "Orianna",
         "Kalista",
         "Renata Glasc"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "g2-esports",
@@ -2139,10 +2300,14 @@
         "Locke",
         "Ezreal",
         "Karma"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_482570",
-    "vodUrl": "https://youtu.be/fMzwAhCt-aY?si=dUMKXfuVYRYCIahD&amp;t=0"
+    "vodUrl": "https://youtu.be/fMzwAhCt-aY?si=dUMKXfuVYRYCIahD&amp;t=0",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-2-4-1",
@@ -2178,7 +2343,8 @@
         "Cassiopeia",
         "Kalista",
         "Renata Glasc"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "lyon",
@@ -2204,10 +2370,14 @@
         "Syndra",
         "Yunara",
         "Lulu"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_483571",
-    "vodUrl": "https://youtu.be/jToExBjYenQ?si=7p6poS5X8yqMMuLe&amp;t=0"
+    "vodUrl": "https://youtu.be/jToExBjYenQ?si=7p6poS5X8yqMMuLe&amp;t=0",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-2-5-1",
@@ -2243,7 +2413,8 @@
         "Locke",
         "Ezreal",
         "Alistar"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "invictus-gaming",
@@ -2269,10 +2440,14 @@
         "Orianna",
         "Ashe",
         "Seraphine"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_482587",
-    "vodUrl": "https://youtu.be/HgZFZSg3ydE?si=Ydfui84S9LARopK2&amp;t=0"
+    "vodUrl": "https://youtu.be/HgZFZSg3ydE?si=Ydfui84S9LARopK2&amp;t=0",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-2-6-1",
@@ -2308,7 +2483,8 @@
         "Taliyah",
         "Jhin",
         "Alistar"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "gen-g",
@@ -2334,10 +2510,14 @@
         "Syndra",
         "Ezreal",
         "Leona"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_482599",
-    "vodUrl": "https://youtu.be/n68tMlqymqI?si=JMCJD89Q5byf17Np&amp;t=0"
+    "vodUrl": "https://youtu.be/n68tMlqymqI?si=JMCJD89Q5byf17Np&amp;t=0",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-2-7-1",
@@ -2373,7 +2553,8 @@
         "Viktor",
         "Kalista",
         "Renata Glasc"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "t1",
@@ -2399,10 +2580,14 @@
         "Anivia",
         "Caitlyn",
         "Neeko"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_482606",
-    "vodUrl": "https://youtu.be/5wzTe_UxiU8?si=4C-3vasrCkM5PKax&amp;t=0"
+    "vodUrl": "https://youtu.be/5wzTe_UxiU8?si=4C-3vasrCkM5PKax&amp;t=0",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-2-8-1",
@@ -2438,7 +2623,8 @@
         "Locke",
         "Ezreal",
         "Karma"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "bilibili-gaming",
@@ -2464,10 +2650,14 @@
         "Orianna",
         "Jhin",
         "Nautilus"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_482620",
-    "vodUrl": "https://youtu.be/o5dfRPbQWio?si=5FM3rZCaJR6_TktX&amp;t=0"
+    "vodUrl": "https://youtu.be/o5dfRPbQWio?si=5FM3rZCaJR6_TktX&amp;t=0",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-3-1-1",
@@ -2503,7 +2693,8 @@
         "Annie",
         "Yunara",
         "Lulu"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "hanwha-life-esports",
@@ -2529,10 +2720,14 @@
         "Lissandra",
         "Kalista",
         "Renata Glasc"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_483687",
-    "vodUrl": "https://youtu.be/36b3HH4BE4U?t=130"
+    "vodUrl": "https://youtu.be/36b3HH4BE4U?t=130",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-3-2-1",
@@ -2568,7 +2763,8 @@
         "Orianna",
         "Varus",
         "Nautilus"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "g2-esports",
@@ -2594,10 +2790,14 @@
         "Akali",
         "Ezreal",
         "Karma"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_482761",
-    "vodUrl": "https://youtu.be/ae6RiRqpVGE?t=100"
+    "vodUrl": "https://youtu.be/ae6RiRqpVGE?t=100",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-3-3-1",
@@ -2633,7 +2833,8 @@
         "Anivia",
         "Ezreal",
         "Karma"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "dplus-kia",
@@ -2659,10 +2860,14 @@
         "Cassiopeia",
         "Kai'Sa",
         "Nautilus"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_483708",
-    "vodUrl": "https://youtu.be/0QU9ZWDhpC0?t=119"
+    "vodUrl": "https://youtu.be/0QU9ZWDhpC0?t=119",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-3-3-2",
@@ -2698,7 +2903,8 @@
         "Syndra",
         "Caitlyn",
         "Bard"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "movistar-koi",
@@ -2724,10 +2930,14 @@
         "Diana",
         "Yunara",
         "Lulu"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_483716",
-    "vodUrl": "https://youtu.be/0QU9ZWDhpC0?t=2886"
+    "vodUrl": "https://youtu.be/0QU9ZWDhpC0?t=2886",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-3-4-1",
@@ -2763,7 +2973,8 @@
         "Ahri",
         "Kalista",
         "Renata Glasc"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "gen-g",
@@ -2789,10 +3000,14 @@
         "Anivia",
         "Jhin",
         "Alistar"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_482793",
-    "vodUrl": "https://youtu.be/pu8g0xpHKF4?t=100"
+    "vodUrl": "https://youtu.be/pu8g0xpHKF4?t=100",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-3-4-2",
@@ -2828,7 +3043,8 @@
         "Lissandra",
         "Ashe",
         "Seraphine"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "lyon",
@@ -2854,10 +3070,14 @@
         "Akali",
         "Yunara",
         "Lulu"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_483730",
-    "vodUrl": "https://youtu.be/pu8g0xpHKF4?t=2760"
+    "vodUrl": "https://youtu.be/pu8g0xpHKF4?t=2760",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-3-4-3",
@@ -2893,7 +3113,8 @@
         "Galio",
         "Ezreal",
         "Nautilus"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "lyon",
@@ -2919,10 +3140,14 @@
         "Tristana",
         "Lucian",
         "Milio"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_482805",
-    "vodUrl": "https://youtu.be/pu8g0xpHKF4?t=4855"
+    "vodUrl": "https://youtu.be/pu8g0xpHKF4?t=4855",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-3-5-1",
@@ -2958,7 +3183,8 @@
         "Galio",
         "Jhin",
         "Rakan"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "ctbc-flying-oyster",
@@ -2984,10 +3210,14 @@
         "Ryze",
         "Kai'Sa",
         "Alistar"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_483824",
-    "vodUrl": "https://youtu.be/cmct78Iytg8?t=125"
+    "vodUrl": "https://youtu.be/cmct78Iytg8?t=125",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-3-6-1",
@@ -3023,7 +3253,8 @@
         "Orianna",
         "Kai'Sa",
         "Nautilus"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "karmine-corp",
@@ -3049,10 +3280,14 @@
         "Viktor",
         "Jhin",
         "Alistar"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_483840",
-    "vodUrl": "https://youtu.be/Lo6V52lXc94?t=110"
+    "vodUrl": "https://youtu.be/Lo6V52lXc94?t=110",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-3-7-1",
@@ -3088,7 +3323,8 @@
         "Akali",
         "Caitlyn",
         "Elise"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "los",
@@ -3114,10 +3350,14 @@
         "Orianna",
         "Kalista",
         "Renata Glasc"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_483861",
-    "vodUrl": "https://youtu.be/CWkdng5xBI4?t=140"
+    "vodUrl": "https://youtu.be/CWkdng5xBI4?t=140",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-3-7-2",
@@ -3153,7 +3393,8 @@
         "Locke",
         "Miss Fortune",
         "Nautilus"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "los",
@@ -3179,10 +3420,14 @@
         "Galio",
         "Ashe",
         "Seraphine"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_482893",
-    "vodUrl": "https://youtu.be/CWkdng5xBI4?t=2911"
+    "vodUrl": "https://youtu.be/CWkdng5xBI4?t=2911",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-3-8-1",
@@ -3218,7 +3463,8 @@
         "Orianna",
         "Yunara",
         "Lulu"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "team-liquid",
@@ -3244,10 +3490,14 @@
         "Galio",
         "Lucian",
         "Nami"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_482911",
-    "vodUrl": "https://youtu.be/Q28aQ_pETPE?t=104"
+    "vodUrl": "https://youtu.be/Q28aQ_pETPE?t=104",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   },
   {
     "id": "main-event-round-3-8-2",
@@ -3283,7 +3533,8 @@
         "Akali",
         "Xayah",
         "Rakan"
-      ]
+      ],
+      "lineup": null
     },
     "red": {
       "teamId": "anyones-legend",
@@ -3309,9 +3560,13 @@
         "Annie",
         "Jinx",
         "Tahm Kench"
-      ]
+      ],
+      "lineup": null
     },
     "riotGameId": "LOLTMNT02_483885",
-    "vodUrl": "https://youtu.be/Q28aQ_pETPE?t=2439"
+    "vodUrl": "https://youtu.be/Q28aQ_pETPE?t=2439",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   }
 ]

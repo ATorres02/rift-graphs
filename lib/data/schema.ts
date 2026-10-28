@@ -15,6 +15,17 @@ export const stageIdSchema = z.enum(["playin", "swiss", "quarterfinals", "semifi
 export const roleSchema = z.enum(["top", "jungle", "mid", "bot", "support"]);
 export const sideSchema = z.enum(["blue", "red"]);
 export const seriesStatusSchema = z.enum(["scheduled", "live", "finished"]);
+export const dataSourceSchema = z.enum(["leaguepedia", "manual", "lolesports"]);
+
+const lineupEntrySchema = z.object({
+  playerId: z.string().min(1).nullable(),
+  name: z.string().min(1),
+  role: roleSchema,
+  champion: z.string().min(1),
+  kills: z.number().int().nonnegative().nullable(),
+  deaths: z.number().int().nonnegative().nullable(),
+  assists: z.number().int().nonnegative().nullable(),
+});
 
 const isoDateTime = z.string().regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z$/, "ISO 8601 UTC datetime");
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "YYYY-MM-DD");
@@ -86,6 +97,9 @@ export const seriesSchema: z.ZodType<Series> = z.object({
   mvp: z.string().nullable(),
   gameIds: z.array(z.string()),
   gamesPlayed: z.number().int().nonnegative(),
+  source: dataSourceSchema,
+  provisional: z.boolean(),
+  lolesportsMatchId: z.string().nullable(),
 });
 
 const gameTeamStatsSchema = z.object({
@@ -101,6 +115,7 @@ const gameTeamStatsSchema = z.object({
   voidGrubs: z.number().int().nonnegative(),
   bans: z.array(z.string()),
   picks: z.array(z.string()),
+  lineup: z.array(lineupEntrySchema).nullable(),
 });
 
 export const gameSchema: z.ZodType<Game> = z.object({
@@ -117,6 +132,9 @@ export const gameSchema: z.ZodType<Game> = z.object({
   red: gameTeamStatsSchema,
   riotGameId: z.string().nullable(),
   vodUrl: z.string().nullable(),
+  source: dataSourceSchema,
+  provisional: z.boolean(),
+  statsComplete: z.boolean(),
 });
 
 const draftSideSchema = z.object({
@@ -185,9 +203,25 @@ export const metaSchema: z.ZodType<Meta> = z.object({
   }),
   pendingGameIds: z.array(z.string()),
   warnings: z.array(z.string()),
+  sources: z.object({
+    lolesports: z.object({
+      enabled: z.boolean(),
+      fetchedAt: isoDateTime.nullable(),
+      matchedSeries: z.number().int().nonnegative(),
+      unmatchedEvents: z.number().int().nonnegative(),
+      error: z.string().nullable(),
+    }),
+    manual: z.object({
+      applied: z.array(z.string()),
+      superseded: z.array(z.string()),
+      invalid: z.array(z.object({ file: z.string(), error: z.string() })),
+    }),
+  }),
+  provisional: z.object({ seriesIds: z.array(z.string()), gameIds: z.array(z.string()) }),
+  conflicts: z.number().int().nonnegative(),
 });
 
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
 
 /** File name → schema, used by both the pipeline (write) and the app (read). */
 export const datasetFiles = {

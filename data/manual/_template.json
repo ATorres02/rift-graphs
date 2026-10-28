@@ -1,0 +1,49 @@
+{
+  "_help": "One file per game, named <series>-g<n>.json (for example main-event-round-4-1-g1.json). Keys starting with _ are ignored. Remove the optional blocks you cannot fill. Files starting with _ are never read.",
+  "_help_ids": "series and team ids are the ones in the site URLs: /matches/<series> and /teams/<team>. Team tags (T1, KC, MKOI) work too. Champion names as shown on lolesports.com, e.g. K'Sante, Lee Sin.",
+  "series": "main-event-round-4-1",
+  "game": 1,
+  "_help_series": "stage, date, bestOf and teams are only needed when the series is not on the site yet (for example a quarterfinal that was just paired). stage is one of: playin, swiss, quarterfinals, semifinals, final. date is the series start in UTC.",
+  "stage": "swiss",
+  "date": "2026-10-28T20:00:00Z",
+  "bestOf": 3,
+  "teams": { "team1": "movistar-koi", "team2": "t1" },
+  "_help_game": "blue and red are the sides in this game; winner is one of them; duration is mm:ss or a number of seconds.",
+  "blue": "movistar-koi",
+  "red": "t1",
+  "winner": "t1",
+  "duration": "31:42",
+  "_help_draft": "Five picks per side in role order (top, jungle, mid, bot, support). Bans in the order they were taken, up to five per side; leave the bans block out if you do not have them.",
+  "picks": {
+    "blue": ["Rumble", "Lee Sin", "Syndra", "Miss Fortune", "Nautilus"],
+    "red": ["Gnar", "Xin Zhao", "Azir", "Ezreal", "Karma"]
+  },
+  "bans": {
+    "blue": ["Vi", "K'Sante", "Skarner", "Orianna", "Sylas"],
+    "red": ["Seraphine", "Nocturne", "Qiyana", "Jhin", "Akali"]
+  },
+  "_help_objectives": "Optional team totals from the end-of-game screen. Leave the whole block out if you do not have them: the page then hides team stats for this game instead of showing zeros.",
+  "objectives": {
+    "blue": { "kills": 8, "gold": 58100, "towers": 4, "inhibitors": 0, "dragons": 2, "elders": 0, "barons": 0, "heralds": 1, "voidGrubs": 3 },
+    "red": { "kills": 17, "gold": 66400, "towers": 9, "inhibitors": 1, "dragons": 2, "elders": 0, "barons": 1, "heralds": 0, "voidGrubs": 3 }
+  },
+  "_help_players": "Optional kills/deaths/assists per player (player id from the site URL or in-game name), five per side in any order.",
+  "players": {
+    "blue": [
+      { "player": "Myrwn", "role": "top", "kills": 1, "deaths": 4, "assists": 3 },
+      { "player": "Elyoya", "role": "jungle", "kills": 2, "deaths": 3, "assists": 5 },
+      { "player": "Jojopyun", "role": "mid", "kills": 3, "deaths": 2, "assists": 2 },
+      { "player": "Supa", "role": "bot", "kills": 2, "deaths": 4, "assists": 4 },
+      { "player": "Alvaro", "role": "support", "kills": 0, "deaths": 4, "assists": 7 }
+    ],
+    "red": [
+      { "player": "Doran", "role": "top", "kills": 4, "deaths": 1, "assists": 6 },
+      { "player": "Oner", "role": "jungle", "kills": 3, "deaths": 2, "assists": 9 },
+      { "player": "Faker", "role": "mid", "kills": 5, "deaths": 1, "assists": 6 },
+      { "player": "Gumayusi", "role": "bot", "kills": 4, "deaths": 2, "assists": 7 },
+      { "player": "Keria", "role": "support", "kills": 1, "deaths": 2, "assists": 13 }
+    ]
+  },
+  "_help_vod": "Optional link to the VOD.",
+  "vod": "https://www.youtube.com/watch?v=example"
+}

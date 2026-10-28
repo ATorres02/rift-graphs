@@ -14,6 +14,20 @@ export type Side = "blue" | "red";
 
 export type SeriesStatus = "scheduled" | "live" | "finished";
 
+/** Where a result comes from, highest priority first. Only "leaguepedia" is final; the others are provisional. */
+export type DataSource = "leaguepedia" | "manual" | "lolesports";
+
+/** One player line of a provisional (manual) game: what the author could type from the broadcast. */
+export interface LineupEntry {
+  playerId: string | null;
+  name: string;
+  role: Role;
+  champion: string;
+  kills: number | null;
+  deaths: number | null;
+  assists: number | null;
+}
+
 export interface TournamentStage {
   id: StageId;
   name: string;
@@ -106,6 +120,12 @@ export interface Series {
   gameIds: string[];
   /** Number of games that Leaguepedia reports as played (winner known), with or without scoreboard. */
   gamesPlayed: number;
+  /** Source of the current result (status, score, winner). */
+  source: DataSource;
+  /** True until Leaguepedia confirms the result. */
+  provisional: boolean;
+  /** Match id on lolesports.com when the schedule entry could be matched. */
+  lolesportsMatchId: string | null;
 }
 
 export interface GameTeamStats {
@@ -121,6 +141,8 @@ export interface GameTeamStats {
   voidGrubs: number;
   bans: string[];
   picks: string[];
+  /** Player lines of a manual game; null for Leaguepedia games (use PlayerGame rows). */
+  lineup: LineupEntry[] | null;
 }
 
 export interface Game {
@@ -137,6 +159,11 @@ export interface Game {
   red: GameTeamStats;
   riotGameId: string | null;
   vodUrl: string | null;
+  source: DataSource;
+  /** True until Leaguepedia publishes and validates this game. */
+  provisional: boolean;
+  /** False for manual games entered without team objectives: the UI hides team stats instead of showing zeros. */
+  statsComplete: boolean;
 }
 
 export interface DraftSide {
@@ -215,6 +242,14 @@ export interface Meta {
   /** Games that exist on Leaguepedia but failed validation and were left out. */
   pendingGameIds: string[];
   warnings: string[];
+  sources: {
+    lolesports: { enabled: boolean; fetchedAt: string | null; matchedSeries: number; unmatchedEvents: number; error: string | null };
+    manual: { applied: string[]; superseded: string[]; invalid: { file: string; error: string }[] };
+  };
+  /** Series and games whose result is not yet confirmed by Leaguepedia. */
+  provisional: { seriesIds: string[]; gameIds: string[] };
+  /** Number of entries in conflicts.json. */
+  conflicts: number;
 }
 
 export interface Dataset {
