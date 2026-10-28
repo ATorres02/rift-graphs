@@ -12,7 +12,7 @@ import { site } from "@/lib/site";
 
 // One web font only: the monospace stack is the system one (nothing on the site uses a mono face).
 const geistSans = Geist({ variable: "--font-sans", subsets: ["latin"] });
-const display = Barlow_Condensed({ variable: "--font-display", subsets: ["latin"], weight: ["600", "700", "800"] });
+const display = Barlow_Condensed({ variable: "--font-display", subsets: ["latin"], weight: ["700"] }); // one weight: 600/800 are synthesised, saves two font files on every page
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
