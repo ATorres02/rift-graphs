@@ -3568,5 +3568,75 @@
     "source": "leaguepedia",
     "provisional": false,
     "statsComplete": true
+  },
+  {
+    "id": "main-event-round-4-1-1",
+    "seriesId": "main-event-round-4-1",
+    "stage": "swiss",
+    "gameNumber": 1,
+    "dateTimeUtc": "2026-10-28T20:11:00Z",
+    "durationSeconds": 2400,
+    "patch": "26.20",
+    "winnerSide": "blue",
+    "winnerTeamId": "t1",
+    "blue": {
+      "teamId": "t1",
+      "kills": 20,
+      "gold": 82899,
+      "towers": 10,
+      "inhibitors": 1,
+      "dragons": 4,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 1,
+      "voidGrubs": 0,
+      "bans": [
+        "Cassiopeia",
+        "Vi",
+        "Ezreal",
+        "Locke",
+        "Taliyah"
+      ],
+      "picks": [
+        "Ambessa",
+        "Lee Sin",
+        "Syndra",
+        "Xayah",
+        "Nautilus"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "movistar-koi",
+      "kills": 10,
+      "gold": 79836,
+      "towers": 5,
+      "inhibitors": 0,
+      "dragons": 3,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 0,
+      "voidGrubs": 3,
+      "bans": [
+        "Renata Glasc",
+        "Nocturne",
+        "Jayce",
+        "Orianna",
+        "Camille"
+      ],
+      "picks": [
+        "Gnar",
+        "Qiyana",
+        "Akali",
+        "Kai'Sa",
+        "Alistar"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_486159",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   }
 ]

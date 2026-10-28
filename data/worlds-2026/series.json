@@ -903,16 +903,18 @@
     "hasTime": true,
     "score": {
       "team1": 0,
-      "team2": 1
+      "team2": 2
     },
-    "winnerId": null,
-    "status": "live",
+    "winnerId": "t1",
+    "status": "finished",
     "matchDay": 1,
     "patch": "26.20",
     "streamUrl": "https://www.twitch.tv/riotgames",
     "mvp": null,
-    "gameIds": [],
-    "gamesPlayed": 1,
+    "gameIds": [
+      "main-event-round-4-1-1"
+    ],
+    "gamesPlayed": 2,
     "source": "leaguepedia",
     "provisional": false,
     "lolesportsMatchId": "115660540726095061"
@@ -930,7 +932,7 @@
     "hasTime": true,
     "score": null,
     "winnerId": null,
-    "status": "scheduled",
+    "status": "live",
     "matchDay": 1,
     "patch": "26.20",
     "streamUrl": "https://www.twitch.tv/riotgames",
