@@ -6,10 +6,10 @@ import type { Dataset } from "./types";
 
 let cached: Promise<IndexedDataset> | null = null;
 
-/** Fetches `/api/dataset` once per page load and indexes it in memory (about 65 KB over the wire). */
+/** Fetches `/api/dataset.json` once per page load and indexes it in memory (about 65 KB over the wire). */
 export function loadDatasetInBrowser(version: string): Promise<IndexedDataset> {
   if (!cached) {
-    cached = fetch(`/api/dataset?v=${encodeURIComponent(version)}`)
+    cached = fetch(`/api/dataset.json?v=${encodeURIComponent(version)}`)
       .then((res) => {
         if (!res.ok) throw new Error(`Dataset request failed with HTTP ${res.status}`);
         return res.json() as Promise<Dataset>;

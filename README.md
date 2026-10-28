@@ -8,9 +8,9 @@ Riot Games does not endorse or sponsor this project. Data: Leaguepedia (CC BY-SA
 
 ## Stack
 
-Next.js 15 (App Router, static generation), TypeScript strict, Tailwind CSS v4, shadcn/ui, Apache ECharts,
+Next.js 15 (App Router, static export), TypeScript strict, Tailwind CSS v4, shadcn/ui, Apache ECharts,
 TanStack Table, Zod, Vitest. No database and no server: the ingest script writes JSON files that the site reads
-at build time.
+at build time, and the exported folder is served by Cloudflare Workers (Static Assets).
 
 ## Getting started
 
@@ -38,7 +38,21 @@ kills add up, duration > 0) and writes `data/worlds-2026/*.json` plus `meta.json
 left out and listed as pending so the site never shows zeros.
 
 `.github/workflows/ingest.yml` runs it every 15 minutes on match days (17:00–04:00 UTC) and every 6 hours
-otherwise; it commits only when the data changed. See `NOTES.md` for Cargo quirks and decisions.
+otherwise; it commits only when the data changed and then calls the deploy workflow. See `NOTES.md` for Cargo
+quirks and decisions.
+
+## Deployment
+
+`pnpm build` writes the static site to `out/`; `.github/workflows/deploy.yml` builds it and uploads it with
+`wrangler deploy` on every push to `main` (and after every data commit). Configuration lives in `wrangler.jsonc`;
+`public/_headers` sets cache and security headers. The workflow needs two repository secrets,
+`CLOUDFLARE_API_TOKEN` (Workers Scripts: Edit) and `CLOUDFLARE_ACCOUNT_ID`, and reads the public `NEXT_PUBLIC_*`
+values from repository variables. To preview the export locally:
+
+```bash
+pnpm build
+pnpm exec wrangler dev   # serves out/ the way Cloudflare will, at http://localhost:8787
+```
 
 ## Chart builder
 
@@ -46,10 +60,11 @@ Every chart on `/charts` is described by a short URL, for example `/charts?d=pla
 
 ## Project layout
 
-- `app/` routes: home, tournament, matches, teams, players, champions, charts (builder), compare, about, privacy, imprint; `app/api/dataset` (static JSON for the browser) and `app/api/og/chart` (Open Graph preview of a chart)
+- `app/` routes: home, tournament, matches, teams, players, champions, charts (builder), compare, about, privacy, imprint; `app/api/dataset.json` (static JSON for the browser); `opengraph-image.tsx` files for series, teams and the chart builder
 - `components/` UI (spoiler mode, local times, team pills, champion icons, charts with table view, tables)
 - `lib/data/` dataset types, Zod schemas, loader and shared indexing; `lib/metrics.ts` derived metrics; `lib/draft.ts`, `lib/standings.ts`
 - `lib/query.ts` chart builder query engine (measures, dimensions, filters, validation); `lib/charts/` chart specs, builder, URL codec, templates
 - `lib/sources/` Leaguepedia Cargo client and Data Dragon helpers
 - `scripts/ingest.ts` pipeline; `data/worlds-2026/` generated dataset
+- `wrangler.jsonc`, `public/_headers`, `.github/workflows/` ingest and deploy
 - `docs/SPEC.md` original specification (Spanish); `NOTES.md` implementation notes (Spanish)

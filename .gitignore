@@ -55,3 +55,6 @@ next-env.d.ts
 *.secret
 .secrets/
 .claude/settings.local.json
+
+# wrangler
+.wrangler/

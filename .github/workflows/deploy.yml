@@ -1,0 +1,67 @@
+name: Deploy to Cloudflare
+
+# Builds the static export and uploads it to Cloudflare Workers (Static Assets).
+# Runs on every push to main (code) and is called by ingest.yml after a data commit,
+# because pushes made with GITHUB_TOKEN do not trigger other workflows on their own.
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "data/manual/**"
+      - "docs/**"
+      - "*.md"
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      ref:
+        description: "Commit to build (defaults to the triggering commit)"
+        type: string
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: deploy
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.sha }}
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm typecheck
+
+      - run: pnpm test
+
+      - name: Build static export
+        run: pnpm build
+        env:
+          # Public values only (they end up in the HTML); set them as repository variables.
+          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
+          NEXT_PUBLIC_AUTHOR_NAME: ${{ vars.NEXT_PUBLIC_AUTHOR_NAME }}
+          NEXT_PUBLIC_AUTHOR_LINKEDIN: ${{ vars.NEXT_PUBLIC_AUTHOR_LINKEDIN }}
+          NEXT_PUBLIC_REPO_URL: ${{ vars.NEXT_PUBLIC_REPO_URL }}
+          NEXT_PUBLIC_IMPRINT_NAME: ${{ vars.NEXT_PUBLIC_IMPRINT_NAME }}
+          NEXT_PUBLIC_IMPRINT_ADDRESS: ${{ vars.NEXT_PUBLIC_IMPRINT_ADDRESS }}
+          NEXT_PUBLIC_IMPRINT_EMAIL: ${{ vars.NEXT_PUBLIC_IMPRINT_EMAIL }}
+          NEXT_PUBLIC_CF_BEACON_TOKEN: ${{ vars.NEXT_PUBLIC_CF_BEACON_TOKEN }}
+
+      - name: Upload to Cloudflare
+        run: pnpm exec wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

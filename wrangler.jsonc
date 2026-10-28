@@ -1,0 +1,14 @@
+{
+  // Cloudflare Workers with Static Assets: the Next.js static export in ./out is
+  // uploaded as-is by `wrangler deploy` (GitHub Actions, see .github/workflows/deploy.yml).
+  // There is no Worker script: every request is served from the static files.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "rift-ledger",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": true,
+  "assets": {
+    "directory": "./out",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page",
+  },
+}
