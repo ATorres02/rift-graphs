@@ -1,0 +1,59 @@
+name: CI
+
+# Code checks for the development branch and pull requests: types, lint, formatting,
+# unit tests, the static build and the Playwright smoke tests against that build.
+# Deploys (deploy.yml) and data ingests (ingest.yml) stay separate so they remain fast.
+
+on:
+  push:
+    branches: [dev]
+  pull_request:
+    branches: [main, dev]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm typecheck
+
+      - run: pnpm lint
+
+      - run: pnpm format:check
+
+      - run: pnpm test
+
+      - run: pnpm build
+
+      - run: pnpm exec playwright install --with-deps chromium
+
+      - name: Smoke tests against the static export
+        run: pnpm test:e2e
+        env:
+          CI: "true"
+          WRANGLER_SEND_METRICS: "false"
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-results
+          path: test-results
+          retention-days: 7

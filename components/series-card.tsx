@@ -1,3 +1,4 @@
+import { ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 import { Countdown } from "@/components/countdown";
 import { LocalTime } from "@/components/local-time";
@@ -19,72 +20,89 @@ export interface SeriesCardProps {
   className?: string;
 }
 
-/** A series (Bo1/Bo3/Bo5) as a card: teams, local time, status and spoiler-safe score. */
+/**
+ * A series (Bo1/Bo3/Bo5) as a card: one row per team so names never truncate
+ * on phones, the score in a spoiler-safe column, status and links below.
+ * Nothing outside the spoiler hints at the result (no dimmed loser).
+ */
 export function SeriesCard({ series: s, team1, team2, pending = false, compact = false, className }: SeriesCardProps) {
   const winner1 = s.winnerId !== null && s.winnerId === s.team1Id;
   const winner2 = s.winnerId !== null && s.winnerId === s.team2Id;
+  const showScore = s.status !== "scheduled" && s.score !== null;
   return (
-    <article className={cn("rounded-xl border bg-card p-3 transition-colors hover:border-brand/60 sm:p-4", className)}>
+    <article
+      className={cn("group rounded-xl border bg-card p-3 transition-colors hover:border-brand/60 sm:p-4", className)}
+    >
       <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
-        <span>
+        <span className="truncate">
           {roundLabel(s.stage, s.round, s.tab)} · {bestOfLabel(s.bestOf)}
         </span>
-        <LocalTime iso={s.dateTimeUtc} mode={compact ? "time" : "datetime"} hasTime={s.hasTime} />
+        <span className="shrink-0">
+          <LocalTime iso={s.dateTimeUtc} mode={compact ? "time" : "datetime"} hasTime={s.hasTime} />
+        </span>
       </div>
-      <div className="mt-2 grid grid-cols-[1fr_auto_1fr] items-center gap-2">
-        <TeamSide team={team1} winner={winner1} align="left" />
-        <ScoreBlock series={s} />
-        <TeamSide team={team2} winner={winner2} align="right" />
+      <div className="mt-2 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3">
+        <div className="min-w-0 space-y-1.5">
+          <TeamRow team={team1} />
+          <TeamRow team={team2} />
+        </div>
+        {showScore ? (
+          <Spoiler label="Score">
+            <div className="flex flex-col items-end space-y-1.5 text-lg font-semibold tabular">
+              <ScoreCell value={s.score!.team1} winner={winner1} />
+              <ScoreCell value={s.score!.team2} winner={winner2} />
+            </div>
+          </Spoiler>
+        ) : null}
       </div>
-      <div className="mt-2 flex items-center justify-between gap-2 text-xs">
-        <span className="flex items-center gap-2">
+      <div className="mt-2.5 flex items-center justify-between gap-2 border-t pt-2 text-xs">
+        <span className="flex flex-wrap items-center gap-2">
           <StatusLabel series={s} />
           {s.provisional ? <ProvisionalBadge source={s.source} /> : null}
           {pending ? <PendingData /> : null}
         </span>
         <Link
           href={`/matches/${s.id}`}
-          className="font-medium text-muted-foreground underline hover:text-foreground"
+          className="inline-flex shrink-0 items-center gap-0.5 font-medium text-muted-foreground no-underline transition-colors group-hover:text-foreground hover:text-foreground"
           aria-label={`Details: ${team1?.name ?? "TBD"} vs ${team2?.name ?? "TBD"}`}
         >
-          Details
+          Details <ChevronRightIcon className="size-3.5" aria-hidden />
         </Link>
       </div>
     </article>
   );
 }
 
-function TeamSide({ team, winner, align }: { team: TeamRef | null; winner: boolean; align: "left" | "right" }) {
+function TeamRow({ team }: { team: TeamRef | null }) {
   return (
-    <div className={cn("flex min-w-0 items-center gap-2", align === "right" && "flex-row-reverse text-right")}>
-      <TeamPill team={team} link={false} size="md" />
+    <div className="flex h-7 min-w-0 items-center gap-2">
+      <TeamPill team={team} link={false} size="sm" />
       <span className="truncate text-sm font-medium">{team?.name ?? "TBD"}</span>
-      {winner ? (
-        <Spoiler label="W?">
-          <span className="rounded bg-win/15 px-1 text-[10px] font-semibold text-win">WIN</span>
-        </Spoiler>
-      ) : null}
     </div>
   );
 }
 
-function ScoreBlock({ series: s }: { series: Series }) {
-  if (s.status === "scheduled" || !s.score) {
-    return <span className="px-2 text-sm text-muted-foreground">vs</span>;
-  }
+function ScoreCell({ value, winner }: { value: number; winner: boolean }) {
   return (
-    <Spoiler label="Score">
-      <span className="px-2 text-lg font-semibold tabular">
-        {s.score.team1}
-        <span className="mx-1 text-muted-foreground">–</span>
-        {s.score.team2}
-      </span>
-    </Spoiler>
+    <span className={cn("flex h-7 items-center gap-1.5", winner ? "text-foreground" : "text-muted-foreground")}>
+      {winner ? <span className="rounded bg-win/15 px-1 text-[10px] font-semibold text-win">WIN</span> : null}
+      {value}
+    </span>
   );
 }
 
 export function StatusLabel({ series: s }: { series: Series }) {
   if (s.status === "finished") return <span className="font-medium text-muted-foreground">Final</span>;
-  if (s.status === "live") return <span className="font-medium text-brand">In progress</span>;
+  if (s.status === "live") {
+    return (
+      <span className="inline-flex items-center gap-1.5 font-medium text-brand">
+        <span className="relative flex size-2" aria-hidden>
+          <span className="absolute inline-flex size-full animate-ping rounded-full bg-brand opacity-75" />
+          <span className="relative inline-flex size-2 rounded-full bg-brand" />
+        </span>
+        In progress
+      </span>
+    );
+  }
   return <Countdown iso={s.dateTimeUtc} className="font-medium text-brand" />;
 }

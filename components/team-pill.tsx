@@ -12,13 +12,23 @@ interface TeamPillProps {
   className?: string;
 }
 
-const SIZES = { sm: "h-6 min-w-10 px-1.5 text-[11px]", md: "h-7 min-w-12 px-2 text-xs", lg: "h-9 min-w-16 px-3 text-sm" };
+const SIZES = {
+  sm: "h-6 min-w-10 px-1.5 text-[11px]",
+  md: "h-7 min-w-12 px-2 text-xs",
+  lg: "h-9 min-w-16 px-3 text-sm",
+};
 
 /** Team identity without logos: the team tag on a pill coloured by region. */
 export function TeamPill({ team, size = "md", withName = false, link = true, className }: TeamPillProps) {
   if (!team) {
     return (
-      <span className={cn("inline-flex items-center justify-center rounded-md border border-dashed font-semibold text-muted-foreground", SIZES[size], className)}>
+      <span
+        className={cn(
+          "inline-flex items-center justify-center rounded-md border border-dashed font-semibold text-muted-foreground",
+          SIZES[size],
+          className,
+        )}
+      >
         TBD
       </span>
     );
@@ -26,7 +36,10 @@ export function TeamPill({ team, size = "md", withName = false, link = true, cla
   const region = regionInfo(team.region);
   const pill = (
     <span
-      className={cn("inline-flex items-center justify-center rounded-md font-bold tracking-wide text-region-foreground", SIZES[size])}
+      className={cn(
+        "inline-flex items-center justify-center rounded-md font-bold tracking-wide text-region-foreground",
+        SIZES[size],
+      )}
       style={{ backgroundColor: `var(${region.cssVar})` }}
       title={`${team.name} · ${region.code}`}
     >
@@ -43,8 +56,9 @@ export function TeamPill({ team, size = "md", withName = false, link = true, cla
   );
   if (!link) return <span className={className}>{content}</span>;
   return (
-    <Link href={`/teams/${team.id}`} className={cn("inline-flex items-center rounded-md hover:opacity-90", className)} aria-label={team.name}>
+    <Link href={`/teams/${team.id}`} className={cn("inline-flex items-center rounded-md hover:opacity-90", className)}>
       {content}
+      {withName ? null : <span className="sr-only"> {team.name}</span>}
     </Link>
   );
 }
@@ -53,7 +67,11 @@ export function RegionTag({ region, className }: { region: string; className?: s
   const info = regionInfo(region);
   return (
     <span className={cn("inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground", className)}>
-      <span className="inline-block size-2 rounded-full" style={{ backgroundColor: `var(${info.cssVar})` }} aria-hidden />
+      <span
+        className="inline-block size-2 rounded-full"
+        style={{ backgroundColor: `var(${info.cssVar})` }}
+        aria-hidden
+      />
       {info.code}
     </span>
   );

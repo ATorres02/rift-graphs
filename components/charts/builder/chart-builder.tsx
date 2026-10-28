@@ -14,7 +14,17 @@ import { buildChart, tableToCsv } from "@/lib/charts/build";
 import { TEMPLATES } from "@/lib/charts/templates";
 import { parseConfig, serializeConfig } from "@/lib/charts/url";
 import { useDataset } from "@/lib/data/use-dataset";
-import { DEFAULT_CONFIG, chartProblems, dimensionByKey, dimensionsFor, measuresFor, runQuery, type ChartType, type DataSource, type QueryConfig } from "@/lib/query";
+import {
+  DEFAULT_CONFIG,
+  chartProblems,
+  dimensionByKey,
+  dimensionsFor,
+  measuresFor,
+  runQuery,
+  type ChartType,
+  type DataSource,
+  type QueryConfig,
+} from "@/lib/query";
 import { site } from "@/lib/site";
 import { slugify } from "@/lib/data/ids";
 
@@ -58,14 +68,25 @@ export function ChartBuilder({ version, catalog }: { version: string; catalog: F
   const queryKey = serializeConfig({ ...config, title: null });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const result = useMemo(() => (data ? runQuery(config, data) : null), [queryKey, data]);
-  const built = useMemo(() => (result ? buildChart({ ...result, config: { ...result.config, title: config.title } }) : null), [result, config.title]);
+  const built = useMemo(
+    () => (result ? buildChart({ ...result, config: { ...result.config, title: config.title } }) : null),
+    [result, config.title],
+  );
 
   const update = useCallback((patch: Partial<QueryConfig>) => setConfig((c) => ({ ...c, ...patch })), []);
 
   const switchSource = (source: DataSource) => {
-    const keep = { stages: config.filters.stages, teams: config.filters.teams, regions: config.filters.regions, minGames: config.filters.minGames };
+    const keep = {
+      stages: config.filters.stages,
+      teams: config.filters.teams,
+      regions: config.filters.regions,
+      minGames: config.filters.minGames,
+    };
     const playerLike = source === "players" || source === "champions";
-    const filters = { ...keep, ...(playerLike ? { roles: config.filters.roles, champions: config.filters.champions } : {}) };
+    const filters = {
+      ...keep,
+      ...(playerLike ? { roles: config.filters.roles, champions: config.filters.champions } : {}),
+    };
     for (const k of Object.keys(filters) as (keyof typeof filters)[]) if (filters[k] === undefined) delete filters[k];
     update({ source, series: null, ...SOURCE_DEFAULTS[source], filters });
   };
@@ -75,7 +96,8 @@ export function ChartBuilder({ version, catalog }: { version: string; catalog: F
     const i = list.indexOf(key);
     if (i >= 0) list.splice(i, 1);
     else if (config.chart === "scatter" && list.length >= 2) list.splice(1, 1, key);
-    else if ((config.chart === "bar" || config.chart === "boxplot" || config.chart === "heatmap") && list.length >= 1) list.splice(0, 1, key);
+    else if ((config.chart === "bar" || config.chart === "boxplot" || config.chart === "heatmap") && list.length >= 1)
+      list.splice(0, 1, key);
     else list.push(key);
     update({ measures: list.length ? list : [key] });
   };
@@ -83,10 +105,16 @@ export function ChartBuilder({ version, catalog }: { version: string; catalog: F
   const switchChart = (chart: ChartType) => {
     const patch: Partial<QueryConfig> = { chart };
     if (chart === "radar" && (config.topN === null || config.topN > 4)) patch.topN = 4;
-    if (chart === "line" && !dimensionByKey.get(config.groupBy)?.ordered) patch.groupBy = dimensionsFor(config.source).find((d) => d.ordered)?.key ?? config.groupBy;
-    if (chart === "heatmap" && !config.series) patch.series = dimensionsFor(config.source).find((d) => d.key !== config.groupBy && (d.key === "side" || d.key === "stage"))?.key ?? null;
-    if ((chart === "bar" || chart === "boxplot" || chart === "heatmap") && config.measures.length > 1) patch.measures = [config.measures[0]];
-    if ((chart === "bar" || chart === "boxplot" || chart === "scatter" || chart === "radar") && config.series) patch.series = null;
+    if (chart === "line" && !dimensionByKey.get(config.groupBy)?.ordered)
+      patch.groupBy = dimensionsFor(config.source).find((d) => d.ordered)?.key ?? config.groupBy;
+    if (chart === "heatmap" && !config.series)
+      patch.series =
+        dimensionsFor(config.source).find((d) => d.key !== config.groupBy && (d.key === "side" || d.key === "stage"))
+          ?.key ?? null;
+    if ((chart === "bar" || chart === "boxplot" || chart === "heatmap") && config.measures.length > 1)
+      patch.measures = [config.measures[0]];
+    if ((chart === "bar" || chart === "boxplot" || chart === "scatter" || chart === "radar") && config.series)
+      patch.series = null;
     if (chart === "scatter" && config.measures.length < 2) {
       const extra = measuresFor(config.source).find((m) => !config.measures.includes(m.key) && m.kind !== "count");
       if (extra) patch.measures = [...config.measures, extra.key].slice(0, 2);
@@ -133,12 +161,17 @@ export function ChartBuilder({ version, catalog }: { version: string; catalog: F
 
   return (
     <div className="grid gap-6 lg:grid-cols-[380px_1fr]">
-      <div className="space-y-3">
+      {/* On phones the chart comes first so a shared link shows its chart without scrolling; the controls follow. */}
+      <div className="order-2 space-y-3 lg:order-1">
         <Step n={1} title="Data">
           <SourceStep value={config.source} onChange={switchSource} />
         </Step>
         <Step n={2} title="Measures" hint="Ratios (KDA, per-minute, shares) are computed over totals.">
-          <MeasureStep config={config} onToggle={toggleMeasure} onSwap={() => update({ measures: [config.measures[1], config.measures[0]] })} />
+          <MeasureStep
+            config={config}
+            onToggle={toggleMeasure}
+            onSwap={() => update({ measures: [config.measures[1], config.measures[0]] })}
+          />
         </Step>
         <Step n={3} title="Group and filter">
           <GroupStep config={config} onChange={update} />
@@ -159,8 +192,8 @@ export function ChartBuilder({ version, catalog }: { version: string; catalog: F
         </Step>
       </div>
 
-      <div className="space-y-4">
-        <div>
+      <div className="order-1 flex flex-col gap-4 lg:order-2">
+        <div className="order-2 lg:order-1">
           <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Templates</p>
           <div className="scroll-x flex gap-2 pb-1">
             {TEMPLATES.map((t) => (
@@ -178,19 +211,33 @@ export function ChartBuilder({ version, catalog }: { version: string; catalog: F
           </div>
         </div>
 
-        <figure className="rounded-xl border bg-card p-3 sm:p-4">
+        <figure className="order-1 rounded-xl border bg-card p-3 sm:p-4 lg:order-2">
           <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
             <figcaption className="text-base font-semibold">{built?.title ?? "Chart"}</figcaption>
             <div className="flex flex-wrap gap-1.5">
-              <Button variant="outline" size="sm" onClick={() => setView(view === "chart" ? "table" : "chart")} aria-pressed={view === "table"}>
-                {view === "chart" ? <TableIcon className="size-4" aria-hidden /> : <ChartColumnIcon className="size-4" aria-hidden />}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setView(view === "chart" ? "table" : "chart")}
+                aria-pressed={view === "table"}
+              >
+                {view === "chart" ? (
+                  <TableIcon className="size-4" aria-hidden />
+                ) : (
+                  <ChartColumnIcon className="size-4" aria-hidden />
+                )}
                 {view === "chart" ? "Table" : "Chart"}
               </Button>
               <Button variant="outline" size="sm" onClick={copyLink}>
                 {copied ? <CheckIcon className="size-4" aria-hidden /> : <LinkIcon className="size-4" aria-hidden />}
                 {copied ? "Copied" : "Copy link"}
               </Button>
-              <Button variant="outline" size="sm" onClick={exportPng} disabled={view !== "chart" || !built || !result?.rows.length}>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={exportPng}
+                disabled={view !== "chart" || !built || !result?.rows.length}
+              >
                 <DownloadIcon className="size-4" aria-hidden />
                 PNG
               </Button>
@@ -201,8 +248,12 @@ export function ChartBuilder({ version, catalog }: { version: string; catalog: F
             </div>
           </div>
 
-          {error ? <p className="rounded-md border border-dashed p-4 text-sm text-loss">Could not load the dataset: {error}</p> : null}
-          {!data && !error ? <div className="h-[420px] animate-pulse rounded-lg bg-muted/50" aria-label="Loading data" /> : null}
+          {error ? (
+            <p className="rounded-md border border-dashed p-4 text-sm text-loss">Could not load the dataset: {error}</p>
+          ) : null}
+          {!data && !error ? (
+            <div className="h-[420px] animate-pulse rounded-lg bg-muted/50" aria-label="Loading data" />
+          ) : null}
 
           {data && problems.length ? (
             <ul className="mb-3 space-y-1 rounded-md border border-dashed p-3 text-sm">
@@ -213,12 +264,19 @@ export function ChartBuilder({ version, catalog }: { version: string; catalog: F
               ))}
             </ul>
           ) : null}
-          {data && result && !problems.length && result.emptyReason ? <p className="rounded-md border border-dashed p-4 text-sm text-muted-foreground">{result.emptyReason}</p> : null}
+          {data && result && !problems.length && result.emptyReason ? (
+            <p className="rounded-md border border-dashed p-4 text-sm text-muted-foreground">{result.emptyReason}</p>
+          ) : null}
 
           {data && built && result && result.rows.length ? (
             view === "chart" ? (
               <div style={{ height: 460 }} role="img" aria-label={built.description}>
-                <EChart spec={built.spec} themeKey={themeKey} watermark={WATERMARK} onReady={(instance) => (chartRef.current = instance)} />
+                <EChart
+                  spec={built.spec}
+                  themeKey={themeKey}
+                  watermark={WATERMARK}
+                  onReady={(instance) => (chartRef.current = instance)}
+                />
               </div>
             ) : (
               <SpecTable spec={built.spec} table={built.table} />
@@ -231,8 +289,9 @@ export function ChartBuilder({ version, catalog }: { version: string; catalog: F
           ) : null}
         </figure>
 
-        <p className="text-xs text-muted-foreground">
-          Every chart has a table view and a text description. The URL updates as you edit: share it and the chart opens exactly like this. Looking for a quick head-to-head? Try the{" "}
+        <p className="order-3 text-xs text-muted-foreground">
+          Every chart has a table view and a text description. The URL updates as you edit: share it and the chart opens
+          exactly like this. Looking for a quick head-to-head? Try the{" "}
           <Link href="/compare" className="underline hover:text-foreground">
             comparison page
           </Link>

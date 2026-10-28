@@ -20,7 +20,9 @@ export default function HomePage() {
 
   const upcoming = series.filter((s) => s.status !== "finished").slice(0, 6);
   const live = series.filter((s) => s.status === "live");
-  const latest = [...series.filter((s) => s.status === "finished")].sort((a, b) => b.dateTimeUtc.localeCompare(a.dateTimeUtc)).slice(0, 6);
+  const latest = [...series.filter((s) => s.status === "finished")]
+    .sort((a, b) => b.dateTimeUtc.localeCompare(a.dateTimeUtc))
+    .slice(0, 6);
 
   const mainTeamIds = data.teams.filter((t) => t.stages.includes("main")).map((t) => t.id);
   const swiss = swissStandings(series, mainTeamIds);
@@ -38,7 +40,12 @@ export default function HomePage() {
   const next = upcoming[0];
   const headlines: Headline[] = [
     live.length
-      ? { label: "Right now", value: `${live.length} series in progress`, detail: STAGE_LABEL[live[0].stage], href: `/matches/${live[0].id}` }
+      ? {
+          label: "Right now",
+          value: `${live.length} series in progress`,
+          detail: STAGE_LABEL[live[0].stage],
+          href: `/matches/${live[0].id}`,
+        }
       : next
         ? {
             label: "Next up",
@@ -48,32 +55,51 @@ export default function HomePage() {
           }
         : { label: "Tournament", value: "Completed", detail: tournament.name, href: "/tournament" },
     leaders.kda
-      ? { label: "KDA leader", value: fmt.dec(leaders.kda.value, 1), detail: `${playerLabel(data, leaders.kda.playerId)} · ${leaders.kda.aggregate.games} games`, href: `/players/${leaders.kda.playerId}` }
+      ? {
+          label: "KDA leader",
+          value: fmt.dec(leaders.kda.value, 1),
+          detail: `${playerLabel(data, leaders.kda.playerId)} · ${leaders.kda.aggregate.games} games`,
+          href: `/players/${leaders.kda.playerId}`,
+        }
       : { label: "KDA leader", value: "–", detail: `Needs ${DEFAULT_MIN_GAMES}+ games` },
     leaders.dpm
-      ? { label: "Damage per minute", value: fmt.int(leaders.dpm.value), detail: `${playerLabel(data, leaders.dpm.playerId)} · ${leaders.dpm.aggregate.games} games`, href: `/players/${leaders.dpm.playerId}` }
+      ? {
+          label: "Damage per minute",
+          value: fmt.int(leaders.dpm.value),
+          detail: `${playerLabel(data, leaders.dpm.playerId)} · ${leaders.dpm.aggregate.games} games`,
+          href: `/players/${leaders.dpm.playerId}`,
+        }
       : { label: "Damage per minute", value: "–" },
     leaders.kp
-      ? { label: "Kill participation", value: fmt.pct(leaders.kp.value), detail: `${playerLabel(data, leaders.kp.playerId)} · ${leaders.kp.aggregate.games} games`, href: `/players/${leaders.kp.playerId}` }
+      ? {
+          label: "Kill participation",
+          value: fmt.pct(leaders.kp.value),
+          detail: `${playerLabel(data, leaders.kp.playerId)} · ${leaders.kp.aggregate.games} games`,
+          href: `/players/${leaders.kp.playerId}`,
+        }
       : { label: "Kill participation", value: "–" },
   ];
 
   return (
     <div className="space-y-10">
       <section className="space-y-4">
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <div>
-            <p className="text-xs font-medium uppercase tracking-wider text-brand">{tournament.name}</p>
-            <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{site.tagline}</h1>
-            <p className="mt-2 max-w-2xl text-muted-foreground">
-              Matches, teams, players, champions and drafts of the 2026 World Championship, refreshed automatically from Leaguepedia. Free, no ads, no logos.
-            </p>
-          </div>
+        <div className="relative overflow-hidden rounded-2xl border bg-card/50 p-5 sm:p-8">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -right-20 -top-24 size-72 rounded-full bg-brand/15 blur-3xl"
+          />
+          <p className="text-xs font-medium uppercase tracking-wider text-brand">{tournament.name}</p>
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-4xl">{site.tagline}</h1>
+          <p className="mt-2 max-w-2xl text-sm text-muted-foreground sm:text-base">
+            Matches, teams, players, champions and drafts of the 2026 World Championship, refreshed automatically from
+            Leaguepedia. Free, no ads, no logos.
+          </p>
         </div>
         <Headlines items={headlines} className="lg:grid-cols-4" />
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-dashed bg-card/60 px-4 py-3 text-sm">
           <p className="text-muted-foreground">
-            <span className="font-medium text-foreground">Spoilers:</span> scores and winners are shown by default. Hide them to browse the schedule safely and reveal results one by one.
+            <span className="font-medium text-foreground">Spoilers:</span> scores and winners are shown by default. Hide
+            them to browse the schedule safely and reveal results one by one.
           </p>
           <SpoilerToggle />
         </div>
@@ -81,12 +107,22 @@ export default function HomePage() {
 
       <div className="grid gap-10 lg:grid-cols-[2fr_1fr]">
         <div className="space-y-10">
-          <Section title="Upcoming series" description="Times shown in your local time zone." action={<Link href="/matches" className="text-sm text-brand underline">All matches</Link>}>
+          <Section
+            title="Upcoming series"
+            description="Times shown in your local time zone."
+            action={
+              <Link href="/matches" className="text-sm text-brand underline">
+                All matches
+              </Link>
+            }
+          >
             {upcoming.length ? (
               <div className="grid gap-3 sm:grid-cols-2">
                 {upcoming.map((s) => {
                   const v = seriesView(data, s);
-                  return <SeriesCard key={s.id} series={v.series} team1={v.team1} team2={v.team2} pending={v.pending} />;
+                  return (
+                    <SeriesCard key={s.id} series={v.series} team1={v.team1} team2={v.team2} pending={v.pending} />
+                  );
                 })}
               </div>
             ) : (
@@ -108,7 +144,11 @@ export default function HomePage() {
           <Section
             title="Swiss Stage"
             description={`${qualified} qualified · ${eliminated} eliminated · ${mainTeamIds.length - qualified - eliminated} still playing`}
-            action={<Link href="/tournament" className="text-sm text-brand underline">Full format</Link>}
+            action={
+              <Link href="/tournament" className="text-sm text-brand underline">
+                Full format
+              </Link>
+            }
           >
             <Spoiler as="div" label="Reveal standings">
               <ol className="space-y-2">
@@ -131,11 +171,22 @@ export default function HomePage() {
             </Spoiler>
           </Section>
 
-          <Section title="Build your own chart" description="Pick a measure, group, filter and chart type; share the link." action={<Link href="/charts" className="text-sm text-brand underline">Open the builder</Link>}>
+          <Section
+            title="Build your own chart"
+            description="Pick a measure, group, filter and chart type; share the link."
+            action={
+              <Link href="/charts" className="text-sm text-brand underline">
+                Open the builder
+              </Link>
+            }
+          >
             <ul className="space-y-1.5">
               {TEMPLATES.map((t) => (
                 <li key={t.id}>
-                  <Link href={`/charts?${serializeConfig(t.config)}`} className="block rounded-lg border bg-card px-3 py-2 text-sm no-underline transition-colors hover:border-brand/60">
+                  <Link
+                    href={`/charts?${serializeConfig(t.config)}`}
+                    className="block rounded-lg border bg-card px-3 py-2 text-sm no-underline transition-colors hover:border-brand/60"
+                  >
                     <span className="font-medium">{t.name}</span>
                     <span className="block text-xs text-muted-foreground">{t.description}</span>
                   </Link>

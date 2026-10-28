@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { Footer } from "@/components/layout/footer";
@@ -10,8 +10,8 @@ import { SPOILER_INIT_SCRIPT } from "@/components/spoilers";
 import { getData } from "@/lib/data/load";
 import { site } from "@/lib/site";
 
+// One web font only: the monospace stack is the system one (nothing on the site uses a mono face).
 const geistSans = Geist({ variable: "--font-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -34,7 +34,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const { meta } = getData();
   return (
-    <html lang="en" className={`dark ${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`dark ${geistSans.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: SPOILER_INIT_SCRIPT }} />
       </head>
