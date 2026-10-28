@@ -138,6 +138,7 @@ export function CompareTool({ groups }: { groups: CompareGroup[] }) {
       indicators: metrics.map((m) => ({
         name: m.label,
         max: Math.max(...group.entities.map((e) => e.values[m.key] ?? 0), 0.0001),
+        unit: m.unit,
       })),
       // Two sides from the same region would share a colour: the second one takes the brand blue instead.
       series: [ea, eb].map((e, i) => ({
@@ -202,7 +203,7 @@ export function CompareTool({ groups }: { groups: CompareGroup[] }) {
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-3 sm:grid-cols-[auto_1fr_1fr]">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-[auto_minmax(0,1fr)_minmax(0,1fr)]">
         <div role="radiogroup" aria-label="Compare" className="flex gap-1 self-start rounded-md border p-1">
           {groups.map((g) => (
             <button

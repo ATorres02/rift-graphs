@@ -198,7 +198,7 @@ export function buildChart(result: QueryResult): BuiltChart {
       );
       spec = {
         type: "radar",
-        indicators: measures.map((m, i) => ({ name: m.label, max: maxes[i] })),
+        indicators: measures.map((m, i) => ({ name: m.label, max: maxes[i], unit: m.unit })),
         series: [
           ...entities.map((r) => ({
             name: r.label,
@@ -269,7 +269,8 @@ function sideColor(dimensionKey: string, key: string): string | undefined {
 export function tableToCsv(table: ChartTable): string {
   const esc = (v: string | number | null) => {
     if (v === null) return "";
-    const s = String(v);
+    // Four decimals keep fractions (percentages) exact to 0.01% without float noise.
+    const s = typeof v === "number" && !Number.isInteger(v) ? String(Number(v.toFixed(4))) : String(v);
     return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
   };
   return [table.columns.map(esc).join(","), ...table.rows.map((r) => r.map(esc).join(","))].join("\n");

@@ -129,7 +129,8 @@ function renderCell(kind: CellKind | undefined, value: unknown) {
       );
     }
     default:
-      return String(value);
+      // Numbers without a declared kind never show more than two decimals.
+      return typeof value === "number" && !Number.isInteger(value) ? String(Number(value.toFixed(2))) : String(value);
   }
 }
 

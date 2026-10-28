@@ -54,7 +54,8 @@ export interface ScatterSpec {
 
 export interface RadarSpec {
   type: "radar";
-  indicators: { name: string; max: number }[];
+  /** `unit` formats the tooltip and the table (defaults to "number"). */
+  indicators: { name: string; max: number; unit?: Unit }[];
   series: ChartSeries[];
 }
 

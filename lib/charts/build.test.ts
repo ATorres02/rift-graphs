@@ -82,6 +82,7 @@ describe("buildChart", () => {
     const built = buildChart(r);
     if (built.spec.type !== "radar") throw new Error("expected radar");
     expect(built.spec.indicators.map((i) => i.max)).toEqual([700, 5, 10]);
+    expect(built.spec.indicators.map((i) => i.unit)).toEqual(["number", "decimal1", "decimal1"]);
     expect(built.spec.series.map((s) => s.name)).toEqual(["A", "B", "Tournament average"]);
   });
   it("pivots a series dimension into heat map cells", () => {
@@ -174,6 +175,9 @@ describe("autoTitle and CSV", () => {
         ],
       }),
     ).toBe('Name,Value\n"A ""quoted"", one",1.5\nB,');
+  });
+  it("rounds CSV numbers to four decimals", () => {
+    expect(tableToCsv({ columns: ["Name", "Value"], rows: [["A", 2 / 3]] })).toBe("Name,Value\nA,0.6667");
   });
   it("computes five-number summaries", () => {
     expect(boxStats([5, 1, 3, 2, 4])).toEqual([1, 2, 3, 4, 5]);

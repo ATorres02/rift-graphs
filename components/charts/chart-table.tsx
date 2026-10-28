@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 function unitForColumn(spec: ChartSpec, columnIndex: number, units?: (Unit | undefined)[]): Unit | undefined {
   if (units) return units[columnIndex];
   if (spec.type === "scatter") return columnIndex === 1 ? spec.xUnit : spec.yUnit;
-  if (spec.type === "radar") return "decimal1";
+  if (spec.type === "radar") return spec.indicators[columnIndex - 1]?.unit;
   return spec.unit;
 }
 

@@ -199,7 +199,7 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
                 ) : (
                   <p className="text-sm text-muted-foreground">Draft order not published yet.</p>
                 )}
-                <div className="grid gap-3 lg:grid-cols-[1fr_320px]">
+                <div className="grid grid-cols-1 gap-3 lg:grid-cols-[minmax(0,1fr)_320px]">
                   <div className="space-y-3">
                     {rows.length ? (
                       <>

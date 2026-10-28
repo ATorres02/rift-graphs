@@ -160,7 +160,7 @@ export function ChartBuilder({ version, catalog }: { version: string; catalog: F
   const problems = result?.problems ?? chartProblems(config, config.chart);
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[380px_1fr]">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[380px_minmax(0,1fr)]">
       {/* On phones the chart comes first so a shared link shows its chart without scrolling; the controls follow. */}
       <div className="order-2 space-y-3 lg:order-1">
         <Step n={1} title="Data">

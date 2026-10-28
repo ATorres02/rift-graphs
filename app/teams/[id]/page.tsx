@@ -8,7 +8,7 @@ import { PageHeader, Section } from "@/components/page-header";
 import { SeriesCard } from "@/components/series-card";
 import { Spoiler } from "@/components/spoilers";
 import { RegionTag, TeamPill } from "@/components/team-pill";
-import type { BarSpec, RadarSpec } from "@/lib/charts/spec";
+import { formatUnit, type BarSpec, type RadarSpec, type Unit } from "@/lib/charts/spec";
 import { getData, teamRef } from "@/lib/data/load";
 import { regionInfo } from "@/lib/data/regions";
 import { fmt, ROLE_LABEL, STAGE_LABEL } from "@/lib/format";
@@ -32,13 +32,13 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   };
 }
 
-const RADAR_METRICS: { key: keyof TeamAggregate; name: string }[] = [
-  { key: "winRate", name: "Win rate" },
-  { key: "killsPerGame", name: "Kills / game" },
-  { key: "goldPerMinute", name: "Gold / min" },
-  { key: "towersPerGame", name: "Towers / game" },
-  { key: "dragonControl", name: "Dragon control" },
-  { key: "baronControl", name: "Baron control" },
+const RADAR_METRICS: { key: keyof TeamAggregate; name: string; unit: Unit }[] = [
+  { key: "winRate", name: "Win rate", unit: "percent" },
+  { key: "killsPerGame", name: "Kills / game", unit: "decimal1" },
+  { key: "goldPerMinute", name: "Gold / min", unit: "number" },
+  { key: "towersPerGame", name: "Towers / game", unit: "decimal1" },
+  { key: "dragonControl", name: "Dragon control", unit: "percent" },
+  { key: "baronControl", name: "Baron control", unit: "percent" },
 ];
 
 export default async function TeamPage({ params }: { params: Promise<{ id: string }> }) {
@@ -82,7 +82,7 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
 
   const radar: RadarSpec = {
     type: "radar",
-    indicators: RADAR_METRICS.map((m) => ({ name: m.name, max: max(m.key) })),
+    indicators: RADAR_METRICS.map((m) => ({ name: m.name, max: max(m.key), unit: m.unit })),
     series: [
       {
         name: team.short,
@@ -94,7 +94,11 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
   };
   const radarTable = {
     columns: ["Metric", team.short, "Tournament average"],
-    rows: RADAR_METRICS.map((m, i) => [m.name, radar.series[0].values[i], radar.series[1].values[i]]),
+    rows: RADAR_METRICS.map((m, i) => [
+      m.name,
+      formatUnit(radar.series[0].values[i], m.unit),
+      formatUnit(radar.series[1].values[i], m.unit),
+    ]),
   };
 
   const champBar: BarSpec = {
@@ -166,7 +170,7 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
       />
       <Headlines items={headlines} className="lg:grid-cols-4" />
 
-      <div className="grid gap-8 lg:grid-cols-[1fr_1fr]">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
         <Section
           title="Profile vs. tournament average"
           description="Six team metrics scaled to the best value in the tournament."
