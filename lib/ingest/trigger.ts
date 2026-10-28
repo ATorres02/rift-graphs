@@ -57,11 +57,11 @@ export function toScheduleEntries(series: Series[]): ScheduleEntry[] {
 const unsettled = (s: ScheduleEntry): boolean =>
   s.status !== "finished" || s.provisional || s.scoreboards < s.gamesPlayed;
 
-/** Unsettled series whose slot is between `lead` ms ahead and TRAIL_MS behind. */
+/** Unsettled series whose slot is between `lead` ms ahead and TRAIL_MS behind (live ones count from any slot). */
 function around(schedule: ScheduleEntry[], now: number, lead: number): ScheduleEntry[] {
   return schedule.filter((s) => {
     const start = Date.parse(s.dateTimeUtc);
-    return unsettled(s) && start - lead <= now && now - start <= TRAIL_MS;
+    return unsettled(s) && (s.status === "live" || start - lead <= now) && now - start <= TRAIL_MS;
   });
 }
 

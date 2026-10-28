@@ -35,13 +35,20 @@ describe("watched and inPlay", () => {
     const schedule = [
       entry({ id: "later-today", dateTimeUtc: "2026-10-28T23:00:00Z" }),
       entry({ id: "soon", dateTimeUtc: "2026-10-28T22:15:00Z" }),
+      entry({ id: "early-start", dateTimeUtc: "2026-10-28T23:30:00Z", status: "live" }),
       entry({ id: "live", dateTimeUtc: "2026-10-28T20:00:00Z", status: "live" }),
       entry({ id: "final", dateTimeUtc: "2026-10-28T20:00:00Z", status: "finished", gamesPlayed: 2, scoreboards: 2 }),
       entry({ id: "no-scoreboards", dateTimeUtc: "2026-10-28T17:00:00Z", status: "finished", gamesPlayed: 2 }),
       entry({ id: "yesterday", dateTimeUtc: "2026-10-27T20:00:00Z", status: "live" }),
     ];
-    expect(watched(schedule, NOW).map((s) => s.id)).toEqual(["later-today", "soon", "live", "no-scoreboards"]);
-    expect(inPlay(schedule, NOW).map((s) => s.id)).toEqual(["soon", "live", "no-scoreboards"]);
+    expect(watched(schedule, NOW).map((s) => s.id)).toEqual([
+      "later-today",
+      "soon",
+      "early-start",
+      "live",
+      "no-scoreboards",
+    ]);
+    expect(inPlay(schedule, NOW).map((s) => s.id)).toEqual(["soon", "early-start", "live", "no-scoreboards"]);
   });
 });
 
