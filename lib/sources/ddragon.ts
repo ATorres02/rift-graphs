@@ -60,6 +60,18 @@ export function championSplashUrl(ddragonId: string, skin = 0): string {
   return `${DDRAGON_BASE}/cdn/img/champion/splash/${ddragonId}_${skin}.jpg`;
 }
 
+/**
+ * Tribute art on the champion gallery and champion pages: these champions are shown with the given skin,
+ * in black and white. Jarvan IV wears his Fnatic skin (skin 6) in memory of a legendary player.
+ */
+const TRIBUTE_SKINS: Record<string, number> = { JarvanIV: 6 };
+
+/** Skin number and black-and-white flag for a champion's art on the champion pages. */
+export function championPageArt(ddragonId: string): { skin: number; tribute: boolean } {
+  const skin = TRIBUTE_SKINS[ddragonId];
+  return skin === undefined ? { skin: 0, tribute: false } : { skin, tribute: true };
+}
+
 /** Route segment for a champion page: the Data Dragon id in lower case ("ksante"). */
 export function championSlug(ddragonId: string): string {
   return ddragonId.toLowerCase();

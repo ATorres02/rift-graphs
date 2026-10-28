@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useSpoilers } from "@/components/spoilers";
 import type { Role } from "@/lib/data/types";
 import { fmt, ROLE_LABEL } from "@/lib/format";
-import { championLoadingUrl, championSlug } from "@/lib/sources/ddragon";
+import { championLoadingUrl, championPageArt, championSlug } from "@/lib/sources/ddragon";
 import { cn } from "@/lib/utils";
 
 export interface GalleryChampion {
@@ -88,19 +88,23 @@ export function ChampionGallery({ champions, games }: { champions: GalleryChampi
           const roleGames = role !== "all" ? c.byRole[role] : null;
           const wr = hideResults ? null : roleGames ? roleGames.wins / Math.max(roleGames.games, 1) : c.winRate;
           const href = c.ddragonId ? `/champions/${championSlug(c.ddragonId)}` : null;
+          const art = c.ddragonId ? championPageArt(c.ddragonId) : null;
           const card = (
             <article className="group relative aspect-[308/560] overflow-hidden rounded-2xl border bg-card shadow-sm transition-transform duration-200 hover:-translate-y-0.5 hover:border-brand/70">
               {c.ddragonId ? (
                 // eslint-disable-next-line @next/next/no-img-element -- remote art, fixed box, no optimiser in a static export
                 <img
-                  src={championLoadingUrl(c.ddragonId)}
+                  src={championLoadingUrl(c.ddragonId, art?.skin)}
                   alt=""
                   width={308}
                   height={560}
                   loading={i < 4 ? "eager" : "lazy"}
                   decoding="async"
                   fetchPriority={i < 2 ? "high" : "auto"}
-                  className="absolute inset-0 size-full object-cover transition-transform duration-300 group-hover:scale-[1.04]"
+                  className={cn(
+                    "absolute inset-0 size-full object-cover transition-transform duration-300 group-hover:scale-[1.04]",
+                    art?.tribute && "grayscale",
+                  )}
                 />
               ) : (
                 <div className="absolute inset-0 bg-muted" />

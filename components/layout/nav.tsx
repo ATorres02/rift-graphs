@@ -9,17 +9,18 @@ function isActive(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function TopNav() {
+/** Section links for wide screens; the header decides where it shows (inline or on its own row). */
+export function TopNav({ className }: { className?: string }) {
   const pathname = usePathname();
   return (
-    <nav aria-label="Main" className="hidden items-center gap-1 md:flex">
+    <nav aria-label="Main" className={cn("items-center gap-1", className)}>
       {NAV.map((item) => (
         <Link
           key={item.href}
           href={item.href}
           aria-current={isActive(pathname, item.href) ? "page" : undefined}
           className={cn(
-            "rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground no-underline transition-colors hover:bg-accent hover:text-foreground",
+            "shrink-0 whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground no-underline transition-colors hover:bg-accent hover:text-foreground",
             isActive(pathname, item.href) && "bg-accent text-foreground",
           )}
         >

@@ -64,7 +64,13 @@ test("spoiler mode hides scores until revealed and survives navigation", async (
   await page.goto("/matches");
   await expect(page.getByRole("button", { name: /Spoilers/ }).first()).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("main").getByText("WIN")).toHaveCount(0);
-  await page.getByRole("button", { name: /score/i }).first().click();
+  // Reveal a finished series: a live one has a score but no winner yet.
+  await page
+    .locator("main article")
+    .filter({ hasNotText: "In progress" })
+    .getByRole("button", { name: /score/i })
+    .first()
+    .click();
   await expect(page.locator("main").getByText("WIN").first()).toBeVisible();
 });
 

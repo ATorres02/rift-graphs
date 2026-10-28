@@ -13,7 +13,13 @@ import type { BarSpec } from "@/lib/charts/spec";
 import type { ChampionRef, StageId } from "@/lib/data/types";
 import { fmt, ROLE_LABEL, roundLabel, STAGE_LABEL } from "@/lib/format";
 import { aggregateChampions, kda, ROLES } from "@/lib/metrics";
-import { championLoadingUrl, championSlug, championSplashUrl, normalizeChampionName } from "@/lib/sources/ddragon";
+import {
+  championLoadingUrl,
+  championPageArt,
+  championSlug,
+  championSplashUrl,
+  normalizeChampionName,
+} from "@/lib/sources/ddragon";
 import { defaultOgImage } from "@/lib/site";
 
 export const dynamicParams = false;
@@ -131,14 +137,15 @@ export default async function ChampionPage({ params }: { params: Promise<{ id: s
       ? { label: "Win rate", value: fmt.pct(agg.winRate), detail: `${agg.wins}–${agg.picks - agg.wins}`, spoiler: true }
       : { label: "Win rate", value: "–", detail: "Never picked" },
   ];
-  const splash = championSplashUrl(c.id);
+  const art = championPageArt(c.id);
+  const splash = championSplashUrl(c.id, art.skin);
 
   return (
     <div className="space-y-8">
       <header className="relative -mx-4 overflow-hidden sm:mx-0 sm:rounded-3xl">
         <div className="absolute inset-0">
           <picture>
-            <source media="(max-width: 640px)" srcSet={championLoadingUrl(c.id)} />
+            <source media="(max-width: 640px)" srcSet={championLoadingUrl(c.id, art.skin)} />
             <img
               src={splash}
               alt=""
@@ -146,7 +153,7 @@ export default async function ChampionPage({ params }: { params: Promise<{ id: s
               height={717}
               fetchPriority="high"
               decoding="async"
-              className="size-full object-cover object-[center_25%]"
+              className={`size-full object-cover object-[center_25%]${art.tribute ? " grayscale" : ""}`}
             />
           </picture>
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/10" />
