@@ -69,6 +69,31 @@ test("a chart link reproduces the chart and offers a table view", async ({ page 
   expect(errors).toEqual([]);
 });
 
+test("the champion gallery filters by role and opens a champion page", async ({ page }) => {
+  const errors = watchErrors(page);
+  await page.goto("/champions");
+  const cards = page.locator("main ul li article");
+  await expect(cards.first()).toBeVisible();
+  const all = await cards.count();
+  await page.getByRole("button", { name: "Jungle" }).click();
+  await expect.poll(() => cards.count()).toBeLessThan(all);
+  await page.locator("main ul li a").first().click();
+  await expect(page).toHaveURL(/\/champions\/[a-z]+$/);
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await expect(page.getByText(/Presence/i).first()).toBeVisible();
+  expect(errors).toEqual([]);
+});
+
+test("the teams map filters the region cards", async ({ page }) => {
+  await page.goto("/teams");
+  await expect(page.getByRole("img", { name: /World map/ })).toBeVisible();
+  await page.getByRole("button", { name: /LCK/ }).click();
+  await expect(page.getByRole("heading", { level: 3 })).toHaveCount(1);
+  await expect(page.getByText(/Coach/).first()).toBeVisible();
+  await page.getByRole("button", { name: "All regions" }).click();
+  await expect(page.getByRole("heading", { level: 3 })).toHaveCount(6);
+});
+
 test("unknown routes return the 404 page", async ({ page }) => {
   const res = await page.goto("/this-page-does-not-exist");
   expect(res?.status()).toBe(404);

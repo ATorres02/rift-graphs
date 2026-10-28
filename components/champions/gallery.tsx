@@ -90,9 +90,9 @@ export function ChampionGallery({ champions, games }: { champions: GalleryChampi
                   alt=""
                   width={308}
                   height={560}
-                  loading={i < 8 ? "eager" : "lazy"}
+                  loading={i < 4 ? "eager" : "lazy"}
                   decoding="async"
-                  fetchPriority={i < 4 ? "high" : "auto"}
+                  fetchPriority={i < 2 ? "high" : "auto"}
                   className="absolute inset-0 size-full object-cover transition-transform duration-300 group-hover:scale-[1.04]"
                 />
               ) : (
@@ -123,11 +123,7 @@ export function ChampionGallery({ champions, games }: { champions: GalleryChampi
           return (
             <li key={c.name}>
               {href ? (
-                <Link
-                  href={href}
-                  className="block no-underline focus-visible:outline-2 focus-visible:outline-brand"
-                  aria-label={`${c.name}: ${fmt.pct(c.presence)} presence`}
-                >
+                <Link href={href} className="block no-underline focus-visible:outline-2 focus-visible:outline-brand">
                   {card}
                 </Link>
               ) : (

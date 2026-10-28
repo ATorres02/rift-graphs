@@ -11,7 +11,7 @@ import { getData, seriesTeams, teamRef } from "@/lib/data/load";
 import type { ChampionRef, StageId } from "@/lib/data/types";
 import { fmt, ROLE_LABEL, roundLabel, STAGE_LABEL } from "@/lib/format";
 import { aggregateChampions, kda, ROLES } from "@/lib/metrics";
-import { championSlug, championSplashUrl, normalizeChampionName } from "@/lib/sources/ddragon";
+import { championLoadingUrl, championSlug, championSplashUrl, normalizeChampionName } from "@/lib/sources/ddragon";
 
 export const dynamicParams = false;
 
@@ -107,16 +107,19 @@ export default async function ChampionPage({ params }: { params: Promise<{ id: s
     <div className="space-y-8">
       <header className="relative -mx-4 overflow-hidden sm:mx-0 sm:rounded-3xl">
         <div className="absolute inset-0">
-          {/* eslint-disable-next-line @next/next/no-img-element -- remote splash art, fixed box */}
-          <img
-            src={splash}
-            alt=""
-            width={1215}
-            height={717}
-            fetchPriority="high"
-            decoding="async"
-            className="size-full object-cover object-[center_25%]"
-          />
+          <picture>
+            <source media="(max-width: 640px)" srcSet={championLoadingUrl(c.id)} />
+            {/* eslint-disable-next-line @next/next/no-img-element -- remote splash art, fixed box; phones get the 55 KB portrait instead of the 160 KB splash */}
+            <img
+              src={splash}
+              alt=""
+              width={1215}
+              height={717}
+              fetchPriority="high"
+              decoding="async"
+              className="size-full object-cover object-[center_25%]"
+            />
+          </picture>
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/10" />
           <div className="absolute inset-0 bg-gradient-to-r from-background/70 to-transparent" />
         </div>
