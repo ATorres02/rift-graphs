@@ -12,7 +12,7 @@ export const site = {
     "Fan-made, free statistics site for the 2026 League of Legends World Championship: matches, teams, players, champions and drafts, built on Leaguepedia data.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
   author: {
-    name: process.env.NEXT_PUBLIC_AUTHOR_NAME || "Unstable Devs",
+    name: process.env.NEXT_PUBLIC_AUTHOR_NAME || "Alex Torres",
     linkedin: process.env.NEXT_PUBLIC_AUTHOR_LINKEDIN ?? "",
   },
   repoUrl: process.env.NEXT_PUBLIC_REPO_URL ?? "",

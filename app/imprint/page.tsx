@@ -6,16 +6,20 @@ export const metadata: Metadata = { title: "Imprint", description: `Imprint (Imp
 
 export default function ImprintPage() {
   const { name, address, email } = site.imprint;
-  const complete = Boolean(name && address);
+  // Show whatever has been published (name and email alone are enough for a non-commercial site).
+  const hasDetails = Boolean(name || address || email);
   return (
     <article className="max-w-3xl space-y-6 text-muted-foreground">
       <PageHeader title="Imprint" description="Information about the person responsible for this website." />
-      {complete ? (
+      {hasDetails ? (
         <address className="not-italic">
-          <p className="font-medium text-foreground">{name}</p>
-          {address.split("\n").map((line, i) => (
-            <p key={i}>{line}</p>
-          ))}
+          {name ? <p className="font-medium text-foreground">{name}</p> : null}
+          {address
+            .split("\n")
+            .filter(Boolean)
+            .map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
           {email ? (
             <p>
               <a href={`mailto:${email}`} className="underline">
@@ -25,11 +29,7 @@ export default function ImprintPage() {
           ) : null}
         </address>
       ) : (
-        <p className="rounded-xl border border-dashed p-4">
-          The imprint details have not been published yet. They are read from the <code>NEXT_PUBLIC_IMPRINT_NAME</code>,{" "}
-          <code>NEXT_PUBLIC_IMPRINT_ADDRESS</code> and <code>NEXT_PUBLIC_IMPRINT_EMAIL</code> environment variables at
-          build time.
-        </p>
+        <p className="rounded-xl border border-dashed p-4">The contact details will be published here soon.</p>
       )}
       <p>
         {site.name} is a private, non-commercial fan project. It is not affiliated with, endorsed or sponsored by Riot

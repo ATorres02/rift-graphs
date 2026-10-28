@@ -184,7 +184,10 @@ export function Rift3D({ leaders, objectives }: { leaders: RiftLeader[]; objecti
             >
               <RoleGlyph
                 kind={m.kind}
-                className={cn("size-7", isObjective ? (m.kind === "dragon" ? "text-orange-300" : "text-violet-300") : "text-brand")}
+                className={cn(
+                  "size-7",
+                  isObjective ? (m.kind === "dragon" ? "text-orange-300" : "text-violet-300") : "text-brand",
+                )}
               />
             </button>
           );
