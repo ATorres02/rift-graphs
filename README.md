@@ -48,9 +48,12 @@ games carry `source` and `provisional`; disagreements between sources go to `dat
 `meta.json` lists what was applied, superseded or ignored. Provisional results count for standings and the bracket
 but not for rankings or the chart builder.
 
-`.github/workflows/ingest.yml` runs it every 15 minutes on match days (17:00–06:59 UTC), every 6 hours otherwise
-and on every push that touches `data/manual/`; it commits only when the data changed and then calls the deploy
-workflow. `scripts/probe-lolesports.ts` dumps raw lolesports
+`.github/workflows/ingest.yml` runs it and commits only when the data changed, then calls the deploy workflow.
+On match days it is started by the Worker's cron (`worker/index.ts`, every 2 minutes): it compares the published
+`/api/schedule.json` with the lolesports state and starts the workflow as soon as a match starts (even ahead of
+its slot), a game ends or a series ends, plus every 15 minutes while a series is in play for Leaguepedia's
+scoreboards (`lib/ingest/trigger.ts`). GitHub's own schedule (every 15 minutes on match days, every 6 hours
+otherwise) and pushes that touch `data/manual/` remain as fallbacks. `scripts/probe-lolesports.ts` dumps raw lolesports
 responses into the git-ignored `.ingest-cache/` when the API needs a look.
 
 ## Deployment
@@ -59,7 +62,9 @@ responses into the git-ignored `.ingest-cache/` when the API needs a look.
 `wrangler deploy` on every push to `main` (and after every data commit). Configuration lives in `wrangler.jsonc`;
 `public/_headers` sets cache and security headers. The workflow needs two repository secrets,
 `CLOUDFLARE_API_TOKEN` (Workers Scripts: Edit) and `CLOUDFLARE_ACCOUNT_ID`, and reads the public `NEXT_PUBLIC_*`
-values from repository variables. To preview the export locally:
+values from repository variables. The Worker's cron needs two Worker secrets, set in the Cloudflare dashboard:
+`GITHUB_DISPATCH_TOKEN` (fine-grained token, Actions: read and write on this repository only) and
+`LOLESPORTS_API_KEY`. To preview the export locally:
 
 ```bash
 pnpm build
@@ -78,7 +83,8 @@ Every chart on `/charts` is described by a short URL, for example `/charts?d=pla
 - `lib/query.ts` chart builder query engine (measures, dimensions, filters, validation); `lib/charts/` chart specs, builder, URL codec, templates
 - `lib/sources/` Leaguepedia Cargo client, lolesports client, manual-file schema and Data Dragon helpers; `lib/ingest/merge.ts` source merging
 - `scripts/ingest.ts` pipeline; `data/worlds-2026/` generated dataset; `data/manual/` hand-typed provisional games
-- `wrangler.jsonc`, `public/_headers`, `.github/workflows/` ingest and deploy
+- `wrangler.jsonc`, `public/_headers`, `.github/workflows/` ingest and deploy; `worker/index.ts` 404 fallback and the
+  match-day cron (`lib/ingest/trigger.ts` decides when to refresh)
 
 ## License
 

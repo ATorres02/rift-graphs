@@ -1,9 +1,11 @@
 {
   // Cloudflare Workers with Static Assets: the Next.js static export in ./out is
   // uploaded as-is by `wrangler deploy` (GitHub Actions, see .github/workflows/deploy.yml).
-  // There is no Worker script: every request is served from the static files.
+  // Files are served before the script runs; worker/index.ts only adds the 404 fallback and
+  // the match-day cron that starts the ingest workflow on GitHub.
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "rift-graphs",
+  "main": "worker/index.ts",
   "compatibility_date": "2026-10-01",
   // Served only on the bare domain (zone riftgraphs.com, same Cloudflare account). www.riftgraphs.com is
   // a proxied placeholder DNS record plus a redirect rule to the bare domain, both set in the dashboard,
@@ -13,7 +15,13 @@
   "routes": [{ "pattern": "riftgraphs.com", "custom_domain": true }],
   "assets": {
     "directory": "./out",
+    "binding": "ASSETS",
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "404-page",
   },
+  // Every two minutes, UTC. Free plan: cron runs are included; the script stays well under its limits.
+  "triggers": { "crons": ["*/2 * * * *"] },
+  // Public values; the secrets GITHUB_DISPATCH_TOKEN and LOLESPORTS_API_KEY are set in the dashboard.
+  "vars": { "GITHUB_REPO": "ATorres02/rift-graphs", "INGEST_WORKFLOW": "ingest.yml" },
+  "observability": { "enabled": true },
 }

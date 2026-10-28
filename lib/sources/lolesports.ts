@@ -68,7 +68,8 @@ export class LolesportsClient {
   constructor(options: LolesportsClientOptions) {
     this.apiKey = options.apiKey;
     this.baseUrl = (options.baseUrl ?? DEFAULT_BASE_URL).replace(/\/$/, "");
-    this.fetchImpl = options.fetchImpl ?? fetch;
+    // Bound: Cloudflare Workers throw "Illegal invocation" when fetch is called as a method of another object.
+    this.fetchImpl = options.fetchImpl ?? fetch.bind(globalThis);
     this.timeoutMs = options.timeoutMs ?? 10_000;
     this.sleep = options.sleep ?? ((ms) => new Promise((r) => setTimeout(r, ms)));
     this.log = options.log ?? (() => {});

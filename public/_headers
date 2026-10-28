@@ -5,6 +5,8 @@
   Cache-Control: public, max-age=86400
 /api/dataset.json
   Cache-Control: public, max-age=300, stale-while-revalidate=3600
+/api/schedule.json
+  Cache-Control: public, max-age=60
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin

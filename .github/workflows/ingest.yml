@@ -11,8 +11,10 @@ on:
         type: boolean
         default: false
   schedule:
-    # Match days (Worlds 2026, UTC): every 15 minutes between 17:00 and 06:59 UTC; lolesports and Leaguepedia are
-    # queried in the same run. Swiss rounds 4-5: 28-31 Oct · Quarterfinals and semifinals: 3-8 Nov · Final: 14 Nov.
+    # Fallback only: on match days the Cloudflare cron in worker/index.ts dispatches this workflow
+    # (GitHub's schedule runs late or not at all). Match days (Worlds 2026, UTC): every 15 minutes
+    # between 17:00 and 06:59 UTC; lolesports and Leaguepedia are queried in the same run.
+    # Swiss rounds 4-5: 28-31 Oct. Quarterfinals and semifinals: 3-8 Nov. Final: 14 Nov.
     - cron: "*/15 17-23 28-31 10 *"
     - cron: "*/15 0-6 29-31 10 *"
     - cron: "*/15 0-6 1 11 *"
