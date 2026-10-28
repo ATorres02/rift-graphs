@@ -2598,5 +2598,55 @@
       ]
     },
     "complete": true
+  },
+  {
+    "gameId": "main-event-round-4-1-2",
+    "blue": {
+      "bans": [
+        "Cassiopeia",
+        "Vi",
+        "Nocturne",
+        "Locke",
+        "Rumble"
+      ],
+      "picks": [
+        "Karma",
+        "Jarvan IV",
+        "Jhin",
+        "Orianna",
+        "Gwen"
+      ],
+      "picksByRole": [
+        "Gwen",
+        "Jarvan IV",
+        "Orianna",
+        "Jhin",
+        "Karma"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Renata Glasc",
+        "Jayce",
+        "Camille",
+        "Olaf",
+        "Sylas"
+      ],
+      "picks": [
+        "Ezreal",
+        "Seraphine",
+        "Xin Zhao",
+        "Viktor",
+        "Ornn"
+      ],
+      "picksByRole": [
+        "Ornn",
+        "Xin Zhao",
+        "Viktor",
+        "Ezreal",
+        "Seraphine"
+      ]
+    },
+    "complete": true
   }
 ]
