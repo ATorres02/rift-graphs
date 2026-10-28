@@ -33,6 +33,8 @@ yarn-error.log*
 # env files: never committed. Only the placeholder template is allowed.
 .env*
 !.env.example
+# Wrangler's local secrets file
+.dev.vars*
 
 # vercel
 .vercel
