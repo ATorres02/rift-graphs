@@ -46,3 +46,12 @@ next-env.d.ts
 
 # ingest scratch
 .ingest-cache/
+
+# local secrets and state: never committed
+.cache/
+*.cookies
+*.cookie-jar
+*.token
+*.secret
+.secrets/
+.claude/settings.local.json
