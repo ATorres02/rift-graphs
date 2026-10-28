@@ -5,7 +5,12 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "rift-graphs",
   "compatibility_date": "2026-10-01",
-  "workers_dev": true,
+  // Served only on the bare domain (zone riftgraphs.com, same Cloudflare account). www.riftgraphs.com is
+  // a proxied placeholder DNS record plus a redirect rule to the bare domain, both set in the dashboard,
+  // as Cloudflare documents for Workers custom domains.
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [{ "pattern": "riftgraphs.com", "custom_domain": true }],
   "assets": {
     "directory": "./out",
     "html_handling": "auto-trailing-slash",
