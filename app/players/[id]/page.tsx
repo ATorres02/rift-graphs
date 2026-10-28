@@ -11,7 +11,7 @@ import type { BarSpec, LineSpec } from "@/lib/charts/spec";
 import { getData, teamRef } from "@/lib/data/load";
 import { fmt, ROLE_LABEL, STAGE_SHORT } from "@/lib/format";
 import { aggregatePlayerGames, kda, killParticipation, perMinute } from "@/lib/metrics";
-import { champIcon } from "@/lib/views";
+import { champIcon, mostPlayedArt } from "@/lib/views";
 
 export const dynamicParams = false;
 
@@ -147,6 +147,7 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
   return (
     <div className="space-y-8">
       <PageHeader
+        art={mostPlayedArt(data, data.playerGamesByPlayer.get(p.id) ?? [])}
         eyebrow={ROLE_LABEL[p.role]}
         title={
           <span className="flex flex-wrap items-center gap-3">

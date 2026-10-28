@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { Spoiler } from "@/components/spoilers";
 import { cn } from "@/lib/utils";
 
 export interface Headline {
@@ -22,7 +23,9 @@ export function Headlines({ items, className }: { items: Headline[]; className?:
             <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground sm:text-xs">
               {h.label}
             </p>
-            <p className="mt-1 text-xl font-semibold tabular sm:text-2xl">{h.value}</p>
+            <p className="font-heading mt-1 text-xl font-semibold tabular sm:text-2xl">
+              {h.spoiler ? <Spoiler label="Reveal">{h.value}</Spoiler> : h.value}
+            </p>
             {h.detail ? <p className="mt-1 text-xs text-muted-foreground sm:text-sm">{h.detail}</p> : null}
           </>
         );

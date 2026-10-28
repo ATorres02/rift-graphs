@@ -28,7 +28,7 @@ export function pickDdragonVersion(versions: string[], patch: string | null): st
 
 interface ChampionJson {
   version: string;
-  data: Record<string, { id: string; key: string; name: string }>;
+  data: Record<string, { id: string; key: string; name: string; title: string }>;
 }
 
 export async function fetchChampionIndex(version: string, fetchImpl: typeof fetch = fetch): Promise<ChampionIndex> {
@@ -36,7 +36,7 @@ export async function fetchChampionIndex(version: string, fetchImpl: typeof fetc
   if (!res.ok) throw new Error(`Data Dragon champion.json ${version}: HTTP ${res.status}`);
   const json = (await res.json()) as ChampionJson;
   const champions = Object.values(json.data)
-    .map((c) => ({ id: c.id, key: c.key, name: c.name }))
+    .map((c) => ({ id: c.id, key: c.key, name: c.name, title: c.title }))
     .sort((a, b) => a.name.localeCompare(b.name));
   return { version: json.version, champions };
 }
@@ -48,4 +48,19 @@ export function normalizeChampionName(name: string): string {
 
 export function championIconUrl(version: string, ddragonId: string): string {
   return `${DDRAGON_BASE}/cdn/${version}/img/champion/${ddragonId}.png`;
+}
+
+/** Vertical "loading screen" art, 308×560, about 55 KB. Not versioned on the CDN. */
+export function championLoadingUrl(ddragonId: string, skin = 0): string {
+  return `${DDRAGON_BASE}/cdn/img/champion/loading/${ddragonId}_${skin}.jpg`;
+}
+
+/** Full splash art, 1215×717, about 160 KB. Not versioned on the CDN. */
+export function championSplashUrl(ddragonId: string, skin = 0): string {
+  return `${DDRAGON_BASE}/cdn/img/champion/splash/${ddragonId}_${skin}.jpg`;
+}
+
+/** Route segment for a champion page: the Data Dragon id in lower case ("ksante"). */
+export function championSlug(ddragonId: string): string {
+  return ddragonId.toLowerCase();
 }

@@ -13,6 +13,8 @@ const team = (id: string, name: string, short: string): Team => ({
   location: null,
   stages: ["main"],
   roster: [],
+  coaches: [],
+  seed: null,
 });
 const teams = [
   team("movistar-koi", "Movistar KOI", "MKOI"),

@@ -76,6 +76,20 @@ export interface Team {
   /** Stage pages the team is listed on (play-in and/or main event). */
   stages: ("playin" | "main")[];
   roster: RosterEntry[];
+  /** Coach names listed on the tournament roster (Leaguepedia TournamentPlayers, role "Coach"). */
+  coaches: string[];
+  /** Seed in the team's regional league; from data/seeds.json (not available in Cargo). */
+  seed: TeamSeed | null;
+}
+
+export interface TeamSeed {
+  league: string;
+  seed: number;
+  /** Swiss-stage draw pool, null for Play-In entrants. */
+  pool: number | null;
+  stage: "main" | "playin";
+  /** Qualification path in words, e.g. "LCK 2026 Season Playoffs champion". */
+  path: string;
 }
 
 export interface Player {
@@ -218,6 +232,8 @@ export interface ChampionRef {
   id: string;
   key: string;
   name: string;
+  /** Data Dragon title, e.g. "the Nine-Tailed Fox" (absent in datasets built before 28 Oct 2026). */
+  title?: string;
 }
 
 export interface ChampionIndex {

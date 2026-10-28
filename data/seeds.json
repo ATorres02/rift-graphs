@@ -1,0 +1,25 @@
+{
+  "_help": "Seed of each team in its regional league, from the Participants table of the Worlds 2026 page on Leaguepedia (28 Oct 2026). Not available in Cargo, so it is kept by hand. pool = draw pool for the Swiss stage; stage = where the team entered.",
+  "source": "https://lol.fandom.com/wiki/2026_Season_World_Championship",
+  "seeds": [
+    { "teamId": "gen-g", "league": "LCK", "seed": 1, "pool": 1, "stage": "main", "path": "LCK 2026 Season Playoffs champion" },
+    { "teamId": "hanwha-life-esports", "league": "LCK", "seed": 2, "pool": 2, "stage": "main", "path": "LCK 2026 Season Playoffs runner-up" },
+    { "teamId": "t1", "league": "LCK", "seed": 3, "pool": 3, "stage": "main", "path": "LCK 2026 Season Playoffs 3rd place" },
+    { "teamId": "dplus-kia", "league": "LCK", "seed": 4, "pool": 4, "stage": "main", "path": "LCK 2026 Season Playoffs 4th place" },
+    { "teamId": "anyones-legend", "league": "LPL", "seed": 1, "pool": 1, "stage": "main", "path": "LPL 2026 Grand Finals champion" },
+    { "teamId": "bilibili-gaming", "league": "LPL", "seed": 2, "pool": 2, "stage": "main", "path": "LPL 2026 Championship Points" },
+    { "teamId": "top-esports", "league": "LPL", "seed": 3, "pool": 3, "stage": "main", "path": "LPL 2026 Regional Finals winner" },
+    { "teamId": "invictus-gaming", "league": "LPL", "seed": 4, "pool": 4, "stage": "main", "path": "LPL 2026 Regional Finals runner-up" },
+    { "teamId": "team-liquid", "league": "LCS", "seed": 1, "pool": 1, "stage": "main", "path": "LCS 2026 Summer Playoffs champion" },
+    { "teamId": "lyon", "league": "LCS", "seed": 2, "pool": 3, "stage": "main", "path": "LCS 2026 Summer Playoffs runner-up" },
+    { "teamId": "cloud9", "league": "LCS", "seed": 3, "pool": null, "stage": "playin", "path": "LCS 2026 Summer Playoffs 3rd place" },
+    { "teamId": "g2-esports", "league": "LEC", "seed": 1, "pool": 1, "stage": "main", "path": "LEC 2026 Summer Playoffs champion" },
+    { "teamId": "movistar-koi", "league": "LEC", "seed": 2, "pool": 3, "stage": "main", "path": "LEC 2026 Summer Playoffs runner-up" },
+    { "teamId": "karmine-corp", "league": "LEC", "seed": 3, "pool": 4, "stage": "playin", "path": "LEC 2026 Summer Playoffs 3rd place; qualified for the main event from the Play-In" },
+    { "teamId": "team-secret-whales", "league": "LCP", "seed": 1, "pool": 2, "stage": "main", "path": "LCP 2026 Split 3 champion" },
+    { "teamId": "ctbc-flying-oyster", "league": "LCP", "seed": 2, "pool": 4, "stage": "main", "path": "LCP 2026 Split 3 runner-up" },
+    { "teamId": "mvk-esports", "league": "LCP", "seed": 3, "pool": null, "stage": "playin", "path": "LCP 2026 Championship Points" },
+    { "teamId": "los", "league": "CBLOL", "seed": 1, "pool": 2, "stage": "main", "path": "CBLOL 2026 Split 2 Playoffs champion" },
+    { "teamId": "furia", "league": "CBLOL", "seed": 2, "pool": null, "stage": "playin", "path": "CBLOL 2026 Split 2 Playoffs runner-up" }
+  ]
+}

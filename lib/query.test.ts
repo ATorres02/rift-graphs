@@ -140,6 +140,8 @@ const dataset: Dataset = {
       location: null,
       stages: ["main"],
       roster: [],
+      coaches: [],
+      seed: null,
     },
     {
       id: "t2",
@@ -150,6 +152,8 @@ const dataset: Dataset = {
       location: null,
       stages: ["main"],
       roster: [],
+      coaches: [],
+      seed: null,
     },
   ],
   players: [

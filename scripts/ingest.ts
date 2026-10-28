@@ -22,7 +22,7 @@ try {
 } catch {
   /* no .env.local: rely on the environment (GitHub Actions) */
 }
-import { SCHEMA_VERSION, datasetFiles } from "../lib/data/schema";
+import { SCHEMA_VERSION, datasetFiles, seedsFileSchema } from "../lib/data/schema";
 import { aliasFromPage, decodeEntities, idFromCargoKey, slugify } from "../lib/data/ids";
 import type {
   ChampionIndex,
@@ -369,7 +369,19 @@ function buildTeams(raw: Raw): { teams: Team[]; teamIdByPage: Map<string, string
       location: asString(row?.Location) ?? asString(row?.TeamLocation) ?? null,
       stages: Array.from(rosterStages.get(page) ?? []).sort(),
       roster: [],
+      coaches: [],
+      seed: null,
     });
+  }
+  // Coaches: roster rows whose role is "Coach" (head coaches first as listed on Leaguepedia).
+  for (const r of raw.tournamentPlayers) {
+    if (!/coach/i.test(asString(r.Role) ?? "")) continue;
+    const page = asString(r.Team);
+    const link = asString(r.Link);
+    const name = decodeEntities(asString(r.Player) ?? (link ? aliasFromPage(link) : ""));
+    const team = page ? byPage.get(page) : undefined;
+    if (!team || !name) continue;
+    if (!team.coaches.includes(name)) team.coaches.push(name);
   }
   const teamIdByPage = new Map(Array.from(byPage, ([page, t]) => [page, t.id]));
   return { teams: Array.from(byPage.values()), teamIdByPage };
@@ -789,6 +801,33 @@ function buildTournament(raw: Raw, series: Series[], patch: string | null, ddrag
 
 type Outputs = Record<keyof typeof datasetFiles | "conflicts.json", unknown>;
 
+/** Attaches data/seeds.json (hand-kept: Cargo has no seeds) to the teams; unknown ids only warn. */
+async function applySeeds(teams: Team[]): Promise<void> {
+  let raw: unknown;
+  try {
+    raw = JSON.parse(await readFile(path.resolve(process.cwd(), "data/seeds.json"), "utf8"));
+  } catch {
+    warn("data/seeds.json not found or invalid JSON; teams have no seeds");
+    return;
+  }
+  const parsed = seedsFileSchema.safeParse(raw);
+  if (!parsed.success) {
+    warn(`data/seeds.json failed validation: ${parsed.error.issues[0]?.message ?? "unknown"}; teams have no seeds`);
+    return;
+  }
+  const byId = new Map(teams.map((t) => [t.id, t]));
+  for (const s of parsed.data.seeds) {
+    const team = byId.get(s.teamId);
+    if (!team) {
+      warn(`data/seeds.json: unknown team id "${s.teamId}"`);
+      continue;
+    }
+    team.seed = { league: s.league, seed: s.seed, pool: s.pool, stage: s.stage, path: s.path };
+  }
+  const missing = teams.filter((t) => !t.seed).map((t) => t.id);
+  if (missing.length) warn(`teams without seed: ${missing.join(", ")}`);
+}
+
 /** Provisional series results from lolesports; fails soft so Leaguepedia data is never blocked by it. */
 async function fetchLolesports(
   series: Series[],
@@ -854,6 +893,7 @@ async function main(): Promise<void> {
   );
 
   const { teams, teamIdByPage } = buildTeams(raw);
+  await applySeeds(teams);
   const { players, playerIdByPage } = buildPlayers(raw, teams, teamIdByPage);
   const series = buildSeries(raw, teamIdByPage, now);
   const { builds, pending } = buildGames(raw, series, teamIdByPage, playerIdByPage);

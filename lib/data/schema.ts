@@ -62,6 +62,31 @@ export const teamSchema: z.ZodType<Team> = z.object({
   location: z.string().nullable(),
   stages: z.array(z.enum(["playin", "main"])),
   roster: z.array(z.object({ playerId: z.string().min(1), role: roleSchema })),
+  coaches: z.array(z.string().min(1)),
+  seed: z
+    .object({
+      league: z.string().min(1),
+      seed: z.number().int().positive(),
+      pool: z.number().int().positive().nullable(),
+      stage: z.enum(["main", "playin"]),
+      path: z.string(),
+    })
+    .nullable(),
+});
+
+/** data/seeds.json: hand-kept seeds per team. */
+export const seedsFileSchema = z.object({
+  source: z.string().optional(),
+  seeds: z.array(
+    z.object({
+      teamId: z.string().min(1),
+      league: z.string().min(1),
+      seed: z.number().int().positive(),
+      pool: z.number().int().positive().nullable(),
+      stage: z.enum(["main", "playin"]),
+      path: z.string(),
+    }),
+  ),
 });
 
 export const playerSchema: z.ZodType<Player> = z.object({
@@ -184,7 +209,7 @@ export const playerGameSchema: z.ZodType<PlayerGame> = z.object({
 
 export const championIndexSchema: z.ZodType<ChampionIndex> = z.object({
   version: z.string().min(1),
-  champions: z.array(z.object({ id: z.string().min(1), key: z.string().min(1), name: z.string().min(1) })),
+  champions: z.array(z.object({ id: z.string().min(1), key: z.string().min(1), name: z.string().min(1), title: z.string().optional() })),
 });
 
 export const metaSchema: z.ZodType<Meta> = z.object({

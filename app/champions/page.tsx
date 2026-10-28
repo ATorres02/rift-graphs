@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ChampionIcon } from "@/components/champion-icon";
+import { ChampionGallery, type GalleryChampion } from "@/components/champions/gallery";
 import { ChampionsTable, type ChampionRow } from "@/components/champions-table";
 import { Chart } from "@/components/charts/chart";
 import { Headlines, type Headline } from "@/components/headlines";
@@ -7,7 +8,7 @@ import { ProvisionalNote } from "@/components/provisional";
 import { PageHeader, Section } from "@/components/page-header";
 import { Spoiler } from "@/components/spoilers";
 import type { BarSpec } from "@/lib/charts/spec";
-import { getData } from "@/lib/data/load";
+import { championRef, getData } from "@/lib/data/load";
 import { fmt, ROLE_LABEL } from "@/lib/format";
 import { aggregateChampions, ROLES } from "@/lib/metrics";
 import { normalizeChampionName } from "@/lib/sources/ddragon";
@@ -16,7 +17,7 @@ import { champIcon } from "@/lib/views";
 export const metadata: Metadata = {
   title: "Champions",
   description:
-    "Champion presence, pick and ban rates and win rates at the 2026 World Championship, by role, plus the champions nobody has touched.",
+    "Every champion drafted at the 2026 World Championship as a gallery: presence, pick and ban rates and win rates by role, plus the champions nobody has touched.",
 };
 
 const MIN_PICKS_FOR_WINRATE = 3;
@@ -53,9 +54,25 @@ export default function ChampionsPage() {
           label: `Best win rate (${MIN_PICKS_FOR_WINRATE}+ picks)`,
           value: fmt.pct(bestWinRate.winRate),
           detail: `${bestWinRate.champion} · ${bestWinRate.wins}–${bestWinRate.picks - bestWinRate.wins}`,
+          spoiler: true,
         }
       : { label: "Best win rate", value: "–" },
   ];
+
+  const gallery: GalleryChampion[] = champs.map((c) => {
+    const ref = championRef(data, c.champion);
+    return {
+      name: c.champion,
+      ddragonId: ref?.id ?? null,
+      title: ref?.title ?? null,
+      presence: c.presence,
+      picks: c.picks,
+      bans: c.bans,
+      wins: c.wins,
+      winRate: c.winRate,
+      byRole: c.byRole,
+    };
+  });
 
   const top = champs.slice(0, 20);
   const bar: BarSpec = {
@@ -85,10 +102,17 @@ export default function ChampionsPage() {
     <div className="space-y-8">
       <PageHeader
         title="Champions"
-        description={`${champs.length} champions picked or banned across ${games} games on patch ${data.tournament.patch ?? "?"}; ${unused.length} never appeared in a draft.`}
+        description={`${champs.length} champions picked or banned across ${games} games on patch ${data.tournament.patch ?? "?"}; ${unused.length} never appeared in a draft. Tap a card for the full story of a champion.`}
       />
       <Headlines items={headlines} />
       <ProvisionalNote meta={data.meta} />
+
+      <Section
+        title="The draft, champion by champion"
+        description="Sorted by presence. Pick a role to rank them by games in that role."
+      >
+        <ChampionGallery champions={gallery} games={games} />
+      </Section>
 
       <Section
         title="Presence: picks + bans"
@@ -100,12 +124,6 @@ export default function ChampionsPage() {
           height={360}
           description={`Stacked bars of picks and bans for the 20 most present champions; ${top[0]?.champion ?? "none"} leads with ${top[0] ? fmt.pct(top[0].presence) : "–"} presence.`}
         />
-      </Section>
-
-      <Section title="All champions" description="Pick a role to see games and win rates in that role only.">
-        <Spoiler as="div" label="Reveal table (win rates reveal results)">
-          <ChampionsTable rows={rows} />
-        </Spoiler>
       </Section>
 
       <Section
@@ -125,6 +143,15 @@ export default function ChampionsPage() {
           ))}
         </ul>
       </Section>
+
+      <details className="rounded-xl border bg-card p-4">
+        <summary className="cursor-pointer text-sm font-medium">All champions as a table (sortable, by role)</summary>
+        <div className="mt-3">
+          <Spoiler as="div" label="Reveal table (win rates reveal results)">
+            <ChampionsTable rows={rows} />
+          </Spoiler>
+        </div>
+      </details>
     </div>
   );
 }

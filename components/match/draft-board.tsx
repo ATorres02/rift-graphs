@@ -3,6 +3,7 @@ import { TeamPill } from "@/components/team-pill";
 import type { TeamRef } from "@/lib/data/load";
 import type { Draft, Side } from "@/lib/data/types";
 import { draftSequence } from "@/lib/draft";
+import { championLoadingUrl } from "@/lib/sources/ddragon";
 import { cn } from "@/lib/utils";
 
 interface DraftBoardProps {
@@ -40,20 +41,42 @@ export function DraftBoard({ draft, blue, red, icon, locked }: DraftBoardProps) 
                 </span>
               </div>
               <p className="text-xs text-muted-foreground">Picks (in pick order)</p>
-              <ol className="mt-1 flex flex-wrap gap-2">
-                {d.picks.map((c, i) => (
-                  <li key={i} className="relative">
-                    {c ? (
-                      <ChampionIcon champion={icon(c)} size="lg" />
-                    ) : (
-                      <span className="inline-block size-12 rounded-md border border-dashed" />
-                    )}
-                    <span className="absolute -left-1 -top-1 rounded-full bg-background px-1 text-[10px] font-semibold tabular ring-1 ring-border">
-                      {i + 1}
-                    </span>
-                    <span className="sr-only">{c ?? "empty"}</span>
-                  </li>
-                ))}
+              <ol className="mt-1 grid grid-cols-5 gap-1.5 sm:gap-2">
+                {d.picks.map((c, i) => {
+                  const ref = c ? icon(c) : null;
+                  return (
+                    <li key={i} className="relative">
+                      {ref?.ddragonId ? (
+                        <span className="block overflow-hidden rounded-lg border bg-muted">
+                          {/* eslint-disable-next-line @next/next/no-img-element -- remote art, fixed box */}
+                          <img
+                            src={championLoadingUrl(ref.ddragonId)}
+                            alt=""
+                            width={308}
+                            height={560}
+                            loading="lazy"
+                            decoding="async"
+                            className="aspect-[308/560] w-full object-cover"
+                          />
+                          <span className="block truncate px-1 py-0.5 text-center text-[10px] font-medium sm:text-[11px]">
+                            {c}
+                          </span>
+                        </span>
+                      ) : c && ref ? (
+                        <span className="flex aspect-[308/560] flex-col items-center justify-center gap-1 rounded-lg border bg-muted p-1 text-center text-[10px]">
+                          <ChampionIcon champion={ref} size="md" />
+                          {c}
+                        </span>
+                      ) : (
+                        <span className="block aspect-[308/560] rounded-lg border border-dashed" />
+                      )}
+                      <span className="absolute -left-1 -top-1 rounded-full bg-background px-1.5 text-[10px] font-semibold tabular ring-1 ring-border">
+                        {i + 1}
+                      </span>
+                      <span className="sr-only">{c ?? "empty"}</span>
+                    </li>
+                  );
+                })}
               </ol>
               <p className="mt-3 text-xs text-muted-foreground">Bans</p>
               <ol className="mt-1 flex flex-wrap gap-2">

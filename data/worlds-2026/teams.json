@@ -30,7 +30,18 @@
         "playerId": "kael",
         "role": "support"
       }
-    ]
+    ],
+    "coaches": [
+      "BigWei",
+      "Teacherma"
+    ],
+    "seed": {
+      "league": "LPL",
+      "seed": 1,
+      "pool": 1,
+      "stage": "main",
+      "path": "LPL 2026 Grand Finals champion"
+    }
   },
   {
     "id": "bilibili-gaming",
@@ -63,7 +74,20 @@
         "playerId": "on",
         "role": "support"
       }
-    ]
+    ],
+    "coaches": [
+      "Ben",
+      "Chieh",
+      "Daeny",
+      "zyb"
+    ],
+    "seed": {
+      "league": "LPL",
+      "seed": 2,
+      "pool": 2,
+      "stage": "main",
+      "path": "LPL 2026 Championship Points"
+    }
   },
   {
     "id": "ctbc-flying-oyster",
@@ -96,7 +120,18 @@
         "playerId": "kino",
         "role": "support"
       }
-    ]
+    ],
+    "coaches": [
+      "Chawy",
+      "Wulala"
+    ],
+    "seed": {
+      "league": "LCP",
+      "seed": 2,
+      "pool": 4,
+      "stage": "main",
+      "path": "LCP 2026 Split 3 runner-up"
+    }
   },
   {
     "id": "cloud9",
@@ -129,7 +164,20 @@
         "playerId": "vulcan",
         "role": "support"
       }
-    ]
+    ],
+    "coaches": [
+      "Arrow",
+      "IWDominate",
+      "Veigar v2",
+      "YamatoCannon"
+    ],
+    "seed": {
+      "league": "LCS",
+      "seed": 3,
+      "pool": null,
+      "stage": "playin",
+      "path": "LCS 2026 Summer Playoffs 3rd place"
+    }
   },
   {
     "id": "dplus-kia",
@@ -162,7 +210,19 @@
         "playerId": "career",
         "role": "support"
       }
-    ]
+    ],
+    "coaches": [
+      "CvMax",
+      "Hachani",
+      "PoohManDu"
+    ],
+    "seed": {
+      "league": "LCK",
+      "seed": 4,
+      "pool": 4,
+      "stage": "main",
+      "path": "LCK 2026 Season Playoffs 4th place"
+    }
   },
   {
     "id": "furia",
@@ -195,7 +255,19 @@
         "playerId": "jojo",
         "role": "support"
       }
-    ]
+    ],
+    "coaches": [
+      "furyz",
+      "Lanterninho",
+      "Luuukz"
+    ],
+    "seed": {
+      "league": "CBLOL",
+      "seed": 2,
+      "pool": null,
+      "stage": "playin",
+      "path": "CBLOL 2026 Split 2 Playoffs runner-up"
+    }
   },
   {
     "id": "g2-esports",
@@ -228,7 +300,19 @@
         "playerId": "labrov",
         "role": "support"
       }
-    ]
+    ],
+    "coaches": [
+      "Memento",
+      "Perkz",
+      "Rodrigo"
+    ],
+    "seed": {
+      "league": "LEC",
+      "seed": 1,
+      "pool": 1,
+      "stage": "main",
+      "path": "LEC 2026 Summer Playoffs champion"
+    }
   },
   {
     "id": "gen-g",
@@ -261,7 +345,19 @@
         "playerId": "duro",
         "role": "support"
       }
-    ]
+    ],
+    "coaches": [
+      "Lyn",
+      "Nova (Park Chan-ho)",
+      "Ryu"
+    ],
+    "seed": {
+      "league": "LCK",
+      "seed": 1,
+      "pool": 1,
+      "stage": "main",
+      "path": "LCK 2026 Season Playoffs champion"
+    }
   },
   {
     "id": "hanwha-life-esports",
@@ -294,7 +390,19 @@
         "playerId": "delight",
         "role": "support"
       }
-    ]
+    ],
+    "coaches": [
+      "Homme",
+      "Mowgli",
+      "Sin (Yeon Hyeong-mo)"
+    ],
+    "seed": {
+      "league": "LCK",
+      "seed": 2,
+      "pool": 2,
+      "stage": "main",
+      "path": "LCK 2026 Season Playoffs runner-up"
+    }
   },
   {
     "id": "invictus-gaming",
@@ -327,7 +435,20 @@
         "playerId": "meiko",
         "role": "support"
       }
-    ]
+    ],
+    "coaches": [
+      "Chengz",
+      "Fury (Lee Jin-yong)",
+      "Helper (Kwon Yeong-jae)",
+      "Kezman"
+    ],
+    "seed": {
+      "league": "LPL",
+      "seed": 4,
+      "pool": 4,
+      "stage": "main",
+      "path": "LPL 2026 Regional Finals runner-up"
+    }
   },
   {
     "id": "karmine-corp",
@@ -361,7 +482,18 @@
         "playerId": "busio",
         "role": "support"
       }
-    ]
+    ],
+    "coaches": [
+      "Reapered",
+      "Zeph"
+    ],
+    "seed": {
+      "league": "LEC",
+      "seed": 3,
+      "pool": 4,
+      "stage": "playin",
+      "path": "LEC 2026 Summer Playoffs 3rd place; qualified for the main event from the Play-In"
+    }
   },
   {
     "id": "lyon",
@@ -394,7 +526,18 @@
         "playerId": "isles",
         "role": "support"
       }
-    ]
+    ],
+    "coaches": [
+      "Reignover",
+      "Rigby"
+    ],
+    "seed": {
+      "league": "LCS",
+      "seed": 2,
+      "pool": 3,
+      "stage": "main",
+      "path": "LCS 2026 Summer Playoffs runner-up"
+    }
   },
   {
     "id": "los",
@@ -427,7 +570,19 @@
         "playerId": "ackerman",
         "role": "support"
       }
-    ]
+    ],
+    "coaches": [
+      "Brandão",
+      "Enatron",
+      "Invokid"
+    ],
+    "seed": {
+      "league": "CBLOL",
+      "seed": 1,
+      "pool": 2,
+      "stage": "main",
+      "path": "CBLOL 2026 Split 2 Playoffs champion"
+    }
   },
   {
     "id": "mvk-esports",
@@ -464,7 +619,19 @@
         "playerId": "siuloong",
         "role": "support"
       }
-    ]
+    ],
+    "coaches": [
+      "BigKoro",
+      "SofM",
+      "Suga"
+    ],
+    "seed": {
+      "league": "LCP",
+      "seed": 3,
+      "pool": null,
+      "stage": "playin",
+      "path": "LCP 2026 Championship Points"
+    }
   },
   {
     "id": "movistar-koi",
@@ -497,7 +664,19 @@
         "playerId": "alvaro",
         "role": "support"
       }
-    ]
+    ],
+    "coaches": [
+      "Alphari",
+      "Independent",
+      "Melzhet"
+    ],
+    "seed": {
+      "league": "LEC",
+      "seed": 2,
+      "pool": 3,
+      "stage": "main",
+      "path": "LEC 2026 Summer Playoffs runner-up"
+    }
   },
   {
     "id": "t1",
@@ -530,7 +709,19 @@
         "playerId": "keria",
         "role": "support"
       }
-    ]
+    ],
+    "coaches": [
+      "Easyhoon",
+      "Mata",
+      "Tom (Im Jae-hyeon)"
+    ],
+    "seed": {
+      "league": "LCK",
+      "seed": 3,
+      "pool": 3,
+      "stage": "main",
+      "path": "LCK 2026 Season Playoffs 3rd place"
+    }
   },
   {
     "id": "team-liquid",
@@ -563,7 +754,18 @@
         "playerId": "corejj",
         "role": "support"
       }
-    ]
+    ],
+    "coaches": [
+      "Spawn (Jake Tiberi)",
+      "Spookz"
+    ],
+    "seed": {
+      "league": "LCS",
+      "seed": 1,
+      "pool": 1,
+      "stage": "main",
+      "path": "LCS 2026 Summer Playoffs champion"
+    }
   },
   {
     "id": "team-secret-whales",
@@ -596,7 +798,18 @@
         "playerId": "bie",
         "role": "support"
       }
-    ]
+    ],
+    "coaches": [
+      "Ciel (Trần Tiến Thịnh)",
+      "WarHorse"
+    ],
+    "seed": {
+      "league": "LCP",
+      "seed": 1,
+      "pool": 2,
+      "stage": "main",
+      "path": "LCP 2026 Split 3 champion"
+    }
   },
   {
     "id": "top-esports",
@@ -629,6 +842,17 @@
         "playerId": "zhuo",
         "role": "support"
       }
-    ]
+    ],
+    "coaches": [
+      "Poppy (Chang Po-Hao)",
+      "Xiaobai"
+    ],
+    "seed": {
+      "league": "LPL",
+      "seed": 3,
+      "pool": 3,
+      "stage": "main",
+      "path": "LPL 2026 Regional Finals winner"
+    }
   }
 ]

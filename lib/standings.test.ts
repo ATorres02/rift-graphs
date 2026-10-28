@@ -72,6 +72,8 @@ describe("teamStatus", () => {
     location: null,
     stages,
     roster: [],
+    coaches: [],
+    seed: null,
   });
   const table = swissStandings(series, ["a", "b", "c", "d"]);
 

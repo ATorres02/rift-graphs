@@ -14,7 +14,7 @@ import { regionInfo } from "@/lib/data/regions";
 import { fmt, ROLE_LABEL, STAGE_LABEL } from "@/lib/format";
 import { aggregateByTeam, aggregateTeamGames, seriesRecord, type TeamAggregate } from "@/lib/metrics";
 import { swissStandings, teamStatus } from "@/lib/standings";
-import { champIcon, seriesView } from "@/lib/views";
+import { champIcon, mostPlayedArt, seriesView } from "@/lib/views";
 
 export const dynamicParams = false;
 
@@ -129,6 +129,7 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
   return (
     <div className="space-y-8">
       <PageHeader
+        art={mostPlayedArt(data, data.playerGamesByTeam.get(team.id) ?? [])}
         eyebrow={<RegionTag region={team.region} />}
         title={
           <span className="flex items-center gap-3">

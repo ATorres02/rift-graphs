@@ -89,7 +89,7 @@ export default function HomePage() {
             className="pointer-events-none absolute -right-20 -top-24 size-72 rounded-full bg-brand/15 blur-3xl"
           />
           <p className="text-xs font-medium uppercase tracking-wider text-brand">{tournament.name}</p>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-4xl">{site.tagline}</h1>
+          <h1 className="font-heading mt-1 text-3xl font-bold tracking-tight sm:text-5xl">{site.tagline}</h1>
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground sm:text-base">
             Matches, teams, players, champions and drafts of the 2026 World Championship, refreshed automatically from
             Leaguepedia. Free, no ads, no logos.
