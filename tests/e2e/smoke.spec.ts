@@ -15,6 +15,13 @@ const CORE_PAGES = [
   "/imprint",
 ];
 
+// Test visits must not count as page views: the analytics beacon is answered with an empty script.
+test.beforeEach(async ({ page }) => {
+  await page.route(/static\.cloudflareinsights\.com|cloudflareinsights\.com\/cdn-cgi\/rum/, (route) =>
+    route.fulfill({ status: 200, contentType: "application/javascript", body: "" }),
+  );
+});
+
 /** Collects uncaught exceptions and console errors so a page that "loads" but is broken still fails. */
 function watchErrors(page: Page): string[] {
   const errors: string[] = [];
