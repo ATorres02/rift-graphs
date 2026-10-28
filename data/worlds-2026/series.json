@@ -943,8 +943,8 @@
     "mvp": null,
     "gameIds": [],
     "gamesPlayed": 2,
-    "source": "lolesports",
-    "provisional": true,
+    "source": "leaguepedia",
+    "provisional": false,
     "lolesportsMatchId": "115660540726095065"
   },
   {
