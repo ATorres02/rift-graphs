@@ -20,7 +20,7 @@ function watchErrors(page: Page): string[] {
   const errors: string[] = [];
   page.on("pageerror", (e) => {
     // React recovers from a hydration mismatch by re-rendering on the client (#418/#423/#425); seen now and then on
-    // heavy pages when two browsers share the CPU. Logged, not fatal, until the cause is found (see NOTES.md).
+    // heavy pages when two browsers share the CPU. Logged, not fatal, until the cause is found.
     if (/Minified React error #4(18|23|25)/.test(e.message)) {
       console.warn(`recoverable hydration error on ${page.url()}`);
       return;
