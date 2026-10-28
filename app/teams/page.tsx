@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Chart } from "@/components/charts/chart";
 import { Headlines, type Headline } from "@/components/headlines";
 import { ProvisionalNote } from "@/components/provisional";
 import { PageHeader, Section } from "@/components/page-header";
 import { Spoiler } from "@/components/spoilers";
-import { RegionTag, TeamPill } from "@/components/team-pill";
+import { TeamsExplorer, type RegionPanel } from "@/components/teams/world-map";
 import type { ScatterSpec } from "@/lib/charts/spec";
 import { getData, teamRef } from "@/lib/data/load";
 import { REGION_ORDER, regionInfo } from "@/lib/data/regions";
@@ -108,6 +107,41 @@ export default function TeamsPage() {
   };
   const topY = scatter.points.reduce((m, p) => (p.y > m.y ? p : m), scatter.points[0]);
 
+  const swissById = new Map(swiss.map((r) => [r.teamId, r]));
+  const panels: RegionPanel[] = regions.map((region) => {
+    const info = regionInfo(region);
+    return {
+      code: info.code,
+      name: info.name,
+      cssVar: info.cssVar,
+      teams: data.teams
+        .filter((t) => t.region === region)
+        .sort((a, b) => (a.seed?.seed ?? 99) - (b.seed?.seed ?? 99) || a.name.localeCompare(b.name))
+        .map((t) => {
+          const a = byTeam.get(t.id)!;
+          const rec = seriesRecord(data.series, t.id);
+          const sw = swissById.get(t.id);
+          const status = statuses.get(t.id)!;
+          return {
+            team: teamRef(t)!,
+            status,
+            statusLabel: STATUS_LABEL[status],
+            swiss: sw ? { wins: sw.wins, losses: sw.losses, status: sw.status } : null,
+            series: { wins: rec.wins, losses: rec.losses },
+            games: { wins: a.wins, losses: a.losses },
+            roster: t.roster.map((r) => ({
+              playerId: r.playerId,
+              name: data.playersById.get(r.playerId)?.name ?? r.playerId,
+              role: r.role,
+            })),
+            coaches: t.coaches,
+            seed: t.seed,
+            location: t.location,
+          };
+        }),
+    };
+  });
+
   return (
     <div className="space-y-8">
       <PageHeader
@@ -116,6 +150,13 @@ export default function TeamsPage() {
       />
       <Headlines items={headlines} />
       <ProvisionalNote meta={data.meta} />
+
+      <Section
+        title="Where they come from"
+        description="The countries of each league, coloured by region. Tap a region on the map or a chip to see its teams, rosters, coaches and seeds."
+      >
+        <TeamsExplorer regions={panels} />
+      </Section>
 
       <Section
         title="Win rate vs. game length"
@@ -130,71 +171,6 @@ export default function TeamsPage() {
           />
         </Spoiler>
       </Section>
-
-      {regions.map((region) => (
-        <Section
-          key={region}
-          title={
-            <span className="flex items-center gap-2">
-              {regionInfo(region).code} <RegionTag region={region} className="font-normal" />
-            </span>
-          }
-          description={regionInfo(region).name}
-        >
-          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {data.teams
-              .filter((t) => t.region === region)
-              .sort((a, b) => a.name.localeCompare(b.name))
-              .map((t) => {
-                const a = byTeam.get(t.id)!;
-                const rec = seriesRecord(data.series, t.id);
-                const status = statuses.get(t.id)!;
-                return (
-                  <li key={t.id} className="rounded-xl border bg-card p-4 transition-colors hover:border-brand/60">
-                    <div className="flex items-center justify-between gap-2">
-                      <TeamPill team={teamRef(t)} size="lg" withName />
-                      <Spoiler label="Status">
-                        <span
-                          className={
-                            status === "eliminated"
-                              ? "text-xs font-medium text-muted-foreground"
-                              : "text-xs font-medium text-brand"
-                          }
-                        >
-                          {STATUS_LABEL[status]}
-                        </span>
-                      </Spoiler>
-                    </div>
-                    <dl className="mt-3 grid grid-cols-3 gap-2 text-sm">
-                      <div>
-                        <dt className="text-xs text-muted-foreground">Series</dt>
-                        <dd className="tabular font-medium">
-                          <Spoiler>{fmt.record(rec.wins, rec.losses)}</Spoiler>
-                        </dd>
-                      </div>
-                      <div>
-                        <dt className="text-xs text-muted-foreground">Games</dt>
-                        <dd className="tabular font-medium">
-                          <Spoiler>{fmt.record(a.wins, a.losses)}</Spoiler>
-                        </dd>
-                      </div>
-                      <div>
-                        <dt className="text-xs text-muted-foreground">Avg. length</dt>
-                        <dd className="tabular font-medium">{a.games ? fmt.duration(a.avgDurationSeconds) : "–"}</dd>
-                      </div>
-                    </dl>
-                    <p className="mt-3 text-xs text-muted-foreground">
-                      {t.location ?? regionInfo(t.region).name} ·{" "}
-                      <Link href={`/teams/${t.id}`} className="underline hover:text-foreground">
-                        Team page
-                      </Link>
-                    </p>
-                  </li>
-                );
-              })}
-          </ul>
-        </Section>
-      ))}
     </div>
   );
 }
