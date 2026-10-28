@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Sora } from "next/font/google";
+import { Barlow_Condensed, Geist } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { Footer } from "@/components/layout/footer";
@@ -12,7 +12,7 @@ import { site } from "@/lib/site";
 
 // One web font only: the monospace stack is the system one (nothing on the site uses a mono face).
 const geistSans = Geist({ variable: "--font-sans", subsets: ["latin"] });
-const sora = Sora({ variable: "--font-display", subsets: ["latin"], weight: ["600", "700", "800"] });
+const display = Barlow_Condensed({ variable: "--font-display", subsets: ["latin"], weight: ["600", "700", "800"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#1c1d22" },
+    { media: "(prefers-color-scheme: dark)", color: "#0b0c10" },
     { media: "(prefers-color-scheme: light)", color: "#ffffff" },
   ],
   width: "device-width",
@@ -35,7 +35,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const { meta } = getData();
   return (
-    <html lang="en" className={`dark ${geistSans.variable} ${sora.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`dark ${geistSans.variable} ${display.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: SPOILER_INIT_SCRIPT }} />
       </head>

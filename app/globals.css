@@ -72,7 +72,7 @@
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
+  --radius: 0.375rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -132,9 +132,9 @@
 
 :root {
   /* Single accent colour ("analysis room": data first, one highlight). */
-  --brand: oklch(0.55 0.15 170);
+  --brand: oklch(0.5 0.22 262);
   --brand-foreground: oklch(0.99 0 0);
-  --brand-soft: oklch(0.55 0.15 170 / 12%);
+  --brand-soft: oklch(0.5 0.22 262 / 12%);
   /* Map sides: the only place where blue and red are used. */
   --side-blue: oklch(0.52 0.17 255);
   --side-red: oklch(0.56 0.2 25);
@@ -148,7 +148,7 @@
   --region-other: oklch(0.85 0 0);
   --region-foreground: oklch(0.18 0 0);
   /* Chart palette (ordered, distinct in both modes). */
-  --viz-1: oklch(0.55 0.15 170);
+  --viz-1: oklch(0.5 0.22 262);
   --viz-2: oklch(0.62 0.17 45);
   --viz-3: oklch(0.55 0.17 300);
   --viz-4: oklch(0.6 0.14 210);
@@ -160,16 +160,19 @@
 }
 
 .dark {
-  --background: oklch(0.16 0.008 250);
-  --card: oklch(0.2 0.008 250);
-  --popover: oklch(0.2 0.008 250);
-  --secondary: oklch(0.26 0.008 250);
-  --muted: oklch(0.26 0.008 250);
-  --accent: oklch(0.26 0.008 250);
-  --brand: oklch(0.8 0.15 170);
-  --brand-foreground: oklch(0.15 0 0);
-  --brand-soft: oklch(0.8 0.15 170 / 14%);
-  --side-blue: oklch(0.72 0.14 255);
+  /* Palette "G": electric blue on black (chosen 28 Oct 2026). */
+  --background: oklch(0.1 0.005 262);
+  --card: oklch(0.15 0.012 262);
+  --popover: oklch(0.15 0.012 262);
+  --secondary: oklch(0.23 0.015 262);
+  --muted: oklch(0.23 0.015 262);
+  --accent: oklch(0.23 0.015 262);
+  --border: oklch(0.7 0.22 262 / 22%);
+  --input: oklch(0.7 0.22 262 / 25%);
+  --brand: oklch(0.7 0.22 262);
+  --brand-foreground: oklch(0.99 0 0);
+  --brand-soft: oklch(0.7 0.22 262 / 20%);
+  --side-blue: oklch(0.82 0.1 220);
   --side-red: oklch(0.72 0.17 25);
   --region-lck: oklch(0.84 0.14 165);
   --region-lpl: oklch(0.86 0.16 75);
@@ -178,7 +181,7 @@
   --region-lcp: oklch(0.86 0.11 210);
   --region-cblol: oklch(0.88 0.17 120);
   --region-other: oklch(0.8 0 0);
-  --viz-1: oklch(0.8 0.15 170);
+  --viz-1: oklch(0.7 0.22 262);
   --viz-2: oklch(0.78 0.15 45);
   --viz-3: oklch(0.76 0.13 300);
   --viz-4: oklch(0.78 0.11 210);
@@ -218,6 +221,22 @@
 @layer utilities {
   .tabular {
     font-variant-numeric: tabular-nums;
+  }
+  /* Broadcast-style display type: condensed, upper case, tight. */
+  .display {
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    line-height: 0.95;
+  }
+  .kicker {
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 700;
+  }
+  .cut-corner {
+    clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
   }
   /* Spoiler mode: before hydration the results are blurred, afterwards React swaps them for a button. */
   html[data-spoilers="hidden"] .spoiler-blur {

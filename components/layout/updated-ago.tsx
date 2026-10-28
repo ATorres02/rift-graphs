@@ -46,7 +46,13 @@ export function UpdatedAgo({ updatedAt, className }: { updatedAt: string; classN
       ? "Updated " + updatedAt.slice(0, 16).replace("T", " ") + " UTC"
       : `Updated ${relative(updatedAt, now)}`;
   return (
-    <span ref={ref} className={cn("relative inline-flex items-center gap-1 text-xs text-muted-foreground", className)}>
+    <span
+      ref={ref}
+      className={cn(
+        "relative inline-flex items-center gap-1 whitespace-nowrap text-xs text-muted-foreground",
+        className,
+      )}
+    >
       <span className="inline-block size-1.5 rounded-full bg-brand" aria-hidden />
       <span title={`Data last updated ${updatedAt.replace("T", " ").replace("Z", " UTC")}`}>{label}</span>
       <button

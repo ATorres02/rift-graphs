@@ -24,8 +24,8 @@ export function PageHeader({
     >
       {art ? <ArtBackdrop art={art} /> : null}
       <div className={cn("space-y-2", art && "relative")}>
-        {eyebrow ? <p className="text-xs font-medium uppercase tracking-wider text-brand">{eyebrow}</p> : null}
-        <h1 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl">{title}</h1>
+        {eyebrow ? <p className="kicker text-xs text-brand">{eyebrow}</p> : null}
+        <h1 className="display text-4xl font-bold sm:text-6xl">{title}</h1>
         {description ? <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">{description}</p> : null}
         {children}
       </div>
@@ -50,7 +50,10 @@ export function Section({
     <section className={cn("space-y-3", className)}>
       <div className="flex flex-wrap items-end justify-between gap-2">
         <div>
-          <h2 className="font-heading text-lg font-semibold tracking-tight sm:text-xl">{title}</h2>
+          <h2 className="display flex items-center gap-3 text-2xl font-bold sm:text-3xl">
+            <span className="inline-block h-6 w-1 bg-brand sm:h-7" aria-hidden />
+            <span>{title}</span>
+          </h2>
           {description ? <p className="text-sm text-muted-foreground">{description}</p> : null}
         </div>
         {action}

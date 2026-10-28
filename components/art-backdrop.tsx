@@ -22,7 +22,7 @@ export function ArtBackdrop({ art, className }: { art: ArtRef; className?: strin
         width={308}
         height={560}
         decoding="async"
-        className="size-full scale-110 object-cover opacity-70 blur-sm"
+        className="size-full scale-110 object-cover opacity-90 blur-[3px]"
         style={{ objectPosition: `center ${art.focus ?? 20}%` }}
       />
       <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/40" />

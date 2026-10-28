@@ -5,9 +5,10 @@ import { Section } from "@/components/page-header";
 import { SeriesCard } from "@/components/series-card";
 import { Spoiler, SpoilerToggle } from "@/components/spoilers";
 import { TeamPill } from "@/components/team-pill";
-import { getData, teamRef } from "@/lib/data/load";
+import { championRef, getData, teamRef } from "@/lib/data/load";
+import { championSplashUrl } from "@/lib/sources/ddragon";
 import { fmt, STAGE_LABEL } from "@/lib/format";
-import { aggregateByPlayer, DEFAULT_MIN_GAMES, rankPlayers } from "@/lib/metrics";
+import { aggregateByPlayer, aggregateChampions, DEFAULT_MIN_GAMES, rankPlayers } from "@/lib/metrics";
 import { site } from "@/lib/site";
 import { swissGroups, swissStandings } from "@/lib/standings";
 import { TEMPLATES } from "@/lib/charts/templates";
@@ -38,6 +39,11 @@ export default function HomePage() {
   };
 
   const next = upcoming[0];
+  const mostPicked = aggregateChampions(data.confirmedGames, data.playerGames)
+    .filter((c) => c.picks > 0)
+    .sort((a, b) => b.picks - a.picks)[0];
+  const mostPickedRef = mostPicked ? championRef(data, mostPicked.champion) : null;
+  const heroArt = mostPickedRef ? { name: mostPickedRef.name, splash: championSplashUrl(mostPickedRef.id) } : null;
   const headlines: Headline[] = [
     live.length
       ? {
@@ -83,17 +89,56 @@ export default function HomePage() {
   return (
     <div className="space-y-10">
       <section className="space-y-4">
-        <div className="relative overflow-hidden rounded-2xl border bg-card/50 p-5 sm:p-8">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -right-20 -top-24 size-72 rounded-full bg-brand/15 blur-3xl"
-          />
-          <p className="text-xs font-medium uppercase tracking-wider text-brand">{tournament.name}</p>
-          <h1 className="font-heading mt-1 text-3xl font-bold tracking-tight sm:text-5xl">{site.tagline}</h1>
-          <p className="mt-2 max-w-2xl text-sm text-muted-foreground sm:text-base">
-            Matches, teams, players, champions and drafts of the 2026 World Championship, refreshed automatically from
-            Leaguepedia. Free, no ads, no logos.
-          </p>
+        <div className="relative -mx-4 overflow-hidden bg-black sm:mx-0 sm:rounded-md">
+          {heroArt ? (
+            <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-full sm:w-3/5">
+              {/* eslint-disable-next-line @next/next/no-img-element -- remote splash art, decorative */}
+              <img
+                src={heroArt.splash}
+                alt=""
+                width={1215}
+                height={717}
+                fetchPriority="high"
+                decoding="async"
+                className="size-full object-cover object-[70%_20%] opacity-80"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-black/10 sm:via-black/40" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
+            </div>
+          ) : null}
+          <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-1.5 bg-brand" />
+          <div className="relative flex min-h-[380px] flex-col justify-end p-5 sm:min-h-[460px] sm:p-10">
+            <p className="kicker text-xs text-brand sm:text-sm">
+              {tournament.name}
+              {next ? ` · ${STAGE_LABEL[next.stage]}${next.round ? ` · Round ${next.round}` : ""}` : ""}
+            </p>
+            <h1 className="display mt-2 max-w-3xl text-5xl font-extrabold text-white sm:text-7xl lg:text-8xl">
+              {site.tagline}
+            </h1>
+            <p className="mt-4 max-w-xl text-sm text-zinc-300 sm:text-base">
+              Matches, teams, players, champions and drafts of the 2026 World Championship, refreshed within minutes of
+              every game. Free, no ads, no logos.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-2">
+              <Link
+                href="/matches"
+                className="cut-corner bg-brand px-5 py-2.5 text-sm font-semibold text-brand-foreground no-underline hover:brightness-110"
+              >
+                Schedule and results
+              </Link>
+              <Link
+                href="/charts"
+                className="cut-corner border border-white/25 bg-white/5 px-5 py-2.5 text-sm font-semibold text-white no-underline backdrop-blur hover:bg-white/10"
+              >
+                Build a chart
+              </Link>
+            </div>
+            {heroArt ? (
+              <p className="kicker mt-6 text-[10px] text-zinc-500">
+                {heroArt.name} · most picked champion of the tournament
+              </p>
+            ) : null}
+          </div>
         </div>
         <Headlines items={headlines} className="lg:grid-cols-4" />
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-dashed bg-card/60 px-4 py-3 text-sm">

@@ -117,7 +117,7 @@ for (const f of countries.features) {
   const code = leagueOfCountry.get(f.properties.name);
   if (code) league.push({ code, name: f.properties.name, d: round(d) });
 }
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}"><g fill="#6b7280" fill-opacity=".22" stroke="#6b7280" stroke-opacity=".35" stroke-width=".6" stroke-linejoin="round">${base.join("")}</g></svg>`;
+const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}"><g fill="#8b93a3" fill-opacity=".22" stroke="#8b93a3" stroke-opacity=".22" stroke-width=".7" stroke-linejoin="round">${base.join("")}</g></svg>`;
 writeFileSync("public/world-base.svg", svg);
 writeFileSync("lib/map/league-countries.json", JSON.stringify({ width: W, height: H, countries: league }));
 console.log(

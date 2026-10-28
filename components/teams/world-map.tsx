@@ -83,12 +83,15 @@ export function TeamsExplorer({ regions }: { regions: RegionPanel[] }) {
                 onClick={() => toggle(r.code)}
                 onPointerMove={move(r.code)}
                 onPointerLeave={() => setHover((h) => (h?.code === r.code ? null : h))}
-                className="cursor-pointer transition-opacity duration-200"
+                className="cursor-pointer transition-[opacity,transform] duration-200 ease-out"
                 style={{
                   opacity: dim ? 0.3 : 1,
                   fill: `var(${r.cssVar})`,
                   stroke: `var(${r.cssVar})`,
-                  filter: hot ? "brightness(0.72) saturate(1.3)" : undefined,
+                  transformBox: "fill-box",
+                  transformOrigin: "center",
+                  transform: hot ? "scale(1.08)" : "scale(1)",
+                  filter: hot ? "brightness(0.82) saturate(1.3) drop-shadow(0 10px 14px rgba(0,0,0,.75))" : undefined,
                 }}
                 aria-hidden
               >
@@ -96,9 +99,9 @@ export function TeamsExplorer({ regions }: { regions: RegionPanel[] }) {
                   <path
                     key={c.name}
                     d={c.d}
-                    fillOpacity={hot ? 0.9 : 0.55}
-                    strokeWidth={0.8}
-                    strokeOpacity={0.9}
+                    fillOpacity={hot ? 0.95 : 0.6}
+                    strokeWidth={1.2}
+                    strokeOpacity={hot ? 0.95 : 0.6}
                     strokeLinejoin="round"
                   />
                 ))}
