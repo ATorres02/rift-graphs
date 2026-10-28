@@ -39,5 +39,8 @@ export const site = {
 const xHandle = /(?:x|twitter)\.com\/(\w{1,15})/.exec(site.author.x)?.[1];
 export const authorXHandle = xHandle ? `@${xHandle}` : undefined;
 
+/** Default share image from the brand kit (pages with a generated opengraph-image override it). */
+export const defaultOgImage = { url: "/og-image.png", width: 1200, height: 630, alt: site.name };
+
 /** Mandatory notice (footer and About page), verbatim from Riot's policy. */
 export const riotNotice = `${site.name} was created under Riot Games' "Legal Jibber Jabber" policy using assets owned by Riot Games. Riot Games does not endorse or sponsor this project.`;

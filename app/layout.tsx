@@ -8,7 +8,7 @@ import { BottomNav } from "@/components/layout/nav";
 import { Providers } from "@/components/providers";
 import { SPOILER_INIT_SCRIPT } from "@/components/spoilers";
 import { getData } from "@/lib/data/load";
-import { authorXHandle, site } from "@/lib/site";
+import { authorXHandle, defaultOgImage, site } from "@/lib/site";
 
 // One web font only: the monospace stack is the system one (nothing on the site uses a mono face).
 const geistSans = Geist({ variable: "--font-sans", subsets: ["latin"] });
@@ -18,8 +18,17 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: { default: `${site.name} | ${site.tagline}`, template: `%s | ${site.name}` },
   description: site.description,
-  openGraph: { siteName: site.name, type: "website", locale: "en_US" },
-  twitter: { card: "summary", creator: authorXHandle },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "48x48" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/site.webmanifest",
+  openGraph: { siteName: site.name, type: "website", locale: "en_US", images: [defaultOgImage] },
+  // No twitter:image here: X falls back to og:image, so the generated per-page images still win.
+  twitter: { card: "summary_large_image", creator: authorXHandle },
   robots: { index: true, follow: true },
 };
 

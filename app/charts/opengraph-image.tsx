@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { getData } from "@/lib/data/load";
+import { OgMark } from "@/lib/og-mark";
 import { site } from "@/lib/site";
 
 export const dynamic = "force-static";
@@ -26,7 +27,7 @@ export default function Image() {
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 24, color: "#a1a1aa" }}>
-        <div style={{ width: 14, height: 14, background: accent, borderRadius: 3 }} />
+        <OgMark />
         <div>{`${site.name} / ${data.tournament.name}`}</div>
       </div>
       <div style={{ fontSize: 56, fontWeight: 700, marginTop: 16, lineHeight: 1.1 }}>Chart builder</div>

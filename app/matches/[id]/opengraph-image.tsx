@@ -2,6 +2,7 @@ import { ImageResponse } from "next/og";
 import { getData, seriesTeams } from "@/lib/data/load";
 import { regionInfo } from "@/lib/data/regions";
 import { bestOfLabel, roundLabel } from "@/lib/format";
+import { OgMark } from "@/lib/og-mark";
 import { site } from "@/lib/site";
 
 export const dynamic = "force-static";
@@ -64,7 +65,7 @@ export default async function Image({ params }: { params: Promise<{ id: string }
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 24, color: "#a1a1aa" }}>
-        <div style={{ width: 14, height: 14, background: "#5fd3b0", borderRadius: 3 }} />
+        <OgMark />
         {site.name} / {data.tournament.name}
       </div>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 72 }}>

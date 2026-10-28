@@ -14,6 +14,7 @@ import type { ChampionRef, StageId } from "@/lib/data/types";
 import { fmt, ROLE_LABEL, roundLabel, STAGE_LABEL } from "@/lib/format";
 import { aggregateChampions, kda, ROLES } from "@/lib/metrics";
 import { championLoadingUrl, championSlug, championSplashUrl, normalizeChampionName } from "@/lib/sources/ddragon";
+import { defaultOgImage } from "@/lib/site";
 
 export const dynamicParams = false;
 
@@ -41,7 +42,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   return {
     title: c.name,
     description: `${c.name}${c.title ? `, ${c.title}` : ""} at the 2026 World Championship: presence, picks, bans, win rate by role and every game it was played in.`,
-    openGraph: { title: `${c.name}, Worlds 2026 stats` },
+    openGraph: { title: `${c.name}, Worlds 2026 stats`, images: [defaultOgImage] },
   };
 }
 

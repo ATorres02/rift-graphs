@@ -1,6 +1,8 @@
 # Served by Cloudflare Workers (Static Assets). Paths are matched against the exported site.
 /_next/static/*
   Cache-Control: public, max-age=31536000, immutable
+/brand/*
+  Cache-Control: public, max-age=86400
 /api/dataset.json
   Cache-Control: public, max-age=300, stale-while-revalidate=3600
 /*
