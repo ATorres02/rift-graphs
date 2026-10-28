@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChampionIcon } from "@/components/champion-icon";
 import { Chart } from "@/components/charts/chart";
@@ -63,6 +64,9 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
     );
   });
   const agg = aggregatePlayerGames(rows);
+  // Supports are judged by vision rather than damage, in the big tile and in the game-by-game line.
+  const support = p.role === "support";
+  const visionPerGame = agg.games ? rows.reduce((a, r) => a + r.visionScore, 0) / agg.games : 0;
 
   const headlines: Headline[] = [
     {
@@ -75,12 +79,23 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
     {
       label: "Kill participation",
       value: fmt.pct(agg.killParticipation),
-      detail: `${fmt.pct(agg.damageShare)} of team damage`,
+      detail: agg.games ? `${agg.games} games` : "No games yet",
     },
+    support
+      ? {
+          label: "Vision score",
+          value: agg.games ? fmt.dec(visionPerGame, 1) : "–",
+          detail: `per game, ${fmt.dec(agg.visionPerMinute, 2)} per minute`,
+        }
+      : {
+          label: "Damage per minute",
+          value: agg.games ? fmt.int(agg.dpm) : "–",
+          detail: `${fmt.pct(agg.damageShare)} of team damage`,
+        },
     {
-      label: "Damage per minute",
-      value: agg.games ? fmt.int(agg.dpm) : "–",
-      detail: `${fmt.dec(agg.cspm, 1)} CSPM, ${fmt.int(agg.gpm)} GPM`,
+      label: "Gold per minute",
+      value: agg.games ? fmt.int(agg.gpm) : "–",
+      detail: `${fmt.dec(agg.cspm, 1)} CSPM, ${fmt.pct(agg.goldShare)} of team gold`,
     },
   ];
 
@@ -99,12 +114,19 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
     unit,
     reference: { value: ref, label: "Average" },
   });
-  const dpmLine = line(
-    "Damage per minute",
-    rows.map((r) => Math.round(perMinute(r.damageToChampions, r.durationSeconds))),
-    "number",
-    Math.round(agg.dpm),
-  );
+  const dpmLine = support
+    ? line(
+        "Vision score",
+        rows.map((r) => r.visionScore),
+        "number",
+        Math.round(visionPerGame),
+      )
+    : line(
+        "Damage per minute",
+        rows.map((r) => Math.round(perMinute(r.damageToChampions, r.durationSeconds))),
+        "number",
+        Math.round(agg.dpm),
+      );
   const kdaLine = line(
     "KDA",
     rows.map((r) => Number(kda(r.kills, r.deaths, r.assists).toFixed(1))),
@@ -156,8 +178,15 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
           </span>
         }
         description={[p.realName, p.nativeName, p.country].filter(Boolean).join(", ") || undefined}
-      />
-      <Headlines items={headlines} />
+      >
+        <Link
+          href={`/compare?type=players&a=${p.id}`}
+          className="cut-corner inline-block bg-brand px-3 py-1 text-xs font-semibold text-brand-foreground no-underline hover:brightness-110"
+        >
+          Compare
+        </Link>
+      </PageHeader>
+      <Headlines items={headlines} className="lg:grid-cols-4" />
 
       <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
         {[
@@ -178,15 +207,19 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
       {rows.length ? (
         <>
           <div className="grid gap-6 lg:grid-cols-2">
-            <Section title="Damage per minute, game by game">
+            <Section title={support ? "Vision score, game by game" : "Damage per minute, game by game"}>
               <Chart
                 spec={dpmLine}
                 table={{
-                  columns: ["Game", "DPM"],
+                  columns: ["Game", support ? "Vision score" : "DPM"],
                   rows: rows.map((r, i) => [dpmLine.categories[i], dpmLine.series[0].values[i]]),
                 }}
                 height={260}
-                description={`Line of ${p.name}'s damage per minute over ${rows.length} games; average ${fmt.int(agg.dpm)}.`}
+                description={
+                  support
+                    ? `Line of ${p.name}'s vision score over ${rows.length} games; average ${fmt.dec(visionPerGame, 1)}.`
+                    : `Line of ${p.name}'s damage per minute over ${rows.length} games; average ${fmt.int(agg.dpm)}.`
+                }
               />
             </Section>
             <Section title="KDA, game by game">
@@ -226,7 +259,13 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
 
           <Section title="Every game" description="Oldest first. Click a game to open the series.">
             <Spoiler as="div" label="Reveal games (contains results)">
-              <DataTable columns={GAME_COLUMNS} rows={tableRows} caption={`${p.name}'s games`} dense />
+              <DataTable
+                columns={GAME_COLUMNS}
+                rows={tableRows}
+                caption={`${p.name}'s games`}
+                rowLinkKey="game"
+                dense
+              />
             </Spoiler>
           </Section>
         </>

@@ -124,6 +124,11 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
       value: agg.games ? fmt.duration(agg.avgDurationSeconds) : "–",
       detail: `Tournament average ${fmt.duration(avg("avgDurationSeconds"))}`,
     },
+    {
+      label: "Kills per game",
+      value: agg.games ? fmt.dec(agg.killsPerGame, 1) : "–",
+      detail: `Tournament average ${fmt.dec(avg("killsPerGame"), 1)}`,
+    },
   ];
 
   return (
@@ -139,6 +144,12 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
         }
         description={
           <span className="flex flex-wrap items-center gap-x-3">
+            <Link
+              href={`/compare?type=teams&a=${team.id}`}
+              className="cut-corner bg-brand px-3 py-1 text-xs font-semibold text-brand-foreground no-underline hover:brightness-110"
+            >
+              Compare
+            </Link>
             <span>{team.location ?? regionInfo(team.region).name}</span>
             <span>{team.stages.map((s) => (s === "playin" ? "Play-In" : "Main Event")).join(" + ")}</span>
             <Spoiler label="Status">
@@ -153,7 +164,7 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
           </span>
         }
       />
-      <Headlines items={headlines} />
+      <Headlines items={headlines} className="lg:grid-cols-4" />
 
       <div className="grid gap-8 lg:grid-cols-[1fr_1fr]">
         <Section
@@ -172,10 +183,16 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
         <Section title="Roster">
           <ul className="divide-y rounded-xl border bg-card">
             {roster.map(({ player, role }) => (
-              <li key={player!.id} className="flex items-center justify-between gap-3 px-4 py-2.5 text-sm">
+              <li
+                key={player!.id}
+                className="relative flex items-center justify-between gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-brand-soft"
+              >
                 <span className="flex items-center gap-3">
                   <span className="w-16 text-xs font-medium uppercase text-muted-foreground">{ROLE_LABEL[role]}</span>
-                  <Link href={`/players/${player!.id}`} className="font-medium hover:text-brand">
+                  <Link
+                    href={`/players/${player!.id}`}
+                    className="font-medium after:absolute after:inset-0 after:content-[''] hover:text-brand"
+                  >
                     {player!.name}
                   </Link>
                 </span>

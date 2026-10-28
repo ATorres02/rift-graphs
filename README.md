@@ -1,9 +1,9 @@
-# Rift Ledger
+# Rift Graphs
 
 Free, fan-made statistics site for the 2026 League of Legends World Championship: matches, teams, players,
 champions and drafts, rebuilt automatically from [Leaguepedia](https://lol.fandom.com) data.
 
-Rift Ledger was created under Riot Games' "Legal Jibber Jabber" policy using assets owned by Riot Games.
+Rift Graphs was created under Riot Games' "Legal Jibber Jabber" policy using assets owned by Riot Games.
 Riot Games does not endorse or sponsor this project. Data: Leaguepedia (CC BY-SA).
 
 ## Stack

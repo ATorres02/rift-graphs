@@ -59,7 +59,7 @@ export class CargoError extends Error {
 const DEFAULTS = {
   transport: "export" as Transport,
   baseUrl: "https://lol.fandom.com",
-  userAgent: "rift-ledger-ingest/0.1 (+https://github.com/unstable-devs/rift-ledger)",
+  userAgent: "rift-graphs-ingest/0.1 (+https://riftgraphs.com)",
   delayMs: 1500,
   maxAttempts: 5,
   backoffBaseMs: 5000,

@@ -128,7 +128,7 @@
     @apply font-sans;
   }
 }
-/* ------------------------------------------------------------------ Rift Ledger tokens */
+/* ------------------------------------------------------------------ Rift Graphs tokens */
 
 :root {
   /* Single accent colour ("analysis room": data first, one highlight). */
@@ -139,12 +139,17 @@
   --side-blue: oklch(0.52 0.17 255);
   --side-red: oklch(0.56 0.2 25);
   /* Region colours (pill backgrounds with dark text, AA in both modes). */
-  --region-lck: oklch(0.8 0.14 165);
-  --region-lpl: oklch(0.82 0.16 75);
-  --region-lec: oklch(0.78 0.14 300);
-  --region-lcs: oklch(0.8 0.14 45);
-  --region-lcp: oklch(0.82 0.11 210);
-  --region-cblol: oklch(0.84 0.17 120);
+  /* Region colours take a cue from each region: Korea gold, China red, EMEA the EU blue,
+     North America sky blue, Asia Pacific magenta, Brazil green. Dark pills get light text. */
+  --region-lck: oklch(0.78 0.16 85);
+  --region-lpl: oklch(0.55 0.21 27);
+  --region-lpl-fg: oklch(0.99 0 0);
+  --region-lec: oklch(0.42 0.18 265);
+  --region-lec-fg: oklch(0.99 0 0);
+  --region-lcs: oklch(0.72 0.12 225);
+  --region-lcp: oklch(0.62 0.21 345);
+  --region-lcp-fg: oklch(0.99 0 0);
+  --region-cblol: oklch(0.68 0.19 148);
   --region-other: oklch(0.85 0 0);
   --region-foreground: oklch(0.18 0 0);
   /* Chart palette (ordered, distinct in both modes). */
@@ -175,12 +180,12 @@
   --brand-soft: oklch(0.7 0.22 262 / 20%);
   --side-blue: oklch(0.82 0.1 220);
   --side-red: oklch(0.72 0.17 25);
-  --region-lck: oklch(0.84 0.14 165);
-  --region-lpl: oklch(0.86 0.16 75);
-  --region-lec: oklch(0.82 0.13 300);
-  --region-lcs: oklch(0.84 0.14 45);
-  --region-lcp: oklch(0.86 0.11 210);
-  --region-cblol: oklch(0.88 0.17 120);
+  --region-lck: oklch(0.84 0.16 85);
+  --region-lpl: oklch(0.6 0.22 27);
+  --region-lec: oklch(0.5 0.19 265);
+  --region-lcs: oklch(0.78 0.12 225);
+  --region-lcp: oklch(0.68 0.21 345);
+  --region-cblol: oklch(0.74 0.19 148);
   --region-other: oklch(0.8 0 0);
   --viz-1: oklch(0.7 0.22 262);
   --viz-2: oklch(0.78 0.15 45);
@@ -244,6 +249,11 @@
     filter: blur(7px);
     user-select: none;
     pointer-events: none;
+  }
+  /* Winner names are bold (and coloured on the Play-In); spoiler mode neutralises both before hydration. */
+  html[data-spoilers="hidden"] .spoiler-winner {
+    font-weight: 500;
+    color: inherit;
   }
   .scroll-x {
     overflow-x: auto;

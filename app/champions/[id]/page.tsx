@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChampionIcon } from "@/components/champion-icon";
+import { Chart } from "@/components/charts/chart";
 import { Headlines, type Headline } from "@/components/headlines";
 import { Section } from "@/components/page-header";
 import { Spoiler } from "@/components/spoilers";
 import { TeamPill } from "@/components/team-pill";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { getData, seriesTeams, teamRef } from "@/lib/data/load";
+import type { BarSpec } from "@/lib/charts/spec";
 import type { ChampionRef, StageId } from "@/lib/data/types";
 import { fmt, ROLE_LABEL, roundLabel, STAGE_LABEL } from "@/lib/format";
 import { aggregateChampions, kda, ROLES } from "@/lib/metrics";
@@ -80,6 +82,33 @@ export default async function ChampionPage({ params }: { params: Promise<{ id: s
     return { stage, games: list.length, wins: list.filter((r) => r.win).length, bans };
   }).filter((s) => s.games || s.bans);
 
+  const playedRoles = ROLES.filter((r) => agg.byRole[r]);
+  const roleBar: BarSpec = {
+    type: "bar",
+    horizontal: true,
+    stacked: true,
+    categories: playedRoles.map((r) => ROLE_LABEL[r]),
+    series: [
+      { name: "Wins", values: playedRoles.map((r) => agg.byRole[r]!.wins), color: "var(--win)" },
+      {
+        name: "Losses",
+        values: playedRoles.map((r) => agg.byRole[r]!.games - agg.byRole[r]!.wins),
+        color: "var(--loss)",
+      },
+    ],
+  };
+  const stageBar: BarSpec = {
+    type: "bar",
+    horizontal: true,
+    stacked: true,
+    categories: byStage.map((s) => STAGE_LABEL[s.stage]),
+    series: [
+      { name: "Wins", values: byStage.map((s) => s.wins), color: "var(--win)" },
+      { name: "Losses", values: byStage.map((s) => s.games - s.wins), color: "var(--loss)" },
+      { name: "Bans", values: byStage.map((s) => s.bans), color: "var(--muted-foreground)" },
+    ],
+  };
+
   const gameRows = rows
     .map((r) => {
       const g = data.gamesById.get(r.gameId);
@@ -146,27 +175,37 @@ export default async function ChampionPage({ params }: { params: Promise<{ id: s
       <div className="grid gap-8 lg:grid-cols-2">
         <Section title="By role" description="Games and wins when picked in each role.">
           <Spoiler as="div" label="Reveal win rates">
-            <StatTable
-              columns={["Role", "Games", "W–L", "Win rate"]}
-              rows={ROLES.filter((r) => agg.byRole[r]).map((r) => [
-                ROLE_LABEL[r],
-                agg.byRole[r]!.games,
-                `${agg.byRole[r]!.wins}–${agg.byRole[r]!.games - agg.byRole[r]!.wins}`,
-                fmt.pct(agg.byRole[r]!.wins / agg.byRole[r]!.games),
-              ])}
+            <Chart
+              spec={roleBar}
+              table={{
+                columns: ["Role", "Games", "W–L", "Win rate"],
+                rows: playedRoles.map((r) => [
+                  ROLE_LABEL[r],
+                  agg.byRole[r]!.games,
+                  `${agg.byRole[r]!.wins}–${agg.byRole[r]!.games - agg.byRole[r]!.wins}`,
+                  fmt.pct(agg.byRole[r]!.wins / agg.byRole[r]!.games),
+                ]),
+              }}
+              height={Math.max(160, playedRoles.length * 44 + 60)}
+              description={`Stacked bars of ${c.name}'s wins and losses per role.`}
             />
           </Spoiler>
         </Section>
         <Section title="By stage" description="Picks, bans and wins per stage of the tournament.">
           <Spoiler as="div" label="Reveal win rates">
-            <StatTable
-              columns={["Stage", "Picks", "Bans", "W–L"]}
-              rows={byStage.map((s) => [
-                STAGE_LABEL[s.stage],
-                s.games,
-                s.bans,
-                s.games ? `${s.wins}–${s.games - s.wins}` : "–",
-              ])}
+            <Chart
+              spec={stageBar}
+              table={{
+                columns: ["Stage", "Picks", "Bans", "W–L"],
+                rows: byStage.map((s) => [
+                  STAGE_LABEL[s.stage],
+                  s.games,
+                  s.bans,
+                  s.games ? `${s.wins}–${s.games - s.wins}` : "–",
+                ]),
+              }}
+              height={Math.max(160, byStage.length * 44 + 60)}
+              description={`Stacked bars of ${c.name}'s wins, losses and bans per stage.`}
             />
           </Spoiler>
         </Section>
@@ -176,15 +215,21 @@ export default async function ChampionPage({ params }: { params: Promise<{ id: s
         {players.length ? (
           <Spoiler as="div" label="Reveal records">
             <StatTable
-              columns={["Player", "Team", "Games", "W–L", "KDA"]}
+              columns={["Player", "Team", "Role", "Games", "W–L", "KDA"]}
+              linkRows
               rows={players.map((p) => {
                 const pl = data.playersById.get(p.playerId);
                 const team = teamRef(pl ? data.teamsById.get(pl.teamId) : undefined);
                 return [
-                  <Link key="p" href={`/players/${p.playerId}`} className="font-medium hover:underline">
+                  <Link
+                    key="p"
+                    href={`/players/${p.playerId}`}
+                    className="font-medium after:absolute after:inset-0 after:content-[''] hover:underline"
+                  >
                     {pl?.name ?? p.playerId}
                   </Link>,
-                  <TeamPill key="t" team={team} size="sm" />,
+                  <TeamPill key="t" team={team} size="sm" className="relative z-10" />,
+                  pl ? ROLE_LABEL[pl.role] : "–",
                   p.games,
                   `${p.wins}–${p.games - p.wins}`,
                   fmt.dec(kda(p.k, p.d, p.a), 1),
@@ -206,8 +251,14 @@ export default async function ChampionPage({ params }: { params: Promise<{ id: s
               const { team1, team2 } = seriesTeams(data, s);
               const pl = data.playersById.get(r.playerId);
               return (
-                <li key={r.gameId} className="flex flex-wrap items-center gap-x-3 gap-y-1 px-3 py-2 text-sm">
-                  <Link href={`/matches/${s.id}`} className="font-medium hover:underline">
+                <li
+                  key={r.gameId}
+                  className="relative flex flex-wrap items-center gap-x-3 gap-y-1 px-3 py-2 text-sm transition-colors hover:bg-brand-soft"
+                >
+                  <Link
+                    href={`/matches/${s.id}`}
+                    className="font-medium after:absolute after:inset-0 after:content-[''] hover:underline"
+                  >
                     {team1?.short ?? "TBD"} vs {team2?.short ?? "TBD"}, game {g.gameNumber}
                   </Link>
                   <span className="text-xs text-muted-foreground">{roundLabel(s.stage, s.round, s.tab)}</span>
@@ -236,7 +287,16 @@ export default async function ChampionPage({ params }: { params: Promise<{ id: s
   );
 }
 
-function StatTable({ columns, rows }: { columns: string[]; rows: (string | number | React.ReactNode)[][] }) {
+function StatTable({
+  columns,
+  rows,
+  linkRows = false,
+}: {
+  columns: string[];
+  rows: (string | number | React.ReactNode)[][];
+  /** Rows carry a stretched link in their first cell: position them and highlight on hover. */
+  linkRows?: boolean;
+}) {
   return (
     <div className="scroll-x rounded-xl border bg-card">
       <Table className="text-sm">
@@ -251,7 +311,7 @@ function StatTable({ columns, rows }: { columns: string[]; rows: (string | numbe
         </TableHeader>
         <TableBody>
           {rows.map((r, i) => (
-            <TableRow key={i}>
+            <TableRow key={i} className={linkRows ? "relative cursor-pointer hover:bg-brand-soft" : undefined}>
               {r.map((cell, j) => (
                 <TableCell key={j} className={j ? "text-right tabular" : undefined}>
                   {cell}

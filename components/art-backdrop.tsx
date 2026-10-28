@@ -1,32 +1,39 @@
-import { championLoadingUrl } from "@/lib/sources/ddragon";
+import { championLoadingUrl, championSplashUrl } from "@/lib/sources/ddragon";
 import { cn } from "@/lib/utils";
 
 export interface ArtRef {
   /** Data Dragon champion id, e.g. "Ahri". */
   ddragonId: string;
-  /** Vertical position of the crop, 0–100. Loading art is a portrait: the face sits in the upper third. */
+  /** Vertical position of the crop, 0–100. Splash art is landscape: faces usually sit around the upper third. */
   focus?: number;
 }
 
 /**
- * Blurred, darkened champion art behind a header. Decorative (empty alt) and
- * always covered by a gradient to `background`, so text keeps its contrast.
+ * Champion art behind a header, lightly blurred and fully visible. Wide screens
+ * get the splash (1215 px wide) so nothing looks upscaled; phones get the
+ * lighter portrait. The image overflows the frame by 12 px so the blur never
+ * fades at the edges, and a gradient on the text side keeps the contrast.
  */
 export function ArtBackdrop({ art, className }: { art: ArtRef; className?: string }) {
+  const bleed = { width: "calc(100% + 24px)", height: "calc(100% + 24px)" };
   return (
-    <div aria-hidden className={cn("pointer-events-none absolute inset-0", className)}>
-      {/* eslint-disable-next-line @next/next/no-img-element -- remote art, decorative, no optimiser in a static export */}
-      <img
-        src={championLoadingUrl(art.ddragonId)}
-        alt=""
-        width={308}
-        height={560}
-        decoding="async"
-        className="size-full scale-110 object-cover opacity-90 blur-[3px]"
-        style={{ objectPosition: `center ${art.focus ?? 20}%` }}
-      />
-      <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/40" />
-      <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent" />
+    <div
+      aria-hidden
+      className={cn("pointer-events-none absolute inset-0 m-0 overflow-hidden bg-background", className)}
+    >
+      <picture>
+        <source media="(min-width: 640px)" srcSet={championSplashUrl(art.ddragonId)} />
+        <img
+          src={championLoadingUrl(art.ddragonId)}
+          alt=""
+          width={1215}
+          height={717}
+          decoding="async"
+          className="absolute -left-3 -top-3 max-w-none object-cover blur-[1.5px]"
+          style={{ ...bleed, objectPosition: `center ${art.focus ?? 30}%` }}
+        />
+      </picture>
+      <div className="absolute inset-0 bg-gradient-to-r from-background/85 via-background/45 to-transparent" />
     </div>
   );
 }

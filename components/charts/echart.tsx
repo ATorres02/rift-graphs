@@ -100,6 +100,8 @@ export function buildOption(spec: ChartSpec, p: Palette, css: CSSStyleDeclaratio
       axisLabel: { color: p.muted, formatter: axisValueFormatter(unit) },
       splitLine: { lineStyle: { color: p.grid } },
       max: unit === "percent" ? 1 : undefined,
+      // Counts (games, kills, gold) never get fractional ticks.
+      minInterval: unit === undefined || unit === "number" || unit === "gold" ? 1 : undefined,
     };
     const horizontal = spec.type === "bar" && spec.horizontal;
     const markLine = spec.reference

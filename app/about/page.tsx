@@ -22,8 +22,7 @@ export default function AboutPage() {
       <p className="text-muted-foreground">
         {site.name} turns the public match data of the 2026 League of Legends World Championship into something you can
         read in a minute: results in your time zone, team and player profiles, champion presence and full drafts. Every
-        number on the site is derived from the same per-game rows, so the pages and the upcoming chart builder always
-        agree.
+        number on the site is derived from the same per-game rows, so the pages and the chart builder always agree.
       </p>
 
       <h2 className="display mt-8 text-2xl font-bold text-foreground">Data sources</h2>
@@ -49,12 +48,13 @@ export default function AboutPage() {
           them.
         </li>
         <li>
-          Champion names and icons come from Riot&apos;s{" "}
+          Champion names and art come from Riot&apos;s{" "}
           <a href={site.dataDragonUrl} target="_blank" rel="noopener noreferrer" className="underline">
             Data Dragon
           </a>{" "}
           (version {tournament.ddragonVersion}, matching patch {tournament.patch ?? "unknown"}).
         </li>
+        <li>Role and objective icons are the League of Legends client&apos;s own.</li>
         <li>
           No team logos, player photos or official artwork are used. Teams are identified by their tag on a pill
           coloured by region.
@@ -73,6 +73,14 @@ export default function AboutPage() {
         rankings and the chart builder only use games confirmed by Leaguepedia. If two sources disagree, Leaguepedia
         wins.
       </p>
+
+      <h2 className="display mt-8 text-2xl font-bold text-foreground">Coming soon</h2>
+      <ul className="list-disc space-y-2 pl-5 text-muted-foreground">
+        <li>Items, runes and summoner spells for every player in every game, on the series pages.</li>
+        <li>The knockout bracket drawn with connectors as soon as the quarterfinal pairings are known.</li>
+        <li>An interactive 3D map of the Rift on the home page, with the leader of every role.</li>
+        <li>A full mobile pass: the site works on phones today, but the layouts are being tuned.</li>
+      </ul>
 
       <h2 className="display mt-8 text-2xl font-bold text-foreground">Legal notice</h2>
       <p className="rounded-xl border bg-card p-4 text-sm">{riotNotice}</p>

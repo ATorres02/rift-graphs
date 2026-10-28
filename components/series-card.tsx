@@ -18,6 +18,8 @@ export interface SeriesCardProps {
   pending?: boolean;
   compact?: boolean;
   className?: string;
+  /** How the winner's name is marked: bold everywhere, bold and coloured on one-off stages like the Play-In. */
+  emphasis?: "bold" | "strong";
 }
 
 /**
@@ -25,13 +27,24 @@ export interface SeriesCardProps {
  * on phones, the score in a spoiler-safe column, status and links below.
  * Nothing outside the spoiler hints at the result (no dimmed loser).
  */
-export function SeriesCard({ series: s, team1, team2, pending = false, compact = false, className }: SeriesCardProps) {
+export function SeriesCard({
+  series: s,
+  team1,
+  team2,
+  pending = false,
+  compact = false,
+  className,
+  emphasis = "bold",
+}: SeriesCardProps) {
   const winner1 = s.winnerId !== null && s.winnerId === s.team1Id;
   const winner2 = s.winnerId !== null && s.winnerId === s.team2Id;
   const showScore = s.status !== "scheduled" && s.score !== null;
   return (
     <article
-      className={cn("group rounded-xl border bg-card p-3 transition-colors hover:border-brand/60 sm:p-4", className)}
+      className={cn(
+        "group relative rounded-xl border bg-card p-3 transition-colors hover:border-brand/60 sm:p-4",
+        className,
+      )}
     >
       <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
         <span className="truncate">
@@ -43,8 +56,8 @@ export function SeriesCard({ series: s, team1, team2, pending = false, compact =
       </div>
       <div className="mt-2 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3">
         <div className="min-w-0 space-y-1.5">
-          <TeamRow team={team1} />
-          <TeamRow team={team2} />
+          <TeamRow team={team1} winner={winner1} emphasis={emphasis} />
+          <TeamRow team={team2} winner={winner2} emphasis={emphasis} />
         </div>
         {showScore ? (
           <Spoiler label="Score">
@@ -63,7 +76,7 @@ export function SeriesCard({ series: s, team1, team2, pending = false, compact =
         </span>
         <Link
           href={`/matches/${s.id}`}
-          className="inline-flex shrink-0 items-center gap-0.5 font-medium text-muted-foreground no-underline transition-colors group-hover:text-foreground hover:text-foreground"
+          className="inline-flex shrink-0 items-center gap-0.5 font-medium text-muted-foreground no-underline transition-colors after:absolute after:inset-0 after:content-[''] group-hover:text-foreground hover:text-foreground"
           aria-label={`Details: ${team1?.name ?? "TBD"} vs ${team2?.name ?? "TBD"}`}
         >
           Details <ChevronRightIcon className="size-3.5" aria-hidden />
@@ -73,11 +86,19 @@ export function SeriesCard({ series: s, team1, team2, pending = false, compact =
   );
 }
 
-function TeamRow({ team }: { team: TeamRef | null }) {
+function TeamRow({ team, winner, emphasis }: { team: TeamRef | null; winner: boolean; emphasis: "bold" | "strong" }) {
   return (
     <div className="flex h-7 min-w-0 items-center gap-2">
       <TeamPill team={team} link={false} size="sm" />
-      <span className="truncate text-sm font-medium">{team?.name ?? "TBD"}</span>
+      <span
+        className={cn(
+          "truncate text-sm font-medium",
+          winner && "spoiler-winner font-bold",
+          winner && emphasis === "strong" && "text-win",
+        )}
+      >
+        {team?.name ?? "TBD"}
+      </span>
     </div>
   );
 }

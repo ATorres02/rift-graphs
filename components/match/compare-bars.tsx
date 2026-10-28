@@ -26,7 +26,8 @@ export function CompareBars({
       <ul className="space-y-2">
         {metrics.map((m) => {
           const total = m.blue + m.red;
-          const bluePct = total > 0 ? (m.blue / total) * 100 : 50;
+          const even = !(total > 0);
+          const bluePct = even ? 50 : (m.blue / total) * 100;
           const f = m.format ?? ((n: number) => String(n));
           return (
             <li key={m.label}>
@@ -41,10 +42,13 @@ export function CompareBars({
                 aria-label={`${m.label}: ${blueName} ${f(m.blue)}, ${redName} ${f(m.red)}`}
               >
                 <span
-                  className="h-full bg-side-blue transition-[width] duration-200"
+                  className={cn(
+                    "h-full shrink-0 transition-[width] duration-200",
+                    even ? "bg-muted-foreground/25" : "bg-side-blue",
+                  )}
                   style={{ width: `${bluePct}%` }}
                 />
-                <span className="h-full flex-1 bg-side-red" />
+                <span className={cn("h-full flex-1", even ? "bg-muted-foreground/25" : "bg-side-red")} />
               </div>
             </li>
           );

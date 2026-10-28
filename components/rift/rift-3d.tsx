@@ -184,7 +184,7 @@ export function Rift3D({ leaders, objectives }: { leaders: RiftLeader[]; objecti
             >
               <RoleGlyph
                 kind={m.kind}
-                className={isObjective ? (m.kind === "dragon" ? "text-orange-300" : "text-violet-300") : "text-brand"}
+                className={cn("size-7", isObjective ? (m.kind === "dragon" ? "text-orange-300" : "text-violet-300") : "text-brand")}
               />
             </button>
           );
@@ -206,7 +206,7 @@ export function Rift3D({ leaders, objectives }: { leaders: RiftLeader[]; objecti
               active === k ? "border-brand bg-brand text-brand-foreground" : "bg-card text-muted-foreground",
             )}
           >
-            <RoleGlyph kind={k} className="size-3.5" />
+            <RoleGlyph kind={k} className="size-4" />
             {MARKER_LABEL[k]}
           </button>
         ))}
@@ -283,11 +283,7 @@ export function Rift3D({ leaders, objectives }: { leaders: RiftLeader[]; objecti
             All teams
           </Link>
         </div>
-      ) : (
-        <p className="text-sm text-muted-foreground">
-          Tap a role on the Rift to see who leads it, or Dragon and Baron for the teams that control them.
-        </p>
-      )}
+      ) : null}
     </div>
   );
 }

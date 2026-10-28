@@ -44,7 +44,7 @@ export default function PrivacyPage() {
       <section className="space-y-2">
         <h2 className="display text-2xl font-bold text-foreground">Third-party requests</h2>
         <p>
-          Champion icons are loaded from Riot Games&apos; Data Dragon content delivery network
+          Champion icons and artwork are loaded from Riot Games&apos; Data Dragon content delivery network
           (ddragon.leagueoflegends.com). Your browser sends the usual request metadata to that server when it fetches an
           image.
         </p>

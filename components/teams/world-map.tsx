@@ -154,7 +154,7 @@ export function TeamsExplorer({ regions }: { regions: RegionPanel[] }) {
               style={{ backgroundColor: `var(${r.cssVar})` }}
               aria-hidden
             />
-            {r.code} {r.name} ({r.teams.length})
+            {r.code} ({r.teams.length})
           </button>
         ))}
       </div>
@@ -183,9 +183,13 @@ export function TeamsExplorer({ regions }: { regions: RegionPanel[] }) {
 function TeamCard({ view: v }: { view: TeamCardView }) {
   const roster = [...v.roster].sort((a, b) => ROLE_ORDER.indexOf(a.role) - ROLE_ORDER.indexOf(b.role));
   return (
-    <li className="rounded-2xl border bg-card p-4 transition-colors hover:border-brand/60">
+    <li className="relative rounded-2xl border bg-card p-4 transition-colors hover:border-brand/60">
       <div className="flex items-start justify-between gap-2">
-        <Link href={`/teams/${v.team.id}`} className="no-underline">
+        <Link
+          href={`/teams/${v.team.id}`}
+          className="no-underline after:absolute after:inset-0 after:content-['']"
+          aria-label={`${v.team.name} team page`}
+        >
           <TeamPill team={v.team} size="lg" withName link={false} />
         </Link>
         <Spoiler label="Status">
@@ -201,7 +205,8 @@ function TeamCard({ view: v }: { view: TeamCardView }) {
           <span className="font-semibold text-foreground">
             {v.seed.league} #{v.seed.seed}
           </span>
-          {v.seed.pool ? `, Pool ${v.seed.pool}` : ", Play-In"}: {v.seed.path}
+          {v.seed.pool ? ": " : ", Play-In: "}
+          {v.seed.path}
         </p>
       ) : null}
       <dl className="mt-3 grid grid-cols-3 gap-2 text-sm">
@@ -233,7 +238,7 @@ function TeamCard({ view: v }: { view: TeamCardView }) {
           <li key={p.playerId}>
             <Link
               href={`/players/${p.playerId}`}
-              className="inline-flex items-center gap-1 rounded-md border bg-background px-1.5 py-0.5 text-xs no-underline hover:border-brand"
+              className="relative z-10 inline-flex items-center gap-1 rounded-md border bg-background px-1.5 py-0.5 text-xs no-underline hover:border-brand"
             >
               <span className="text-[9px] font-semibold uppercase text-muted-foreground">{ROLE_LABEL[p.role]}</span>
               <span className="font-medium">{p.name}</span>
@@ -250,7 +255,7 @@ function TeamCard({ view: v }: { view: TeamCardView }) {
       <p className="mt-3 text-xs text-muted-foreground">
         {v.location ?? ""}
         {v.location ? ", " : ""}
-        <Link href={`/teams/${v.team.id}`} className="underline hover:text-foreground">
+        <Link href={`/teams/${v.team.id}`} className="relative z-10 underline hover:text-foreground">
           Team page
         </Link>
       </p>

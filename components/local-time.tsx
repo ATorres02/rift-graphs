@@ -34,7 +34,7 @@ export function LocalTime({
       delete opts.hour;
       delete opts.minute;
     }
-    setLocal(new Intl.DateTimeFormat(undefined, opts).format(new Date(iso)));
+    setLocal(new Intl.DateTimeFormat("en-GB", { ...opts, hourCycle: "h23" }).format(new Date(iso)));
   }, [iso, mode, hasTime]);
   const utc = new Intl.DateTimeFormat("en-GB", { ...OPTIONS[mode], timeZone: "UTC", hour12: false }).format(
     new Date(iso),

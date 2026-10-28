@@ -40,7 +40,7 @@ export function TeamPill({ team, size = "md", withName = false, link = true, cla
         "inline-flex items-center justify-center rounded-md font-bold tracking-wide text-region-foreground",
         SIZES[size],
       )}
-      style={{ backgroundColor: `var(${region.cssVar})` }}
+      style={{ backgroundColor: `var(${region.cssVar})`, color: `var(${region.cssVar}-fg, var(--region-foreground))` }}
       title={`${team.name}, ${region.code}`}
     >
       {team.short}

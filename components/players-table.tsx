@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { DataTable, type TableColumn, type TableRowData } from "@/components/data-table";
 import { Switch } from "@/components/ui/switch";
+import type { TeamRef } from "@/lib/data/load";
 import type { Role } from "@/lib/data/types";
 import { ROLE_LABEL } from "@/lib/format";
 import { DEFAULT_MIN_GAMES, ROLES } from "@/lib/metrics";
@@ -12,7 +13,7 @@ const COLUMNS: TableColumn[] = [
   { key: "team", header: "Team", kind: "team" },
   { key: "role", header: "Role", kind: "text" },
   { key: "games", header: "G", kind: "int", title: "Games played" },
-  { key: "winRate", header: "Win %", kind: "pct", title: "Game win rate" },
+  { key: "kdaLine", header: "K / D / A", kind: "kda", title: "Kills, deaths and assists over all games" },
   { key: "kda", header: "KDA", kind: "dec1", title: "(Kills + Assists) / Deaths over all games" },
   {
     key: "kp",
@@ -39,9 +40,21 @@ export function PlayersTable({ rows }: { rows: TableRowData[] }) {
     if (r === "top" || r === "jungle" || r === "mid" || r === "bot" || r === "support") setRole(r);
   }, []);
   const [threshold, setThreshold] = useState(true);
+  const [team, setTeam] = useState("all");
+  const teams = Array.from(
+    new Map(
+      rows
+        .map((r) => r.team as TeamRef | null)
+        .filter((t): t is TeamRef => Boolean(t))
+        .map((t) => [t.id, t]),
+    ).values(),
+  ).sort((a, b) => a.name.localeCompare(b.name));
 
   const filtered = rows.filter(
-    (r) => (role === "all" || r.roleKey === role) && (!threshold || (r.games as number) >= DEFAULT_MIN_GAMES),
+    (r) =>
+      (role === "all" || r.roleKey === role) &&
+      (team === "all" || (r.team as TeamRef | null)?.id === team) &&
+      (!threshold || (r.games as number) >= DEFAULT_MIN_GAMES),
   );
 
   return (
@@ -54,6 +67,17 @@ export function PlayersTable({ rows }: { rows: TableRowData[] }) {
             {ROLES.map((r) => (
               <option key={r} value={r}>
                 {ROLE_LABEL[r]}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="flex items-center gap-2 text-sm">
+          <span className="text-muted-foreground">Team</span>
+          <select className={selectClass} value={team} onChange={(e) => setTeam(e.target.value)}>
+            <option value="all">All teams</option>
+            {teams.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.name}
               </option>
             ))}
           </select>
@@ -76,6 +100,9 @@ export function PlayersTable({ rows }: { rows: TableRowData[] }) {
         defaultSort={{ key: "kda", desc: true }}
         caption="Player statistics for the tournament"
         dense
+        pageSize={20}
+        rowNoun="players"
+        rowLinkKey="href"
       />
     </div>
   );

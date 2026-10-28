@@ -2,25 +2,26 @@
  * Site-wide configuration. Author and imprint details come from environment
  * variables so the repository holds no personal data.
  */
-const env = (key: string, fallback = ""): string => process.env[key] ?? fallback;
+// NEXT_PUBLIC_* values are inlined into the browser bundle only when read as `process.env.NAME`
+// literally; a dynamic lookup would stay undefined on the client.
 
 export const site = {
-  name: "Rift Ledger",
+  name: "Rift Graphs",
   tagline: "Visual stats for the 2026 World Championship",
   description:
     "Fan-made, free statistics site for the 2026 League of Legends World Championship: matches, teams, players, champions and drafts, built on Leaguepedia data.",
-  url: env("NEXT_PUBLIC_SITE_URL", "http://localhost:3000"),
+  url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
   author: {
-    name: env("NEXT_PUBLIC_AUTHOR_NAME", "Unstable Devs"),
-    linkedin: env("NEXT_PUBLIC_AUTHOR_LINKEDIN"),
+    name: process.env.NEXT_PUBLIC_AUTHOR_NAME || "Unstable Devs",
+    linkedin: process.env.NEXT_PUBLIC_AUTHOR_LINKEDIN ?? "",
   },
-  repoUrl: env("NEXT_PUBLIC_REPO_URL"),
+  repoUrl: process.env.NEXT_PUBLIC_REPO_URL ?? "",
   /** Cloudflare Web Analytics beacon token (cookie-free). Empty = analytics off. */
-  analytics: { cfBeaconToken: env("NEXT_PUBLIC_CF_BEACON_TOKEN") },
+  analytics: { cfBeaconToken: process.env.NEXT_PUBLIC_CF_BEACON_TOKEN ?? "" },
   imprint: {
-    name: env("NEXT_PUBLIC_IMPRINT_NAME"),
-    address: env("NEXT_PUBLIC_IMPRINT_ADDRESS"),
-    email: env("NEXT_PUBLIC_IMPRINT_EMAIL"),
+    name: process.env.NEXT_PUBLIC_IMPRINT_NAME ?? "",
+    address: process.env.NEXT_PUBLIC_IMPRINT_ADDRESS ?? "",
+    email: process.env.NEXT_PUBLIC_IMPRINT_EMAIL ?? "",
   },
   leaguepedia: {
     name: "Leaguepedia",

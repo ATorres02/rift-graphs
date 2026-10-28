@@ -63,3 +63,15 @@ export function utcDay(iso: string): string {
 }
 
 export const bestOfLabel = (bestOf: number): string => `Bo${bestOf}`;
+
+const dayMonth = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
+
+/** YYYY-MM-DD dates → "15 to 18 Oct", "28 Oct to 3 Nov" or "14 Nov". */
+export function dateRange(start: string | null, end: string | null): string {
+  if (!start) return "TBD";
+  const a = new Date(`${start}T00:00:00Z`);
+  if (!end || end === start) return dayMonth.format(a);
+  const b = new Date(`${end}T00:00:00Z`);
+  const sameMonth = a.getUTCMonth() === b.getUTCMonth() && a.getUTCFullYear() === b.getUTCFullYear();
+  return sameMonth ? `${a.getUTCDate()} to ${dayMonth.format(b)}` : `${dayMonth.format(a)} to ${dayMonth.format(b)}`;
+}

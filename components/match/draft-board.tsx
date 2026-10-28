@@ -1,24 +1,36 @@
+import Link from "next/link";
 import { ChampionIcon, type ChampionIconRef } from "@/components/champion-icon";
 import { TeamPill } from "@/components/team-pill";
 import type { TeamRef } from "@/lib/data/load";
-import type { Draft, Side } from "@/lib/data/types";
+import type { Draft, Role, Side } from "@/lib/data/types";
 import { draftSequence } from "@/lib/draft";
+import { ROLE_LABEL } from "@/lib/format";
 import { championLoadingUrl } from "@/lib/sources/ddragon";
 import { cn } from "@/lib/utils";
+
+/** Who played which champion in one game, from the scoreboard or a manual line-up. */
+export interface DraftPlayer {
+  role: Role;
+  champion: string;
+  name: string;
+  playerId: string | null;
+}
 
 interface DraftBoardProps {
   draft: Draft;
   blue: TeamRef | null;
   red: TeamRef | null;
+  lineups: Record<Side, DraftPlayer[]>;
   icon: (name: string) => ChampionIconRef;
   /** Champions unavailable in this game because they were picked earlier in the series (Fearless). */
   locked: string[];
 }
 
 const SIDE_LABEL: Record<Side, string> = { blue: "Blue side", red: "Red side" };
+const ROLE_ORDER: Role[] = ["top", "jungle", "mid", "bot", "support"];
 
-/** Picks and bans per side plus the 20-step draft order. */
-export function DraftBoard({ draft, blue, red, icon, locked }: DraftBoardProps) {
+/** Picks by role with the player on top, bans, and the 20-step draft order. */
+export function DraftBoard({ draft, blue, red, lineups, icon, locked }: DraftBoardProps) {
   const steps = draftSequence(draft);
   return (
     <div className="space-y-4">
@@ -26,6 +38,7 @@ export function DraftBoard({ draft, blue, red, icon, locked }: DraftBoardProps) 
         {(["blue", "red"] as const).map((side) => {
           const team = side === "blue" ? blue : red;
           const d = draft[side];
+          const lineup = lineups[side];
           return (
             <div
               key={side}
@@ -40,14 +53,30 @@ export function DraftBoard({ draft, blue, red, icon, locked }: DraftBoardProps) 
                   {SIDE_LABEL[side]}
                 </span>
               </div>
-              <p className="text-xs text-muted-foreground">Picks (in pick order)</p>
+              <p className="text-xs text-muted-foreground">Picks by role, the number is the pick order</p>
               <ol className="mt-1 grid grid-cols-5 gap-1.5 sm:gap-2">
-                {d.picks.map((c, i) => {
-                  const ref = c ? icon(c) : null;
+                {ROLE_ORDER.map((role, i) => {
+                  const entry = lineup.find((p) => p.role === role);
+                  const champion = entry?.champion ?? d.picksByRole[i] ?? d.picks[i] ?? null;
+                  const ref = champion ? icon(champion) : null;
+                  const pickNo = champion ? d.picks.indexOf(champion) + 1 : 0;
+                  const who = entry?.playerId ? (
+                    <Link href={`/players/${entry.playerId}`} className="no-underline hover:text-brand">
+                      {entry.name}
+                    </Link>
+                  ) : (
+                    <span className={cn(!entry && "text-muted-foreground")}>{entry?.name ?? ROLE_LABEL[role]}</span>
+                  );
                   return (
-                    <li key={i} className="relative">
+                    <li key={role} className="overflow-hidden rounded-lg border bg-muted">
+                      <span
+                        className="block truncate px-1 pt-1 text-center text-[11px] font-medium"
+                        title={ROLE_LABEL[role]}
+                      >
+                        {who}
+                      </span>
                       {ref?.ddragonId ? (
-                        <span className="block overflow-hidden rounded-lg border bg-muted">
+                        <span className="relative mt-1 block">
                           {/* eslint-disable-next-line @next/next/no-img-element -- remote art, fixed box */}
                           <img
                             src={championLoadingUrl(ref.ddragonId)}
@@ -58,22 +87,22 @@ export function DraftBoard({ draft, blue, red, icon, locked }: DraftBoardProps) 
                             decoding="async"
                             className="aspect-[308/560] w-full object-cover"
                           />
-                          <span className="block truncate px-1 py-0.5 text-center text-[10px] font-medium sm:text-[11px]">
-                            {c}
-                          </span>
+                          {pickNo ? (
+                            <span className="absolute left-1 top-1 rounded-full bg-background/90 px-1.5 text-[10px] font-semibold tabular ring-1 ring-border">
+                              {pickNo}
+                            </span>
+                          ) : null}
                         </span>
-                      ) : c && ref ? (
-                        <span className="flex aspect-[308/560] flex-col items-center justify-center gap-1 rounded-lg border bg-muted p-1 text-center text-[10px]">
+                      ) : champion && ref ? (
+                        <span className="mt-1 flex aspect-[308/560] flex-col items-center justify-center gap-1 p-1 text-center text-[10px]">
                           <ChampionIcon champion={ref} size="md" />
-                          {c}
                         </span>
                       ) : (
-                        <span className="block aspect-[308/560] rounded-lg border border-dashed" />
+                        <span className="mt-1 block aspect-[308/560] border-t border-dashed" />
                       )}
-                      <span className="absolute -left-1 -top-1 rounded-full bg-background px-1.5 text-[10px] font-semibold tabular ring-1 ring-border">
-                        {i + 1}
+                      <span className="block truncate px-1 py-0.5 text-center text-[10px] text-muted-foreground sm:text-[11px]">
+                        {champion ?? "–"}
                       </span>
-                      <span className="sr-only">{c ?? "empty"}</span>
                     </li>
                   );
                 })}

@@ -21,6 +21,8 @@ export interface GalleryChampion {
 }
 
 const ROLES: Role[] = ["top", "jungle", "mid", "bot", "support"];
+/** Cards shown before the "Show all" button (four rows of six on wide screens). */
+const PAGE_SIZE = 24;
 
 /** Portrait cards of every drafted champion, sorted by presence, with role filter and search. */
 export function ChampionGallery({ champions, games }: { champions: GalleryChampion[]; games: number }) {
@@ -30,6 +32,7 @@ export function ChampionGallery({ champions, games }: { champions: GalleryChampi
     if (r === "top" || r === "jungle" || r === "mid" || r === "bot" || r === "support") setRole(r);
   }, []);
   const [query, setQuery] = useState("");
+  const [expanded, setExpanded] = useState(false);
   const { mode } = useSpoilers();
   const hideResults = mode === "hidden";
 
@@ -81,7 +84,7 @@ export function ChampionGallery({ champions, games }: { champions: GalleryChampi
       </p>
 
       <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-        {shown.map((c, i) => {
+        {(expanded ? shown : shown.slice(0, PAGE_SIZE)).map((c, i) => {
           const roleGames = role !== "all" ? c.byRole[role] : null;
           const wr = hideResults ? null : roleGames ? roleGames.wins / Math.max(roleGames.games, 1) : c.winRate;
           const href = c.ddragonId ? `/champions/${championSlug(c.ddragonId)}` : null;
@@ -138,6 +141,15 @@ export function ChampionGallery({ champions, games }: { champions: GalleryChampi
         })}
       </ul>
       {!shown.length ? <p className="text-sm text-muted-foreground">No champion matches.</p> : null}
+      {shown.length > PAGE_SIZE ? (
+        <button
+          type="button"
+          onClick={() => setExpanded((v) => !v)}
+          className="rounded-md border bg-card px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:border-brand hover:text-foreground"
+        >
+          {expanded ? `Show the first ${PAGE_SIZE}` : `Show all ${shown.length} champions`}
+        </button>
+      ) : null}
     </div>
   );
 }

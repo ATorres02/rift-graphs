@@ -47,6 +47,7 @@ export default function TeamsPage() {
   const fastest = [...played].sort(
     (a, b) => byTeam.get(a.id)!.avgDurationSeconds - byTeam.get(b.id)!.avgDurationSeconds,
   )[0];
+  const bloodiest = [...played].sort((a, b) => byTeam.get(b.id)!.killsPerGame - byTeam.get(a.id)!.killsPerGame)[0];
   const alive = data.teams.filter((t) => statuses.get(t.id) !== "eliminated").length;
   const avgDuration = data.confirmedGames.length
     ? data.confirmedGames.reduce((a, g) => a + g.durationSeconds, 0) / data.confirmedGames.length
@@ -69,12 +70,20 @@ export default function TeamsPage() {
       : { label: "Best game win rate", value: "–" },
     fastest
       ? {
-          label: "Fastest games",
+          label: "Fastest game",
           value: fmt.duration(byTeam.get(fastest.id)!.avgDurationSeconds),
-          detail: `${fastest.name}, tournament average ${fmt.duration(avgDuration)}`,
+          detail: `${fastest.name} on average, tournament average ${fmt.duration(avgDuration)}`,
           href: `/teams/${fastest.id}`,
         }
-      : { label: "Fastest games", value: "–" },
+      : { label: "Fastest game", value: "–" },
+    bloodiest
+      ? {
+          label: "Most kills per game",
+          value: fmt.dec(byTeam.get(bloodiest.id)!.killsPerGame, 1),
+          detail: `${bloodiest.name}, ${fmt.int(byTeam.get(bloodiest.id)!.killsPerGame * byTeam.get(bloodiest.id)!.games)} kills in ${byTeam.get(bloodiest.id)!.games} games`,
+          href: `/teams/${bloodiest.id}`,
+        }
+      : { label: "Most kills per game", value: "–" },
   ];
 
   const scatter: ScatterSpec = {
@@ -148,7 +157,7 @@ export default function TeamsPage() {
         title="Teams"
         description="Nineteen teams from six regions. Tags on coloured pills stand in for logos; the colour is the team's region."
       />
-      <Headlines items={headlines} />
+      <Headlines items={headlines} className="lg:grid-cols-4" />
       <ProvisionalNote meta={data.meta} />
 
       <Section

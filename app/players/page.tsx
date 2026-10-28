@@ -26,11 +26,13 @@ export default function PlayersPage() {
       const team = teamRef(data.teamsById.get(p.teamId));
       return {
         player: playerCell(p),
+        href: `/players/${p.id}`,
         team,
         role: ROLE_LABEL[p.role],
         roleKey: p.role,
         games: a?.games ?? 0,
         winRate: a ? a.winRate : null,
+        kdaLine: a ? { kills: a.kills, deaths: a.deaths, assists: a.assists } : null,
         kda: a ? a.kda : null,
         kp: a ? a.killParticipation : null,
         cspm: a ? a.cspm : null,
@@ -47,6 +49,7 @@ export default function PlayersPage() {
   const kda = leader((a) => a.kda);
   const dpm = leader((a) => a.dpm);
   const cspm = leader((a) => a.cspm);
+  const kills = leader((a) => a.kills);
   const headlines: Headline[] = [
     kda
       ? {
@@ -72,6 +75,14 @@ export default function PlayersPage() {
           href: `/players/${cspm.playerId}`,
         }
       : { label: "Best CS per minute", value: "–" },
+    kills
+      ? {
+          label: "Most kills",
+          value: fmt.int(kills.value),
+          detail: `${playerLabel(data, kills.playerId)}, ${kills.aggregate.games} games`,
+          href: `/players/${kills.playerId}`,
+        }
+      : { label: "Most kills", value: "–" },
   ];
 
   const topByRole = ROLES.map((role) => {
@@ -85,7 +96,7 @@ export default function PlayersPage() {
         title="Players"
         description={`Rankings use totals over all games, and leaders need at least ${DEFAULT_MIN_GAMES} games so a single good game does not top the table.`}
       />
-      <Headlines items={headlines} />
+      <Headlines items={headlines} className="lg:grid-cols-4" />
       <ProvisionalNote meta={data.meta} />
 
       <Section title="Top 5 by role" description={`Ranked by KDA, minimum ${DEFAULT_MIN_GAMES} games.`}>

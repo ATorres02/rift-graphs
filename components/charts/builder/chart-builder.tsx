@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { FiltersStep, type FilterCatalog } from "./builder-filters";
 import { ChartTypeStep, GroupStep, MeasureStep, OptionsStep, SourceStep, Step } from "./builder-steps";
 import { buildChart, tableToCsv } from "@/lib/charts/build";
+import { composeChartPng, downloadDataUrl } from "@/lib/charts/export-png";
 import { TEMPLATES } from "@/lib/charts/templates";
 import { parseConfig, serializeConfig } from "@/lib/charts/url";
 import { useDataset } from "@/lib/data/use-dataset";
@@ -25,7 +26,6 @@ import {
   type DataSource,
   type QueryConfig,
 } from "@/lib/query";
-import { site } from "@/lib/site";
 import { slugify } from "@/lib/data/ids";
 
 const EChart = dynamic(() => import("@/components/charts/echart").then((m) => m.EChart), {
@@ -39,8 +39,6 @@ const SOURCE_DEFAULTS: Record<DataSource, Partial<QueryConfig>> = {
   champions: { measures: ["presence"], groupBy: "champion", chart: "bar", topN: 20 },
   games: { measures: ["duration"], groupBy: "day", chart: "line", topN: null },
 };
-
-const WATERMARK = `${site.name}  |  Data: Leaguepedia (CC BY-SA)`;
 
 export function ChartBuilder({ version, catalog }: { version: string; catalog: FilterCatalog }) {
   const [config, setConfig] = useState<QueryConfig>(DEFAULT_CONFIG);
@@ -134,15 +132,17 @@ export function ChartBuilder({ version, catalog }: { version: string; catalog: F
 
   const fileName = () => slugify(built?.title ?? "chart") || "chart";
 
-  const exportPng = () => {
+  /** PNG with the title, the description and a source footer around the chart, at 2x. */
+  const exportPng = async () => {
     const instance = chartRef.current;
-    if (!instance) return;
+    if (!instance || !built) return;
     const bg = getComputedStyle(document.documentElement).getPropertyValue("--card").trim() || "#ffffff";
-    const url = instance.getDataURL({ type: "png", pixelRatio: 2, backgroundColor: bg });
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${fileName()}.png`;
-    a.click();
+    const url = await composeChartPng({
+      title: built.title,
+      summary: `${built.description} ${result?.universeGames ?? 0} games in the selection.`,
+      chartDataUrl: instance.getDataURL({ type: "png", pixelRatio: 2, backgroundColor: bg }),
+    });
+    downloadDataUrl(url, `${fileName()}.png`);
   };
 
   const exportCsv = () => {
@@ -271,12 +271,7 @@ export function ChartBuilder({ version, catalog }: { version: string; catalog: F
           {data && built && result && result.rows.length ? (
             view === "chart" ? (
               <div style={{ height: 460 }} role="img" aria-label={built.description}>
-                <EChart
-                  spec={built.spec}
-                  themeKey={themeKey}
-                  watermark={WATERMARK}
-                  onReady={(instance) => (chartRef.current = instance)}
-                />
+                <EChart spec={built.spec} themeKey={themeKey} onReady={(instance) => (chartRef.current = instance)} />
               </div>
             ) : (
               <SpecTable spec={built.spec} table={built.table} />

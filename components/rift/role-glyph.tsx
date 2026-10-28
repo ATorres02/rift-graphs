@@ -1,52 +1,55 @@
 import type { MarkerKind } from "./layout";
 import { cn } from "@/lib/utils";
 
-/** Our own role and objective glyphs (no Riot icons), 24×24 viewBox, stroke-based. */
+type Position = Exclude<MarkerKind, "dragon" | "baron">;
+
+/**
+ * Riot's own position icons (League client assets, via Community Dragon),
+ * redrawn in `currentColor`: the "active" shape at full strength, the frame at
+ * half. Dragon and Baron use the minimap icons as images (see public/icons).
+ */
+const POSITION: Record<Position, { frame?: string; active: string }> = {
+  top: {
+    frame: "M21,14H14v7h7V14Zm5-3V26L11.014,26l-4,4H30V7.016Z",
+    active: "M4 4 4.003 28.045 9 23 9 9 23 9 28.045 4.003 4 4Z",
+  },
+  jungle: {
+    active:
+      "M25,3c-2.128,3.3-5.147,6.851-6.966,11.469A42.373,42.373,0,0,1,20,20a27.7,27.7,0,0,1,1-3C21,12.023,22.856,8.277,25,3ZM13,20c-1.488-4.487-4.76-6.966-9-9,3.868,3.136,4.422,7.52,5,12l3.743,3.312C14.215,27.917,16.527,30.451,17,31c4.555-9.445-3.366-20.8-8-28C11.67,9.573,13.717,13.342,13,20Zm8,5a15.271,15.271,0,0,1,0,2l4-4c0.578-4.48,1.132-8.864,5-12C24.712,13.537,22.134,18.854,21,25Z",
+  },
+  mid: {
+    frame: "M30,12.968l-4.008,4L26,26H17l-4,4H30ZM16.979,8L21,4H4V20.977L8,17,8,8h8.981Z",
+    active: "M25 4 4 25 4 30 9 30 30 9 30 4 25 4Z",
+  },
+  bot: {
+    frame: "M13,20h7V13H13v7ZM4,4V26.984l3.955-4L8,8,22.986,8l4-4H4Z",
+    active: "M29.997 5.955 25 11 25 25 11 25 5.955 29.997 30 30 29.997 5.955Z",
+  },
+  support: {
+    active:
+      "M26,13c3.535,0,8-4,8-4H23l-3,3,2,7,5-2-3-4h2ZM22,5L20.827,3H13.062L12,5l5,6Zm-5,9-1-1L13,28l4,3,4-3L18,13ZM11,9H0s4.465,4,8,4h2L7,17l5,2,2-7Z",
+  },
+};
+
 export function RoleGlyph({ kind, className }: { kind: MarkerKind; className?: string }) {
-  const common = {
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: 2.2,
-    strokeLinecap: "round" as const,
-    strokeLinejoin: "round" as const,
-  };
+  if (kind === "dragon" || kind === "baron") {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element -- Riot minimap icon, fixed box
+      <img
+        src={`/icons/${kind}.png`}
+        alt=""
+        width={64}
+        height={64}
+        draggable={false}
+        className={cn("size-5 select-none", className)}
+      />
+    );
+  }
+  const icon = POSITION[kind];
   return (
-    <svg viewBox="0 0 24 24" className={cn("size-5", className)} aria-hidden {...common}>
-      {kind === "top" ? (
-        <>
-          <path d="M5 19 19 5" />
-          <path d="M14 4h6v6" />
-          <path d="M4 15l5 5" />
-        </>
-      ) : kind === "jungle" ? (
-        <>
-          <path d="M7 20c-1.5-5 .5-11 4-15" />
-          <path d="M12 21c-1-5 1-11 4-15" />
-          <path d="M17 20c-.5-5 1-9 3-12" />
-        </>
-      ) : kind === "mid" ? (
-        <path d="M13 2 5 13h6l-1 9 9-12h-6z" fill="currentColor" stroke="none" />
-      ) : kind === "bot" ? (
-        <>
-          <path d="M4 20 20 4" />
-          <path d="M12 4h8v8" />
-        </>
-      ) : kind === "support" ? (
-        <>
-          <path d="M12 3l8 3v6c0 4.5-3.5 8-8 9-4.5-1-8-4.5-8-9V6z" />
-          <path d="M12 8v8M8 12h8" />
-        </>
-      ) : kind === "dragon" ? (
-        <>
-          <path d="M12 21c-4 0-7-3-7-7 0-3 2-5 3-7 0 2 1 3 2 3 0-3 1-6 4-8 0 3 2 5 3 7 1 1 2 3 2 5 0 4-3 7-7 7z" />
-        </>
-      ) : (
-        <>
-          <path d="M4 18c2-6 6-10 8-10s6 4 8 10" />
-          <path d="M8 18l4-5 4 5" />
-          <path d="M9 7l3-4 3 4" />
-        </>
-      )}
+    <svg viewBox="0 0 34 34" className={cn("size-5", className)} aria-hidden fill="currentColor" fillRule="evenodd">
+      {icon.frame ? <path d={icon.frame} opacity={0.5} /> : null}
+      <path d={icon.active} />
     </svg>
   );
 }

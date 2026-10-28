@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import type { CompareGroup } from "@/components/compare-tool";
 import { CompareTool } from "@/components/compare-tool";
 import { PageHeader } from "@/components/page-header";
-import { getData } from "@/lib/data/load";
+import { getData, teamRef } from "@/lib/data/load";
 import { regionInfo } from "@/lib/data/regions";
 import { ROLE_LABEL } from "@/lib/format";
 import { aggregateByPlayer, aggregateByTeam, DEFAULT_MIN_GAMES } from "@/lib/metrics";
@@ -47,6 +47,8 @@ export default function ComparePage() {
           id: p.id,
           label: p.name,
           detail: `${team?.short ?? ""}, ${ROLE_LABEL[p.role]}`,
+          team: teamRef(team),
+          role: p.role,
           games: a.games,
           color: `var(${regionInfo(team?.region ?? "").cssVar})`,
           values: {
@@ -99,6 +101,7 @@ export default function ComparePage() {
           id: t.id,
           label: t.name,
           detail: regionInfo(t.region).code,
+          team: teamRef(t),
           games: a.games,
           color: `var(${regionInfo(t.region).cssVar})`,
           values: {

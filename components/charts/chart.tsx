@@ -6,6 +6,7 @@ import { useTheme } from "next-themes";
 import { ChartColumnIcon, TableIcon } from "lucide-react";
 import { SpecTable } from "@/components/charts/chart-table";
 import { Button } from "@/components/ui/button";
+import type { EChartsInstance } from "@/components/charts/echart";
 import type { ChartSpec, ChartTable } from "@/lib/charts/spec";
 import { cn } from "@/lib/utils";
 
@@ -22,6 +23,8 @@ export interface ChartProps {
   title?: string;
   height?: number;
   className?: string;
+  /** Receives the ECharts instance once mounted (for exports). */
+  onReady?: (instance: EChartsInstance) => void;
 }
 
 /** Hook that re-reads the CSS palette when the theme flips. */
@@ -33,7 +36,7 @@ export function useThemeKey(): string {
 }
 
 /** Every chart ships with a "View as table" alternative and a textual description. */
-export function Chart({ spec, description, table, title, height = 320, className }: ChartProps) {
+export function Chart({ spec, description, table, title, height = 320, className, onReady }: ChartProps) {
   const [view, setView] = useState<"chart" | "table">("chart");
   const themeKey = useThemeKey();
 
@@ -57,7 +60,7 @@ export function Chart({ spec, description, table, title, height = 320, className
       </div>
       {view === "chart" ? (
         <div style={{ height }} role="img" aria-label={description}>
-          <EChart spec={spec} themeKey={themeKey} />
+          <EChart spec={spec} themeKey={themeKey} onReady={onReady} />
         </div>
       ) : (
         <SpecTable spec={spec} table={table} />

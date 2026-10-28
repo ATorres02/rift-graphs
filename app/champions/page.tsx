@@ -34,6 +34,7 @@ export default function ChampionsPage() {
     .filter((c) => c.picks >= MIN_PICKS_FOR_WINRATE)
     .sort((a, b) => (b.winRate ?? 0) - (a.winRate ?? 0) || b.picks - a.picks)[0];
   const mostBanned = [...champs].sort((a, b) => b.bans - a.bans || b.picks - a.picks)[0];
+  const mostPicked = [...champs].sort((a, b) => b.picks - a.picks || b.bans - a.bans)[0];
   const headlines: Headline[] = [
     champs[0]
       ? {
@@ -42,6 +43,13 @@ export default function ChampionsPage() {
           detail: `${champs[0].champion}, ${champs[0].picks} picks, ${champs[0].bans} bans in ${games} games`,
         }
       : { label: "Highest presence", value: "–" },
+    mostPicked
+      ? {
+          label: "Most picked",
+          value: String(mostPicked.picks),
+          detail: `${mostPicked.champion}, ${fmt.pct(mostPicked.picks / Math.max(games, 1))} of games`,
+        }
+      : { label: "Most picked", value: "–" },
     mostBanned
       ? {
           label: "Most banned",
@@ -104,7 +112,7 @@ export default function ChampionsPage() {
         title="Champions"
         description={`${champs.length} champions picked or banned across ${games} games on patch ${data.tournament.patch ?? "?"}; ${unused.length} never appeared in a draft. Tap a card for the full story of a champion.`}
       />
-      <Headlines items={headlines} />
+      <Headlines items={headlines} className="lg:grid-cols-4" />
       <ProvisionalNote meta={data.meta} />
 
       <Section
