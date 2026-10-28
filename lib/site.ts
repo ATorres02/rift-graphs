@@ -15,6 +15,8 @@ export const site = {
     linkedin: env("NEXT_PUBLIC_AUTHOR_LINKEDIN"),
   },
   repoUrl: env("NEXT_PUBLIC_REPO_URL"),
+  /** Cloudflare Web Analytics beacon token (cookie-free). Empty = analytics off. */
+  analytics: { cfBeaconToken: env("NEXT_PUBLIC_CF_BEACON_TOKEN") },
   imprint: {
     name: env("NEXT_PUBLIC_IMPRINT_NAME"),
     address: env("NEXT_PUBLIC_IMPRINT_ADDRESS"),

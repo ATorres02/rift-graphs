@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Headlines, type Headline } from "@/components/headlines";
+import { ProvisionalNote } from "@/components/provisional";
 import { PageHeader, Section } from "@/components/page-header";
 import { PlayersTable } from "@/components/players-table";
 import { TeamPill } from "@/components/team-pill";
@@ -11,7 +12,8 @@ import { playerCell, playerLabel } from "@/lib/views";
 
 export const metadata: Metadata = {
   title: "Players",
-  description: "Every player of the 2026 World Championship ranked by KDA, kill participation, CS, damage and gold per minute, with a role filter and a minimum-games threshold.",
+  description:
+    "Every player of the 2026 World Championship ranked by KDA, kill participation, CS, damage and gold per minute, with a role filter and a minimum-games threshold.",
 };
 
 export default function PlayersPage() {
@@ -46,9 +48,30 @@ export default function PlayersPage() {
   const dpm = leader((a) => a.dpm);
   const cspm = leader((a) => a.cspm);
   const headlines: Headline[] = [
-    kda ? { label: "Best KDA", value: fmt.dec(kda.value, 1), detail: `${playerLabel(data, kda.playerId)} · ${kda.aggregate.games} games`, href: `/players/${kda.playerId}` } : { label: "Best KDA", value: "–" },
-    dpm ? { label: "Most damage per minute", value: fmt.int(dpm.value), detail: `${playerLabel(data, dpm.playerId)} · ${dpm.aggregate.games} games`, href: `/players/${dpm.playerId}` } : { label: "Most damage per minute", value: "–" },
-    cspm ? { label: "Best CS per minute", value: fmt.dec(cspm.value, 1), detail: `${playerLabel(data, cspm.playerId)} · ${cspm.aggregate.games} games`, href: `/players/${cspm.playerId}` } : { label: "Best CS per minute", value: "–" },
+    kda
+      ? {
+          label: "Best KDA",
+          value: fmt.dec(kda.value, 1),
+          detail: `${playerLabel(data, kda.playerId)} · ${kda.aggregate.games} games`,
+          href: `/players/${kda.playerId}`,
+        }
+      : { label: "Best KDA", value: "–" },
+    dpm
+      ? {
+          label: "Most damage per minute",
+          value: fmt.int(dpm.value),
+          detail: `${playerLabel(data, dpm.playerId)} · ${dpm.aggregate.games} games`,
+          href: `/players/${dpm.playerId}`,
+        }
+      : { label: "Most damage per minute", value: "–" },
+    cspm
+      ? {
+          label: "Best CS per minute",
+          value: fmt.dec(cspm.value, 1),
+          detail: `${playerLabel(data, cspm.playerId)} · ${cspm.aggregate.games} games`,
+          href: `/players/${cspm.playerId}`,
+        }
+      : { label: "Best CS per minute", value: "–" },
   ];
 
   const topByRole = ROLES.map((role) => {
@@ -58,14 +81,20 @@ export default function PlayersPage() {
 
   return (
     <div className="space-y-8">
-      <PageHeader title="Players" description={`Rankings use totals over all games, and leaders need at least ${DEFAULT_MIN_GAMES} games so a single good game does not top the table.`} />
+      <PageHeader
+        title="Players"
+        description={`Rankings use totals over all games, and leaders need at least ${DEFAULT_MIN_GAMES} games so a single good game does not top the table.`}
+      />
       <Headlines items={headlines} />
+      <ProvisionalNote meta={data.meta} />
 
       <Section title="Top 5 by role" description={`Ranked by KDA, minimum ${DEFAULT_MIN_GAMES} games.`}>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
           {topByRole.map(({ role, top }) => (
             <div key={role} className="rounded-xl border bg-card p-3">
-              <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{ROLE_LABEL[role]}</h3>
+              <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                {ROLE_LABEL[role]}
+              </h3>
               <ol className="space-y-1.5">
                 {top.map((r, i) => {
                   const p = data.playersById.get(r.playerId)!;
@@ -89,7 +118,10 @@ export default function PlayersPage() {
         </div>
       </Section>
 
-      <Section title="All players" description="Click a column to sort. Scroll sideways on small screens; the player column stays fixed.">
+      <Section
+        title="All players"
+        description="Click a column to sort. Scroll sideways on small screens; the player column stays fixed."
+      >
         <PlayersTable rows={rows} />
       </Section>
     </div>

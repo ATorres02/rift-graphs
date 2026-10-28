@@ -9,13 +9,17 @@ import { aggregateByPlayer, aggregateByTeam, DEFAULT_MIN_GAMES } from "@/lib/met
 
 export const metadata: Metadata = {
   title: "Compare",
-  description: "Two teams or two players side by side: an overlaid radar and a table of differences across the main metrics.",
+  description:
+    "Two teams or two players side by side: an overlaid radar and a table of differences across the main metrics.",
 };
 
 export default function ComparePage() {
   const data = getData();
   const byPlayer = aggregateByPlayer(data.playerGames);
-  const byTeam = aggregateByTeam(data.games, data.teams.map((t) => t.id));
+  const byTeam = aggregateByTeam(
+    data.confirmedGames,
+    data.teams.map((t) => t.id),
+  );
 
   const players: CompareGroup = {
     type: "players",
@@ -45,10 +49,27 @@ export default function ComparePage() {
           detail: `${team?.short ?? ""} · ${ROLE_LABEL[p.role]}`,
           games: a.games,
           color: `var(${regionInfo(team?.region ?? "").cssVar})`,
-          values: { kda: a.kda, kp: a.killParticipation, cspm: a.cspm, dpm: a.dpm, gpm: a.gpm, damageShare: a.damageShare, vspm: a.visionPerMinute, winRate: a.winRate, avgKills: a.avgKills, avgDeaths: a.avgDeaths, avgAssists: a.avgAssists, goldShare: a.goldShare },
+          values: {
+            kda: a.kda,
+            kp: a.killParticipation,
+            cspm: a.cspm,
+            dpm: a.dpm,
+            gpm: a.gpm,
+            damageShare: a.damageShare,
+            vspm: a.visionPerMinute,
+            winRate: a.winRate,
+            avgKills: a.avgKills,
+            avgDeaths: a.avgDeaths,
+            avgAssists: a.avgAssists,
+            goldShare: a.goldShare,
+          },
         };
       })
-      .sort((x, y) => (y.games >= DEFAULT_MIN_GAMES ? 1 : 0) - (x.games >= DEFAULT_MIN_GAMES ? 1 : 0) || x.label.localeCompare(y.label)),
+      .sort(
+        (x, y) =>
+          (y.games >= DEFAULT_MIN_GAMES ? 1 : 0) - (x.games >= DEFAULT_MIN_GAMES ? 1 : 0) ||
+          x.label.localeCompare(y.label),
+      ),
   };
 
   const teams: CompareGroup = {
@@ -103,7 +124,10 @@ export default function ComparePage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader title="Compare" description="Two players or two teams side by side. The radar scales every axis to the best value in the tournament; the table marks who leads each metric." />
+      <PageHeader
+        title="Compare"
+        description="Two players or two teams side by side. The radar scales every axis to the best value in the tournament; the table marks who leads each metric."
+      />
       <CompareTool groups={[players, teams]} />
     </div>
   );

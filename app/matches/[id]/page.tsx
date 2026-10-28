@@ -5,9 +5,11 @@ import { ExternalLinkIcon } from "lucide-react";
 import { LocalTime } from "@/components/local-time";
 import { CompareBars } from "@/components/match/compare-bars";
 import { DraftBoard } from "@/components/match/draft-board";
+import { LineupTable } from "@/components/match/lineup";
 import { Scoreboard } from "@/components/match/scoreboard";
 import { PageHeader, Section } from "@/components/page-header";
 import { PendingData } from "@/components/pending-data";
+import { ProvisionalBadge } from "@/components/provisional";
 import { StatusLabel } from "@/components/series-card";
 import { Spoiler } from "@/components/spoilers";
 import { TeamPill } from "@/components/team-pill";
@@ -75,6 +77,7 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
           <LocalTime iso={s.dateTimeUtc} hasTime={s.hasTime} />
           <StatusLabel series={s} />
+          {s.provisional ? <ProvisionalBadge source={s.source} /> : null}
           {s.score ? (
             <Spoiler label="Reveal score">
               <span className="text-lg font-semibold tabular text-foreground">
@@ -88,11 +91,21 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
               <span>MVP: {s.mvp}</span>
             </Spoiler>
           ) : null}
-          <a href={data.tournament.officialUrl ?? site.lolesportsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 underline hover:text-foreground">
+          <a
+            href={data.tournament.officialUrl ?? site.lolesportsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 underline hover:text-foreground"
+          >
             Watch on lolesports.com <ExternalLinkIcon className="size-3.5" aria-hidden />
           </a>
           {s.streamUrl ? (
-            <a href={s.streamUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 underline hover:text-foreground">
+            <a
+              href={s.streamUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 underline hover:text-foreground"
+            >
               Stream <ExternalLinkIcon className="size-3.5" aria-hidden />
             </a>
           ) : null}
@@ -100,7 +113,15 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
       </PageHeader>
 
       {games.length === 0 && s.status === "scheduled" ? (
-        <p className="rounded-xl border border-dashed p-6 text-sm text-muted-foreground">This series has not started. Game data appears here once Leaguepedia publishes the scoreboards.</p>
+        <p className="rounded-xl border border-dashed p-6 text-sm text-muted-foreground">
+          This series has not started. Game data appears here once Leaguepedia publishes the scoreboards.
+        </p>
+      ) : null}
+      {games.length === 0 && s.status === "live" && missing === 0 ? (
+        <p className="rounded-xl border border-dashed p-6 text-sm text-muted-foreground">
+          This series is in progress. The score updates within minutes of each game; drafts and scoreboards follow when
+          Leaguepedia publishes them.
+        </p>
       ) : null}
 
       {games.map((g) => {
@@ -109,11 +130,18 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
         const rows = data.playerGamesByGame.get(g.id) ?? [];
         const draft = data.draftsByGame.get(g.id);
         const winner = g.winnerSide === "blue" ? blue : red;
-        const dmg = (side: "blue" | "red") => rows.filter((r) => r.side === side).reduce((a, r) => a + r.damageToChampions, 0);
+        const dmg = (side: "blue" | "red") =>
+          rows.filter((r) => r.side === side).reduce((a, r) => a + r.damageToChampions, 0);
+        const hasLineup = Boolean(g.blue.lineup || g.red.lineup);
         return (
           <Section
             key={g.id}
-            title={`Game ${g.gameNumber}`}
+            title={
+              <span className="inline-flex flex-wrap items-center gap-2">
+                Game {g.gameNumber}
+                {g.provisional ? <ProvisionalBadge source={g.source} /> : null}
+              </span>
+            }
             description={
               <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
                 <span>Duration {fmt.duration(g.durationSeconds)}</span>
@@ -124,7 +152,12 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
                   </span>
                 </Spoiler>
                 {g.vodUrl ? (
-                  <a href={g.vodUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 underline hover:text-foreground">
+                  <a
+                    href={g.vodUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 underline hover:text-foreground"
+                  >
                     VOD <ExternalLinkIcon className="size-3.5" aria-hidden />
                   </a>
                 ) : null}
@@ -133,31 +166,77 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
           >
             <Spoiler as="div" label={`Reveal game ${g.gameNumber}`} className="block space-y-4">
               {draft ? (
-                <DraftBoard draft={draft} blue={blue} red={red} icon={icon} locked={s.bestOf > 1 ? lockedChampionsBefore(games, g.gameNumber) : []} />
+                <DraftBoard
+                  draft={draft}
+                  blue={blue}
+                  red={red}
+                  icon={icon}
+                  locked={s.bestOf > 1 ? lockedChampionsBefore(games, g.gameNumber) : []}
+                />
               ) : (
                 <p className="text-sm text-muted-foreground">Draft order not published yet.</p>
               )}
               <div className="grid gap-3 lg:grid-cols-[1fr_320px]">
                 <div className="space-y-3">
-                  <Scoreboard rows={rows.filter((r) => r.side === "blue")} players={data.playersById} icon={icon} side="blue" teamName={blue?.name ?? "Blue"} />
-                  <Scoreboard rows={rows.filter((r) => r.side === "red")} players={data.playersById} icon={icon} side="red" teamName={red?.name ?? "Red"} />
+                  {rows.length ? (
+                    <>
+                      <Scoreboard
+                        rows={rows.filter((r) => r.side === "blue")}
+                        players={data.playersById}
+                        icon={icon}
+                        side="blue"
+                        teamName={blue?.name ?? "Blue"}
+                      />
+                      <Scoreboard
+                        rows={rows.filter((r) => r.side === "red")}
+                        players={data.playersById}
+                        icon={icon}
+                        side="red"
+                        teamName={red?.name ?? "Red"}
+                      />
+                    </>
+                  ) : hasLineup ? (
+                    <>
+                      {g.blue.lineup ? (
+                        <LineupTable lineup={g.blue.lineup} icon={icon} side="blue" teamName={blue?.name ?? "Blue"} />
+                      ) : null}
+                      {g.red.lineup ? (
+                        <LineupTable lineup={g.red.lineup} icon={icon} side="red" teamName={red?.name ?? "Red"} />
+                      ) : null}
+                      <p className="text-xs text-muted-foreground">
+                        Line-ups typed by hand. Full player stats appear when Leaguepedia publishes the scoreboard.
+                      </p>
+                    </>
+                  ) : (
+                    <p className="rounded-xl border border-dashed p-4 text-sm text-muted-foreground">
+                      Player stats appear when Leaguepedia publishes the scoreboard.
+                    </p>
+                  )}
                 </div>
-                <CompareBars
-                  blueName={blue?.short ?? "Blue"}
-                  redName={red?.short ?? "Red"}
-                  metrics={[
-                    { label: "Kills", blue: g.blue.kills, red: g.red.kills },
-                    { label: "Gold", blue: g.blue.gold, red: g.red.gold, format: fmt.compact },
-                    { label: "Damage to champions", blue: dmg("blue"), red: dmg("red"), format: fmt.compact },
-                    { label: "Towers", blue: g.blue.towers, red: g.red.towers },
-                    { label: "Inhibitors", blue: g.blue.inhibitors, red: g.red.inhibitors },
-                    { label: "Dragons", blue: g.blue.dragons, red: g.red.dragons },
-                    { label: "Elder dragons", blue: g.blue.elders, red: g.red.elders },
-                    { label: "Barons", blue: g.blue.barons, red: g.red.barons },
-                    { label: "Rift Heralds", blue: g.blue.heralds, red: g.red.heralds },
-                    { label: "Void grubs", blue: g.blue.voidGrubs, red: g.red.voidGrubs },
-                  ]}
-                />
+                {g.statsComplete ? (
+                  <CompareBars
+                    blueName={blue?.short ?? "Blue"}
+                    redName={red?.short ?? "Red"}
+                    metrics={[
+                      { label: "Kills", blue: g.blue.kills, red: g.red.kills },
+                      { label: "Gold", blue: g.blue.gold, red: g.red.gold, format: fmt.compact },
+                      ...(rows.length
+                        ? [{ label: "Damage to champions", blue: dmg("blue"), red: dmg("red"), format: fmt.compact }]
+                        : []),
+                      { label: "Towers", blue: g.blue.towers, red: g.red.towers },
+                      { label: "Inhibitors", blue: g.blue.inhibitors, red: g.red.inhibitors },
+                      { label: "Dragons", blue: g.blue.dragons, red: g.red.dragons },
+                      { label: "Elder dragons", blue: g.blue.elders, red: g.red.elders },
+                      { label: "Barons", blue: g.blue.barons, red: g.red.barons },
+                      { label: "Rift Heralds", blue: g.blue.heralds, red: g.red.heralds },
+                      { label: "Void grubs", blue: g.blue.voidGrubs, red: g.red.voidGrubs },
+                    ]}
+                  />
+                ) : (
+                  <p className="rounded-xl border border-dashed p-4 text-sm text-muted-foreground">
+                    Team objectives appear when Leaguepedia publishes the game.
+                  </p>
+                )}
               </div>
             </Spoiler>
           </Section>

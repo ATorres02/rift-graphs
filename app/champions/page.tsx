@@ -3,6 +3,7 @@ import { ChampionIcon } from "@/components/champion-icon";
 import { ChampionsTable, type ChampionRow } from "@/components/champions-table";
 import { Chart } from "@/components/charts/chart";
 import { Headlines, type Headline } from "@/components/headlines";
+import { ProvisionalNote } from "@/components/provisional";
 import { PageHeader, Section } from "@/components/page-header";
 import { Spoiler } from "@/components/spoilers";
 import type { BarSpec } from "@/lib/charts/spec";
@@ -14,26 +15,45 @@ import { champIcon } from "@/lib/views";
 
 export const metadata: Metadata = {
   title: "Champions",
-  description: "Champion presence, pick and ban rates and win rates at the 2026 World Championship, by role, plus the champions nobody has touched.",
+  description:
+    "Champion presence, pick and ban rates and win rates at the 2026 World Championship, by role, plus the champions nobody has touched.",
 };
 
 const MIN_PICKS_FOR_WINRATE = 3;
 
 export default function ChampionsPage() {
   const data = getData();
-  const champs = aggregateChampions(data.games, data.playerGames);
-  const games = data.games.length;
+  const champs = aggregateChampions(data.confirmedGames, data.playerGames);
+  const games = data.confirmedGames.length;
 
   const used = new Set(champs.map((c) => normalizeChampionName(c.champion)));
   const unused = data.champions.champions.filter((c) => !used.has(normalizeChampionName(c.name)));
 
-  const bestWinRate = champs.filter((c) => c.picks >= MIN_PICKS_FOR_WINRATE).sort((a, b) => (b.winRate ?? 0) - (a.winRate ?? 0) || b.picks - a.picks)[0];
+  const bestWinRate = champs
+    .filter((c) => c.picks >= MIN_PICKS_FOR_WINRATE)
+    .sort((a, b) => (b.winRate ?? 0) - (a.winRate ?? 0) || b.picks - a.picks)[0];
   const mostBanned = [...champs].sort((a, b) => b.bans - a.bans || b.picks - a.picks)[0];
   const headlines: Headline[] = [
-    champs[0] ? { label: "Highest presence", value: fmt.pct(champs[0].presence), detail: `${champs[0].champion} · ${champs[0].picks} picks, ${champs[0].bans} bans in ${games} games` } : { label: "Highest presence", value: "–" },
-    mostBanned ? { label: "Most banned", value: String(mostBanned.bans), detail: `${mostBanned.champion} · ${fmt.pct(mostBanned.banRate)} of games` } : { label: "Most banned", value: "–" },
+    champs[0]
+      ? {
+          label: "Highest presence",
+          value: fmt.pct(champs[0].presence),
+          detail: `${champs[0].champion} · ${champs[0].picks} picks, ${champs[0].bans} bans in ${games} games`,
+        }
+      : { label: "Highest presence", value: "–" },
+    mostBanned
+      ? {
+          label: "Most banned",
+          value: String(mostBanned.bans),
+          detail: `${mostBanned.champion} · ${fmt.pct(mostBanned.banRate)} of games`,
+        }
+      : { label: "Most banned", value: "–" },
     bestWinRate
-      ? { label: `Best win rate (${MIN_PICKS_FOR_WINRATE}+ picks)`, value: fmt.pct(bestWinRate.winRate), detail: `${bestWinRate.champion} · ${bestWinRate.wins}–${bestWinRate.picks - bestWinRate.wins}` }
+      ? {
+          label: `Best win rate (${MIN_PICKS_FOR_WINRATE}+ picks)`,
+          value: fmt.pct(bestWinRate.winRate),
+          detail: `${bestWinRate.champion} · ${bestWinRate.wins}–${bestWinRate.picks - bestWinRate.wins}`,
+        }
       : { label: "Best win rate", value: "–" },
   ];
 
@@ -63,10 +83,17 @@ export default function ChampionsPage() {
 
   return (
     <div className="space-y-8">
-      <PageHeader title="Champions" description={`${champs.length} champions picked or banned across ${games} games on patch ${data.tournament.patch ?? "?"}; ${unused.length} never appeared in a draft.`} />
+      <PageHeader
+        title="Champions"
+        description={`${champs.length} champions picked or banned across ${games} games on patch ${data.tournament.patch ?? "?"}; ${unused.length} never appeared in a draft.`}
+      />
       <Headlines items={headlines} />
+      <ProvisionalNote meta={data.meta} />
 
-      <Section title="Presence: picks + bans" description="Top 20 champions by presence. Presence is the share of games where a champion was picked or banned.">
+      <Section
+        title="Presence: picks + bans"
+        description="Top 20 champions by presence. Presence is the share of games where a champion was picked or banned."
+      >
         <Chart
           spec={bar}
           table={{ columns: ["Champion", "Picks", "Bans"], rows: top.map((c) => [c.champion, c.picks, c.bans]) }}
@@ -81,10 +108,17 @@ export default function ChampionsPage() {
         </Spoiler>
       </Section>
 
-      <Section title="Never picked or banned" description={`${unused.length} champions available on patch ${data.tournament.patch ?? "?"} that no team has drafted.`}>
+      <Section
+        title="Never picked or banned"
+        description={`${unused.length} champions available on patch ${data.tournament.patch ?? "?"} that no team has drafted.`}
+      >
         <ul className="flex flex-wrap gap-1.5">
           {unused.map((c) => (
-            <li key={c.id} className="flex items-center gap-1.5 rounded-md border bg-card px-1.5 py-1 text-xs" title={c.name}>
+            <li
+              key={c.id}
+              className="flex items-center gap-1.5 rounded-md border bg-card px-1.5 py-1 text-xs"
+              title={c.name}
+            >
               <ChampionIcon champion={{ name: c.name, ddragonId: c.id, version: data.champions.version }} size="xs" />
               <span className="hidden sm:inline">{c.name}</span>
             </li>

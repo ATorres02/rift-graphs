@@ -10,6 +10,8 @@ export interface IndexedDataset extends Dataset {
   playersById: Map<string, Player>;
   seriesById: Map<string, Series>;
   gamesById: Map<string, Game>;
+  /** Games confirmed by Leaguepedia: the only ones that feed stats, rankings and the chart builder. */
+  confirmedGames: Game[];
   gamesBySeries: Map<string, Game[]>;
   draftsByGame: Map<string, Draft>;
   playerGamesByGame: Map<string, PlayerGame[]>;
@@ -48,6 +50,7 @@ export function indexDataset(dataset: Dataset): IndexedDataset {
     playersById: new Map(dataset.players.map((p) => [p.id, p])),
     seriesById: new Map(dataset.series.map((s) => [s.id, s])),
     gamesById: new Map(dataset.games.map((g) => [g.id, g])),
+    confirmedGames: dataset.games.filter((g) => !g.provisional),
     gamesBySeries,
     draftsByGame: new Map(dataset.drafts.map((d) => [d.gameId, d])),
     playerGamesByGame: groupInto(dataset.playerGames, (r) => r.gameId),

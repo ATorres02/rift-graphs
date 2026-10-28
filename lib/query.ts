@@ -142,7 +142,7 @@ export function buildRows(data: IndexedDataset, source: DataSource): BaseRow[] {
       });
     }
     if (source === "champions") {
-      for (const g of data.games) {
+      for (const g of data.confirmedGames) {
         const s = data.seriesById.get(g.seriesId);
         if (!s) continue;
         for (const side of ["blue", "red"] as const) {
@@ -171,7 +171,7 @@ export function buildRows(data: IndexedDataset, source: DataSource): BaseRow[] {
       }
     }
   } else if (source === "teams") {
-    for (const g of data.games) {
+    for (const g of data.confirmedGames) {
       const s = data.seriesById.get(g.seriesId);
       if (!s) continue;
       const pgs = data.playerGamesByGame.get(g.id) ?? [];
@@ -222,7 +222,7 @@ export function buildRows(data: IndexedDataset, source: DataSource): BaseRow[] {
       }
     }
   } else {
-    for (const g of data.games) {
+    for (const g of data.confirmedGames) {
       const s = data.seriesById.get(g.seriesId);
       if (!s) continue;
       rows.push({
@@ -295,53 +295,445 @@ const safeDiv = (a: number, b: number) => (b > 0 ? a / b : null);
 
 export const MEASURES: MeasureDef[] = [
   // combat
-  { key: "kills", label: "Kills", group: "combat", unit: "decimal1", kind: "sum", field: "kills", sources: ["players", "teams", "champions"], rowFilter: picksOnly, description: "Kills per game (or total/median/max depending on aggregation)." },
-  { key: "deaths", label: "Deaths", group: "combat", unit: "decimal1", kind: "sum", field: "deaths", sources: ["players", "teams", "champions"], rowFilter: picksOnly, description: "Deaths per game." },
-  { key: "assists", label: "Assists", group: "combat", unit: "decimal1", kind: "sum", field: "assists", sources: ["players", "champions"], rowFilter: picksOnly, description: "Assists per game." },
-  { key: "kda", label: "KDA", group: "combat", unit: "decimal1", kind: "ratio", sources: ["players", "teams", "champions"], rowFilter: picksOnly, ratio: (s) => kdaOf(s.kills ?? 0, s.deaths ?? 0, s.assists ?? 0), perRow: (r) => kdaOf(r.n.kills ?? 0, r.n.deaths ?? 0, r.n.assists ?? 0), description: "(Kills + Assists) / Deaths over all games in the group." },
-  { key: "kp", label: "Kill participation", group: "combat", unit: "percent", kind: "ratio", sources: PLAYERLIKE, rowFilter: picksOnly, ratio: (s) => safeDiv((s.kills ?? 0) + (s.assists ?? 0), s.teamKills ?? 0), perRow: (r) => safeDiv(r.n.kills + r.n.assists, r.n.teamKills), description: "Share of the team's kills the player took part in." },
-  { key: "totalKills", label: "Total kills (both teams)", group: "combat", unit: "decimal1", kind: "sum", field: "totalKills", sources: ["games"], description: "Kills by both teams in a game." },
-  { key: "killsPerMinute", label: "Kills per minute (both teams)", group: "combat", unit: "decimal2", kind: "ratio", sources: ["games"], ratio: (s, c) => safeDiv(s.totalKills ?? 0, c.minutes), perRow: (r) => safeDiv(r.n.totalKills, r.duration / 60), description: "Combined kills divided by game minutes." },
+  {
+    key: "kills",
+    label: "Kills",
+    group: "combat",
+    unit: "decimal1",
+    kind: "sum",
+    field: "kills",
+    sources: ["players", "teams", "champions"],
+    rowFilter: picksOnly,
+    description: "Kills per game (or total/median/max depending on aggregation).",
+  },
+  {
+    key: "deaths",
+    label: "Deaths",
+    group: "combat",
+    unit: "decimal1",
+    kind: "sum",
+    field: "deaths",
+    sources: ["players", "teams", "champions"],
+    rowFilter: picksOnly,
+    description: "Deaths per game.",
+  },
+  {
+    key: "assists",
+    label: "Assists",
+    group: "combat",
+    unit: "decimal1",
+    kind: "sum",
+    field: "assists",
+    sources: ["players", "champions"],
+    rowFilter: picksOnly,
+    description: "Assists per game.",
+  },
+  {
+    key: "kda",
+    label: "KDA",
+    group: "combat",
+    unit: "decimal1",
+    kind: "ratio",
+    sources: ["players", "teams", "champions"],
+    rowFilter: picksOnly,
+    ratio: (s) => kdaOf(s.kills ?? 0, s.deaths ?? 0, s.assists ?? 0),
+    perRow: (r) => kdaOf(r.n.kills ?? 0, r.n.deaths ?? 0, r.n.assists ?? 0),
+    description: "(Kills + Assists) / Deaths over all games in the group.",
+  },
+  {
+    key: "kp",
+    label: "Kill participation",
+    group: "combat",
+    unit: "percent",
+    kind: "ratio",
+    sources: PLAYERLIKE,
+    rowFilter: picksOnly,
+    ratio: (s) => safeDiv((s.kills ?? 0) + (s.assists ?? 0), s.teamKills ?? 0),
+    perRow: (r) => safeDiv(r.n.kills + r.n.assists, r.n.teamKills),
+    description: "Share of the team's kills the player took part in.",
+  },
+  {
+    key: "totalKills",
+    label: "Total kills (both teams)",
+    group: "combat",
+    unit: "decimal1",
+    kind: "sum",
+    field: "totalKills",
+    sources: ["games"],
+    description: "Kills by both teams in a game.",
+  },
+  {
+    key: "killsPerMinute",
+    label: "Kills per minute (both teams)",
+    group: "combat",
+    unit: "decimal2",
+    kind: "ratio",
+    sources: ["games"],
+    ratio: (s, c) => safeDiv(s.totalKills ?? 0, c.minutes),
+    perRow: (r) => safeDiv(r.n.totalKills, r.duration / 60),
+    description: "Combined kills divided by game minutes.",
+  },
   // economy
-  { key: "gold", label: "Gold", group: "economy", unit: "gold", kind: "sum", field: "gold", sources: ["players", "teams", "champions"], rowFilter: picksOnly, description: "Gold earned per game." },
-  { key: "gpm", label: "Gold per minute", group: "economy", unit: "number", kind: "ratio", sources: ["players", "teams", "champions"], rowFilter: picksOnly, ratio: (s, c) => safeDiv(s.gold ?? 0, c.minutes), perRow: (r) => safeDiv(r.n.gold, r.duration / 60), description: "Gold divided by minutes played." },
-  { key: "goldShare", label: "Gold share", group: "economy", unit: "percent", kind: "ratio", sources: PLAYERLIKE, rowFilter: picksOnly, ratio: (s) => safeDiv(s.gold ?? 0, s.teamGold ?? 0), perRow: (r) => safeDiv(r.n.gold, r.n.teamGold), description: "Share of the team's gold." },
-  { key: "cs", label: "CS", group: "economy", unit: "decimal1", kind: "sum", field: "cs", sources: ["players", "teams", "champions"], rowFilter: picksOnly, description: "Creep score per game." },
-  { key: "cspm", label: "CS per minute", group: "economy", unit: "decimal1", kind: "ratio", sources: ["players", "teams", "champions"], rowFilter: picksOnly, ratio: (s, c) => safeDiv(s.cs ?? 0, c.minutes), perRow: (r) => safeDiv(r.n.cs, r.duration / 60), description: "Creep score divided by minutes played." },
-  { key: "totalGold", label: "Total gold (both teams)", group: "economy", unit: "gold", kind: "sum", field: "totalGold", sources: ["games"], description: "Gold of both teams in a game." },
+  {
+    key: "gold",
+    label: "Gold",
+    group: "economy",
+    unit: "gold",
+    kind: "sum",
+    field: "gold",
+    sources: ["players", "teams", "champions"],
+    rowFilter: picksOnly,
+    description: "Gold earned per game.",
+  },
+  {
+    key: "gpm",
+    label: "Gold per minute",
+    group: "economy",
+    unit: "number",
+    kind: "ratio",
+    sources: ["players", "teams", "champions"],
+    rowFilter: picksOnly,
+    ratio: (s, c) => safeDiv(s.gold ?? 0, c.minutes),
+    perRow: (r) => safeDiv(r.n.gold, r.duration / 60),
+    description: "Gold divided by minutes played.",
+  },
+  {
+    key: "goldShare",
+    label: "Gold share",
+    group: "economy",
+    unit: "percent",
+    kind: "ratio",
+    sources: PLAYERLIKE,
+    rowFilter: picksOnly,
+    ratio: (s) => safeDiv(s.gold ?? 0, s.teamGold ?? 0),
+    perRow: (r) => safeDiv(r.n.gold, r.n.teamGold),
+    description: "Share of the team's gold.",
+  },
+  {
+    key: "cs",
+    label: "CS",
+    group: "economy",
+    unit: "decimal1",
+    kind: "sum",
+    field: "cs",
+    sources: ["players", "teams", "champions"],
+    rowFilter: picksOnly,
+    description: "Creep score per game.",
+  },
+  {
+    key: "cspm",
+    label: "CS per minute",
+    group: "economy",
+    unit: "decimal1",
+    kind: "ratio",
+    sources: ["players", "teams", "champions"],
+    rowFilter: picksOnly,
+    ratio: (s, c) => safeDiv(s.cs ?? 0, c.minutes),
+    perRow: (r) => safeDiv(r.n.cs, r.duration / 60),
+    description: "Creep score divided by minutes played.",
+  },
+  {
+    key: "totalGold",
+    label: "Total gold (both teams)",
+    group: "economy",
+    unit: "gold",
+    kind: "sum",
+    field: "totalGold",
+    sources: ["games"],
+    description: "Gold of both teams in a game.",
+  },
   // damage
-  { key: "damage", label: "Damage to champions", group: "damage", unit: "number", kind: "sum", field: "damage", sources: ["players", "teams", "champions"], rowFilter: picksOnly, description: "Damage dealt to champions per game." },
-  { key: "dpm", label: "Damage per minute", group: "damage", unit: "number", kind: "ratio", sources: ["players", "teams", "champions"], rowFilter: picksOnly, ratio: (s, c) => safeDiv(s.damage ?? 0, c.minutes), perRow: (r) => safeDiv(r.n.damage, r.duration / 60), description: "Damage to champions divided by minutes played." },
-  { key: "damageShare", label: "Damage share", group: "damage", unit: "percent", kind: "ratio", sources: PLAYERLIKE, rowFilter: picksOnly, ratio: (s) => safeDiv(s.damage ?? 0, s.teamDamage ?? 0), perRow: (r) => safeDiv(r.n.damage, r.n.teamDamage), description: "Share of the team's damage to champions." },
+  {
+    key: "damage",
+    label: "Damage to champions",
+    group: "damage",
+    unit: "number",
+    kind: "sum",
+    field: "damage",
+    sources: ["players", "teams", "champions"],
+    rowFilter: picksOnly,
+    description: "Damage dealt to champions per game.",
+  },
+  {
+    key: "dpm",
+    label: "Damage per minute",
+    group: "damage",
+    unit: "number",
+    kind: "ratio",
+    sources: ["players", "teams", "champions"],
+    rowFilter: picksOnly,
+    ratio: (s, c) => safeDiv(s.damage ?? 0, c.minutes),
+    perRow: (r) => safeDiv(r.n.damage, r.duration / 60),
+    description: "Damage to champions divided by minutes played.",
+  },
+  {
+    key: "damageShare",
+    label: "Damage share",
+    group: "damage",
+    unit: "percent",
+    kind: "ratio",
+    sources: PLAYERLIKE,
+    rowFilter: picksOnly,
+    ratio: (s) => safeDiv(s.damage ?? 0, s.teamDamage ?? 0),
+    perRow: (r) => safeDiv(r.n.damage, r.n.teamDamage),
+    description: "Share of the team's damage to champions.",
+  },
   // vision
-  { key: "vision", label: "Vision score", group: "vision", unit: "decimal1", kind: "sum", field: "vision", sources: ["players", "teams", "champions"], rowFilter: picksOnly, description: "Vision score per game." },
-  { key: "vspm", label: "Vision score per minute", group: "vision", unit: "decimal2", kind: "ratio", sources: ["players", "teams", "champions"], rowFilter: picksOnly, ratio: (s, c) => safeDiv(s.vision ?? 0, c.minutes), perRow: (r) => safeDiv(r.n.vision, r.duration / 60), description: "Vision score divided by minutes played." },
+  {
+    key: "vision",
+    label: "Vision score",
+    group: "vision",
+    unit: "decimal1",
+    kind: "sum",
+    field: "vision",
+    sources: ["players", "teams", "champions"],
+    rowFilter: picksOnly,
+    description: "Vision score per game.",
+  },
+  {
+    key: "vspm",
+    label: "Vision score per minute",
+    group: "vision",
+    unit: "decimal2",
+    kind: "ratio",
+    sources: ["players", "teams", "champions"],
+    rowFilter: picksOnly,
+    ratio: (s, c) => safeDiv(s.vision ?? 0, c.minutes),
+    perRow: (r) => safeDiv(r.n.vision, r.duration / 60),
+    description: "Vision score divided by minutes played.",
+  },
   // objectives
-  { key: "towers", label: "Towers", group: "objectives", unit: "decimal1", kind: "sum", field: "towers", sources: ["teams"], description: "Towers destroyed per game." },
-  { key: "inhibitors", label: "Inhibitors", group: "objectives", unit: "decimal1", kind: "sum", field: "inhibitors", sources: ["teams"], description: "Inhibitors destroyed per game." },
-  { key: "dragons", label: "Dragons", group: "objectives", unit: "decimal1", kind: "sum", field: "dragons", sources: ["teams"], description: "Dragons taken per game." },
-  { key: "elders", label: "Elder dragons", group: "objectives", unit: "decimal2", kind: "sum", field: "elders", sources: ["teams"], description: "Elder dragons taken per game." },
-  { key: "barons", label: "Barons", group: "objectives", unit: "decimal2", kind: "sum", field: "barons", sources: ["teams"], description: "Barons taken per game." },
-  { key: "heralds", label: "Rift Heralds", group: "objectives", unit: "decimal2", kind: "sum", field: "heralds", sources: ["teams"], description: "Rift Heralds taken per game." },
-  { key: "voidGrubs", label: "Void grubs", group: "objectives", unit: "decimal1", kind: "sum", field: "voidGrubs", sources: ["teams"], description: "Void grubs taken per game." },
-  { key: "dragonControl", label: "Dragon control", group: "objectives", unit: "percent", kind: "ratio", sources: ["teams"], ratio: (s) => safeDiv(s.dragons ?? 0, (s.dragons ?? 0) + (s.oppDragons ?? 0)), perRow: (r) => safeDiv(r.n.dragons, r.n.dragons + r.n.oppDragons), description: "Share of all dragons taken in the team's games." },
-  { key: "baronControl", label: "Baron control", group: "objectives", unit: "percent", kind: "ratio", sources: ["teams"], ratio: (s) => safeDiv(s.barons ?? 0, (s.barons ?? 0) + (s.oppBarons ?? 0)), perRow: (r) => safeDiv(r.n.barons, r.n.barons + r.n.oppBarons), description: "Share of all barons taken in the team's games." },
-  { key: "totalDragons", label: "Dragons (both teams)", group: "objectives", unit: "decimal1", kind: "sum", field: "totalDragons", sources: ["games"], description: "Dragons taken by both teams." },
-  { key: "totalBarons", label: "Barons (both teams)", group: "objectives", unit: "decimal2", kind: "sum", field: "totalBarons", sources: ["games"], description: "Barons taken by both teams." },
-  { key: "totalTowers", label: "Towers (both teams)", group: "objectives", unit: "decimal1", kind: "sum", field: "totalTowers", sources: ["games"], description: "Towers destroyed by both teams." },
+  {
+    key: "towers",
+    label: "Towers",
+    group: "objectives",
+    unit: "decimal1",
+    kind: "sum",
+    field: "towers",
+    sources: ["teams"],
+    description: "Towers destroyed per game.",
+  },
+  {
+    key: "inhibitors",
+    label: "Inhibitors",
+    group: "objectives",
+    unit: "decimal1",
+    kind: "sum",
+    field: "inhibitors",
+    sources: ["teams"],
+    description: "Inhibitors destroyed per game.",
+  },
+  {
+    key: "dragons",
+    label: "Dragons",
+    group: "objectives",
+    unit: "decimal1",
+    kind: "sum",
+    field: "dragons",
+    sources: ["teams"],
+    description: "Dragons taken per game.",
+  },
+  {
+    key: "elders",
+    label: "Elder dragons",
+    group: "objectives",
+    unit: "decimal2",
+    kind: "sum",
+    field: "elders",
+    sources: ["teams"],
+    description: "Elder dragons taken per game.",
+  },
+  {
+    key: "barons",
+    label: "Barons",
+    group: "objectives",
+    unit: "decimal2",
+    kind: "sum",
+    field: "barons",
+    sources: ["teams"],
+    description: "Barons taken per game.",
+  },
+  {
+    key: "heralds",
+    label: "Rift Heralds",
+    group: "objectives",
+    unit: "decimal2",
+    kind: "sum",
+    field: "heralds",
+    sources: ["teams"],
+    description: "Rift Heralds taken per game.",
+  },
+  {
+    key: "voidGrubs",
+    label: "Void grubs",
+    group: "objectives",
+    unit: "decimal1",
+    kind: "sum",
+    field: "voidGrubs",
+    sources: ["teams"],
+    description: "Void grubs taken per game.",
+  },
+  {
+    key: "dragonControl",
+    label: "Dragon control",
+    group: "objectives",
+    unit: "percent",
+    kind: "ratio",
+    sources: ["teams"],
+    ratio: (s) => safeDiv(s.dragons ?? 0, (s.dragons ?? 0) + (s.oppDragons ?? 0)),
+    perRow: (r) => safeDiv(r.n.dragons, r.n.dragons + r.n.oppDragons),
+    description: "Share of all dragons taken in the team's games.",
+  },
+  {
+    key: "baronControl",
+    label: "Baron control",
+    group: "objectives",
+    unit: "percent",
+    kind: "ratio",
+    sources: ["teams"],
+    ratio: (s) => safeDiv(s.barons ?? 0, (s.barons ?? 0) + (s.oppBarons ?? 0)),
+    perRow: (r) => safeDiv(r.n.barons, r.n.barons + r.n.oppBarons),
+    description: "Share of all barons taken in the team's games.",
+  },
+  {
+    key: "totalDragons",
+    label: "Dragons (both teams)",
+    group: "objectives",
+    unit: "decimal1",
+    kind: "sum",
+    field: "totalDragons",
+    sources: ["games"],
+    description: "Dragons taken by both teams.",
+  },
+  {
+    key: "totalBarons",
+    label: "Barons (both teams)",
+    group: "objectives",
+    unit: "decimal2",
+    kind: "sum",
+    field: "totalBarons",
+    sources: ["games"],
+    description: "Barons taken by both teams.",
+  },
+  {
+    key: "totalTowers",
+    label: "Towers (both teams)",
+    group: "objectives",
+    unit: "decimal1",
+    kind: "sum",
+    field: "totalTowers",
+    sources: ["games"],
+    description: "Towers destroyed by both teams.",
+  },
   // duration
-  { key: "duration", label: "Game length", group: "duration", unit: "seconds", kind: "sum", field: "duration", sources: ["players", "teams", "champions", "games"], rowFilter: picksOnly, perRow: (r) => r.duration, description: "Game length in minutes and seconds." },
+  {
+    key: "duration",
+    label: "Game length",
+    group: "duration",
+    unit: "seconds",
+    kind: "sum",
+    field: "duration",
+    sources: ["players", "teams", "champions", "games"],
+    rowFilter: picksOnly,
+    perRow: (r) => r.duration,
+    description: "Game length in minutes and seconds.",
+  },
   // draft
-  { key: "picks", label: "Picks", group: "draft", unit: "number", kind: "sum", field: "pick", sources: ["champions"], description: "Games in which the champion was picked." },
-  { key: "bans", label: "Bans", group: "draft", unit: "number", kind: "sum", field: "ban", sources: ["champions"], description: "Games in which the champion was banned." },
-  { key: "presence", label: "Presence", group: "draft", unit: "percent", kind: "ratio", sources: ["champions"], ratio: (s, c) => safeDiv((s.pick ?? 0) + (s.ban ?? 0), c.universeGames), description: "(Picks + bans) / games in the selection." },
-  { key: "pickRate", label: "Pick rate", group: "draft", unit: "percent", kind: "ratio", sources: ["champions"], ratio: (s, c) => safeDiv(s.pick ?? 0, c.universeGames), description: "Picks / games in the selection." },
-  { key: "banRate", label: "Ban rate", group: "draft", unit: "percent", kind: "ratio", sources: ["champions"], ratio: (s, c) => safeDiv(s.ban ?? 0, c.universeGames), description: "Bans / games in the selection." },
+  {
+    key: "picks",
+    label: "Picks",
+    group: "draft",
+    unit: "number",
+    kind: "sum",
+    field: "pick",
+    sources: ["champions"],
+    description: "Games in which the champion was picked.",
+  },
+  {
+    key: "bans",
+    label: "Bans",
+    group: "draft",
+    unit: "number",
+    kind: "sum",
+    field: "ban",
+    sources: ["champions"],
+    description: "Games in which the champion was banned.",
+  },
+  {
+    key: "presence",
+    label: "Presence",
+    group: "draft",
+    unit: "percent",
+    kind: "ratio",
+    sources: ["champions"],
+    ratio: (s, c) => safeDiv((s.pick ?? 0) + (s.ban ?? 0), c.universeGames),
+    description: "(Picks + bans) / games in the selection.",
+  },
+  {
+    key: "pickRate",
+    label: "Pick rate",
+    group: "draft",
+    unit: "percent",
+    kind: "ratio",
+    sources: ["champions"],
+    ratio: (s, c) => safeDiv(s.pick ?? 0, c.universeGames),
+    description: "Picks / games in the selection.",
+  },
+  {
+    key: "banRate",
+    label: "Ban rate",
+    group: "draft",
+    unit: "percent",
+    kind: "ratio",
+    sources: ["champions"],
+    ratio: (s, c) => safeDiv(s.ban ?? 0, c.universeGames),
+    description: "Bans / games in the selection.",
+  },
   // results
-  { key: "winRate", label: "Win rate", group: "results", unit: "percent", kind: "ratio", sources: ["players", "teams", "champions"], rowFilter: picksOnly, ratio: (s) => safeDiv(s.win ?? 0, s.games ?? 0), perRow: (r) => r.win, description: "Wins / games (champions: wins / picks)." },
-  { key: "blueWinRate", label: "Blue side win rate", group: "results", unit: "percent", kind: "ratio", sources: ["games"], ratio: (s) => safeDiv(s.blueWin ?? 0, s.games ?? 0), perRow: (r) => r.n.blueWin, description: "Share of games won by the blue side." },
-  { key: "wins", label: "Wins", group: "results", unit: "number", kind: "sum", field: "win", sources: ["players", "teams", "champions"], rowFilter: picksOnly, description: "Games won." },
-  { key: "games", label: "Games", group: "results", unit: "number", kind: "count", sources: ["players", "teams", "champions", "games"], rowFilter: picksOnly, description: "Number of games." },
+  {
+    key: "winRate",
+    label: "Win rate",
+    group: "results",
+    unit: "percent",
+    kind: "ratio",
+    sources: ["players", "teams", "champions"],
+    rowFilter: picksOnly,
+    ratio: (s) => safeDiv(s.win ?? 0, s.games ?? 0),
+    perRow: (r) => r.win,
+    description: "Wins / games (champions: wins / picks).",
+  },
+  {
+    key: "blueWinRate",
+    label: "Blue side win rate",
+    group: "results",
+    unit: "percent",
+    kind: "ratio",
+    sources: ["games"],
+    ratio: (s) => safeDiv(s.blueWin ?? 0, s.games ?? 0),
+    perRow: (r) => r.n.blueWin,
+    description: "Share of games won by the blue side.",
+  },
+  {
+    key: "wins",
+    label: "Wins",
+    group: "results",
+    unit: "number",
+    kind: "sum",
+    field: "win",
+    sources: ["players", "teams", "champions"],
+    rowFilter: picksOnly,
+    description: "Games won.",
+  },
+  {
+    key: "games",
+    label: "Games",
+    group: "results",
+    unit: "number",
+    kind: "count",
+    sources: ["players", "teams", "champions", "games"],
+    rowFilter: picksOnly,
+    description: "Number of games.",
+  },
 ];
 
 export const MEASURE_GROUP_LABEL: Record<MeasureGroup, string> = {
@@ -378,18 +770,123 @@ export interface DimensionDef {
 const STAGE_ORDER: StageId[] = ["playin", "swiss", "quarterfinals", "semifinals", "final"];
 
 export const DIMENSIONS: DimensionDef[] = [
-  { key: "player", label: "Player", sources: PLAYERLIKE, ordered: false, entity: "player", keyOf: (r) => r.playerId, labelOf: (r) => r.player ?? "" },
-  { key: "team", label: "Team", sources: ["players", "teams", "champions"], ordered: false, entity: "team", keyOf: (r) => r.teamId, labelOf: (r) => r.team },
-  { key: "region", label: "Region", sources: ["players", "teams", "champions"], ordered: false, entity: null, keyOf: (r) => r.region || null, labelOf: (r) => regionInfo(r.region).code },
-  { key: "role", label: "Role", sources: PLAYERLIKE, ordered: false, entity: null, keyOf: (r) => r.role, labelOf: (r) => (r.role ? ROLE_LABEL[r.role] : ""), order: (a, b) => ROLE_INDEX[a.key] - ROLE_INDEX[b.key] },
-  { key: "champion", label: "Champion", sources: PLAYERLIKE, ordered: false, entity: "champion", keyOf: (r) => r.champion, labelOf: (r) => r.champion ?? "" },
-  { key: "side", label: "Side", sources: ["players", "teams", "champions"], ordered: false, entity: null, keyOf: (r) => r.side, labelOf: (r) => (r.side === "blue" ? "Blue side" : "Red side"), order: (a) => (a.key === "blue" ? -1 : 1) },
-  { key: "winnerSide", label: "Winning side", sources: ["games"], ordered: false, entity: null, keyOf: (r) => r.side, labelOf: (r) => (r.side === "blue" ? "Blue side" : "Red side"), order: (a) => (a.key === "blue" ? -1 : 1) },
-  { key: "stage", label: "Stage", sources: ["players", "teams", "champions", "games"], ordered: true, entity: null, keyOf: (r) => r.stage, labelOf: (r) => STAGE_LABEL[r.stage], order: (a, b) => STAGE_ORDER.indexOf(a.key as StageId) - STAGE_ORDER.indexOf(b.key as StageId) },
-  { key: "round", label: "Round", sources: ["players", "teams", "champions", "games"], ordered: true, entity: null, keyOf: (r) => (r.round ? `${r.stage}:${r.round}` : null), labelOf: (r) => `${r.stage === "playin" ? "PI" : "Swiss"} R${r.round}`, order: (a, b) => STAGE_ORDER.indexOf(a.row.stage) - STAGE_ORDER.indexOf(b.row.stage) || (a.row.round ?? 0) - (b.row.round ?? 0) },
-  { key: "day", label: "Day (UTC)", sources: ["players", "teams", "champions", "games"], ordered: true, entity: null, keyOf: (r) => r.day, labelOf: (r) => r.day.slice(5).replace("-", "/"), order: (a, b) => a.key.localeCompare(b.key) },
-  { key: "gameNumber", label: "Game in series", sources: ["players", "teams", "champions", "games"], ordered: true, entity: null, keyOf: (r) => String(r.gameNumber), labelOf: (r) => `Game ${r.gameNumber}`, order: (a, b) => Number(a.key) - Number(b.key) },
-  { key: "result", label: "Result", sources: ["players", "teams"], ordered: false, entity: null, keyOf: (r) => (r.win ? "win" : "loss"), labelOf: (r) => (r.win ? "Wins" : "Losses"), order: (a) => (a.key === "win" ? -1 : 1) },
+  {
+    key: "player",
+    label: "Player",
+    sources: PLAYERLIKE,
+    ordered: false,
+    entity: "player",
+    keyOf: (r) => r.playerId,
+    labelOf: (r) => r.player ?? "",
+  },
+  {
+    key: "team",
+    label: "Team",
+    sources: ["players", "teams", "champions"],
+    ordered: false,
+    entity: "team",
+    keyOf: (r) => r.teamId,
+    labelOf: (r) => r.team,
+  },
+  {
+    key: "region",
+    label: "Region",
+    sources: ["players", "teams", "champions"],
+    ordered: false,
+    entity: null,
+    keyOf: (r) => r.region || null,
+    labelOf: (r) => regionInfo(r.region).code,
+  },
+  {
+    key: "role",
+    label: "Role",
+    sources: PLAYERLIKE,
+    ordered: false,
+    entity: null,
+    keyOf: (r) => r.role,
+    labelOf: (r) => (r.role ? ROLE_LABEL[r.role] : ""),
+    order: (a, b) => ROLE_INDEX[a.key] - ROLE_INDEX[b.key],
+  },
+  {
+    key: "champion",
+    label: "Champion",
+    sources: PLAYERLIKE,
+    ordered: false,
+    entity: "champion",
+    keyOf: (r) => r.champion,
+    labelOf: (r) => r.champion ?? "",
+  },
+  {
+    key: "side",
+    label: "Side",
+    sources: ["players", "teams", "champions"],
+    ordered: false,
+    entity: null,
+    keyOf: (r) => r.side,
+    labelOf: (r) => (r.side === "blue" ? "Blue side" : "Red side"),
+    order: (a) => (a.key === "blue" ? -1 : 1),
+  },
+  {
+    key: "winnerSide",
+    label: "Winning side",
+    sources: ["games"],
+    ordered: false,
+    entity: null,
+    keyOf: (r) => r.side,
+    labelOf: (r) => (r.side === "blue" ? "Blue side" : "Red side"),
+    order: (a) => (a.key === "blue" ? -1 : 1),
+  },
+  {
+    key: "stage",
+    label: "Stage",
+    sources: ["players", "teams", "champions", "games"],
+    ordered: true,
+    entity: null,
+    keyOf: (r) => r.stage,
+    labelOf: (r) => STAGE_LABEL[r.stage],
+    order: (a, b) => STAGE_ORDER.indexOf(a.key as StageId) - STAGE_ORDER.indexOf(b.key as StageId),
+  },
+  {
+    key: "round",
+    label: "Round",
+    sources: ["players", "teams", "champions", "games"],
+    ordered: true,
+    entity: null,
+    keyOf: (r) => (r.round ? `${r.stage}:${r.round}` : null),
+    labelOf: (r) => `${r.stage === "playin" ? "PI" : "Swiss"} R${r.round}`,
+    order: (a, b) =>
+      STAGE_ORDER.indexOf(a.row.stage) - STAGE_ORDER.indexOf(b.row.stage) || (a.row.round ?? 0) - (b.row.round ?? 0),
+  },
+  {
+    key: "day",
+    label: "Day (UTC)",
+    sources: ["players", "teams", "champions", "games"],
+    ordered: true,
+    entity: null,
+    keyOf: (r) => r.day,
+    labelOf: (r) => r.day.slice(5).replace("-", "/"),
+    order: (a, b) => a.key.localeCompare(b.key),
+  },
+  {
+    key: "gameNumber",
+    label: "Game in series",
+    sources: ["players", "teams", "champions", "games"],
+    ordered: true,
+    entity: null,
+    keyOf: (r) => String(r.gameNumber),
+    labelOf: (r) => `Game ${r.gameNumber}`,
+    order: (a, b) => Number(a.key) - Number(b.key),
+  },
+  {
+    key: "result",
+    label: "Result",
+    sources: ["players", "teams"],
+    ordered: false,
+    entity: null,
+    keyOf: (r) => (r.win ? "win" : "loss"),
+    labelOf: (r) => (r.win ? "Wins" : "Losses"),
+    order: (a) => (a.key === "win" ? -1 : 1),
+  },
 ];
 
 const ROLE_INDEX: Record<string, number> = { top: 0, jungle: 1, mid: 2, bot: 3, support: 4 };
@@ -448,7 +945,9 @@ export function generalProblems(config: QueryConfig): string[] {
   for (const m of measures) {
     if (!m.sources.includes(config.source)) problems.push(`${m.label} is not available for ${config.source}.`);
     if (!allowedAggregations(m).includes(config.aggregation)) {
-      problems.push(`${AGGREGATION_LABEL[config.aggregation]} does not apply to ${m.label}: it is a ratio computed over totals (use average, median, maximum or minimum).`);
+      problems.push(
+        `${AGGREGATION_LABEL[config.aggregation]} does not apply to ${m.label}: it is a ratio computed over totals (use average, median, maximum or minimum).`,
+      );
     }
   }
   if (dim && !dim.sources.includes(config.source)) problems.push(`${dim.label} is not available for ${config.source}.`);
@@ -468,21 +967,28 @@ export function chartProblems(config: QueryConfig, chart: ChartType): string[] {
     case "bar":
     case "boxplot":
       if (measures.length !== 1) problems.push(`${CHART_LABEL[config.chart]} needs exactly one measure.`);
-      if (config.series) problems.push(`${CHART_LABEL[config.chart]} cannot use a series dimension; choose grouped or stacked bars.`);
-      if (config.chart === "boxplot" && measures[0] && measures[0].kind === "count") problems.push("Box plots need a per-game measure, not a count.");
+      if (config.series)
+        problems.push(`${CHART_LABEL[config.chart]} cannot use a series dimension; choose grouped or stacked bars.`);
+      if (config.chart === "boxplot" && measures[0] && measures[0].kind === "count")
+        problems.push("Box plots need a per-game measure, not a count.");
       break;
     case "groupedBar":
     case "stackedBar":
       if (config.series) {
-        if (measures.length !== 1) problems.push(`${CHART_LABEL[config.chart]} with a series dimension needs exactly one measure.`);
-      } else if (measures.length < 2) problems.push(`${CHART_LABEL[config.chart]} needs a series dimension or at least two measures.`);
+        if (measures.length !== 1)
+          problems.push(`${CHART_LABEL[config.chart]} with a series dimension needs exactly one measure.`);
+      } else if (measures.length < 2)
+        problems.push(`${CHART_LABEL[config.chart]} needs a series dimension or at least two measures.`);
       else if (units.size > 1) problems.push("Measures on the same bars must share a unit (e.g. all percentages).");
       if (measures.length > 6) problems.push("At most six measures on one chart.");
       break;
     case "line":
-      if (dim && !dim.ordered) problems.push("Lines need an ordered dimension on the X axis: stage, round, day or game in series.");
-      if (config.series && measures.length !== 1) problems.push("A line chart with a series dimension needs exactly one measure.");
-      if (!config.series && (measures.length < 1 || measures.length > 4)) problems.push("Lines take one to four measures.");
+      if (dim && !dim.ordered)
+        problems.push("Lines need an ordered dimension on the X axis: stage, round, day or game in series.");
+      if (config.series && measures.length !== 1)
+        problems.push("A line chart with a series dimension needs exactly one measure.");
+      if (!config.series && (measures.length < 1 || measures.length > 4))
+        problems.push("Lines take one to four measures.");
       if (!config.series && units.size > 1) problems.push("Lines on the same axis must share a unit.");
       break;
     case "scatter":
@@ -492,7 +998,10 @@ export function chartProblems(config: QueryConfig, chart: ChartType): string[] {
     case "radar":
       if (measures.length < 3 || measures.length > 8) problems.push("Radar needs between three and eight measures.");
       if (config.series) problems.push("Radar cannot use a series dimension.");
-      if (config.topN === null || config.topN > RADAR_MAX_ENTITIES) problems.push(`Radar shows at most ${RADAR_MAX_ENTITIES} entities: set Top N to ${RADAR_MAX_ENTITIES} or fewer.`);
+      if (config.topN === null || config.topN > RADAR_MAX_ENTITIES)
+        problems.push(
+          `Radar shows at most ${RADAR_MAX_ENTITIES} entities: set Top N to ${RADAR_MAX_ENTITIES} or fewer.`,
+        );
       break;
     case "heatmap":
       if (measures.length !== 1) problems.push("Heat maps need exactly one measure.");
@@ -560,12 +1069,18 @@ function sumsOf(rows: BaseRow[]): Record<string, number> {
   return sums;
 }
 
-export function aggregateMeasure(measure: MeasureDef, rows: BaseRow[], ctx: GroupContext, aggregation: Aggregation): number | null {
+export function aggregateMeasure(
+  measure: MeasureDef,
+  rows: BaseRow[],
+  ctx: GroupContext,
+  aggregation: Aggregation,
+): number | null {
   const subset = measure.rowFilter ? rows.filter(measure.rowFilter) : rows;
   if (measure.kind === "count") return contextOf(subset, ctx.universeGames).games;
   if (measure.kind === "ratio") {
     if (!subset.length) return null;
-    if (aggregation === "mean" || !measure.perRow) return measure.ratio?.(sumsOf(subset), contextOf(subset, ctx.universeGames)) ?? null;
+    if (aggregation === "mean" || !measure.perRow)
+      return measure.ratio?.(sumsOf(subset), contextOf(subset, ctx.universeGames)) ?? null;
     const values = subset.map(measure.perRow).filter((v): v is number => v !== null);
     if (!values.length) return null;
     if (aggregation === "median") return median(values);
@@ -596,7 +1111,9 @@ export function aggregateMeasure(measure: MeasureDef, rows: BaseRow[], ctx: Grou
 
 export function perRowValues(measure: MeasureDef, rows: BaseRow[]): number[] {
   const subset = measure.rowFilter ? rows.filter(measure.rowFilter) : rows;
-  return subset.map((r) => (measure.perRow ? measure.perRow(r) : (r.n[measure.field ?? ""] ?? null))).filter((v): v is number => v !== null);
+  return subset
+    .map((r) => (measure.perRow ? measure.perRow(r) : (r.n[measure.field ?? ""] ?? null)))
+    .filter((v): v is number => v !== null);
 }
 
 interface FilterStep {
@@ -608,13 +1125,32 @@ interface FilterStep {
 function filterSteps(f: QueryFilters, source: DataSource): FilterStep[] {
   return [
     { name: "stage", active: !!f.stages?.length, test: (r) => f.stages!.includes(r.stage) },
-    { name: "team", active: !!f.teams?.length, test: (r) => (source === "games" ? f.teams!.some((t) => r.teamId.split("+").includes(t)) : f.teams!.includes(r.teamId)) },
+    {
+      name: "team",
+      active: !!f.teams?.length,
+      test: (r) =>
+        source === "games" ? f.teams!.some((t) => r.teamId.split("+").includes(t)) : f.teams!.includes(r.teamId),
+    },
     { name: "region", active: !!f.regions?.length, test: (r) => f.regions!.includes(r.region) },
     { name: "role", active: !!f.roles?.length, test: (r) => r.role !== null && f.roles!.includes(r.role) },
     { name: "side", active: !!f.side, test: (r) => r.side === f.side },
-    { name: "result", active: !!f.result && source !== "games", test: (r) => (f.result === "win" ? r.win === 1 : r.win === 0) },
-    { name: "champion", active: !!f.champions?.length, test: (r) => r.champion !== null && f.champions!.includes(r.champion) },
-    { name: "game length", active: f.durationMin !== undefined || f.durationMax !== undefined, test: (r) => (f.durationMin === undefined || r.duration >= f.durationMin) && (f.durationMax === undefined || r.duration <= f.durationMax) },
+    {
+      name: "result",
+      active: !!f.result && source !== "games",
+      test: (r) => (f.result === "win" ? r.win === 1 : r.win === 0),
+    },
+    {
+      name: "champion",
+      active: !!f.champions?.length,
+      test: (r) => r.champion !== null && f.champions!.includes(r.champion),
+    },
+    {
+      name: "game length",
+      active: f.durationMin !== undefined || f.durationMax !== undefined,
+      test: (r) =>
+        (f.durationMin === undefined || r.duration >= f.durationMin) &&
+        (f.durationMax === undefined || r.duration <= f.durationMax),
+    },
   ];
 }
 
@@ -632,7 +1168,18 @@ export function runQuery(config: QueryConfig, data: IndexedDataset): QueryResult
   const measures = config.measures.map((k) => measureByKey.get(k)).filter((m): m is MeasureDef => !!m);
   const dimension = dimensionByKey.get(config.groupBy) ?? null;
   const seriesDimension = config.series ? (dimensionByKey.get(config.series) ?? null) : null;
-  const empty = (emptyReason: string | null): QueryResult => ({ config, measures, dimension, seriesDimension, rows: [], seriesLabels: [], overall: {}, universeGames: 0, emptyReason, problems });
+  const empty = (emptyReason: string | null): QueryResult => ({
+    config,
+    measures,
+    dimension,
+    seriesDimension,
+    rows: [],
+    seriesLabels: [],
+    overall: {},
+    universeGames: 0,
+    emptyReason,
+    problems,
+  });
   if (problems.length || !dimension) return empty(null);
 
   // Filters, applied one by one so an empty result can name the culprit.
@@ -649,7 +1196,14 @@ export function runQuery(config: QueryConfig, data: IndexedDataset): QueryResult
   const ctxAll: GroupContext = { ...universe, universeGames };
 
   // Grouping.
-  type Group = { key: string; label: string; seriesKey: string | null; seriesLabel: string | null; rows: BaseRow[]; first: BaseRow };
+  type Group = {
+    key: string;
+    label: string;
+    seriesKey: string | null;
+    seriesLabel: string | null;
+    rows: BaseRow[];
+    first: BaseRow;
+  };
   const groups = new Map<string, Group>();
   for (const r of rows) {
     const k = dimension.keyOf(r);
@@ -659,7 +1213,15 @@ export function runQuery(config: QueryConfig, data: IndexedDataset): QueryResult
     const id = sk === null ? k : `${k}\u0000${sk}`;
     const g = groups.get(id);
     if (g) g.rows.push(r);
-    else groups.set(id, { key: k, label: dimension.labelOf(r), seriesKey: sk, seriesLabel: seriesDimension && sk !== null ? seriesDimension.labelOf(r) : null, rows: [r], first: r });
+    else
+      groups.set(id, {
+        key: k,
+        label: dimension.labelOf(r),
+        seriesKey: sk,
+        seriesLabel: seriesDimension && sk !== null ? seriesDimension.labelOf(r) : null,
+        rows: [r],
+        first: r,
+      });
   }
   if (!groups.size) return empty(`Nothing to group by ${dimension.label} in the selection.`);
 
@@ -688,7 +1250,10 @@ export function runQuery(config: QueryConfig, data: IndexedDataset): QueryResult
   // Minimum games (entities only).
   if (dimension.entity && config.filters.minGames) {
     const kept = out.filter((r) => r.games >= config.filters.minGames!);
-    if (!kept.length) return empty(`No ${dimension.label.toLowerCase()} has at least ${config.filters.minGames} games in the selection.`);
+    if (!kept.length)
+      return empty(
+        `No ${dimension.label.toLowerCase()} has at least ${config.filters.minGames} games in the selection.`,
+      );
     out = kept;
   }
 
@@ -698,16 +1263,27 @@ export function runQuery(config: QueryConfig, data: IndexedDataset): QueryResult
   const firstRowByKey = new Map<string, BaseRow>();
   for (const r of out) {
     totalsByKey.set(r.key, (totalsByKey.get(r.key) ?? 0) + (r.values[firstKey] ?? 0));
-    if (!firstRowByKey.has(r.key)) firstRowByKey.set(r.key, groups.get(r.seriesKey === null ? r.key : `${r.key}\u0000${r.seriesKey}`)!.first);
+    if (!firstRowByKey.has(r.key))
+      firstRowByKey.set(r.key, groups.get(r.seriesKey === null ? r.key : `${r.key}\u0000${r.seriesKey}`)!.first);
   }
   const keys = Array.from(totalsByKey.keys());
   const labelOf = (k: string) => out.find((r) => r.key === k)?.label ?? k;
   if (dimension.ordered || config.sort === "label") {
-    keys.sort((a, b) => (dimension.order ? dimension.order({ key: a, row: firstRowByKey.get(a)! }, { key: b, row: firstRowByKey.get(b)! }) : labelOf(a).localeCompare(labelOf(b))));
+    keys.sort((a, b) =>
+      dimension.order
+        ? dimension.order({ key: a, row: firstRowByKey.get(a)! }, { key: b, row: firstRowByKey.get(b)! })
+        : labelOf(a).localeCompare(labelOf(b)),
+    );
   } else {
-    keys.sort((a, b) => (config.sort === "asc" ? totalsByKey.get(a)! - totalsByKey.get(b)! : totalsByKey.get(b)! - totalsByKey.get(a)!) || labelOf(a).localeCompare(labelOf(b)));
+    keys.sort(
+      (a, b) =>
+        (config.sort === "asc"
+          ? totalsByKey.get(a)! - totalsByKey.get(b)!
+          : totalsByKey.get(b)! - totalsByKey.get(a)!) || labelOf(a).localeCompare(labelOf(b)),
+    );
   }
-  const limit = config.chart === "radar" ? Math.min(config.topN ?? RADAR_MAX_ENTITIES, RADAR_MAX_ENTITIES) : config.topN;
+  const limit =
+    config.chart === "radar" ? Math.min(config.topN ?? RADAR_MAX_ENTITIES, RADAR_MAX_ENTITIES) : config.topN;
   const keptKeys = limit ? keys.slice(0, limit) : keys;
   const keyIndex = new Map(keptKeys.map((k, i) => [k, i]));
   out = out.filter((r) => keyIndex.has(r.key));
@@ -717,10 +1293,18 @@ export function runQuery(config: QueryConfig, data: IndexedDataset): QueryResult
   if (seriesDimension) {
     const seriesKeys = Array.from(new Set(out.map((r) => r.seriesKey!)));
     const seriesFirst = new Map<string, BaseRow>();
-    for (const g of groups.values()) if (g.seriesKey !== null && !seriesFirst.has(g.seriesKey)) seriesFirst.set(g.seriesKey, g.first);
-    seriesKeys.sort((a, b) => (seriesDimension.order ? seriesDimension.order({ key: a, row: seriesFirst.get(a)! }, { key: b, row: seriesFirst.get(b)! }) : a.localeCompare(b)));
+    for (const g of groups.values())
+      if (g.seriesKey !== null && !seriesFirst.has(g.seriesKey)) seriesFirst.set(g.seriesKey, g.first);
+    seriesKeys.sort((a, b) =>
+      seriesDimension.order
+        ? seriesDimension.order({ key: a, row: seriesFirst.get(a)! }, { key: b, row: seriesFirst.get(b)! })
+        : a.localeCompare(b),
+    );
     const seriesIndex = new Map(seriesKeys.map((k, i) => [k, i]));
-    out.sort((a, b) => keyIndex.get(a.key)! - keyIndex.get(b.key)! || seriesIndex.get(a.seriesKey!)! - seriesIndex.get(b.seriesKey!)!);
+    out.sort(
+      (a, b) =>
+        keyIndex.get(a.key)! - keyIndex.get(b.key)! || seriesIndex.get(a.seriesKey!)! - seriesIndex.get(b.seriesKey!)!,
+    );
     seriesLabels = seriesKeys.map((k) => out.find((r) => r.seriesKey === k)?.seriesLabel ?? k);
   } else {
     out.sort((a, b) => keyIndex.get(a.key)! - keyIndex.get(b.key)!);
@@ -729,5 +1313,16 @@ export function runQuery(config: QueryConfig, data: IndexedDataset): QueryResult
   const overall: Record<string, number | null> = {};
   for (const m of measures) overall[m.key] = aggregateMeasure(m, rows, ctxAll, config.aggregation);
 
-  return { config, measures, dimension, seriesDimension, rows: out, seriesLabels, overall, universeGames, emptyReason: null, problems };
+  return {
+    config,
+    measures,
+    dimension,
+    seriesDimension,
+    rows: out,
+    seriesLabels,
+    overall,
+    universeGames,
+    emptyReason: null,
+    problems,
+  };
 }

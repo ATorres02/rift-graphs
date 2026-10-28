@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Countdown } from "@/components/countdown";
 import { LocalTime } from "@/components/local-time";
 import { PendingData } from "@/components/pending-data";
+import { ProvisionalBadge } from "@/components/provisional";
 import { Spoiler } from "@/components/spoilers";
 import { TeamPill } from "@/components/team-pill";
 import type { TeamRef } from "@/lib/data/load";
@@ -38,9 +39,14 @@ export function SeriesCard({ series: s, team1, team2, pending = false, compact =
       <div className="mt-2 flex items-center justify-between gap-2 text-xs">
         <span className="flex items-center gap-2">
           <StatusLabel series={s} />
+          {s.provisional ? <ProvisionalBadge source={s.source} /> : null}
           {pending ? <PendingData /> : null}
         </span>
-        <Link href={`/matches/${s.id}`} className="font-medium text-muted-foreground underline hover:text-foreground" aria-label={`Details: ${team1?.name ?? "TBD"} vs ${team2?.name ?? "TBD"}`}>
+        <Link
+          href={`/matches/${s.id}`}
+          className="font-medium text-muted-foreground underline hover:text-foreground"
+          aria-label={`Details: ${team1?.name ?? "TBD"} vs ${team2?.name ?? "TBD"}`}
+        >
           Details
         </Link>
       </div>

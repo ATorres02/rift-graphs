@@ -23,7 +23,7 @@ pnpm lint
 pnpm build
 ```
 
-Copy `.env.example` to `.env.local` and fill in the public variables (author, LinkedIn, imprint, site URL). `.env.local` and every other `.env*` file are ignored by git and must never be committed; `NEXT_PUBLIC_*` values end up in the public bundle, so they hold only public information. Leaguepedia bot credentials and the lolesports key go in GitHub Actions secrets.
+Copy `.env.example` to `.env.local` and fill in the public variables (author, LinkedIn, imprint, site URL, Cloudflare Web Analytics token). `.env.local` and every other `.env*` file are ignored by git and must never be committed; `NEXT_PUBLIC_*` values end up in the public bundle, so they hold only public information. Leaguepedia bot credentials and the lolesports key go in GitHub Actions secrets.
 
 ## Data pipeline
 
@@ -69,7 +69,7 @@ Every chart on `/charts` is described by a short URL, for example `/charts?d=pla
 ## Project layout
 
 - `app/` routes: home, tournament, matches, teams, players, champions, charts (builder), compare, about, privacy, imprint; `app/api/dataset.json` (static JSON for the browser); `opengraph-image.tsx` files for series, teams and the chart builder
-- `components/` UI (spoiler mode, local times, team pills, champion icons, charts with table view, tables)
+- `components/` UI (spoiler mode, local times, team pills, champion icons, provisional tags, charts with table view, tables)
 - `lib/data/` dataset types, Zod schemas, loader and shared indexing; `lib/metrics.ts` derived metrics; `lib/draft.ts`, `lib/standings.ts`
 - `lib/query.ts` chart builder query engine (measures, dimensions, filters, validation); `lib/charts/` chart specs, builder, URL codec, templates
 - `lib/sources/` Leaguepedia Cargo client, lolesports client, manual-file schema and Data Dragon helpers; `lib/ingest/merge.ts` source merging

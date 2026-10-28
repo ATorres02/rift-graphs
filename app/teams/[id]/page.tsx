@@ -47,16 +47,23 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
   const team = data.teamsById.get(id);
   if (!team) notFound();
 
-  const agg = aggregateTeamGames(data.games, team.id);
-  const all = aggregateByTeam(data.games, data.teams.map((t) => t.id));
+  const agg = aggregateTeamGames(data.confirmedGames, team.id);
+  const all = aggregateByTeam(
+    data.confirmedGames,
+    data.teams.map((t) => t.id),
+  );
   const played = Array.from(all.values()).filter((a) => a.games > 0);
   const avg = (key: keyof TeamAggregate) => {
     const vals = played.map((a) => a[key]).filter((v): v is number => typeof v === "number");
     return vals.length ? vals.reduce((s, v) => s + v, 0) / vals.length : 0;
   };
-  const max = (key: keyof TeamAggregate) => Math.max(...played.map((a) => (typeof a[key] === "number" ? (a[key] as number) : 0)), 0.0001);
+  const max = (key: keyof TeamAggregate) =>
+    Math.max(...played.map((a) => (typeof a[key] === "number" ? (a[key] as number) : 0)), 0.0001);
   const rec = seriesRecord(data.series, team.id);
-  const swiss = swissStandings(data.series, data.teams.filter((t) => t.stages.includes("main")).map((t) => t.id));
+  const swiss = swissStandings(
+    data.series,
+    data.teams.filter((t) => t.stages.includes("main")).map((t) => t.id),
+  );
   const status = teamStatus(team, data.series, swiss);
   const swissRec = swiss.find((r) => r.teamId === team.id);
 
@@ -69,13 +76,19 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
     if (pg.win) c.wins += 1;
     champUsage.set(pg.champion, c);
   }
-  const topChamps = Array.from(champUsage, ([champion, c]) => ({ champion, ...c })).sort((a, b) => b.games - a.games || b.wins - a.wins || a.champion.localeCompare(b.champion)).slice(0, 10);
+  const topChamps = Array.from(champUsage, ([champion, c]) => ({ champion, ...c }))
+    .sort((a, b) => b.games - a.games || b.wins - a.wins || a.champion.localeCompare(b.champion))
+    .slice(0, 10);
 
   const radar: RadarSpec = {
     type: "radar",
     indicators: RADAR_METRICS.map((m) => ({ name: m.name, max: max(m.key) })),
     series: [
-      { name: team.short, values: RADAR_METRICS.map((m) => (typeof agg[m.key] === "number" ? (agg[m.key] as number) : 0)), color: `var(${regionInfo(team.region).cssVar})` },
+      {
+        name: team.short,
+        values: RADAR_METRICS.map((m) => (typeof agg[m.key] === "number" ? (agg[m.key] as number) : 0)),
+        color: `var(${regionInfo(team.region).cssVar})`,
+      },
       { name: "Tournament average", values: RADAR_METRICS.map((m) => avg(m.key)) },
     ],
   };
@@ -96,9 +109,21 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
   };
 
   const headlines: Headline[] = [
-    { label: "Game record", value: <Spoiler>{fmt.record(agg.wins, agg.losses)}</Spoiler>, detail: agg.games ? `${fmt.pct(agg.winRate)} win rate · ${agg.games} games` : "No games yet" },
-    { label: "Series record", value: <Spoiler>{fmt.record(rec.wins, rec.losses)}</Spoiler>, detail: swissRec ? `Swiss ${swissRec.wins}–${swissRec.losses} · ${swissRec.status}` : STAGE_LABEL.playin },
-    { label: "Average game length", value: agg.games ? fmt.duration(agg.avgDurationSeconds) : "–", detail: `Tournament average ${fmt.duration(avg("avgDurationSeconds"))}` },
+    {
+      label: "Game record",
+      value: <Spoiler>{fmt.record(agg.wins, agg.losses)}</Spoiler>,
+      detail: agg.games ? `${fmt.pct(agg.winRate)} win rate · ${agg.games} games` : "No games yet",
+    },
+    {
+      label: "Series record",
+      value: <Spoiler>{fmt.record(rec.wins, rec.losses)}</Spoiler>,
+      detail: swissRec ? `Swiss ${swissRec.wins}–${swissRec.losses} · ${swissRec.status}` : STAGE_LABEL.playin,
+    },
+    {
+      label: "Average game length",
+      value: agg.games ? fmt.duration(agg.avgDurationSeconds) : "–",
+      detail: `Tournament average ${fmt.duration(avg("avgDurationSeconds"))}`,
+    },
   ];
 
   return (
@@ -118,7 +143,13 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
             <span>{team.stages.map((s) => (s === "playin" ? "Play-In" : "Main Event")).join(" + ")}</span>
             <span>·</span>
             <Spoiler label="Status">
-              <span className={status === "eliminated" ? "" : "text-brand"}>{status === "champion" ? "World champion" : status === "alive" ? "Still in the tournament" : "Eliminated"}</span>
+              <span className={status === "eliminated" ? "" : "text-brand"}>
+                {status === "champion"
+                  ? "World champion"
+                  : status === "alive"
+                    ? "Still in the tournament"
+                    : "Eliminated"}
+              </span>
             </Spoiler>
           </span>
         }
@@ -126,7 +157,10 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
       <Headlines items={headlines} />
 
       <div className="grid gap-8 lg:grid-cols-[1fr_1fr]">
-        <Section title="Profile vs. tournament average" description="Six team metrics scaled to the best value in the tournament.">
+        <Section
+          title="Profile vs. tournament average"
+          description="Six team metrics scaled to the best value in the tournament."
+        >
           <Spoiler as="div" label="Reveal chart (contains results)">
             <Chart
               spec={radar}
@@ -153,16 +187,43 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
         </Section>
       </div>
 
-      <Section title="Side and objectives" description="Per game, from Leaguepedia scoreboards. First blood and first objective timings are not available in the source.">
+      <Section
+        title="Side and objectives"
+        description="Per game, from Leaguepedia scoreboards. First blood and first objective timings are not available in the source."
+      >
         <Spoiler as="div" label="Reveal (contains results)">
           <dl className="grid gap-3 sm:grid-cols-3 lg:grid-cols-6">
             {[
-              { label: "Blue side", value: `${fmt.record(agg.blue.wins, agg.blue.games - agg.blue.wins)}`, detail: fmt.pct(agg.blue.winRate) },
-              { label: "Red side", value: `${fmt.record(agg.red.wins, agg.red.games - agg.red.wins)}`, detail: fmt.pct(agg.red.winRate) },
-              { label: "Kills / game", value: fmt.dec(agg.killsPerGame, 1), detail: `${fmt.dec(agg.deathsPerGame, 1)} deaths` },
-              { label: "Dragons / game", value: fmt.dec(agg.dragonsPerGame, 1), detail: `${fmt.pct(agg.dragonControl)} control` },
-              { label: "Barons / game", value: fmt.dec(agg.baronsPerGame, 2), detail: `${fmt.pct(agg.baronControl)} control` },
-              { label: "Towers / game", value: fmt.dec(agg.towersPerGame, 1), detail: `${fmt.dec(agg.heraldsPerGame, 1)} heralds · ${fmt.dec(agg.voidGrubsPerGame, 1)} grubs` },
+              {
+                label: "Blue side",
+                value: `${fmt.record(agg.blue.wins, agg.blue.games - agg.blue.wins)}`,
+                detail: fmt.pct(agg.blue.winRate),
+              },
+              {
+                label: "Red side",
+                value: `${fmt.record(agg.red.wins, agg.red.games - agg.red.wins)}`,
+                detail: fmt.pct(agg.red.winRate),
+              },
+              {
+                label: "Kills / game",
+                value: fmt.dec(agg.killsPerGame, 1),
+                detail: `${fmt.dec(agg.deathsPerGame, 1)} deaths`,
+              },
+              {
+                label: "Dragons / game",
+                value: fmt.dec(agg.dragonsPerGame, 1),
+                detail: `${fmt.pct(agg.dragonControl)} control`,
+              },
+              {
+                label: "Barons / game",
+                value: fmt.dec(agg.baronsPerGame, 2),
+                detail: `${fmt.pct(agg.baronControl)} control`,
+              },
+              {
+                label: "Towers / game",
+                value: fmt.dec(agg.towersPerGame, 1),
+                detail: `${fmt.dec(agg.heraldsPerGame, 1)} heralds · ${fmt.dec(agg.voidGrubsPerGame, 1)} grubs`,
+              },
             ].map((m) => (
               <div key={m.label} className="rounded-xl border bg-card p-3">
                 <dt className="text-xs text-muted-foreground">{m.label}</dt>
@@ -179,7 +240,10 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
           <Spoiler as="div" label="Reveal chart (contains results)">
             <Chart
               spec={champBar}
-              table={{ columns: ["Champion", "Wins", "Losses"], rows: topChamps.map((c) => [c.champion, c.wins, c.games - c.wins]) }}
+              table={{
+                columns: ["Champion", "Wins", "Losses"],
+                rows: topChamps.map((c) => [c.champion, c.wins, c.games - c.wins]),
+              }}
               height={Math.max(220, topChamps.length * 32)}
               description={`Stacked bars of ${team.name}'s ten most played champions; ${topChamps[0].champion} leads with ${topChamps[0].games} games.`}
             />
