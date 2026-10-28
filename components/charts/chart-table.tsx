@@ -10,7 +10,17 @@ function unitForColumn(spec: ChartSpec, columnIndex: number, units?: (Unit | und
 }
 
 /** Accessible table alternative of a chart. */
-export function SpecTable({ spec, table, units, className }: { spec: ChartSpec; table: ChartTable; units?: (Unit | undefined)[]; className?: string }) {
+export function SpecTable({
+  spec,
+  table,
+  units,
+  className,
+}: {
+  spec: ChartSpec;
+  table: ChartTable;
+  units?: (Unit | undefined)[];
+  className?: string;
+}) {
   return (
     <div className={cn("scroll-x max-h-[480px] overflow-y-auto", className)}>
       <Table>

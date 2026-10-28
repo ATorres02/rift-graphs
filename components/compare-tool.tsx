@@ -34,7 +34,8 @@ export interface CompareGroup {
   entities: CompareEntity[];
 }
 
-const selectClass = "h-9 w-full rounded-md border bg-background px-2 text-sm focus-visible:outline-2 focus-visible:outline-brand";
+const selectClass =
+  "h-9 w-full rounded-md border bg-background px-2 text-sm focus-visible:outline-2 focus-visible:outline-brand";
 
 export function CompareTool({ groups }: { groups: CompareGroup[] }) {
   const [type, setType] = useState<CompareGroup["type"]>("players");
@@ -75,8 +76,15 @@ export function CompareTool({ groups }: { groups: CompareGroup[] }) {
     const metrics = group.metrics.filter((m) => m.radar).slice(0, 8);
     return {
       type: "radar",
-      indicators: metrics.map((m) => ({ name: m.label, max: Math.max(...group.entities.map((e) => e.values[m.key] ?? 0), 0.0001) })),
-      series: [ea, eb].map((e) => ({ name: e.label, values: metrics.map((m) => e.values[m.key] ?? 0), color: e.color })),
+      indicators: metrics.map((m) => ({
+        name: m.label,
+        max: Math.max(...group.entities.map((e) => e.values[m.key] ?? 0), 0.0001),
+      })),
+      series: [ea, eb].map((e) => ({
+        name: e.label,
+        values: metrics.map((m) => e.values[m.key] ?? 0),
+        color: e.color,
+      })),
     };
   }, [ea, eb, group]);
 
@@ -85,7 +93,17 @@ export function CompareTool({ groups }: { groups: CompareGroup[] }) {
       <div className="grid gap-3 sm:grid-cols-[auto_1fr_1fr]">
         <div role="radiogroup" aria-label="Compare" className="flex gap-1 rounded-md border p-1">
           {groups.map((g) => (
-            <button key={g.type} type="button" role="radio" aria-checked={type === g.type} onClick={() => switchType(g.type)} className={cn("rounded px-3 py-1.5 text-sm", type === g.type ? "bg-brand text-brand-foreground" : "text-muted-foreground hover:text-foreground")}>
+            <button
+              key={g.type}
+              type="button"
+              role="radio"
+              aria-checked={type === g.type}
+              onClick={() => switchType(g.type)}
+              className={cn(
+                "rounded px-3 py-1.5 text-sm",
+                type === g.type ? "bg-brand text-brand-foreground" : "text-muted-foreground hover:text-foreground",
+              )}
+            >
               {g.label}
             </button>
           ))}
@@ -111,7 +129,10 @@ export function CompareTool({ groups }: { groups: CompareGroup[] }) {
         <div className="grid gap-6 lg:grid-cols-2">
           <Chart
             spec={radar}
-            table={{ columns: ["Metric", ea.label, eb.label], rows: radar.indicators.map((ind, i) => [ind.name, radar.series[0].values[i], radar.series[1].values[i]]) }}
+            table={{
+              columns: ["Metric", ea.label, eb.label],
+              rows: radar.indicators.map((ind, i) => [ind.name, radar.series[0].values[i], radar.series[1].values[i]]),
+            }}
             height={380}
             title={`${ea.label} vs ${eb.label}`}
             description={`Radar comparing ${ea.label} and ${eb.label} on ${radar.indicators.map((i) => i.name).join(", ")}.`}
@@ -143,9 +164,15 @@ export function CompareTool({ groups }: { groups: CompareGroup[] }) {
                   return (
                     <TableRow key={m.key}>
                       <TableCell className="text-muted-foreground">{m.label}</TableCell>
-                      <TableCell className={cn("text-right tabular", aBetter && "font-semibold text-brand")}>{formatUnit(va, m.unit)}</TableCell>
-                      <TableCell className={cn("text-right tabular", bBetter && "font-semibold text-brand")}>{formatUnit(vb, m.unit)}</TableCell>
-                      <TableCell className="text-right tabular text-muted-foreground">{diff === null ? "–" : `${diff > 0 ? "+" : ""}${formatUnit(diff, m.unit)}`}</TableCell>
+                      <TableCell className={cn("text-right tabular", aBetter && "font-semibold text-brand")}>
+                        {formatUnit(va, m.unit)}
+                      </TableCell>
+                      <TableCell className={cn("text-right tabular", bBetter && "font-semibold text-brand")}>
+                        {formatUnit(vb, m.unit)}
+                      </TableCell>
+                      <TableCell className="text-right tabular text-muted-foreground">
+                        {diff === null ? "–" : `${diff > 0 ? "+" : ""}${formatUnit(diff, m.unit)}`}
+                      </TableCell>
                     </TableRow>
                   );
                 })}

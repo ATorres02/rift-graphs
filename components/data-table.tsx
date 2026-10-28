@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { flexRender, getCoreRowModel, getSortedRowModel, useReactTable, type ColumnDef, type SortingState } from "@tanstack/react-table";
+import {
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  useReactTable,
+  type ColumnDef,
+  type SortingState,
+} from "@tanstack/react-table";
 import { ArrowDownIcon, ArrowUpDownIcon, ArrowUpIcon } from "lucide-react";
 import { ChampionIcon, type ChampionIconRef } from "@/components/champion-icon";
 import { TeamPill } from "@/components/team-pill";
@@ -11,7 +18,8 @@ import type { TeamRef } from "@/lib/data/load";
 import { fmt } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
-export type CellKind = "text" | "int" | "dec1" | "dec2" | "pct" | "pct1" | "duration" | "player" | "team" | "champion" | "result" | "link";
+export type CellKind =
+  "text" | "int" | "dec1" | "dec2" | "pct" | "pct1" | "duration" | "player" | "team" | "champion" | "result" | "link";
 
 export interface TableColumn {
   key: string;
@@ -94,7 +102,10 @@ function renderCell(kind: CellKind | undefined, value: unknown) {
 }
 
 function sortValue(kind: CellKind | undefined, value: unknown): number | string {
-  if (value === null || value === undefined) return kind === "text" || kind === "player" || kind === "team" || kind === "champion" ? "" : Number.NEGATIVE_INFINITY;
+  if (value === null || value === undefined)
+    return kind === "text" || kind === "player" || kind === "team" || kind === "champion"
+      ? ""
+      : Number.NEGATIVE_INFINITY;
   if (kind === "player") return (value as PlayerCell).name.toLowerCase();
   if (kind === "team") return (value as TeamRef).short.toLowerCase();
   if (kind === "champion") return (value as ChampionIconRef).name.toLowerCase();
@@ -106,8 +117,19 @@ function sortValue(kind: CellKind | undefined, value: unknown): number | string 
 const NUMERIC: CellKind[] = ["int", "dec1", "dec2", "pct", "pct1", "duration"];
 
 /** Sortable table (TanStack Table) with a sticky first column and horizontal scroll on small screens. */
-export function DataTable({ columns, rows, defaultSort, caption, stickyFirst = true, dense = false, emptyMessage = "No rows match the current filters.", className }: DataTableProps) {
-  const [sorting, setSorting] = useState<SortingState>(defaultSort ? [{ id: defaultSort.key, desc: defaultSort.desc ?? true }] : []);
+export function DataTable({
+  columns,
+  rows,
+  defaultSort,
+  caption,
+  stickyFirst = true,
+  dense = false,
+  emptyMessage = "No rows match the current filters.",
+  className,
+}: DataTableProps) {
+  const [sorting, setSorting] = useState<SortingState>(
+    defaultSort ? [{ id: defaultSort.key, desc: defaultSort.desc ?? true }] : [],
+  );
 
   const columnDefs = useMemo<ColumnDef<TableRowData>[]>(
     () =>
@@ -148,13 +170,21 @@ export function DataTable({ columns, rows, defaultSort, caption, stickyFirst = t
                     key={header.id}
                     title={meta.title}
                     aria-sort={sorted === "asc" ? "ascending" : sorted === "desc" ? "descending" : undefined}
-                    className={cn("whitespace-nowrap", numeric && "text-right", stickyFirst && i === 0 && "sticky left-0 z-10 bg-card", meta.className)}
+                    className={cn(
+                      "whitespace-nowrap",
+                      numeric && "text-right",
+                      stickyFirst && i === 0 && "sticky left-0 z-10 bg-card",
+                      meta.className,
+                    )}
                   >
                     {header.column.getCanSort() ? (
                       <button
                         type="button"
                         onClick={header.column.getToggleSortingHandler()}
-                        className={cn("inline-flex items-center gap-1 font-medium hover:text-foreground", numeric && "flex-row-reverse")}
+                        className={cn(
+                          "inline-flex items-center gap-1 font-medium hover:text-foreground",
+                          numeric && "flex-row-reverse",
+                        )}
                       >
                         {flexRender(header.column.columnDef.header, header.getContext())}
                         {sorted === "asc" ? (
@@ -190,7 +220,12 @@ export function DataTable({ columns, rows, defaultSort, caption, stickyFirst = t
                   return (
                     <TableCell
                       key={cell.id}
-                      className={cn("whitespace-nowrap", numeric && "text-right tabular", stickyFirst && i === 0 && "sticky left-0 z-10 bg-card", meta.className)}
+                      className={cn(
+                        "whitespace-nowrap",
+                        numeric && "text-right tabular",
+                        stickyFirst && i === 0 && "sticky left-0 z-10 bg-card",
+                        meta.className,
+                      )}
                     >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>

@@ -20,7 +20,15 @@ const ROLE_ORDER = { top: 0, jungle: 1, mid: 2, bot: 3, support: 4 };
 export function Scoreboard({ rows, players, icon, side, teamName }: ScoreboardProps) {
   const sorted = [...rows].sort((a, b) => ROLE_ORDER[a.role] - ROLE_ORDER[b.role]);
   const total = sorted.reduce(
-    (acc, r) => ({ kills: acc.kills + r.kills, deaths: acc.deaths + r.deaths, assists: acc.assists + r.assists, gold: acc.gold + r.gold, cs: acc.cs + r.cs, dmg: acc.dmg + r.damageToChampions, vision: acc.vision + r.visionScore }),
+    (acc, r) => ({
+      kills: acc.kills + r.kills,
+      deaths: acc.deaths + r.deaths,
+      assists: acc.assists + r.assists,
+      gold: acc.gold + r.gold,
+      cs: acc.cs + r.cs,
+      dmg: acc.dmg + r.damageToChampions,
+      vision: acc.vision + r.visionScore,
+    }),
     { kills: 0, deaths: 0, assists: 0, gold: 0, cs: 0, dmg: 0, vision: 0 },
   );
   return (
@@ -31,16 +39,36 @@ export function Scoreboard({ rows, players, icon, side, teamName }: ScoreboardPr
         </caption>
         <TableHeader>
           <TableRow>
-            <TableHead className={cn("sticky left-0 z-10 bg-card", side === "blue" ? "text-side-blue" : "text-side-red")}>{teamName}</TableHead>
-            <TableHead className="text-right" title="Kills / Deaths / Assists">K / D / A</TableHead>
-            <TableHead className="text-right" title="(Kills + Assists) / Deaths">KDA</TableHead>
-            <TableHead className="text-right" title="Share of the team's kills the player took part in">KP</TableHead>
-            <TableHead className="text-right" title="Creep score">CS</TableHead>
-            <TableHead className="text-right" title="Creep score per minute">CSPM</TableHead>
+            <TableHead
+              className={cn("sticky left-0 z-10 bg-card", side === "blue" ? "text-side-blue" : "text-side-red")}
+            >
+              {teamName}
+            </TableHead>
+            <TableHead className="text-right" title="Kills / Deaths / Assists">
+              K / D / A
+            </TableHead>
+            <TableHead className="text-right" title="(Kills + Assists) / Deaths">
+              KDA
+            </TableHead>
+            <TableHead className="text-right" title="Share of the team's kills the player took part in">
+              KP
+            </TableHead>
+            <TableHead className="text-right" title="Creep score">
+              CS
+            </TableHead>
+            <TableHead className="text-right" title="Creep score per minute">
+              CSPM
+            </TableHead>
             <TableHead className="text-right">Gold</TableHead>
-            <TableHead className="text-right" title="Damage to champions">DMG</TableHead>
-            <TableHead className="text-right" title="Damage to champions per minute">DPM</TableHead>
-            <TableHead className="text-right" title="Vision score">Vision</TableHead>
+            <TableHead className="text-right" title="Damage to champions">
+              DMG
+            </TableHead>
+            <TableHead className="text-right" title="Damage to champions per minute">
+              DPM
+            </TableHead>
+            <TableHead className="text-right" title="Vision score">
+              Vision
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -71,7 +99,9 @@ export function Scoreboard({ rows, players, icon, side, teamName }: ScoreboardPr
                 <TableCell className="text-right tabular">{fmt.dec(perMinute(r.cs, r.durationSeconds), 1)}</TableCell>
                 <TableCell className="text-right tabular">{fmt.compact(r.gold)}</TableCell>
                 <TableCell className="text-right tabular">{fmt.compact(r.damageToChampions)}</TableCell>
-                <TableCell className="text-right tabular">{fmt.int(perMinute(r.damageToChampions, r.durationSeconds))}</TableCell>
+                <TableCell className="text-right tabular">
+                  {fmt.int(perMinute(r.damageToChampions, r.durationSeconds))}
+                </TableCell>
                 <TableCell className="text-right tabular">{r.visionScore}</TableCell>
               </TableRow>
             );
@@ -81,7 +111,9 @@ export function Scoreboard({ rows, players, icon, side, teamName }: ScoreboardPr
             <TableCell className="text-right tabular">
               {total.kills} / {total.deaths} / {total.assists}
             </TableCell>
-            <TableCell className="text-right tabular">{fmt.dec(kda(total.kills, total.deaths, total.assists), 1)}</TableCell>
+            <TableCell className="text-right tabular">
+              {fmt.dec(kda(total.kills, total.deaths, total.assists), 1)}
+            </TableCell>
             <TableCell />
             <TableCell className="text-right tabular">{total.cs}</TableCell>
             <TableCell />

@@ -2,7 +2,16 @@
  * Chart builder config ↔ URL query string. Short keys keep links shareable:
  * /charts?d=players&y=dpm&x=player&f=stage:swiss&t=bar&n=10
  */
-import { DEFAULT_CONFIG, type Aggregation, type ChartType, type ColorBy, type DataSource, type QueryConfig, type QueryFilters, type SortMode } from "@/lib/query";
+import {
+  DEFAULT_CONFIG,
+  type Aggregation,
+  type ChartType,
+  type ColorBy,
+  type DataSource,
+  type QueryConfig,
+  type QueryFilters,
+  type SortMode,
+} from "@/lib/query";
 import type { Role, Side, StageId } from "@/lib/data/types";
 
 const SOURCES: DataSource[] = ["players", "teams", "champions", "games"];
@@ -13,8 +22,15 @@ const COLORS: ColorBy[] = ["none", "region", "team", "role"];
 const STAGES: StageId[] = ["playin", "swiss", "quarterfinals", "semifinals", "final"];
 const ROLES: Role[] = ["top", "jungle", "mid", "bot", "support"];
 
-const oneOf = <T extends string>(list: readonly T[], v: string | null, fallback: T): T => (v && (list as readonly string[]).includes(v) ? (v as T) : fallback);
-const list = (v: string | undefined) => (v ? v.split("|").map((s) => s.trim()).filter(Boolean) : []);
+const oneOf = <T extends string>(list: readonly T[], v: string | null, fallback: T): T =>
+  v && (list as readonly string[]).includes(v) ? (v as T) : fallback;
+const list = (v: string | undefined) =>
+  v
+    ? v
+        .split("|")
+        .map((s) => s.trim())
+        .filter(Boolean)
+    : [];
 
 export function parseFilters(text: string | null): QueryFilters {
   const f: QueryFilters = {};
@@ -78,15 +94,26 @@ export function serializeFilters(f: QueryFilters): string {
   if (f.result) parts.push(`res:${f.result}`);
   if (f.champions?.length) parts.push(`champ:${f.champions.join("|")}`);
   if (f.minGames !== undefined) parts.push(`min:${f.minGames}`);
-  if (f.durationMin !== undefined || f.durationMax !== undefined) parts.push(`dur:${f.durationMin ?? ""}-${f.durationMax ?? ""}`);
+  if (f.durationMin !== undefined || f.durationMax !== undefined)
+    parts.push(`dur:${f.durationMin ?? ""}-${f.durationMax ?? ""}`);
   return parts.join(";");
 }
 
 export function parseConfig(params: URLSearchParams): QueryConfig {
   const source = oneOf(SOURCES, params.get("d"), DEFAULT_CONFIG.source);
-  const measures = (params.get("y") ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+  const measures = (params.get("y") ?? "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
   const topRaw = params.get("n");
-  const topN = topRaw === null ? DEFAULT_CONFIG.topN : topRaw === "all" || topRaw === "0" ? null : Number.isInteger(Number(topRaw)) && Number(topRaw) > 0 ? Number(topRaw) : DEFAULT_CONFIG.topN;
+  const topN =
+    topRaw === null
+      ? DEFAULT_CONFIG.topN
+      : topRaw === "all" || topRaw === "0"
+        ? null
+        : Number.isInteger(Number(topRaw)) && Number(topRaw) > 0
+          ? Number(topRaw)
+          : DEFAULT_CONFIG.topN;
   const filters = params.has("f") ? parseFilters(params.get("f")) : { ...DEFAULT_CONFIG.filters };
   return {
     source,

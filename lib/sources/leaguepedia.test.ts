@@ -1,7 +1,18 @@
 import { describe, expect, it } from "vitest";
-import { CargoError, LeaguepediaClient, RateLimitError, asList, asSlots, asString, detectRateLimit, parseCargoBody } from "./leaguepedia";
+import {
+  CargoError,
+  LeaguepediaClient,
+  RateLimitError,
+  asList,
+  asSlots,
+  asString,
+  detectRateLimit,
+  parseCargoBody,
+} from "./leaguepedia";
 
-const RATE_LIMITED = JSON.stringify({ error: { code: "ratelimited", info: "You've exceeded your rate limit. Please wait some time and try again." } });
+const RATE_LIMITED = JSON.stringify({
+  error: { code: "ratelimited", info: "You've exceeded your rate limit. Please wait some time and try again." },
+});
 
 describe("detectRateLimit", () => {
   it("detects the limit reported inside a 200 body", () => {
@@ -14,7 +25,9 @@ describe("detectRateLimit", () => {
   });
   it("does not flag ordinary responses or query errors", () => {
     expect(detectRateLimit(200, "[]")).toBe(false);
-    expect(detectRateLimit(200, 'Error: No field named "N_TabInPage" found for any of the specified database tables.')).toBe(false);
+    expect(
+      detectRateLimit(200, 'Error: No field named "N_TabInPage" found for any of the specified database tables.'),
+    ).toBe(false);
   });
 });
 
@@ -26,7 +39,10 @@ describe("parseCargoBody", () => {
     expect(() => parseCargoBody("export", "Error: No field named X")).toThrow(CargoError);
   });
   it("unwraps api rows and surfaces api errors", () => {
-    expect(parseCargoBody("api", '{"cargoquery":[{"title":{"Name":"A"}},{"title":{"Name":"B"}}]}')).toEqual([{ Name: "A" }, { Name: "B" }]);
+    expect(parseCargoBody("api", '{"cargoquery":[{"title":{"Name":"A"}},{"title":{"Name":"B"}}]}')).toEqual([
+      { Name: "A" },
+      { Name: "B" },
+    ]);
     expect(() => parseCargoBody("api", '{"error":{"code":"badvalue","info":"x"}}')).toThrow(CargoError);
   });
 });

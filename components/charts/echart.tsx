@@ -3,13 +3,34 @@
 import ReactEChartsCore from "echarts-for-react/lib/core";
 import * as echarts from "echarts/core";
 import { BarChart, BoxplotChart, HeatmapChart, LineChart, RadarChart, ScatterChart } from "echarts/charts";
-import { GraphicComponent, GridComponent, LegendComponent, MarkLineComponent, TooltipComponent, VisualMapComponent } from "echarts/components";
+import {
+  GraphicComponent,
+  GridComponent,
+  LegendComponent,
+  MarkLineComponent,
+  TooltipComponent,
+  VisualMapComponent,
+} from "echarts/components";
 import { CanvasRenderer } from "echarts/renderers";
 import type { EChartsOption } from "echarts";
 import { useMemo, useRef } from "react";
 import { formatUnit, type ChartSpec, type Unit } from "@/lib/charts/spec";
 
-echarts.use([BarChart, BoxplotChart, HeatmapChart, LineChart, RadarChart, ScatterChart, GraphicComponent, GridComponent, LegendComponent, MarkLineComponent, TooltipComponent, VisualMapComponent, CanvasRenderer]);
+echarts.use([
+  BarChart,
+  BoxplotChart,
+  HeatmapChart,
+  LineChart,
+  RadarChart,
+  ScatterChart,
+  GraphicComponent,
+  GridComponent,
+  LegendComponent,
+  MarkLineComponent,
+  TooltipComponent,
+  VisualMapComponent,
+  CanvasRenderer,
+]);
 
 export type EChartsInstance = ReturnType<typeof echarts.init>;
 
@@ -53,14 +74,33 @@ export function buildOption(spec: ChartSpec, p: Palette, css: CSSStyleDeclaratio
     color: p.series,
     tooltip: { backgroundColor: p.card, borderColor: p.grid, textStyle: { color: p.text }, confine: true },
     graphic: watermark
-      ? [{ type: "text", right: 8, bottom: 4, silent: true, style: { text: watermark, fill: p.muted, fontSize: 10, opacity: 0.8 } }]
+      ? [
+          {
+            type: "text",
+            right: 8,
+            bottom: 4,
+            silent: true,
+            style: { text: watermark, fill: p.muted, fontSize: 10, opacity: 0.8 },
+          },
+        ]
       : undefined,
   };
 
   if (spec.type === "bar" || spec.type === "line") {
     const unit = spec.unit;
-    const categoryAxis = { type: "category" as const, data: spec.categories, axisLabel: { color: p.muted, hideOverlap: true }, axisLine: { lineStyle: { color: p.grid } }, axisTick: { show: false } };
-    const valueAxis = { type: "value" as const, axisLabel: { color: p.muted, formatter: axisValueFormatter(unit) }, splitLine: { lineStyle: { color: p.grid } }, max: unit === "percent" ? 1 : undefined };
+    const categoryAxis = {
+      type: "category" as const,
+      data: spec.categories,
+      axisLabel: { color: p.muted, hideOverlap: true },
+      axisLine: { lineStyle: { color: p.grid } },
+      axisTick: { show: false },
+    };
+    const valueAxis = {
+      type: "value" as const,
+      axisLabel: { color: p.muted, formatter: axisValueFormatter(unit) },
+      splitLine: { lineStyle: { color: p.grid } },
+      max: unit === "percent" ? 1 : undefined,
+    };
     const horizontal = spec.type === "bar" && spec.horizontal;
     const markLine = spec.reference
       ? {
@@ -73,10 +113,22 @@ export function buildOption(spec: ChartSpec, p: Palette, css: CSSStyleDeclaratio
       : undefined;
     return {
       ...base,
-      grid: { left: horizontal ? 110 : 56, right: 16, top: spec.series.length > 1 ? 36 : 16, bottom: horizontal ? 36 : 64, containLabel: false },
+      grid: {
+        left: horizontal ? 110 : 56,
+        right: 16,
+        top: spec.series.length > 1 ? 36 : 16,
+        bottom: horizontal ? 36 : 64,
+        containLabel: false,
+      },
       legend: spec.series.length > 1 ? { top: 0, textStyle: { color: p.muted }, icon: "roundRect" } : undefined,
-      tooltip: { ...base.tooltip, trigger: "axis", valueFormatter: (v) => formatUnit(typeof v === "number" ? v : null, unit) },
-      xAxis: horizontal ? valueAxis : { ...categoryAxis, axisLabel: { ...categoryAxis.axisLabel, rotate: spec.categories.length > 8 ? 35 : 0 } },
+      tooltip: {
+        ...base.tooltip,
+        trigger: "axis",
+        valueFormatter: (v) => formatUnit(typeof v === "number" ? v : null, unit),
+      },
+      xAxis: horizontal
+        ? valueAxis
+        : { ...categoryAxis, axisLabel: { ...categoryAxis.axisLabel, rotate: spec.categories.length > 8 ? 35 : 0 } },
       yAxis: horizontal ? { ...categoryAxis, inverse: true } : valueAxis,
       series: spec.series.map((s, i) => {
         const fallback = p.series[i % p.series.length];
@@ -84,7 +136,12 @@ export function buildOption(spec: ChartSpec, p: Palette, css: CSSStyleDeclaratio
         return {
           type: spec.type,
           name: s.name,
-          data: s.colors ? s.values.map((v, j) => ({ value: v, itemStyle: { color: color(s.colors![j] ?? undefined, seriesColor) } })) : s.values,
+          data: s.colors
+            ? s.values.map((v, j) => ({
+                value: v,
+                itemStyle: { color: color(s.colors![j] ?? undefined, seriesColor) },
+              }))
+            : s.values,
           stack: spec.type === "bar" && spec.stacked ? "total" : undefined,
           itemStyle: { color: seriesColor, borderRadius: spec.type === "bar" ? 3 : undefined },
           lineStyle: spec.type === "line" ? { width: 2, color: seriesColor } : undefined,
@@ -109,12 +166,32 @@ export function buildOption(spec: ChartSpec, p: Palette, css: CSSStyleDeclaratio
           return `<b>${item.name}</b><br/>${spec.xLabel}: ${formatUnit(v[0], spec.xUnit)}<br/>${spec.yLabel}: ${formatUnit(v[1], spec.yUnit)}`;
         },
       },
-      xAxis: { type: "value", name: spec.xLabel, nameLocation: "middle", nameGap: 30, nameTextStyle: { color: p.muted }, axisLabel: { color: p.muted, formatter: axisValueFormatter(spec.xUnit) }, splitLine: { lineStyle: { color: p.grid } }, scale: true },
-      yAxis: { type: "value", name: spec.yLabel, nameTextStyle: { color: p.muted, align: "left" }, axisLabel: { color: p.muted, formatter: axisValueFormatter(spec.yUnit) }, splitLine: { lineStyle: { color: p.grid } }, scale: true },
+      xAxis: {
+        type: "value",
+        name: spec.xLabel,
+        nameLocation: "middle",
+        nameGap: 30,
+        nameTextStyle: { color: p.muted },
+        axisLabel: { color: p.muted, formatter: axisValueFormatter(spec.xUnit) },
+        splitLine: { lineStyle: { color: p.grid } },
+        scale: true,
+      },
+      yAxis: {
+        type: "value",
+        name: spec.yLabel,
+        nameTextStyle: { color: p.muted, align: "left" },
+        axisLabel: { color: p.muted, formatter: axisValueFormatter(spec.yUnit) },
+        splitLine: { lineStyle: { color: p.grid } },
+        scale: true,
+      },
       series: [
         {
           type: "scatter",
-          data: spec.points.map((pt) => ({ value: [pt.x, pt.y], name: pt.label, itemStyle: { color: color(pt.color, p.series[0]) } })),
+          data: spec.points.map((pt) => ({
+            value: [pt.x, pt.y],
+            name: pt.label,
+            itemStyle: { color: color(pt.color, p.series[0]) },
+          })),
           symbolSize: 14,
           label: { show: true, position: "top", color: p.text, fontSize: 11, formatter: (params) => params.name },
           markLine:
@@ -124,7 +201,10 @@ export function buildOption(spec: ChartSpec, p: Palette, css: CSSStyleDeclaratio
                   symbol: "none",
                   lineStyle: { type: "dashed", color: p.muted },
                   label: { show: false },
-                  data: [...(spec.xReference !== undefined ? [{ xAxis: spec.xReference }] : []), ...(spec.yReference !== undefined ? [{ yAxis: spec.yReference }] : [])],
+                  data: [
+                    ...(spec.xReference !== undefined ? [{ xAxis: spec.xReference }] : []),
+                    ...(spec.yReference !== undefined ? [{ yAxis: spec.yReference }] : []),
+                  ],
                 }
               : undefined,
         },
@@ -137,7 +217,14 @@ export function buildOption(spec: ChartSpec, p: Palette, css: CSSStyleDeclaratio
       ...base,
       legend: { bottom: 0, textStyle: { color: p.muted }, icon: "roundRect" },
       tooltip: { ...base.tooltip, trigger: "item" },
-      radar: { indicator: spec.indicators, axisName: { color: p.muted }, splitLine: { lineStyle: { color: p.grid } }, splitArea: { show: false }, axisLine: { lineStyle: { color: p.grid } }, radius: "62%" },
+      radar: {
+        indicator: spec.indicators,
+        axisName: { color: p.muted },
+        splitLine: { lineStyle: { color: p.grid } },
+        splitArea: { show: false },
+        axisLine: { lineStyle: { color: p.grid } },
+        radius: "62%",
+      },
       series: [
         {
           type: "radar",
@@ -171,14 +258,41 @@ export function buildOption(spec: ChartSpec, p: Palette, css: CSSStyleDeclaratio
           return `<b>${spec.yLabels[v[1]]}</b> · ${spec.xLabels[v[0]]}<br/>${formatUnit(v[2], spec.unit)}`;
         },
       },
-      xAxis: { type: "category", data: spec.xLabels, axisLabel: { color: p.muted }, axisLine: { lineStyle: { color: p.grid } }, splitArea: { show: true } },
-      yAxis: { type: "category", data: spec.yLabels, inverse: true, axisLabel: { color: p.muted }, axisLine: { lineStyle: { color: p.grid } }, splitArea: { show: true } },
-      visualMap: { min, max: max === min ? min + 1 : max, calculable: false, orient: "horizontal", left: "center", bottom: 0, textStyle: { color: p.muted }, inRange: { color: [p.card, p.brand] }, formatter: (v) => formatUnit(typeof v === "number" ? v : null, spec.unit) },
+      xAxis: {
+        type: "category",
+        data: spec.xLabels,
+        axisLabel: { color: p.muted },
+        axisLine: { lineStyle: { color: p.grid } },
+        splitArea: { show: true },
+      },
+      yAxis: {
+        type: "category",
+        data: spec.yLabels,
+        inverse: true,
+        axisLabel: { color: p.muted },
+        axisLine: { lineStyle: { color: p.grid } },
+        splitArea: { show: true },
+      },
+      visualMap: {
+        min,
+        max: max === min ? min + 1 : max,
+        calculable: false,
+        orient: "horizontal",
+        left: "center",
+        bottom: 0,
+        textStyle: { color: p.muted },
+        inRange: { color: [p.card, p.brand] },
+        formatter: (v) => formatUnit(typeof v === "number" ? v : null, spec.unit),
+      },
       series: [
         {
           type: "heatmap",
           data,
-          label: { show: true, color: p.text, formatter: (params) => formatUnit((params.value as [number, number, number])[2], spec.unit) },
+          label: {
+            show: true,
+            color: p.text,
+            formatter: (params) => formatUnit((params.value as [number, number, number])[2], spec.unit),
+          },
           itemStyle: { borderColor: p.card, borderWidth: 2 },
           emphasis: { itemStyle: { shadowBlur: 6, shadowColor: "rgba(0,0,0,0.4)" } },
         },
@@ -200,15 +314,32 @@ export function buildOption(spec: ChartSpec, p: Palette, css: CSSStyleDeclaratio
         return `<b>${item.name}</b><br/>Min ${f(v[1])} · Q1 ${f(v[2])} · Median ${f(v[3])} · Q3 ${f(v[4])} · Max ${f(v[5])}`;
       },
     },
-    xAxis: { type: "category", data: spec.categories, axisLabel: { color: p.muted, rotate: spec.categories.length > 8 ? 35 : 0, hideOverlap: true }, axisLine: { lineStyle: { color: p.grid } }, axisTick: { show: false } },
-    yAxis: { type: "value", axisLabel: { color: p.muted, formatter: axisValueFormatter(spec.unit) }, splitLine: { lineStyle: { color: p.grid } }, scale: true },
+    xAxis: {
+      type: "category",
+      data: spec.categories,
+      axisLabel: { color: p.muted, rotate: spec.categories.length > 8 ? 35 : 0, hideOverlap: true },
+      axisLine: { lineStyle: { color: p.grid } },
+      axisTick: { show: false },
+    },
+    yAxis: {
+      type: "value",
+      axisLabel: { color: p.muted, formatter: axisValueFormatter(spec.unit) },
+      splitLine: { lineStyle: { color: p.grid } },
+      scale: true,
+    },
     series: [
       {
         type: "boxplot",
         data: spec.stats,
         itemStyle: { color: color("var(--brand-soft)", "rgba(80,200,170,0.2)"), borderColor: p.brand },
         markLine: spec.reference
-          ? { silent: true, symbol: "none", lineStyle: { type: "dashed", color: p.muted }, label: { formatter: spec.reference.label, color: p.muted, position: "insideEndTop" }, data: [{ yAxis: spec.reference.value }] }
+          ? {
+              silent: true,
+              symbol: "none",
+              lineStyle: { type: "dashed", color: p.muted },
+              label: { formatter: spec.reference.label, color: p.muted, position: "insideEndTop" },
+              data: [{ yAxis: spec.reference.value }],
+            }
           : undefined,
       },
     ],

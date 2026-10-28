@@ -13,8 +13,28 @@ function result(partial: Partial<QueryResult>): QueryResult {
     dimension: dimensionByKey.get("player")!,
     seriesDimension: null,
     rows: [
-      { key: "a", label: "A", seriesKey: null, seriesLabel: null, games: 5, values: { dpm: 700 }, distribution: { dpm: [600, 700, 800] }, color: "var(--region-lck)", entity: { type: "player", id: "a" } },
-      { key: "b", label: "B", seriesKey: null, seriesLabel: null, games: 4, values: { dpm: 500 }, distribution: { dpm: [400, 500, 600] }, color: null, entity: { type: "player", id: "b" } },
+      {
+        key: "a",
+        label: "A",
+        seriesKey: null,
+        seriesLabel: null,
+        games: 5,
+        values: { dpm: 700 },
+        distribution: { dpm: [600, 700, 800] },
+        color: "var(--region-lck)",
+        entity: { type: "player", id: "a" },
+      },
+      {
+        key: "b",
+        label: "B",
+        seriesKey: null,
+        seriesLabel: null,
+        games: 4,
+        values: { dpm: 500 },
+        distribution: { dpm: [400, 500, 600] },
+        color: null,
+        entity: { type: "player", id: "b" },
+      },
     ],
     seriesLabels: [],
     overall: { dpm: 600 },
@@ -39,7 +59,11 @@ describe("buildChart", () => {
     expect(built.description).toContain("highest A (700)");
   });
   it("builds scatter points from two measures", () => {
-    const r = result({ config: { ...DEFAULT_CONFIG, filters: {}, topN: null, chart: "scatter", measures: ["gpm", "dpm"] }, measures: [m("gpm"), m("dpm")], overall: { gpm: 400, dpm: 600 } });
+    const r = result({
+      config: { ...DEFAULT_CONFIG, filters: {}, topN: null, chart: "scatter", measures: ["gpm", "dpm"] },
+      measures: [m("gpm"), m("dpm")],
+      overall: { gpm: 400, dpm: 600 },
+    });
     r.rows.forEach((row, i) => (row.values.gpm = 400 + i * 50));
     const built = buildChart(r);
     expect(built.spec.type).toBe("scatter");
@@ -49,7 +73,11 @@ describe("buildChart", () => {
     expect(built.spec.xReference).toBe(400);
   });
   it("builds radar indicators scaled to the maximum", () => {
-    const r = result({ config: { ...DEFAULT_CONFIG, filters: {}, topN: 4, chart: "radar", measures: ["dpm", "kda", "cspm"] }, measures: [m("dpm"), m("kda"), m("cspm")], overall: { dpm: 600, kda: 4, cspm: 9 } });
+    const r = result({
+      config: { ...DEFAULT_CONFIG, filters: {}, topN: 4, chart: "radar", measures: ["dpm", "kda", "cspm"] },
+      measures: [m("dpm"), m("kda"), m("cspm")],
+      overall: { dpm: 600, kda: 4, cspm: 9 },
+    });
     r.rows.forEach((row) => Object.assign(row.values, { kda: 5, cspm: 10 }));
     const built = buildChart(r);
     if (built.spec.type !== "radar") throw new Error("expected radar");
@@ -59,14 +87,53 @@ describe("buildChart", () => {
   it("pivots a series dimension into heat map cells", () => {
     const side = dimensionByKey.get("side")!;
     const r = result({
-      config: { ...DEFAULT_CONFIG, filters: {}, topN: null, chart: "heatmap", source: "teams", groupBy: "team", series: "side", measures: ["winRate"] },
+      config: {
+        ...DEFAULT_CONFIG,
+        filters: {},
+        topN: null,
+        chart: "heatmap",
+        source: "teams",
+        groupBy: "team",
+        series: "side",
+        measures: ["winRate"],
+      },
       measures: [m("winRate")],
       dimension: dimensionByKey.get("team")!,
       seriesDimension: side,
       rows: [
-        { key: "t1", label: "T1", seriesKey: "blue", seriesLabel: "Blue side", games: 2, values: { winRate: 1 }, distribution: {}, color: null, entity: { type: "team", id: "t1" } },
-        { key: "t1", label: "T1", seriesKey: "red", seriesLabel: "Red side", games: 1, values: { winRate: 0 }, distribution: {}, color: null, entity: { type: "team", id: "t1" } },
-        { key: "t2", label: "T2", seriesKey: "blue", seriesLabel: "Blue side", games: 1, values: { winRate: 0.5 }, distribution: {}, color: null, entity: { type: "team", id: "t2" } },
+        {
+          key: "t1",
+          label: "T1",
+          seriesKey: "blue",
+          seriesLabel: "Blue side",
+          games: 2,
+          values: { winRate: 1 },
+          distribution: {},
+          color: null,
+          entity: { type: "team", id: "t1" },
+        },
+        {
+          key: "t1",
+          label: "T1",
+          seriesKey: "red",
+          seriesLabel: "Red side",
+          games: 1,
+          values: { winRate: 0 },
+          distribution: {},
+          color: null,
+          entity: { type: "team", id: "t1" },
+        },
+        {
+          key: "t2",
+          label: "T2",
+          seriesKey: "blue",
+          seriesLabel: "Blue side",
+          games: 1,
+          values: { winRate: 0.5 },
+          distribution: {},
+          color: null,
+          entity: { type: "team", id: "t2" },
+        },
       ],
       seriesLabels: ["Blue side", "Red side"],
     });
@@ -98,7 +165,15 @@ describe("autoTitle and CSV", () => {
     expect(autoTitle(r)).toBe("Top 10 Damage per minute by player · Swiss Stage");
   });
   it("escapes CSV cells", () => {
-    expect(tableToCsv({ columns: ["Name", "Value"], rows: [['A "quoted", one', 1.5], ["B", null]] })).toBe('Name,Value\n"A ""quoted"", one",1.5\nB,');
+    expect(
+      tableToCsv({
+        columns: ["Name", "Value"],
+        rows: [
+          ['A "quoted", one', 1.5],
+          ["B", null],
+        ],
+      }),
+    ).toBe('Name,Value\n"A ""quoted"", one",1.5\nB,');
   });
   it("computes five-number summaries", () => {
     expect(boxStats([5, 1, 3, 2, 4])).toEqual([1, 2, 3, 4, 5]);

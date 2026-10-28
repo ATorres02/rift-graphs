@@ -24,7 +24,19 @@ export function PageHeader({
   );
 }
 
-export function Section({ title, description, children, className, action }: { title: ReactNode; description?: ReactNode; children: ReactNode; className?: string; action?: ReactNode }) {
+export function Section({
+  title,
+  description,
+  children,
+  className,
+  action,
+}: {
+  title: ReactNode;
+  description?: ReactNode;
+  children: ReactNode;
+  className?: string;
+  action?: ReactNode;
+}) {
   return (
     <section className={cn("space-y-3", className)}>
       <div className="flex flex-wrap items-end justify-between gap-2">

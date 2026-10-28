@@ -25,10 +25,26 @@ describe("draftSequence", () => {
   });
   it("follows the standard order", () => {
     expect(seq.map((s) => s.champion)).toEqual([
-      "B-ban1", "R-ban1", "B-ban2", "R-ban2", "B-ban3", "R-ban3",
-      "B-pick1", "R-pick1", "R-pick2", "B-pick2", "B-pick3", "R-pick3",
-      "R-ban4", "B-ban4", "R-ban5", "B-ban5",
-      "R-pick4", "B-pick4", "B-pick5", "R-pick5",
+      "B-ban1",
+      "R-ban1",
+      "B-ban2",
+      "R-ban2",
+      "B-ban3",
+      "R-ban3",
+      "B-pick1",
+      "R-pick1",
+      "R-pick2",
+      "B-pick2",
+      "B-pick3",
+      "R-pick3",
+      "R-ban4",
+      "B-ban4",
+      "R-ban5",
+      "B-ban5",
+      "R-pick4",
+      "B-pick4",
+      "B-pick5",
+      "R-pick5",
     ]);
     expect(seq.filter((s) => s.phase === 1)).toHaveLength(12);
     expect(seq.filter((s) => s.type === "ban")).toHaveLength(10);

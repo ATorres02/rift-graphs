@@ -10,11 +10,21 @@ export function Footer() {
         <p>{riotNotice}</p>
         <p>
           Data:{" "}
-          <a href={site.leaguepedia.url} target="_blank" rel="noopener noreferrer" className="underline hover:text-foreground">
+          <a
+            href={site.leaguepedia.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-foreground"
+          >
             Leaguepedia
           </a>{" "}
           (
-          <a href={site.leaguepedia.licenseUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-foreground">
+          <a
+            href={site.leaguepedia.licenseUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-foreground"
+          >
             {site.leaguepedia.license}
           </a>
           ). Champion icons from Riot&apos;s Data Dragon. No team logos or player photos are used.
@@ -22,7 +32,12 @@ export function Footer() {
         <p>
           Developed with AI by{" "}
           {site.author.linkedin ? (
-            <a href={site.author.linkedin} target="_blank" rel="noopener noreferrer" className="underline hover:text-foreground">
+            <a
+              href={site.author.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-foreground"
+            >
               {site.author.name}
             </a>
           ) : (
@@ -48,7 +63,12 @@ export function Footer() {
             Imprint
           </Link>
           {site.repoUrl ? (
-            <a href={site.repoUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-foreground">
+            <a
+              href={site.repoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-foreground"
+            >
               Source code
             </a>
           ) : null}

@@ -1,4 +1,14 @@
-import { ChartColumnIcon, HomeIcon, InfoIcon, ScaleIcon, ShieldIcon, SparklesIcon, SwordsIcon, TrophyIcon, UsersIcon } from "lucide-react";
+import {
+  ChartColumnIcon,
+  HomeIcon,
+  InfoIcon,
+  ScaleIcon,
+  ShieldIcon,
+  SparklesIcon,
+  SwordsIcon,
+  TrophyIcon,
+  UsersIcon,
+} from "lucide-react";
 
 /** Site navigation (plain module so server components can read it too). */
 export const NAV = [

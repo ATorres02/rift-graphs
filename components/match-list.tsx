@@ -25,7 +25,8 @@ function localDayKey(iso: string): string {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
-const selectClass = "h-9 rounded-md border bg-background px-2 text-sm focus-visible:outline-2 focus-visible:outline-brand";
+const selectClass =
+  "h-9 rounded-md border bg-background px-2 text-sm focus-visible:outline-2 focus-visible:outline-brand";
 
 /** Filterable schedule grouped by day in the visitor's time zone (UTC until hydration). */
 export function MatchList({ views, teams, stages }: MatchListProps) {
@@ -101,7 +102,11 @@ export function MatchList({ views, teams, stages }: MatchListProps) {
             <option value="all">All days</option>
             {days.map((d) => (
               <option key={d.key} value={d.key}>
-                {mounted ? new Intl.DateTimeFormat(undefined, { weekday: "short", day: "numeric", month: "short" }).format(new Date(d.iso)) : d.key}
+                {mounted
+                  ? new Intl.DateTimeFormat(undefined, { weekday: "short", day: "numeric", month: "short" }).format(
+                      new Date(d.iso),
+                    )
+                  : d.key}
               </option>
             ))}
           </select>
@@ -140,12 +145,23 @@ export function MatchList({ views, teams, stages }: MatchListProps) {
           </h2>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {list.map((v) => (
-              <SeriesCard key={v.series.id} series={v.series} team1={v.team1} team2={v.team2} pending={v.pending} compact />
+              <SeriesCard
+                key={v.series.id}
+                series={v.series}
+                team1={v.team1}
+                team2={v.team2}
+                pending={v.pending}
+                compact
+              />
             ))}
           </div>
         </section>
       ))}
-      {filtered.length === 0 ? <p className="rounded-xl border border-dashed p-6 text-center text-sm text-muted-foreground">No series match these filters.</p> : null}
+      {filtered.length === 0 ? (
+        <p className="rounded-xl border border-dashed p-6 text-center text-sm text-muted-foreground">
+          No series match these filters.
+        </p>
+      ) : null}
     </div>
   );
 }

@@ -16,7 +16,10 @@ export default function MatchesPage() {
   const stages = data.tournament.stages.map((s) => s.id);
   return (
     <div>
-      <PageHeader title="Matches" description="Every series of the tournament, grouped by day in your time zone. Scores stay hidden while spoiler mode is on." />
+      <PageHeader
+        title="Matches"
+        description="Every series of the tournament, grouped by day in your time zone. Scores stay hidden while spoiler mode is on."
+      />
       <MatchList views={views} teams={teams} stages={stages} />
     </div>
   );

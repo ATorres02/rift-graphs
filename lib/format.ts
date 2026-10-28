@@ -7,7 +7,8 @@ export const fmt = {
   int: (n: number): string => intFormat.format(Math.round(n)),
   dec: (n: number, digits = 1): string => n.toFixed(digits),
   /** Fraction (0–1) → "63%" */
-  pct: (f: number | null, digits = 0): string => (f === null || Number.isNaN(f) ? "–" : `${(f * 100).toFixed(digits)}%`),
+  pct: (f: number | null, digits = 0): string =>
+    f === null || Number.isNaN(f) ? "–" : `${(f * 100).toFixed(digits)}%`,
   compact: (n: number): string => compactFormat.format(n),
   /** Seconds → "32:05" */
   duration: (seconds: number): string => {
@@ -25,7 +26,13 @@ export const fmt = {
   record: (wins: number, losses: number): string => `${wins}–${losses}`,
 };
 
-export const ROLE_LABEL: Record<Role, string> = { top: "Top", jungle: "Jungle", mid: "Mid", bot: "Bot", support: "Support" };
+export const ROLE_LABEL: Record<Role, string> = {
+  top: "Top",
+  jungle: "Jungle",
+  mid: "Mid",
+  bot: "Bot",
+  support: "Support",
+};
 
 export const STAGE_LABEL: Record<StageId, string> = {
   playin: "Play-In",

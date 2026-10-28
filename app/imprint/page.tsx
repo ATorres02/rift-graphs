@@ -27,12 +27,13 @@ export default function ImprintPage() {
       ) : (
         <p className="rounded-xl border border-dashed p-4">
           The imprint details have not been published yet. They are read from the <code>NEXT_PUBLIC_IMPRINT_NAME</code>,{" "}
-          <code>NEXT_PUBLIC_IMPRINT_ADDRESS</code> and <code>NEXT_PUBLIC_IMPRINT_EMAIL</code> environment variables at build time.
+          <code>NEXT_PUBLIC_IMPRINT_ADDRESS</code> and <code>NEXT_PUBLIC_IMPRINT_EMAIL</code> environment variables at
+          build time.
         </p>
       )}
       <p>
-        {site.name} is a private, non-commercial fan project. It is not affiliated with, endorsed or sponsored by Riot Games or any of the teams
-        shown.
+        {site.name} is a private, non-commercial fan project. It is not affiliated with, endorsed or sponsored by Riot
+        Games or any of the teams shown.
       </p>
     </article>
   );

@@ -35,7 +35,11 @@ export function BottomNav() {
   // Six slots on mobile; champions, compare and about are reachable from the footer and in-page links.
   const items = NAV.filter((n) => ["/", "/tournament", "/matches", "/teams", "/players", "/charts"].includes(n.href));
   return (
-    <nav aria-label="Main (mobile)" className="fixed inset-x-0 bottom-0 z-40 border-t bg-background/95 backdrop-blur md:hidden" style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
+    <nav
+      aria-label="Main (mobile)"
+      className="fixed inset-x-0 bottom-0 z-40 border-t bg-background/95 backdrop-blur md:hidden"
+      style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+    >
       <ul className="grid grid-cols-6">
         {items.map((item) => {
           const active = isActive(pathname, item.href);
@@ -45,7 +49,10 @@ export function BottomNav() {
               <Link
                 href={item.href}
                 aria-current={active ? "page" : undefined}
-                className={cn("flex flex-col items-center gap-0.5 py-2 text-[10px] font-medium no-underline", active ? "text-brand" : "text-muted-foreground")}
+                className={cn(
+                  "flex flex-col items-center gap-0.5 py-2 text-[10px] font-medium no-underline",
+                  active ? "text-brand" : "text-muted-foreground",
+                )}
               >
                 <Icon className="size-5" aria-hidden />
                 {item.label}

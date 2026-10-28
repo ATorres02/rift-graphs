@@ -58,14 +58,30 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
   const rows = [...(data.playerGamesByPlayer.get(p.id) ?? [])].sort((a, b) => {
     const ga = data.gamesById.get(a.gameId);
     const gb = data.gamesById.get(b.gameId);
-    return (ga?.dateTimeUtc ?? "").localeCompare(gb?.dateTimeUtc ?? "") || (ga?.gameNumber ?? 0) - (gb?.gameNumber ?? 0);
+    return (
+      (ga?.dateTimeUtc ?? "").localeCompare(gb?.dateTimeUtc ?? "") || (ga?.gameNumber ?? 0) - (gb?.gameNumber ?? 0)
+    );
   });
   const agg = aggregatePlayerGames(rows);
 
   const headlines: Headline[] = [
-    { label: "KDA", value: agg.games ? fmt.dec(agg.kda, 1) : "–", detail: agg.games ? `${fmt.dec(agg.avgKills, 1)} / ${fmt.dec(agg.avgDeaths, 1)} / ${fmt.dec(agg.avgAssists, 1)} per game` : "No games yet" },
-    { label: "Kill participation", value: fmt.pct(agg.killParticipation), detail: `${fmt.pct(agg.damageShare)} of team damage` },
-    { label: "Damage per minute", value: agg.games ? fmt.int(agg.dpm) : "–", detail: `${fmt.dec(agg.cspm, 1)} CSPM · ${fmt.int(agg.gpm)} GPM` },
+    {
+      label: "KDA",
+      value: agg.games ? fmt.dec(agg.kda, 1) : "–",
+      detail: agg.games
+        ? `${fmt.dec(agg.avgKills, 1)} / ${fmt.dec(agg.avgDeaths, 1)} / ${fmt.dec(agg.avgAssists, 1)} per game`
+        : "No games yet",
+    },
+    {
+      label: "Kill participation",
+      value: fmt.pct(agg.killParticipation),
+      detail: `${fmt.pct(agg.damageShare)} of team damage`,
+    },
+    {
+      label: "Damage per minute",
+      value: agg.games ? fmt.int(agg.dpm) : "–",
+      detail: `${fmt.dec(agg.cspm, 1)} CSPM · ${fmt.int(agg.gpm)} GPM`,
+    },
   ];
 
   const gameLabel = (gameId: string) => {
@@ -83,8 +99,18 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
     unit,
     reference: { value: ref, label: "Average" },
   });
-  const dpmLine = line("Damage per minute", rows.map((r) => Math.round(perMinute(r.damageToChampions, r.durationSeconds))), "number", Math.round(agg.dpm));
-  const kdaLine = line("KDA", rows.map((r) => Number(kda(r.kills, r.deaths, r.assists).toFixed(1))), "decimal1", Number(agg.kda.toFixed(1)));
+  const dpmLine = line(
+    "Damage per minute",
+    rows.map((r) => Math.round(perMinute(r.damageToChampions, r.durationSeconds))),
+    "number",
+    Math.round(agg.dpm),
+  );
+  const kdaLine = line(
+    "KDA",
+    rows.map((r) => Number(kda(r.kills, r.deaths, r.assists).toFixed(1))),
+    "decimal1",
+    Number(agg.kda.toFixed(1)),
+  );
 
   const champBar: BarSpec = {
     type: "bar",
@@ -154,7 +180,10 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
             <Section title="Damage per minute, game by game">
               <Chart
                 spec={dpmLine}
-                table={{ columns: ["Game", "DPM"], rows: rows.map((r, i) => [dpmLine.categories[i], dpmLine.series[0].values[i]]) }}
+                table={{
+                  columns: ["Game", "DPM"],
+                  rows: rows.map((r, i) => [dpmLine.categories[i], dpmLine.series[0].values[i]]),
+                }}
                 height={260}
                 description={`Line of ${p.name}'s damage per minute over ${rows.length} games; average ${fmt.int(agg.dpm)}.`}
               />
@@ -162,7 +191,10 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
             <Section title="KDA, game by game">
               <Chart
                 spec={kdaLine}
-                table={{ columns: ["Game", "KDA"], rows: rows.map((r, i) => [kdaLine.categories[i], kdaLine.series[0].values[i]]) }}
+                table={{
+                  columns: ["Game", "KDA"],
+                  rows: rows.map((r, i) => [kdaLine.categories[i], kdaLine.series[0].values[i]]),
+                }}
                 height={260}
                 description={`Line of ${p.name}'s KDA over ${rows.length} games; average ${fmt.dec(agg.kda, 1)}.`}
               />
@@ -173,7 +205,10 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
             <Spoiler as="div" label="Reveal chart (contains results)">
               <Chart
                 spec={champBar}
-                table={{ columns: ["Champion", "Wins", "Losses"], rows: agg.champions.map((c) => [c.champion, c.wins, c.games - c.wins]) }}
+                table={{
+                  columns: ["Champion", "Wins", "Losses"],
+                  rows: agg.champions.map((c) => [c.champion, c.wins, c.games - c.wins]),
+                }}
                 height={Math.max(200, agg.champions.length * 32)}
                 description={`Stacked bars of ${p.name}'s champions; ${agg.champions[0].champion} most played with ${agg.champions[0].games} games.`}
               />
@@ -195,7 +230,9 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
           </Section>
         </>
       ) : (
-        <p className="rounded-xl border border-dashed p-6 text-sm text-muted-foreground">No games with published scoreboards yet.</p>
+        <p className="rounded-xl border border-dashed p-6 text-sm text-muted-foreground">
+          No games with published scoreboards yet.
+        </p>
       )}
     </div>
   );

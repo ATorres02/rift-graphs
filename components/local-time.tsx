@@ -16,7 +16,17 @@ const OPTIONS: Record<Mode, Intl.DateTimeFormatOptions> = {
  * Renders a UTC instant in the visitor's time zone. The server (and the first
  * client render) print UTC so hydration matches; the effect switches to local time.
  */
-export function LocalTime({ iso, mode = "datetime", hasTime = true, className }: { iso: string; mode?: Mode; hasTime?: boolean; className?: string }) {
+export function LocalTime({
+  iso,
+  mode = "datetime",
+  hasTime = true,
+  className,
+}: {
+  iso: string;
+  mode?: Mode;
+  hasTime?: boolean;
+  className?: string;
+}) {
   const [local, setLocal] = useState<string | null>(null);
   useEffect(() => {
     const opts: Intl.DateTimeFormatOptions = { ...OPTIONS[mode] };
@@ -26,7 +36,9 @@ export function LocalTime({ iso, mode = "datetime", hasTime = true, className }:
     }
     setLocal(new Intl.DateTimeFormat(undefined, opts).format(new Date(iso)));
   }, [iso, mode, hasTime]);
-  const utc = new Intl.DateTimeFormat("en-GB", { ...OPTIONS[mode], timeZone: "UTC", hour12: false }).format(new Date(iso));
+  const utc = new Intl.DateTimeFormat("en-GB", { ...OPTIONS[mode], timeZone: "UTC", hour12: false }).format(
+    new Date(iso),
+  );
   return (
     <time dateTime={iso} className={className} suppressHydrationWarning>
       {local ?? `${utc}${mode === "date" || mode === "day" || !hasTime ? "" : " UTC"}`}

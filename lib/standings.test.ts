@@ -48,7 +48,11 @@ describe("swissStandings", () => {
     expect(by.d).toMatchObject({ wins: 2, losses: 1, status: "active" });
   });
   it("records opponents per round", () => {
-    expect(by.a.results.map((r) => `${r.round}:${r.opponentId}:${r.won ? "W" : "L"}`)).toEqual(["1:b:W", "2:d:W", "3:b:W"]);
+    expect(by.a.results.map((r) => `${r.round}:${r.opponentId}:${r.won ? "W" : "L"}`)).toEqual([
+      "1:b:W",
+      "2:d:W",
+      "3:b:W",
+    ]);
   });
   it("sorts best records first", () => {
     expect(table.map((r) => r.teamId)).toEqual(["a", "d", "b", "c"]);
@@ -59,7 +63,16 @@ describe("swissStandings", () => {
 });
 
 describe("teamStatus", () => {
-  const team = (id: string, stages: Team["stages"]): Team => ({ id, name: id, short: id, page: id, region: "Korea", location: null, stages, roster: [] });
+  const team = (id: string, stages: Team["stages"]): Team => ({
+    id,
+    name: id,
+    short: id,
+    page: id,
+    region: "Korea",
+    location: null,
+    stages,
+    roster: [],
+  });
   const table = swissStandings(series, ["a", "b", "c", "d"]);
 
   it("marks swiss eliminations", () => {
@@ -74,7 +87,10 @@ describe("teamStatus", () => {
     expect(teamStatus(team("x", ["playin"]), series, table)).toBe("eliminated");
   });
   it("marks the final winner as champion", () => {
-    const withFinal = [...series, s({ id: "final", stage: "final", round: null, team1Id: "d", team2Id: "b", winnerId: "d", bestOf: 5 })];
+    const withFinal = [
+      ...series,
+      s({ id: "final", stage: "final", round: null, team1Id: "d", team2Id: "b", winnerId: "d", bestOf: 5 }),
+    ];
     expect(teamStatus(team("d", ["main"]), withFinal, table)).toBe("champion");
     expect(teamStatus(team("b", ["main"]), withFinal, table)).toBe("eliminated");
   });

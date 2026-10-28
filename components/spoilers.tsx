@@ -49,7 +49,11 @@ export function SpoilerToggle({ className }: { className?: string }) {
     <label className={cn("flex cursor-pointer items-center gap-2 text-sm text-muted-foreground", className)}>
       {hidden ? <EyeOffIcon className="size-4" aria-hidden /> : <EyeIcon className="size-4" aria-hidden />}
       <span className="hidden sm:inline">Hide results</span>
-      <Switch checked={hidden} onCheckedChange={(checked) => setHidden(Boolean(checked))} aria-label="Hide results (spoiler mode)" />
+      <Switch
+        checked={hidden}
+        onCheckedChange={(checked) => setHidden(Boolean(checked))}
+        aria-label="Hide results (spoiler mode)"
+      />
     </label>
   );
 }

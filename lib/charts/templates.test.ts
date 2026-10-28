@@ -13,7 +13,10 @@ describe("chart templates on the real dataset", () => {
       const result = runQuery(t.config, data);
       expect(result.problems).toEqual([]);
       // Knockout-stage templates legitimately have no games until 3 Nov; everything else must have rows.
-      if (t.config.filters.stages?.every((s) => ["quarterfinals", "semifinals", "final"].includes(s)) && result.universeGames === 0) {
+      if (
+        t.config.filters.stages?.every((s) => ["quarterfinals", "semifinals", "final"].includes(s)) &&
+        result.universeGames === 0
+      ) {
         expect(result.emptyReason).toMatch(/stage filter/);
         return;
       }

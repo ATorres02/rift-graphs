@@ -21,8 +21,12 @@ export const SWISS_TARGET = 3;
 
 /** Win/loss record of every team in the Swiss stage, from finished Swiss series. */
 export function swissStandings(series: Series[], teamIds: string[]): SwissRecord[] {
-  const records = new Map<string, SwissRecord>(teamIds.map((id) => [id, { teamId: id, wins: 0, losses: 0, status: "active", results: [] }]));
-  const swiss = series.filter((s) => s.stage === "swiss" && s.status === "finished" && s.winnerId).sort((a, b) => (a.round ?? 0) - (b.round ?? 0));
+  const records = new Map<string, SwissRecord>(
+    teamIds.map((id) => [id, { teamId: id, wins: 0, losses: 0, status: "active", results: [] }]),
+  );
+  const swiss = series
+    .filter((s) => s.stage === "swiss" && s.status === "finished" && s.winnerId)
+    .sort((a, b) => (a.round ?? 0) - (b.round ?? 0));
   for (const s of swiss) {
     for (const [teamId, oppId] of [
       [s.team1Id, s.team2Id],
@@ -47,7 +51,9 @@ export function swissStandings(series: Series[], teamIds: string[]): SwissRecord
 }
 
 /** Groups Swiss records by "W-L" label, best records first. */
-export function swissGroups(records: SwissRecord[]): { label: string; wins: number; losses: number; teams: SwissRecord[] }[] {
+export function swissGroups(
+  records: SwissRecord[],
+): { label: string; wins: number; losses: number; teams: SwissRecord[] }[] {
   const groups = new Map<string, { label: string; wins: number; losses: number; teams: SwissRecord[] }>();
   for (const r of records) {
     const label = `${r.wins}-${r.losses}`;
@@ -67,7 +73,8 @@ export function teamStatus(team: Team, series: Series[], swiss: SwissRecord[]): 
   const finished = series.filter((s) => s.status === "finished" && (s.team1Id === team.id || s.team2Id === team.id));
   const finalWin = finished.find((s) => s.stage === "final" && s.winnerId === team.id);
   if (finalWin) return "champion";
-  if (finished.some((s) => KNOCKOUT_STAGES.includes(s.stage) && s.winnerId && s.winnerId !== team.id)) return "eliminated";
+  if (finished.some((s) => KNOCKOUT_STAGES.includes(s.stage) && s.winnerId && s.winnerId !== team.id))
+    return "eliminated";
   if (!team.stages.includes("main")) return "eliminated";
   const rec = swiss.find((r) => r.teamId === team.id);
   if (rec?.status === "eliminated") return "eliminated";

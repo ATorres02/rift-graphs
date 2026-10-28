@@ -101,12 +101,28 @@ export function aggregatePlayerGames(rows: PlayerGame[]): PlayerAggregate {
     avgAssists: div(assists, games),
     kda: games ? kda(kills, deaths, assists) : 0,
     killParticipation: games ? killParticipation(kills, assists, teamKills) : null,
-    cspm: div(sum((r) => r.cs), totalMinutes),
+    cspm: div(
+      sum((r) => r.cs),
+      totalMinutes,
+    ),
     gpm: div(gold, totalMinutes),
     dpm: div(damage, totalMinutes),
-    visionPerMinute: div(sum((r) => r.visionScore), totalMinutes),
-    goldShare: games ? share(gold, sum((r) => r.teamGold)) : null,
-    damageShare: games ? share(damage, sum((r) => r.teamDamage)) : null,
+    visionPerMinute: div(
+      sum((r) => r.visionScore),
+      totalMinutes,
+    ),
+    goldShare: games
+      ? share(
+          gold,
+          sum((r) => r.teamGold),
+        )
+      : null,
+    damageShare: games
+      ? share(
+          damage,
+          sum((r) => r.teamDamage),
+        )
+      : null,
     totalMinutes,
     champions: Array.from(champMap.values()).sort((a, b) => b.games - a.games || a.champion.localeCompare(b.champion)),
     pentakills: sum((r) => r.pentakills),
@@ -125,11 +141,21 @@ export function groupBy<T, K>(rows: T[], key: (row: T) => K): Map<K, T[]> {
 }
 
 export function aggregateByPlayer(rows: PlayerGame[]): Map<string, PlayerAggregate> {
-  return new Map(Array.from(groupBy(rows, (r) => r.playerId), ([id, list]) => [id, aggregatePlayerGames(list)]));
+  return new Map(
+    Array.from(
+      groupBy(rows, (r) => r.playerId),
+      ([id, list]) => [id, aggregatePlayerGames(list)],
+    ),
+  );
 }
 
 export function aggregateByRole(rows: PlayerGame[]): Map<Role, PlayerAggregate> {
-  return new Map(Array.from(groupBy(rows, (r) => r.role), ([role, list]) => [role, aggregatePlayerGames(list)]));
+  return new Map(
+    Array.from(
+      groupBy(rows, (r) => r.role),
+      ([role, list]) => [role, aggregatePlayerGames(list)],
+    ),
+  );
 }
 
 /* ------------------------------------------------------------------ teams */
@@ -192,17 +218,54 @@ export function aggregateTeamGames(games: Game[], teamId: string): TeamAggregate
     winRate: div(wins, n),
     blue: sideRecord("blue"),
     red: sideRecord("red"),
-    avgDurationSeconds: div(sum((r) => r.game.durationSeconds), n),
-    killsPerGame: div(sum((r) => r.own.kills), n),
-    deathsPerGame: div(sum((r) => r.opp.kills), n),
-    goldPerMinute: div(sum((r) => r.own.gold), totalMinutes),
-    towersPerGame: div(sum((r) => r.own.towers), n),
-    dragonsPerGame: div(sum((r) => r.own.dragons), n),
-    baronsPerGame: div(sum((r) => r.own.barons), n),
-    heraldsPerGame: div(sum((r) => r.own.heralds), n),
-    voidGrubsPerGame: div(sum((r) => r.own.voidGrubs), n),
-    dragonControl: n ? share(sum((r) => r.own.dragons), dragonsAll) : null,
-    baronControl: n ? share(sum((r) => r.own.barons), baronsAll) : null,
+    avgDurationSeconds: div(
+      sum((r) => r.game.durationSeconds),
+      n,
+    ),
+    killsPerGame: div(
+      sum((r) => r.own.kills),
+      n,
+    ),
+    deathsPerGame: div(
+      sum((r) => r.opp.kills),
+      n,
+    ),
+    goldPerMinute: div(
+      sum((r) => r.own.gold),
+      totalMinutes,
+    ),
+    towersPerGame: div(
+      sum((r) => r.own.towers),
+      n,
+    ),
+    dragonsPerGame: div(
+      sum((r) => r.own.dragons),
+      n,
+    ),
+    baronsPerGame: div(
+      sum((r) => r.own.barons),
+      n,
+    ),
+    heraldsPerGame: div(
+      sum((r) => r.own.heralds),
+      n,
+    ),
+    voidGrubsPerGame: div(
+      sum((r) => r.own.voidGrubs),
+      n,
+    ),
+    dragonControl: n
+      ? share(
+          sum((r) => r.own.dragons),
+          dragonsAll,
+        )
+      : null,
+    baronControl: n
+      ? share(
+          sum((r) => r.own.barons),
+          baronsAll,
+        )
+      : null,
     totalMinutes,
   };
 }
@@ -245,7 +308,17 @@ export function aggregateChampions(games: Game[], playerGames: PlayerGame[]): Ch
   const get = (name: string) => {
     let c = map.get(name);
     if (!c) {
-      c = { champion: name, picks: 0, bans: 0, presence: 0, pickRate: 0, banRate: 0, wins: 0, winRate: null, byRole: {} };
+      c = {
+        champion: name,
+        picks: 0,
+        bans: 0,
+        presence: 0,
+        pickRate: 0,
+        banRate: 0,
+        wins: 0,
+        winRate: null,
+        byRole: {},
+      };
       map.set(name, c);
     }
     return c;
@@ -276,7 +349,9 @@ export function aggregateChampions(games: Game[], playerGames: PlayerGame[]): Ch
     c.banRate = n ? c.bans / n : 0;
     c.winRate = c.picks ? c.wins / c.picks : null;
   }
-  return Array.from(map.values()).sort((a, b) => b.presence - a.presence || b.picks - a.picks || a.champion.localeCompare(b.champion));
+  return Array.from(map.values()).sort(
+    (a, b) => b.presence - a.presence || b.picks - a.picks || a.champion.localeCompare(b.champion),
+  );
 }
 
 /* ------------------------------------------------------------------ ranking helpers */
@@ -291,7 +366,11 @@ export interface RankedPlayer<T> {
 export function rankPlayers(
   byPlayer: Map<string, PlayerAggregate>,
   metric: (a: PlayerAggregate) => number | null,
-  { minGames = DEFAULT_MIN_GAMES, descending = true, limit }: { minGames?: number; descending?: boolean; limit?: number } = {},
+  {
+    minGames = DEFAULT_MIN_GAMES,
+    descending = true,
+    limit,
+  }: { minGames?: number; descending?: boolean; limit?: number } = {},
 ): RankedPlayer<number>[] {
   const list: RankedPlayer<number>[] = [];
   for (const [playerId, aggregate] of byPlayer) {

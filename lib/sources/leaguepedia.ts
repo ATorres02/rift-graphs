@@ -87,7 +87,10 @@ export function parseCargoBody(transport: Transport, body: string): CargoRow[] {
     if (!Array.isArray(parsed)) throw new CargoError("CargoExport returned a non-array payload");
     return parsed as CargoRow[];
   }
-  const parsed = JSON.parse(trimmed) as { error?: { code?: string; info?: string }; cargoquery?: { title: CargoRow }[] };
+  const parsed = JSON.parse(trimmed) as {
+    error?: { code?: string; info?: string };
+    cargoquery?: { title: CargoRow }[];
+  };
   if (parsed.error) throw new CargoError(`cargoquery error ${parsed.error.code ?? ""}: ${parsed.error.info ?? ""}`);
   if (!Array.isArray(parsed.cargoquery)) throw new CargoError("cargoquery returned no rows array");
   return parsed.cargoquery.map((r) => r.title);
@@ -150,7 +153,9 @@ export class LeaguepediaClient {
         throw new RateLimitError(`Usage limit persisted after ${attempt} attempts (${q.tables}, offset ${offset})`);
       }
       const wait = this.opts.backoffBaseMs * 2 ** (attempt - 1);
-      this.opts.log(`usage limit detected (status ${status}); waiting ${Math.round(wait / 1000)}s before attempt ${attempt + 1}`);
+      this.opts.log(
+        `usage limit detected (status ${status}); waiting ${Math.round(wait / 1000)}s before attempt ${attempt + 1}`,
+      );
       await this.opts.sleep(wait);
     }
   }
@@ -195,7 +200,9 @@ export class LeaguepediaClient {
 
   private captureCookies(res: Response): void {
     const setCookies: string[] =
-      typeof res.headers.getSetCookie === "function" ? res.headers.getSetCookie() : [res.headers.get("set-cookie") ?? ""].filter(Boolean);
+      typeof res.headers.getSetCookie === "function"
+        ? res.headers.getSetCookie()
+        : [res.headers.get("set-cookie") ?? ""].filter(Boolean);
     for (const raw of setCookies) {
       const [pair] = raw.split(";");
       const eq = pair.indexOf("=");
@@ -209,9 +216,16 @@ export class LeaguepediaClient {
     if (!creds) return;
     await this.throttle();
     const tokenRes = await this.request(`${this.opts.baseUrl}/api.php?action=query&meta=tokens&type=login&format=json`);
-    const token = (JSON.parse(tokenRes.body) as { query?: { tokens?: { logintoken?: string } } }).query?.tokens?.logintoken;
+    const token = (JSON.parse(tokenRes.body) as { query?: { tokens?: { logintoken?: string } } }).query?.tokens
+      ?.logintoken;
     if (!token) throw new CargoError("Could not obtain a login token");
-    const form = new URLSearchParams({ action: "login", lgname: creds.username, lgpassword: creds.password, lgtoken: token, format: "json" });
+    const form = new URLSearchParams({
+      action: "login",
+      lgname: creds.username,
+      lgpassword: creds.password,
+      lgtoken: token,
+      format: "json",
+    });
     await this.throttle();
     const loginRes = await this.request(`${this.opts.baseUrl}/api.php`, {
       method: "POST",
@@ -219,7 +233,8 @@ export class LeaguepediaClient {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
     });
     const result = (JSON.parse(loginRes.body) as { login?: { result?: string; reason?: string } }).login;
-    if (result?.result !== "Success") throw new CargoError(`Login failed: ${result?.result ?? "unknown"} ${result?.reason ?? ""}`);
+    if (result?.result !== "Success")
+      throw new CargoError(`Login failed: ${result?.result ?? "unknown"} ${result?.reason ?? ""}`);
     this.loggedIn = true;
     this.opts.log(`logged in as ${creds.username}`);
   }
@@ -252,7 +267,9 @@ export function asInt(v: unknown): number | null {
 export function asBool(v: unknown): boolean {
   if (typeof v === "boolean") return v;
   if (typeof v === "number") return v !== 0;
-  const s = String(v ?? "").trim().toLowerCase();
+  const s = String(v ?? "")
+    .trim()
+    .toLowerCase();
   return s === "1" || s === "yes" || s === "true";
 }
 
@@ -265,7 +282,11 @@ export function asList(v: unknown): string[] {
 
 /** Lists that must keep their positions (e.g. five pick slots): empty strings become null. */
 export function asSlots(v: unknown, size: number): (string | null)[] {
-  const parts = Array.isArray(v) ? v.map((x) => String(x ?? "")) : v === null || v === undefined ? [] : String(v).split(",");
+  const parts = Array.isArray(v)
+    ? v.map((x) => String(x ?? ""))
+    : v === null || v === undefined
+      ? []
+      : String(v).split(",");
   const out = parts.map((s) => (s.trim() === "" ? null : s.trim()));
   while (out.length < size) out.push(null);
   return out.slice(0, size);

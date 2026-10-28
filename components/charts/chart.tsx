@@ -41,8 +41,17 @@ export function Chart({ spec, description, table, title, height = 320, className
     <figure className={cn("rounded-xl border bg-card p-3 sm:p-4", className)}>
       <div className="mb-2 flex items-center justify-between gap-2">
         {title ? <figcaption className="text-sm font-medium">{title}</figcaption> : <span />}
-        <Button variant="outline" size="sm" onClick={() => setView(view === "chart" ? "table" : "chart")} aria-pressed={view === "table"}>
-          {view === "chart" ? <TableIcon className="size-4" aria-hidden /> : <ChartColumnIcon className="size-4" aria-hidden />}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setView(view === "chart" ? "table" : "chart")}
+          aria-pressed={view === "table"}
+        >
+          {view === "chart" ? (
+            <TableIcon className="size-4" aria-hidden />
+          ) : (
+            <ChartColumnIcon className="size-4" aria-hidden />
+          )}
           {view === "chart" ? "View as table" : "View as chart"}
         </Button>
       </div>

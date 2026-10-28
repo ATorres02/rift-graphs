@@ -36,7 +36,8 @@ const ROLE_COLUMNS: TableColumn[] = [
   { key: "bans", header: "Bans", kind: "int" },
 ];
 
-const selectClass = "h-9 rounded-md border bg-background px-2 text-sm focus-visible:outline-2 focus-visible:outline-brand";
+const selectClass =
+  "h-9 rounded-md border bg-background px-2 text-sm focus-visible:outline-2 focus-visible:outline-brand";
 
 /** Champion table with an optional role filter (role numbers come from player rows). */
 export function ChampionsTable({ rows }: { rows: ChampionRow[] }) {
