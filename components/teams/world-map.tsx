@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Spoiler } from "@/components/spoilers";
 import { TeamPill } from "@/components/team-pill";
 import type { TeamRef } from "@/lib/data/load";
 import type { Role, TeamSeed } from "@/lib/data/types";
 import { fmt, ROLE_LABEL } from "@/lib/format";
-import leagueDots from "@/lib/map/league-dots.json";
+import leagueCountries from "@/lib/map/league-countries.json";
 import { cn } from "@/lib/utils";
 
 export interface TeamCardView {
@@ -31,94 +31,95 @@ export interface RegionPanel {
   teams: TeamCardView[];
 }
 
-const DOTS = leagueDots as { width: number; height: number; radius: number; dots: [number, number, string][] };
+const MAP = leagueCountries as {
+  width: number;
+  height: number;
+  countries: { code: string; name: string; d: string }[];
+};
 const ROLE_ORDER: Role[] = ["top", "jungle", "mid", "bot", "support"];
 
-/** Dot-matrix world map with the countries of each league coloured; tapping a league (or its chip) shows its teams. */
+/**
+ * Flat world map (Natural Earth) with the countries of each league softly
+ * coloured. Hovering a league darkens it and pops its name; tapping a league
+ * (or its chip, which is also the keyboard path) shows its teams.
+ */
 export function TeamsExplorer({ regions }: { regions: RegionPanel[] }) {
   const [selected, setSelected] = useState<string | null>(null);
+  const [hover, setHover] = useState<{ code: string; x: number; y: number } | null>(null);
+  const box = useRef<HTMLDivElement>(null);
   const byCode = useMemo(() => new Map(regions.map((r) => [r.code, r])), [regions]);
-  const groups = useMemo(() => {
-    const map = new Map<string, { dots: [number, number][]; cx: number; cy: number }>();
-    for (const [x, y, code] of DOTS.dots)
-      (map.get(code) ?? map.set(code, { dots: [], cx: 0, cy: 0 }).get(code)!).dots.push([x, y]);
-    for (const g of map.values()) {
-      g.cx = g.dots.reduce((a, d) => a + d[0], 0) / g.dots.length;
-      g.cy = g.dots.reduce((a, d) => a + d[1], 0) / g.dots.length;
-    }
+  const paths = useMemo(() => {
+    const map = new Map<string, { name: string; d: string }[]>();
+    for (const c of MAP.countries) (map.get(c.code) ?? map.set(c.code, []).get(c.code)!).push(c);
     return map;
   }, []);
   const toggle = (code: string) => setSelected((s) => (s === code ? null : code));
   const shown = selected ? regions.filter((r) => r.code === selected) : regions;
+  const move = (code: string) => (e: React.PointerEvent) => {
+    const rect = box.current?.getBoundingClientRect();
+    if (!rect) return;
+    setHover({ code, x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
+  const hovered = hover ? byCode.get(hover.code) : null;
 
   return (
     <div className="space-y-5">
-      <div className="relative overflow-hidden rounded-3xl border bg-card/60">
+      <div ref={box} className="relative overflow-hidden rounded-3xl border bg-card/60">
         <svg
-          viewBox={`0 0 ${DOTS.width} ${DOTS.height}`}
+          viewBox={`0 0 ${MAP.width} ${MAP.height}`}
           className="block w-full"
           role="img"
           aria-label="World map with the countries of each league highlighted"
         >
-          <image href="/world-dots.svg" width={DOTS.width} height={DOTS.height} />
+          <image href="/world-base.svg" width={MAP.width} height={MAP.height} />
           {regions.map((r) => {
-            const g = groups.get(r.code);
-            if (!g) return null;
-            const active = selected === null || selected === r.code;
+            const list = paths.get(r.code);
+            if (!list) return null;
+            const dim = selected !== null && selected !== r.code;
+            const hot = hover?.code === r.code || selected === r.code;
             return (
               <g
                 key={r.code}
                 onClick={() => toggle(r.code)}
+                onPointerMove={move(r.code)}
+                onPointerLeave={() => setHover((h) => (h?.code === r.code ? null : h))}
                 className="cursor-pointer transition-opacity duration-200"
-                style={{ opacity: active ? 1 : 0.25, fill: `var(${r.cssVar})` }}
+                style={{
+                  opacity: dim ? 0.3 : 1,
+                  fill: `var(${r.cssVar})`,
+                  stroke: `var(${r.cssVar})`,
+                  filter: hot ? "brightness(0.72) saturate(1.3)" : undefined,
+                }}
                 aria-hidden
               >
-                {g.dots.map(([x, y], i) => (
-                  <circle key={i} cx={x} cy={y} r={DOTS.radius + (selected === r.code ? 0.6 : 0)} />
+                {list.map((c) => (
+                  <path
+                    key={c.name}
+                    d={c.d}
+                    fillOpacity={hot ? 0.9 : 0.55}
+                    strokeWidth={0.8}
+                    strokeOpacity={0.9}
+                    strokeLinejoin="round"
+                  />
                 ))}
               </g>
             );
           })}
-          {regions.map((r) => {
-            const g = groups.get(r.code);
-            if (!g) return null;
-            const active = selected === null || selected === r.code;
-            const label = `${r.code} · ${r.teams.length}`;
-            const w = label.length * 7.2 + 16;
-            return (
-              <g
-                key={`${r.code}-label`}
-                onClick={() => toggle(r.code)}
-                className="cursor-pointer"
-                style={{ opacity: active ? 1 : 0.4 }}
-                aria-hidden
-              >
-                <rect
-                  x={g.cx - w / 2}
-                  y={g.cy - 26}
-                  width={w}
-                  height={20}
-                  rx={10}
-                  fill="var(--background)"
-                  fillOpacity={0.85}
-                  stroke={`var(${r.cssVar})`}
-                  strokeWidth={1.5}
-                />
-                <text
-                  x={g.cx}
-                  y={g.cy - 12}
-                  textAnchor="middle"
-                  fontSize="12"
-                  fontWeight="700"
-                  fill="currentColor"
-                  fontFamily="var(--font-sans)"
-                >
-                  {label}
-                </text>
-              </g>
-            );
-          })}
         </svg>
+        {hover && hovered ? (
+          <div
+            role="tooltip"
+            className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full rounded-lg border bg-popover px-2.5 py-1.5 text-xs font-medium text-popover-foreground shadow-md"
+            style={{ left: hover.x, top: hover.y - 10 }}
+          >
+            <span
+              className="mr-1.5 inline-block size-2 rounded-full align-middle"
+              style={{ backgroundColor: `var(${hovered.cssVar})` }}
+              aria-hidden
+            />
+            {hovered.code} · {hovered.name} · {hovered.teams.length} {hovered.teams.length === 1 ? "team" : "teams"}
+          </div>
+        ) : null}
       </div>
 
       <div role="group" aria-label="Choose a league" className="flex flex-wrap gap-1.5">
@@ -138,6 +139,7 @@ export function TeamsExplorer({ regions }: { regions: RegionPanel[] }) {
             key={r.code}
             type="button"
             onClick={() => toggle(r.code)}
+            onPointerEnter={() => setHover(null)}
             aria-pressed={selected === r.code}
             className={cn(
               "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors hover:border-brand",
@@ -171,7 +173,6 @@ export function TeamsExplorer({ regions }: { regions: RegionPanel[] }) {
           </ul>
         </section>
       ))}
-      {byCode.size === 0 ? <p className="text-sm text-muted-foreground">No teams.</p> : null}
     </div>
   );
 }

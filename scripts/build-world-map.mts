@@ -1,13 +1,13 @@
 /**
- * Generates the dot-matrix world map used on /teams from Natural Earth (public
- * domain, via the world-atlas package):
- *   public/world-dots.svg      every land dot, neutral colour (served as an image)
- *   lib/map/league-dots.json   dots of the countries of each league, inlined by the page for interaction
- * Run once (or when the country→league mapping changes): pnpm exec tsx scripts/build-world-dots.mts
+ * Generates the flat world map used on /teams from Natural Earth (public domain,
+ * via the world-atlas package):
+ *   public/world-base.svg            every country as a neutral shape (served as an image)
+ *   lib/map/league-countries.json    the countries of each league as SVG paths, inlined by the page for hover and tap
+ * Run once (or when the country→league mapping changes): pnpm exec tsx scripts/build-world-map.mts
  */
 import { createRequire } from "node:module";
 import { readFileSync, writeFileSync } from "node:fs";
-import { geoContains, geoNaturalEarth1 } from "d3-geo";
+import { geoNaturalEarth1, geoPath } from "d3-geo";
 import { feature } from "topojson-client";
 import type { FeatureCollection, Geometry } from "geojson";
 import type { Topology } from "topojson-specification";
@@ -62,7 +62,6 @@ const LEAGUES: Record<string, string[]> = {
     "Lithuania",
     "Ukraine",
     "Moldova",
-    "Macedonia",
     "Turkey",
     "Cyprus",
     "Saudi Arabia",
@@ -100,33 +99,27 @@ const W = 1000;
 const H = 520;
 const projection = geoNaturalEarth1().fitExtent(
   [
-    [8, 8],
-    [W - 8, H - 8],
+    [6, 6],
+    [W - 6, H - 6],
   ],
   { type: "Sphere" },
 );
-const STEP = 2.2; // degrees between dots
-const land = countries.features.filter((f) => f.properties.name !== "Antarctica");
+const path = geoPath(projection);
+const round = (d: string) => d.replace(/(\d+\.\d{2})\d+/g, "$1");
 
-const all: [number, number][] = [];
-const league: [number, number, string][] = [];
-for (let lat = -56; lat <= 84; lat += STEP) {
-  for (let lon = -180; lon < 180; lon += STEP) {
-    const hit = land.find((f) => geoContains(f, [lon, lat]));
-    if (!hit) continue;
-    const p = projection([lon, lat]);
-    if (!p) continue;
-    const x = Math.round(p[0] * 10) / 10;
-    const y = Math.round(p[1] * 10) / 10;
-    all.push([x, y]);
-    const l = leagueOfCountry.get(hit.properties.name);
-    if (l) league.push([x, y, l]);
-  }
+const base: string[] = [];
+const league: { code: string; name: string; d: string }[] = [];
+for (const f of countries.features) {
+  if (f.properties.name === "Antarctica") continue;
+  const d = path(f);
+  if (!d) continue;
+  base.push(`<path d="${round(d)}"/>`);
+  const code = leagueOfCountry.get(f.properties.name);
+  if (code) league.push({ code, name: f.properties.name, d: round(d) });
 }
-const r = 2.1;
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}"><g fill="#6b7280" fill-opacity=".45">${all
-  .map(([x, y]) => `<circle cx="${x}" cy="${y}" r="${r}"/>`)
-  .join("")}</g></svg>`;
-writeFileSync("public/world-dots.svg", svg);
-writeFileSync("lib/map/league-dots.json", JSON.stringify({ width: W, height: H, radius: r, dots: league }));
-console.log(`land dots: ${all.length} · league dots: ${league.length} · svg ${Math.round(svg.length / 1024)} KB`);
+const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}"><g fill="#6b7280" fill-opacity=".22" stroke="#6b7280" stroke-opacity=".35" stroke-width=".6" stroke-linejoin="round">${base.join("")}</g></svg>`;
+writeFileSync("public/world-base.svg", svg);
+writeFileSync("lib/map/league-countries.json", JSON.stringify({ width: W, height: H, countries: league }));
+console.log(
+  `countries: ${base.length} · league countries: ${league.length} · base svg ${Math.round(svg.length / 1024)} KB · league json ${Math.round(JSON.stringify(league).length / 1024)} KB`,
+);
