@@ -80,7 +80,9 @@ async function tick(env: Env, now: number): Promise<void> {
   const matches = await lolesportsMatches(env, now);
   const ahead = matches ? lolesportsAhead(schedule, matches) : null;
   if (!ahead && !playing.length) return; // only upcoming series, and lolesports has nothing new
-  const decision = decide({ ahead, inPlay: playing.length > 0, lastRun: await lastIngestRun(env), now });
+  // Without the token the cron only logs, so it does not spend GitHub's anonymous rate limit either.
+  const lastRun = env.GITHUB_DISPATCH_TOKEN ? await lastIngestRun(env) : null;
+  const decision = decide({ ahead, inPlay: playing.length > 0, lastRun, now });
   log(`${near.map((s) => s.id).join(", ")}: ${decision.reason}`);
   if (!decision.dispatch) return;
   if (!env.GITHUB_DISPATCH_TOKEN) return log("GITHUB_DISPATCH_TOKEN not set; not dispatching");
