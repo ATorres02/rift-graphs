@@ -4,6 +4,7 @@ import { ChartBuilder } from "@/components/charts/builder/chart-builder";
 import { PageHeader } from "@/components/page-header";
 import { ProvisionalNote } from "@/components/provisional";
 import { getData, teamRef } from "@/lib/data/load";
+import { authorXHandle } from "@/lib/site";
 
 const description =
   "Build your own chart from the tournament data: pick a measure, group, filter, choose a chart type and share the link.";
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
   title: "Chart builder",
   description,
   openGraph: { title: "Chart builder", description },
-  twitter: { card: "summary_large_image", title: "Chart builder", description },
+  twitter: { card: "summary_large_image", title: "Chart builder", description, creator: authorXHandle },
 };
 
 export default function ChartsPage() {

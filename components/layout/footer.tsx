@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AuthorLinks } from "@/components/layout/author-links";
 import { NAV } from "@/components/layout/nav-items";
 import { riotNotice, site } from "@/lib/site";
 
@@ -31,20 +32,7 @@ export function Footer() {
           or player photos are used.
         </p>
         <p>
-          Developed with AI by{" "}
-          {site.author.linkedin ? (
-            <a
-              href={site.author.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:text-foreground"
-            >
-              {site.author.name}
-            </a>
-          ) : (
-            <span>{site.author.name}</span>
-          )}
-          . Free, no ads, no accounts.
+          Free, no ads, no accounts. Developed with AI by <AuthorLinks />
         </p>
         <nav aria-label="Site" className="flex flex-wrap gap-x-4 gap-y-1">
           {NAV.map((item) => (

@@ -14,6 +14,7 @@ export const site = {
   author: {
     name: process.env.NEXT_PUBLIC_AUTHOR_NAME || "Alex Torres",
     linkedin: process.env.NEXT_PUBLIC_AUTHOR_LINKEDIN ?? "",
+    x: process.env.NEXT_PUBLIC_AUTHOR_X ?? "",
   },
   repoUrl: process.env.NEXT_PUBLIC_REPO_URL ?? "",
   /** Cloudflare Web Analytics beacon token (cookie-free). Empty = analytics off. */
@@ -33,6 +34,10 @@ export const site = {
   lolesportsUrl: "https://lolesports.com",
   riotLegalUrl: "https://www.riotgames.com/en/legal",
 } as const;
+
+/** "@handle" taken from the author's X profile URL, for the twitter:creator tag (undefined when unset). */
+const xHandle = /(?:x|twitter)\.com\/(\w{1,15})/.exec(site.author.x)?.[1];
+export const authorXHandle = xHandle ? `@${xHandle}` : undefined;
 
 /** Mandatory notice (footer and About page), verbatim from Riot's policy. */
 export const riotNotice = `${site.name} was created under Riot Games' "Legal Jibber Jabber" policy using assets owned by Riot Games. Riot Games does not endorse or sponsor this project.`;

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { PageHeader } from "@/components/page-header";
 import { getData } from "@/lib/data/load";
 import { riotNotice, site } from "@/lib/site";
+import { AuthorLinks } from "@/components/layout/author-links";
 
 export const metadata: Metadata = {
   title: "About",
@@ -91,25 +92,17 @@ export default function AboutPage() {
 
       <h2 className="display mt-8 text-2xl font-bold text-foreground">Who made it</h2>
       <p className="text-muted-foreground">
-        Developed with AI by{" "}
-        {site.author.linkedin ? (
-          <a href={site.author.linkedin} target="_blank" rel="noopener noreferrer" className="underline">
-            {site.author.name}
-          </a>
-        ) : (
-          site.author.name
-        )}
-        {site.repoUrl ? (
-          <>
-            {" "}
-            . The source code is{" "}
-            <a href={site.repoUrl} target="_blank" rel="noopener noreferrer" className="underline">
-              public
-            </a>
-          </>
-        ) : null}
-        .
+        Developed with AI by <AuthorLinks />
       </p>
+      {site.repoUrl ? (
+        <p className="text-muted-foreground">
+          The source code is{" "}
+          <a href={site.repoUrl} target="_blank" rel="noopener noreferrer" className="underline">
+            public on GitHub
+          </a>
+          .
+        </p>
+      ) : null}
 
       <h2 className="display mt-8 text-2xl font-bold text-foreground">Privacy and imprint</h2>
       <p className="text-muted-foreground">
