@@ -3638,5 +3638,75 @@
     "source": "leaguepedia",
     "provisional": false,
     "statsComplete": true
+  },
+  {
+    "id": "main-event-round-4-1-2",
+    "seriesId": "main-event-round-4-1",
+    "stage": "swiss",
+    "gameNumber": 2,
+    "dateTimeUtc": "2026-10-28T21:12:00Z",
+    "durationSeconds": 1543,
+    "patch": "26.20",
+    "winnerSide": "blue",
+    "winnerTeamId": "t1",
+    "blue": {
+      "teamId": "t1",
+      "kills": 22,
+      "gold": 57518,
+      "towers": 9,
+      "inhibitors": 1,
+      "dragons": 3,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 1,
+      "voidGrubs": 0,
+      "bans": [
+        "Cassiopeia",
+        "Vi",
+        "Nocturne",
+        "Locke",
+        "Rumble"
+      ],
+      "picks": [
+        "Gwen",
+        "Jarvan IV",
+        "Orianna",
+        "Jhin",
+        "Karma"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "movistar-koi",
+      "kills": 9,
+      "gold": 45208,
+      "towers": 0,
+      "inhibitors": 0,
+      "dragons": 0,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 3,
+      "bans": [
+        "Renata Glasc",
+        "Jayce",
+        "Camille",
+        "Olaf",
+        "Sylas"
+      ],
+      "picks": [
+        "Ornn",
+        "Xin Zhao",
+        "Viktor",
+        "Ezreal",
+        "Seraphine"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_486172",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   }
 ]
