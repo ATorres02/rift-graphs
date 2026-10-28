@@ -79,3 +79,14 @@ Every chart on `/charts` is described by a short URL, for example `/charts?d=pla
 - `lib/sources/` Leaguepedia Cargo client, lolesports client, manual-file schema and Data Dragon helpers; `lib/ingest/merge.ts` source merging
 - `scripts/ingest.ts` pipeline; `data/worlds-2026/` generated dataset; `data/manual/` hand-typed provisional games
 - `wrangler.jsonc`, `public/_headers`, `.github/workflows/` ingest and deploy
+
+## License
+
+The code is released under the [MIT License](LICENSE), copyright 2026 Alex Torres. Some content in the repository
+is not covered by it:
+
+- `data/worlds-2026/` is derived from [Leaguepedia](https://lol.fandom.com) and shared under
+  [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/), like its source.
+- Champion art (loaded from Riot's Data Dragon) and the role and objective icons in `public/icons/` belong to Riot
+  Games and are used under Riot's "Legal Jibber Jabber" policy.
+- The Rift Graphs name and logo (`assets/rift-graphs-logo/`, `public/brand/`) are not licensed for reuse.
