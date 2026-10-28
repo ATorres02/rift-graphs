@@ -933,7 +933,7 @@
     "hasTime": true,
     "score": {
       "team1": 1,
-      "team2": 0
+      "team2": 1
     },
     "winnerId": null,
     "status": "live",
@@ -942,9 +942,9 @@
     "streamUrl": "https://www.twitch.tv/riotgames",
     "mvp": null,
     "gameIds": [],
-    "gamesPlayed": 1,
-    "source": "leaguepedia",
-    "provisional": false,
+    "gamesPlayed": 2,
+    "source": "lolesports",
+    "provisional": true,
     "lolesportsMatchId": "115660540726095065"
   },
   {
