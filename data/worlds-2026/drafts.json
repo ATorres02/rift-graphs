@@ -2548,5 +2548,55 @@
       ]
     },
     "complete": true
+  },
+  {
+    "gameId": "main-event-round-4-1-1",
+    "blue": {
+      "bans": [
+        "Cassiopeia",
+        "Vi",
+        "Ezreal",
+        "Locke",
+        "Taliyah"
+      ],
+      "picks": [
+        "Nautilus",
+        "Lee Sin",
+        "Xayah",
+        "Syndra",
+        "Ambessa"
+      ],
+      "picksByRole": [
+        "Ambessa",
+        "Lee Sin",
+        "Syndra",
+        "Xayah",
+        "Nautilus"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Renata Glasc",
+        "Nocturne",
+        "Jayce",
+        "Orianna",
+        "Camille"
+      ],
+      "picks": [
+        "Qiyana",
+        "Alistar",
+        "Kai'Sa",
+        "Akali",
+        "Gnar"
+      ],
+      "picksByRole": [
+        "Gnar",
+        "Qiyana",
+        "Akali",
+        "Kai'Sa",
+        "Alistar"
+      ]
+    },
+    "complete": true
   }
 ]
