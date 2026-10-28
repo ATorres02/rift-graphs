@@ -24,5 +24,8 @@ export default defineConfig({
         url: "http://127.0.0.1:8787/",
         reuseExistingServer: true,
         timeout: 60_000,
+        // A SIGKILL (the default) leaves wrangler's workerd children running with the output pipe open, and the
+        // run never finishes. SIGTERM lets wrangler stop workerd itself.
+        gracefulShutdown: { signal: "SIGTERM", timeout: 10_000 },
       },
 });
