@@ -962,7 +962,10 @@
     "team2Id": "ctbc-flying-oyster",
     "dateTimeUtc": "2026-10-29T20:00:00Z",
     "hasTime": true,
-    "score": null,
+    "score": {
+      "team1": 1,
+      "team2": 0
+    },
     "winnerId": null,
     "status": "live",
     "matchDay": 2,
@@ -970,7 +973,7 @@
     "streamUrl": "https://www.twitch.tv/riotgames",
     "mvp": null,
     "gameIds": [],
-    "gamesPlayed": 0,
+    "gamesPlayed": 1,
     "source": "leaguepedia",
     "provisional": false,
     "lolesportsMatchId": "115660540726095073"
