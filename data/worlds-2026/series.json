@@ -991,7 +991,7 @@
     "hasTime": true,
     "score": null,
     "winnerId": null,
-    "status": "scheduled",
+    "status": "live",
     "matchDay": 2,
     "patch": "26.20",
     "streamUrl": "https://www.twitch.tv/riotgames",
