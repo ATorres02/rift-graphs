@@ -963,17 +963,17 @@
     "dateTimeUtc": "2026-10-29T20:00:00Z",
     "hasTime": true,
     "score": {
-      "team1": 1,
+      "team1": 2,
       "team2": 0
     },
-    "winnerId": null,
-    "status": "live",
+    "winnerId": "karmine-corp",
+    "status": "finished",
     "matchDay": 2,
     "patch": "26.20",
     "streamUrl": "https://www.twitch.tv/riotgames",
     "mvp": null,
     "gameIds": [],
-    "gamesPlayed": 1,
+    "gamesPlayed": 2,
     "source": "leaguepedia",
     "provisional": false,
     "lolesportsMatchId": "115660540726095073"
