@@ -3988,5 +3988,75 @@
     "source": "leaguepedia",
     "provisional": false,
     "statsComplete": true
+  },
+  {
+    "id": "main-event-round-4-3-2",
+    "seriesId": "main-event-round-4-3",
+    "stage": "swiss",
+    "gameNumber": 2,
+    "dateTimeUtc": "2026-10-29T20:59:00Z",
+    "durationSeconds": 2214,
+    "patch": "26.20",
+    "winnerSide": "red",
+    "winnerTeamId": "karmine-corp",
+    "blue": {
+      "teamId": "ctbc-flying-oyster",
+      "kills": 12,
+      "gold": 67954,
+      "towers": 7,
+      "inhibitors": 1,
+      "dragons": 4,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 1,
+      "voidGrubs": 3,
+      "bans": [
+        "Renata Glasc",
+        "Ezreal",
+        "Jayce",
+        "Orianna",
+        "Renekton"
+      ],
+      "picks": [
+        "Ambessa",
+        "Lee Sin",
+        "Ryze",
+        "Caitlyn",
+        "Karma"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "karmine-corp",
+      "kills": 20,
+      "gold": 75038,
+      "towers": 7,
+      "inhibitors": 1,
+      "dragons": 2,
+      "elders": 1,
+      "barons": 1,
+      "heralds": 0,
+      "voidGrubs": 0,
+      "bans": [
+        "Qiyana",
+        "Vi",
+        "Nocturne",
+        "Akali",
+        "Locke"
+      ],
+      "picks": [
+        "Camille",
+        "Pantheon",
+        "Viktor",
+        "Yunara",
+        "Lulu"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_486309",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   }
 ]

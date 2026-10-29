@@ -2848,5 +2848,55 @@
       ]
     },
     "complete": true
+  },
+  {
+    "gameId": "main-event-round-4-3-2",
+    "blue": {
+      "bans": [
+        "Renata Glasc",
+        "Ezreal",
+        "Jayce",
+        "Orianna",
+        "Renekton"
+      ],
+      "picks": [
+        "Lee Sin",
+        "Caitlyn",
+        "Karma",
+        "Ryze",
+        "Ambessa"
+      ],
+      "picksByRole": [
+        "Ambessa",
+        "Lee Sin",
+        "Ryze",
+        "Caitlyn",
+        "Karma"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Qiyana",
+        "Vi",
+        "Nocturne",
+        "Akali",
+        "Locke"
+      ],
+      "picks": [
+        "Lulu",
+        "Yunara",
+        "Pantheon",
+        "Viktor",
+        "Camille"
+      ],
+      "picksByRole": [
+        "Camille",
+        "Pantheon",
+        "Viktor",
+        "Yunara",
+        "Lulu"
+      ]
+    },
+    "complete": true
   }
 ]
