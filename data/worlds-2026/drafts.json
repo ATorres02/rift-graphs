@@ -2648,5 +2648,155 @@
       ]
     },
     "complete": true
+  },
+  {
+    "gameId": "main-event-round-4-2-1",
+    "blue": {
+      "bans": [
+        "Syndra",
+        "Cassiopeia",
+        "Orianna",
+        "Ambessa",
+        "K'Sante"
+      ],
+      "picks": [
+        "Ezreal",
+        "Nocturne",
+        "Karma",
+        "Rumble",
+        "Sylas"
+      ],
+      "picksByRole": [
+        "Rumble",
+        "Nocturne",
+        "Sylas",
+        "Ezreal",
+        "Karma"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Wukong",
+        "Galio",
+        "Renata Glasc",
+        "Ahri",
+        "Annie"
+      ],
+      "picks": [
+        "Lulu",
+        "Vi",
+        "Yunara",
+        "Ornn",
+        "Aurora"
+      ],
+      "picksByRole": [
+        "Ornn",
+        "Vi",
+        "Aurora",
+        "Yunara",
+        "Lulu"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-4-2-2",
+    "blue": {
+      "bans": [
+        "Renata Glasc",
+        "Cassiopeia",
+        "Wukong",
+        "Ahri",
+        "Viktor"
+      ],
+      "picks": [
+        "Jhin",
+        "Lee Sin",
+        "Nautilus",
+        "Annie",
+        "Zaahen"
+      ],
+      "picksByRole": [
+        "Zaahen",
+        "Lee Sin",
+        "Annie",
+        "Jhin",
+        "Nautilus"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Syndra",
+        "Orianna",
+        "Jayce",
+        "Ambessa",
+        "Twisted Fate"
+      ],
+      "picks": [
+        "Qiyana",
+        "Alistar",
+        "Corki",
+        "Olaf",
+        "Taliyah"
+      ],
+      "picksByRole": [
+        "Olaf",
+        "Qiyana",
+        "Taliyah",
+        "Corki",
+        "Alistar"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-4-2-3",
+    "blue": {
+      "bans": [
+        "Syndra",
+        "Cassiopeia",
+        "Renata Glasc",
+        "Naafiri",
+        "Skarner"
+      ],
+      "picks": [
+        "Lucian",
+        "Milio",
+        "LeBlanc",
+        "Xin Zhao",
+        "K'Sante"
+      ],
+      "picksByRole": [
+        "K'Sante",
+        "Xin Zhao",
+        "LeBlanc",
+        "Lucian",
+        "Milio"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Akali",
+        "Locke",
+        "Ryze",
+        "Jarvan IV",
+        "Wukong"
+      ],
+      "picks": [
+        "Orianna",
+        "Caitlyn",
+        "Lux",
+        "Trundle",
+        "Jayce"
+      ],
+      "picksByRole": [
+        "Jayce",
+        "Trundle",
+        null,
+        null,
+        null
+      ]
+    },
+    "complete": true
   }
 ]

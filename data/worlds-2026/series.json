@@ -941,7 +941,11 @@
     "patch": "26.20",
     "streamUrl": "https://www.twitch.tv/riotgames",
     "mvp": "Wei (Yan Yang-Wei)",
-    "gameIds": [],
+    "gameIds": [
+      "main-event-round-4-2-1",
+      "main-event-round-4-2-2",
+      "main-event-round-4-2-3"
+    ],
     "gamesPlayed": 3,
     "source": "leaguepedia",
     "provisional": false,

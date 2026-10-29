@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "updatedAt": "2026-10-29T00:36:35Z",
+  "updatedAt": "2026-10-29T00:52:28Z",
   "tournamentId": "worlds-2026",
   "source": {
     "name": "Leaguepedia",
@@ -13,16 +13,16 @@
     "teams": 19,
     "players": 96,
     "series": 46,
-    "games": 53,
-    "playerGames": 530,
-    "drafts": 53
+    "games": 56,
+    "playerGames": 560,
+    "drafts": 56
   },
   "pendingGameIds": [],
   "warnings": [],
   "sources": {
     "lolesports": {
       "enabled": true,
-      "fetchedAt": "2026-10-29T00:37:00Z",
+      "fetchedAt": "2026-10-29T00:52:51Z",
       "matchedSeries": 36,
       "unmatchedEvents": 0,
       "error": null
