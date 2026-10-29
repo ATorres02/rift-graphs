@@ -932,17 +932,17 @@
     "dateTimeUtc": "2026-10-28T23:00:00Z",
     "hasTime": true,
     "score": {
-      "team1": 1,
+      "team1": 2,
       "team2": 1
     },
-    "winnerId": null,
-    "status": "live",
+    "winnerId": "invictus-gaming",
+    "status": "finished",
     "matchDay": 1,
     "patch": "26.20",
     "streamUrl": "https://www.twitch.tv/riotgames",
     "mvp": null,
     "gameIds": [],
-    "gamesPlayed": 2,
+    "gamesPlayed": 3,
     "source": "leaguepedia",
     "provisional": false,
     "lolesportsMatchId": "115660540726095065"
