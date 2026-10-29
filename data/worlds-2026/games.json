@@ -3918,5 +3918,75 @@
     "source": "leaguepedia",
     "provisional": false,
     "statsComplete": true
+  },
+  {
+    "id": "main-event-round-4-3-1",
+    "seriesId": "main-event-round-4-3",
+    "stage": "swiss",
+    "gameNumber": 1,
+    "dateTimeUtc": "2026-10-29T20:12:00Z",
+    "durationSeconds": 1655,
+    "patch": "26.20",
+    "winnerSide": "blue",
+    "winnerTeamId": "karmine-corp",
+    "blue": {
+      "teamId": "karmine-corp",
+      "kills": 19,
+      "gold": 59300,
+      "towers": 10,
+      "inhibitors": 2,
+      "dragons": 3,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 1,
+      "voidGrubs": 3,
+      "bans": [
+        "Qiyana",
+        "Vi",
+        "Nocturne",
+        "Jhin",
+        "Seraphine"
+      ],
+      "picks": [
+        "Galio",
+        "Wukong",
+        "Cassiopeia",
+        "Tristana",
+        "Nautilus"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "ctbc-flying-oyster",
+      "kills": 3,
+      "gold": 43822,
+      "towers": 0,
+      "inhibitors": 0,
+      "dragons": 1,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 0,
+      "bans": [
+        "Jayce",
+        "Renata Glasc",
+        "Lee Sin",
+        "Ezreal",
+        "Lulu"
+      ],
+      "picks": [
+        "Rumble",
+        "Jarvan IV",
+        "Syndra",
+        "Kai'Sa",
+        "Alistar"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_486299",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   }
 ]

@@ -972,7 +972,9 @@
     "patch": "26.20",
     "streamUrl": "https://www.twitch.tv/riotgames",
     "mvp": null,
-    "gameIds": [],
+    "gameIds": [
+      "main-event-round-4-3-1"
+    ],
     "gamesPlayed": 2,
     "source": "leaguepedia",
     "provisional": false,

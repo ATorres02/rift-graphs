@@ -2798,5 +2798,55 @@
       ]
     },
     "complete": true
+  },
+  {
+    "gameId": "main-event-round-4-3-1",
+    "blue": {
+      "bans": [
+        "Qiyana",
+        "Vi",
+        "Nocturne",
+        "Jhin",
+        "Seraphine"
+      ],
+      "picks": [
+        "Wukong",
+        "Cassiopeia",
+        "Galio",
+        "Nautilus",
+        "Tristana"
+      ],
+      "picksByRole": [
+        "Galio",
+        "Wukong",
+        "Cassiopeia",
+        "Tristana",
+        "Nautilus"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Jayce",
+        "Renata Glasc",
+        "Lee Sin",
+        "Ezreal",
+        "Lulu"
+      ],
+      "picks": [
+        "Jarvan IV",
+        "Syndra",
+        "Rumble",
+        "Alistar",
+        "Kai'Sa"
+      ],
+      "picksByRole": [
+        "Rumble",
+        "Jarvan IV",
+        "Syndra",
+        "Kai'Sa",
+        "Alistar"
+      ]
+    },
+    "complete": true
   }
 ]
