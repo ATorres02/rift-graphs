@@ -2792,9 +2792,9 @@
       "picksByRole": [
         "Jayce",
         "Trundle",
-        null,
-        null,
-        null
+        "Orianna",
+        "Caitlyn",
+        "Lux"
       ]
     },
     "complete": true
