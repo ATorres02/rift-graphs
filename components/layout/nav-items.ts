@@ -20,3 +20,6 @@ export const NAV = [
   { href: "/charts", label: "Charts", icon: ChartColumnIcon },
   { href: "/compare", label: "Compare", icon: ScaleIcon },
 ] as const;
+
+/** The section the menus highlight: the chart builder is what sets the site apart. */
+export const FEATURED_HREF = "/charts";

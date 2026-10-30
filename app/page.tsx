@@ -16,7 +16,9 @@ import { swissStandings } from "@/lib/standings";
 import { TEMPLATES } from "@/lib/charts/templates";
 import { serializeConfig } from "@/lib/charts/url";
 import { chartHref, playerRankingChart } from "@/lib/charts/page-charts";
+import { BuildChartButton } from "@/components/home/build-chart-button";
 import { ChartStrip } from "@/components/home/chart-strip";
+import { ChartTypeThumb } from "@/components/charts/mini";
 import { playerLabel, seriesView } from "@/lib/views";
 
 export default function HomePage() {
@@ -163,19 +165,14 @@ export default function HomePage() {
               Matches, teams, players, champions and drafts of the 2026 World Championship, refreshed within minutes of
               every game. Free, no ads.
             </p>
-            <div className="mt-6 flex flex-wrap gap-2">
+            <div className="mt-6 flex flex-wrap items-center gap-3">
               <Link
                 href="/matches"
-                className="cut-corner bg-brand px-5 py-2.5 text-sm font-semibold text-brand-foreground no-underline hover:brightness-110"
+                className="cut-corner border border-white/25 bg-white/5 px-5 py-2.5 text-sm font-semibold text-white no-underline backdrop-blur hover:bg-white/10"
               >
                 Schedule and results
               </Link>
-              <Link
-                href="/charts"
-                className="cut-corner border border-white/25 bg-white/5 px-5 py-2.5 text-sm font-semibold text-white no-underline backdrop-blur hover:bg-white/10"
-              >
-                Build a chart
-              </Link>
+              <BuildChartButton />
             </div>
             {heroArt ? (
               <p className="kicker mt-6 text-[10px] text-zinc-500">
@@ -272,10 +269,13 @@ export default function HomePage() {
                 <li key={t.id}>
                   <Link
                     href={`/charts?${serializeConfig(t.config)}`}
-                    className="block rounded-lg border bg-card px-3 py-2 text-sm no-underline transition-colors hover:border-brand/60"
+                    className="flex items-center gap-3 rounded-lg border bg-card px-3 py-2 text-sm no-underline transition-colors hover:border-brand/60"
                   >
-                    <span className="font-medium">{t.name}</span>
-                    <span className="block text-xs text-muted-foreground">{t.description}</span>
+                    <ChartTypeThumb type={t.config.chart} />
+                    <span>
+                      <span className="font-medium">{t.name}</span>
+                      <span className="block text-xs text-muted-foreground">{t.description}</span>
+                    </span>
                   </Link>
                 </li>
               ))}
