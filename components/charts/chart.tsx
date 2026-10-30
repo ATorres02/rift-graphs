@@ -1,11 +1,12 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
-import { ChartColumnIcon, TableIcon } from "lucide-react";
+import { ArrowUpRightIcon, ChartColumnIcon, TableIcon } from "lucide-react";
 import { SpecTable } from "@/components/charts/chart-table";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import type { EChartsInstance } from "@/components/charts/echart";
 import type { ChartSpec, ChartTable } from "@/lib/charts/spec";
 import { cn } from "@/lib/utils";
@@ -25,6 +26,8 @@ export interface ChartProps {
   className?: string;
   /** Receives the ECharts instance once mounted (for exports). */
   onReady?: (instance: EChartsInstance) => void;
+  /** The same chart in the chart builder (see lib/charts/page-charts.ts). */
+  builderHref?: string;
 }
 
 /** Hook that re-reads the CSS palette when the theme flips. */
@@ -36,7 +39,7 @@ export function useThemeKey(): string {
 }
 
 /** Every chart ships with a "View as table" alternative and a textual description. */
-export function Chart({ spec, description, table, title, height = 320, className, onReady }: ChartProps) {
+export function Chart({ spec, description, table, title, height = 320, className, onReady, builderHref }: ChartProps) {
   const [view, setView] = useState<"chart" | "table">("chart");
   const themeKey = useThemeKey();
 
@@ -44,19 +47,27 @@ export function Chart({ spec, description, table, title, height = 320, className
     <figure className={cn("rounded-xl border bg-card p-3 sm:p-4", className)}>
       <div className="mb-2 flex items-center justify-between gap-2">
         {title ? <figcaption className="text-sm font-medium">{title}</figcaption> : <span />}
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setView(view === "chart" ? "table" : "chart")}
-          aria-pressed={view === "table"}
-        >
-          {view === "chart" ? (
-            <TableIcon className="size-4" aria-hidden />
-          ) : (
-            <ChartColumnIcon className="size-4" aria-hidden />
-          )}
-          {view === "chart" ? "View as table" : "View as chart"}
-        </Button>
+        <span className="flex flex-wrap justify-end gap-2">
+          {builderHref ? (
+            <Link href={builderHref} className={cn(buttonVariants({ variant: "outline", size: "sm" }), "no-underline")}>
+              <ArrowUpRightIcon className="size-4" aria-hidden />
+              Open in Charts
+            </Link>
+          ) : null}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setView(view === "chart" ? "table" : "chart")}
+            aria-pressed={view === "table"}
+          >
+            {view === "chart" ? (
+              <TableIcon className="size-4" aria-hidden />
+            ) : (
+              <ChartColumnIcon className="size-4" aria-hidden />
+            )}
+            {view === "chart" ? "View as table" : "View as chart"}
+          </Button>
+        </span>
       </div>
       {view === "chart" ? (
         <div style={{ height }} role="img" aria-label={description}>

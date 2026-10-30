@@ -42,5 +42,12 @@ export const authorXHandle = xHandle ? `@${xHandle}` : undefined;
 /** Default share image from the brand kit (pages with a generated opengraph-image override it). */
 export const defaultOgImage = { url: "/og-image.png", width: 1200, height: 630, alt: site.name };
 
+/**
+ * Open Graph fields every page shares; `./` resolves to the page's own path, which gives each page its og:url.
+ * A page that sets `openGraph` replaces the layout's object rather than merging it, so it spreads this first
+ * (and leaves `images` out when it has an opengraph-image file: an explicit `images` would hide the file).
+ */
+export const baseOpenGraph = { siteName: site.name, type: "website", locale: "en_US", url: "./" } as const;
+
 /** Mandatory notice (footer and About page), verbatim from Riot's policy. */
 export const riotNotice = `${site.name} was created under Riot Games' "Legal Jibber Jabber" policy using assets owned by Riot Games. Riot Games does not endorse or sponsor this project.`;

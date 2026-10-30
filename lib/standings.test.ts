@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Series, Team } from "./data/types";
-import { swissGroups, swissStandings, teamStatus } from "./standings";
+import { swissStandings, teamStatus } from "./standings";
 
 const s = (o: Partial<Series>): Series =>
   ({
@@ -56,9 +56,6 @@ describe("swissStandings", () => {
   });
   it("sorts best records first", () => {
     expect(table.map((r) => r.teamId)).toEqual(["a", "d", "b", "c"]);
-  });
-  it("groups by record label", () => {
-    expect(swissGroups(table).map((g) => `${g.label}:${g.teams.length}`)).toEqual(["3-0:1", "2-1:1", "1-2:1", "0-3:1"]);
   });
 });
 

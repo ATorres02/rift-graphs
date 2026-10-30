@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { KnockoutBracket } from "@/components/bracket/knockout-bracket";
+import { SwissBracket } from "@/components/bracket/swiss-bracket";
 import { Headlines, type Headline } from "@/components/headlines";
 import { LocalTime } from "@/components/local-time";
 import { ProvisionalNote } from "@/components/provisional";
@@ -9,14 +11,13 @@ import { TeamPill } from "@/components/team-pill";
 import { getData, teamRef } from "@/lib/data/load";
 import type { Series, StageId } from "@/lib/data/types";
 import { dateRange, STAGE_LABEL } from "@/lib/format";
-import { SWISS_TARGET, swissGroups, swissStandings } from "@/lib/standings";
+import { SWISS_TARGET, swissStandings } from "@/lib/standings";
 import { seriesView } from "@/lib/views";
-import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Tournament",
+  title: "Worlds 2026 format, Swiss stage and bracket",
   description:
-    "How the 2026 World Championship works: Play-In, Swiss stage records round by round and the knockout bracket.",
+    "How the 2026 World Championship works: Play-In, the Swiss stage bracket round by round and the knockout bracket.",
 };
 
 const KNOCKOUT: { id: StageId; title: string }[] = [
@@ -41,7 +42,6 @@ export default function TournamentPage() {
     series,
     mainTeams.map((t) => t.id),
   );
-  const groups = swissGroups(swiss);
   const swissOut = swiss.filter((r) => r.losses >= SWISS_TARGET).length;
   const swissSeries = byStage("swiss");
   const rounds = Array.from(new Set(swissSeries.map((s) => s.round ?? 0))).sort((a, b) => b - a);
@@ -53,7 +53,6 @@ export default function TournamentPage() {
   const knockout = KNOCKOUT.flatMap((b) => byStage(b.id));
   // Every finished knockout series sends one team home.
   const knockoutOut = knockout.filter((s) => s.status === "finished" && s.winnerId).length;
-  const pairingsKnown = knockout.some((s) => s.team1Id || s.team2Id);
   const bracketSeries = [...byStage("quarterfinals"), ...byStage("semifinals")];
   const bracketPlayed = bracketSeries.filter((s) => s.status === "finished").length;
   const finalSeries = byStage("final")[0];
@@ -162,80 +161,15 @@ export default function TournamentPage() {
 
       <Section
         collapsible
-        title="Swiss stage by record"
-        description="Teams grouped by wins and losses. Each letter is a round: W for a win, L for a loss."
+        title="Swiss bracket"
+        description="Teams with the same record meet each round. Point at a team to follow its path; every series links to its page."
       >
-        <Spoiler as="div" label="Reveal Swiss records">
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {groups.map((g) => (
-              <div
-                key={g.label}
-                className={cn(
-                  "rounded-xl border bg-card p-3",
-                  g.wins >= SWISS_TARGET && "border-brand/60",
-                  g.losses >= SWISS_TARGET && "opacity-80",
-                )}
-              >
-                <div className="mb-2 flex items-center justify-between">
-                  <span className="text-lg font-semibold tabular">{g.label}</span>
-                  <span className="text-xs text-muted-foreground">
-                    {g.wins >= SWISS_TARGET
-                      ? "Qualified"
-                      : g.losses >= SWISS_TARGET
-                        ? "Eliminated"
-                        : `${g.teams.length} teams`}
-                  </span>
-                </div>
-                <ul className="space-y-1.5">
-                  {g.teams.map((r) => (
-                    <li key={r.teamId} className="flex items-center justify-between gap-2 text-sm">
-                      <TeamPill team={teamRef(data.teamsById.get(r.teamId))} size="sm" withName />
-                      <span className="flex gap-1">
-                        {r.results.map((res) => (
-                          <span
-                            key={res.seriesId}
-                            className={cn(
-                              "inline-flex size-5 items-center justify-center rounded text-[10px] font-bold",
-                              res.won ? "bg-win/15 text-win" : "bg-loss/15 text-loss",
-                            )}
-                            title={`Round ${res.round}`}
-                          >
-                            {res.won ? "W" : "L"}
-                          </span>
-                        ))}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </Spoiler>
-      </Section>
-
-      <Section collapsible title="Swiss stage, round by round" description="Latest round first.">
-        <div className="space-y-6">
-          {rounds.map((r) => (
-            <div key={r} className="space-y-2">
-              <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Round {r}</h3>
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                {swissSeries.filter((s) => s.round === r).map((s) => card(s))}
-              </div>
-            </div>
-          ))}
-        </div>
+        <SwissBracket data={data} />
       </Section>
 
       <Section collapsible title="Knockout bracket" description="Best-of-five from the quarterfinals on.">
-        {pairingsKnown ? (
-          <div className="grid gap-4 lg:grid-cols-3">
-            {KNOCKOUT.map((b) => (
-              <div key={b.id} className="space-y-3">
-                <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">{b.title}</h3>
-                <div className="space-y-3">{byStage(b.id).map((s) => card(s))}</div>
-              </div>
-            ))}
-          </div>
+        {knockout.length ? (
+          <KnockoutBracket data={data} />
         ) : (
           <div className="rounded-xl border border-dashed bg-card/60 p-5">
             <p className="kicker text-xs text-brand">Coming soon</p>

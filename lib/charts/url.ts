@@ -62,6 +62,9 @@ export function parseFilters(text: string | null): QueryFilters {
       case "champ":
         f.champions = list(value);
         break;
+      case "player":
+        f.players = list(value);
+        break;
       case "min": {
         const n = Number(value);
         if (Number.isInteger(n) && n >= 0) f.minGames = n;
@@ -93,6 +96,7 @@ export function serializeFilters(f: QueryFilters): string {
   if (f.side) parts.push(`side:${f.side}`);
   if (f.result) parts.push(`res:${f.result}`);
   if (f.champions?.length) parts.push(`champ:${f.champions.join("|")}`);
+  if (f.players?.length) parts.push(`player:${f.players.join("|")}`);
   if (f.minGames !== undefined) parts.push(`min:${f.minGames}`);
   if (f.durationMin !== undefined || f.durationMax !== undefined)
     parts.push(`dur:${f.durationMin ?? ""}-${f.durationMax ?? ""}`);
@@ -128,6 +132,7 @@ export function parseConfig(params: URLSearchParams): QueryConfig {
     colorBy: oneOf(COLORS, params.get("c"), DEFAULT_CONFIG.colorBy),
     showAverage: params.get("avg") === null ? DEFAULT_CONFIG.showAverage : params.get("avg") === "1",
     title: params.get("ttl") || null,
+    ...(params.get("k") ? { pick: list(params.get("k")!) } : {}),
   };
 }
 
@@ -146,5 +151,6 @@ export function serializeConfig(config: QueryConfig): string {
   if (config.colorBy !== DEFAULT_CONFIG.colorBy) p.set("c", config.colorBy);
   if (config.showAverage !== DEFAULT_CONFIG.showAverage) p.set("avg", config.showAverage ? "1" : "0");
   if (config.title) p.set("ttl", config.title);
+  if (config.pick?.length) p.set("k", config.pick.join("|"));
   return p.toString();
 }

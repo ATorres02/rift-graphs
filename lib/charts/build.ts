@@ -14,7 +14,14 @@ import {
   type RadarSpec,
   type ScatterSpec,
 } from "./spec";
-import { AGGREGATION_LABEL, CHART_LABEL, RADAR_MAX_ENTITIES, type QueryResult, type QueryRow } from "@/lib/query";
+import {
+  AGGREGATION_LABEL,
+  CHART_LABEL,
+  RADAR_MAX_ENTITIES,
+  type QueryConfig,
+  type QueryResult,
+  type QueryRow,
+} from "@/lib/query";
 import { STAGE_LABEL } from "@/lib/format";
 
 export interface BuiltChart {
@@ -85,6 +92,11 @@ function pivot(
   return { categories, series };
 }
 
+/** The average covers the filtered rows: with any filter on it is the selection's, not the tournament's. */
+function averageLabel(config: QueryConfig): string {
+  return Object.keys(config.filters).some((k) => k !== "minGames") ? "Average" : "Tournament average";
+}
+
 export function buildChart(result: QueryResult): BuiltChart {
   const { config, measures, dimension, seriesDimension, rows } = result;
   const title = config.title?.trim() || autoTitle(result);
@@ -100,7 +112,7 @@ export function buildChart(result: QueryResult): BuiltChart {
   const unit = first.unit;
   const reference =
     config.showAverage && result.overall[first.key] !== null && result.overall[first.key] !== undefined
-      ? { value: result.overall[first.key]!, label: "Tournament average" }
+      ? { value: result.overall[first.key]!, label: averageLabel(config) }
       : undefined;
   const manyCategories = new Set(rows.map((r) => r.key)).size > 6;
   const horizontal = !!dimension.entity && manyCategories;
@@ -193,8 +205,14 @@ export function buildChart(result: QueryResult): BuiltChart {
     }
     case "radar": {
       const entities = rows.slice(0, RADAR_MAX_ENTITIES);
+      // Each axis is scaled to the best value in the selection, including groups left out by Top N or the pick.
       const maxes = measures.map((m) =>
-        Math.max(...rows.map((r) => r.values[m.key] ?? 0), result.overall[m.key] ?? 0, 0.0001),
+        Math.max(
+          result.maxima[m.key] ?? 0,
+          ...rows.map((r) => r.values[m.key] ?? 0),
+          result.overall[m.key] ?? 0,
+          0.0001,
+        ),
       );
       spec = {
         type: "radar",
@@ -206,7 +224,7 @@ export function buildChart(result: QueryResult): BuiltChart {
             color: r.color ?? undefined,
           })),
           ...(config.showAverage
-            ? [{ name: "Tournament average", values: measures.map((m) => result.overall[m.key] ?? 0) }]
+            ? [{ name: averageLabel(config), values: measures.map((m) => result.overall[m.key] ?? 0) }]
             : []),
         ],
       } satisfies RadarSpec;

@@ -83,7 +83,7 @@ export default async function Image({ params }: { params: Promise<{ id: string }
           </div>
         ))}
       </div>
-      <div style={{ fontSize: 22, color: "#a1a1aa" }}>Data: Leaguepedia (CC BY-SA) / no logos, no photos</div>
+      <div style={{ fontSize: 22, color: "#a1a1aa" }}>Data: Leaguepedia (CC BY-SA)</div>
     </div>,
     size,
   );

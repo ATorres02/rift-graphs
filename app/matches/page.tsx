@@ -5,8 +5,9 @@ import { getData, teamRef } from "@/lib/data/load";
 import { seriesView } from "@/lib/views";
 
 export const metadata: Metadata = {
-  title: "Matches",
-  description: "Every series of the 2026 World Championship with local times, scores and links to full game data.",
+  title: "Worlds 2026 schedule and results",
+  description:
+    "Schedule and results of every series of the 2026 World Championship, from the Play-In to the final, with local start times, scores and links to full game data.",
 };
 
 export default function MatchesPage() {

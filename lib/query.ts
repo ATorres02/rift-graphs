@@ -9,7 +9,7 @@ import type { IndexedDataset } from "./data/index";
 import { regionInfo } from "./data/regions";
 import type { Role, Side, StageId } from "./data/types";
 import type { Unit } from "./charts/spec";
-import { ROLE_LABEL, STAGE_LABEL } from "./format";
+import { ROLE_LABEL, STAGE_LABEL, STAGE_SHORT } from "./format";
 import { kda as kdaOf } from "./metrics";
 
 export type DataSource = "players" | "teams" | "champions" | "games";
@@ -27,6 +27,8 @@ export interface QueryFilters {
   side?: Side;
   result?: "win" | "loss";
   champions?: string[];
+  /** Player ids (player and champion sources). */
+  players?: string[];
   minGames?: number;
   durationMin?: number;
   durationMax?: number;
@@ -45,6 +47,11 @@ export interface QueryConfig {
   colorBy: ColorBy;
   showAverage: boolean;
   title: string | null;
+  /**
+   * Keys of the group-by dimension to keep (e.g. two teams for a radar). Unlike a filter, the others still count for
+   * the tournament average and for the radar scale.
+   */
+  pick?: string[];
 }
 
 export const DEFAULT_CONFIG: QueryConfig = {
@@ -81,6 +88,10 @@ export interface BaseRow {
   champion: string | null;
   side: Side | null;
   win: number;
+  /** Scheduled start of the game (ISO), to order games. */
+  time: string;
+  /** Opponent tag (null for the games source). */
+  opponent: string | null;
   /** Numeric fields referenced by measures (missing → 0). */
   n: Record<string, number>;
 }
@@ -124,6 +135,8 @@ export function buildRows(data: IndexedDataset, source: DataSource): BaseRow[] {
         champion: pg.champion,
         side: pg.side,
         win: pg.win ? 1 : 0,
+        time: b.g.dateTimeUtc ?? b.s.dateTimeUtc,
+        opponent: teamName(pg.opponentTeamId),
         n: {
           kills: pg.kills,
           deaths: pg.deaths,
@@ -164,6 +177,8 @@ export function buildRows(data: IndexedDataset, source: DataSource): BaseRow[] {
               champion,
               side,
               win: g.winnerSide === side ? 1 : 0,
+              time: g.dateTimeUtc ?? s.dateTimeUtc,
+              opponent: teamName(g[side === "blue" ? "red" : "blue"].teamId),
               n: { pick: 0, ban: 1, games: 0 },
             });
           }
@@ -198,6 +213,8 @@ export function buildRows(data: IndexedDataset, source: DataSource): BaseRow[] {
           champion: null,
           side,
           win: g.winnerSide === side ? 1 : 0,
+          time: g.dateTimeUtc ?? s.dateTimeUtc,
+          opponent: teamName(opp.teamId),
           n: {
             kills: own.kills,
             deaths: opp.kills,
@@ -242,6 +259,8 @@ export function buildRows(data: IndexedDataset, source: DataSource): BaseRow[] {
         champion: null,
         side: g.winnerSide,
         win: g.winnerSide === "blue" ? 1 : 0,
+        time: g.dateTimeUtc ?? s.dateTimeUtc,
+        opponent: null,
         n: {
           totalKills: g.blue.kills + g.red.kills,
           totalGold: g.blue.gold + g.red.gold,
@@ -719,10 +738,22 @@ export const MEASURES: MeasureDef[] = [
     group: "results",
     unit: "number",
     kind: "sum",
-    field: "win",
     sources: ["players", "teams", "champions"],
+    // The result is a row field, not one of the `n` sums.
+    perRow: (r) => r.win,
     rowFilter: picksOnly,
     description: "Games won.",
+  },
+  {
+    key: "losses",
+    label: "Losses",
+    group: "results",
+    unit: "number",
+    kind: "sum",
+    sources: ["players", "teams", "champions"],
+    perRow: (r) => 1 - r.win,
+    rowFilter: picksOnly,
+    description: "Games lost.",
   },
   {
     key: "games",
@@ -876,6 +907,17 @@ export const DIMENSIONS: DimensionDef[] = [
     keyOf: (r) => String(r.gameNumber),
     labelOf: (r) => `Game ${r.gameNumber}`,
     order: (a, b) => Number(a.key) - Number(b.key),
+  },
+  {
+    key: "game",
+    label: "Game",
+    sources: ["players", "teams", "champions", "games"],
+    ordered: true,
+    entity: null,
+    keyOf: (r) => r.gameId,
+    labelOf: (r) =>
+      `${STAGE_SHORT[r.stage]}${r.round ? ` R${r.round}` : ""} G${r.gameNumber}${r.opponent ? ` vs ${r.opponent}` : ""}`,
+    order: (a, b) => a.row.time.localeCompare(b.row.time) || a.row.gameNumber - b.row.gameNumber,
   },
   {
     key: "result",
@@ -1037,6 +1079,8 @@ export interface QueryResult {
   seriesLabels: string[];
   /** Measure values over the whole filtered universe (tournament average). */
   overall: Record<string, number | null>;
+  /** Highest value of each measure among all groups, before Top N and the pick (scale of radars). */
+  maxima: Record<string, number>;
   universeGames: number;
   emptyReason: string | null;
   problems: string[];
@@ -1131,6 +1175,11 @@ function filterSteps(f: QueryFilters, source: DataSource): FilterStep[] {
       test: (r) =>
         source === "games" ? f.teams!.some((t) => r.teamId.split("+").includes(t)) : f.teams!.includes(r.teamId),
     },
+    {
+      name: "player",
+      active: !!f.players?.length,
+      test: (r) => r.playerId !== null && f.players!.includes(r.playerId),
+    },
     { name: "region", active: !!f.regions?.length, test: (r) => f.regions!.includes(r.region) },
     { name: "role", active: !!f.roles?.length, test: (r) => r.role !== null && f.roles!.includes(r.role) },
     { name: "side", active: !!f.side, test: (r) => r.side === f.side },
@@ -1176,6 +1225,7 @@ export function runQuery(config: QueryConfig, data: IndexedDataset): QueryResult
     rows: [],
     seriesLabels: [],
     overall: {},
+    maxima: {},
     universeGames: 0,
     emptyReason,
     problems,
@@ -1257,12 +1307,23 @@ export function runQuery(config: QueryConfig, data: IndexedDataset): QueryResult
     out = kept;
   }
 
+  const maxima: Record<string, number> = {};
+  for (const m of measures)
+    maxima[m.key] = Math.max(0, ...out.map((r) => r.values[m.key]).filter((v): v is number => v !== null));
+  if (config.pick?.length) {
+    out = out.filter((r) => config.pick!.includes(r.key));
+    if (!out.length) return empty(`None of the selected ${dimension.label.toLowerCase()} entries is in the selection.`);
+  }
+
   // Order of the primary dimension (by first measure, or by the dimension's natural order).
   const firstKey = measures[0]?.key ?? "";
   const totalsByKey = new Map<string, number>();
   const firstRowByKey = new Map<string, BaseRow>();
+  // Stacked bars without a series are ranked by their full height, the sum of every measure.
+  const rankKeys = config.chart === "stackedBar" && !seriesDimension ? measures.map((m) => m.key) : [firstKey];
   for (const r of out) {
-    totalsByKey.set(r.key, (totalsByKey.get(r.key) ?? 0) + (r.values[firstKey] ?? 0));
+    const value = rankKeys.reduce((a, k) => a + (r.values[k] ?? 0), 0);
+    totalsByKey.set(r.key, (totalsByKey.get(r.key) ?? 0) + value);
     if (!firstRowByKey.has(r.key))
       firstRowByKey.set(r.key, groups.get(r.seriesKey === null ? r.key : `${r.key}\u0000${r.seriesKey}`)!.first);
   }
@@ -1321,6 +1382,7 @@ export function runQuery(config: QueryConfig, data: IndexedDataset): QueryResult
     rows: out,
     seriesLabels,
     overall,
+    maxima,
     universeGames,
     emptyReason: null,
     problems,

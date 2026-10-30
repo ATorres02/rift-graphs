@@ -12,9 +12,10 @@ import { fmt } from "@/lib/format";
 import { aggregateByTeam, seriesRecord } from "@/lib/metrics";
 import { swissStandings, teamStatus, type TeamStatus } from "@/lib/standings";
 import { regionColorVar } from "@/lib/views";
+import { chartHref, teamsStyleChart } from "@/lib/charts/page-charts";
 
 export const metadata: Metadata = {
-  title: "Teams",
+  title: "Worlds 2026 teams: records and win rates",
   description:
     "The 19 teams of the 2026 World Championship by region: records, win rates, average game length and whether they are still alive.",
 };
@@ -155,7 +156,7 @@ export default function TeamsPage() {
     <div className="space-y-8">
       <PageHeader
         title="Teams"
-        description="Nineteen teams from six regions. Tags on coloured pills stand in for logos; the colour is the team's region."
+        description="Nineteen teams from six regions. Pick a region on the map to see its teams."
       />
       <Headlines items={headlines} className="lg:grid-cols-4" />
       <ProvisionalNote meta={data.meta} />
@@ -173,6 +174,7 @@ export default function TeamsPage() {
       >
         <Spoiler as="div" label="Reveal chart (contains results)">
           <Chart
+            builderHref={chartHref(teamsStyleChart())}
             spec={scatter}
             table={scatterTable}
             height={360}

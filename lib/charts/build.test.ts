@@ -38,6 +38,7 @@ function result(partial: Partial<QueryResult>): QueryResult {
     ],
     seriesLabels: [],
     overall: { dpm: 600 },
+    maxima: {},
     universeGames: 10,
     emptyReason: null,
     problems: [],

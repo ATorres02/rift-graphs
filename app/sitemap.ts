@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
-import { getData } from "@/lib/data/load";
+import { draftedChampions, getData } from "@/lib/data/load";
+import { championSlug } from "@/lib/sources/ddragon";
 import { site } from "@/lib/site";
 
 export const dynamic = "force-static";
@@ -15,6 +16,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: url("/teams"), lastModified: updated, changeFrequency: "daily", priority: 0.8 },
     { url: url("/players"), lastModified: updated, changeFrequency: "daily", priority: 0.8 },
     { url: url("/champions"), lastModified: updated, changeFrequency: "daily", priority: 0.7 },
+    { url: url("/charts"), lastModified: updated, changeFrequency: "daily", priority: 0.6 },
+    { url: url("/compare"), lastModified: updated, changeFrequency: "daily", priority: 0.5 },
     { url: url("/about"), lastModified: updated, changeFrequency: "monthly", priority: 0.3 },
     { url: url("/privacy"), lastModified: updated, changeFrequency: "yearly", priority: 0.1 },
     { url: url("/imprint"), lastModified: updated, changeFrequency: "yearly", priority: 0.1 },
@@ -32,6 +35,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     ...data.players.map((p) => ({
       url: url(`/players/${p.id}`),
+      lastModified: updated,
+      changeFrequency: "daily" as const,
+      priority: 0.5,
+    })),
+    ...draftedChampions(data).map((c) => ({
+      url: url(`/champions/${championSlug(c.id)}`),
       lastModified: updated,
       changeFrequency: "daily" as const,
       priority: 0.5,

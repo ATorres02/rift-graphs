@@ -4,8 +4,9 @@ import { ChartBuilder } from "@/components/charts/builder/chart-builder";
 import { PageHeader } from "@/components/page-header";
 import { ProvisionalNote } from "@/components/provisional";
 import { getData, teamRef } from "@/lib/data/load";
-import { authorXHandle } from "@/lib/site";
+import { authorXHandle, baseOpenGraph } from "@/lib/site";
 
+const title = "Worlds 2026 chart builder";
 const description =
   "Build your own chart from the tournament data: pick a measure, group, filter, choose a chart type and share the link.";
 
@@ -15,10 +16,10 @@ const description =
  * image in `opengraph-image.tsx`.
  */
 export const metadata: Metadata = {
-  title: "Chart builder",
+  title,
   description,
-  openGraph: { title: "Chart builder", description },
-  twitter: { card: "summary_large_image", title: "Chart builder", description, creator: authorXHandle },
+  openGraph: { ...baseOpenGraph, title, description },
+  twitter: { card: "summary_large_image", title, description, creator: authorXHandle },
 };
 
 export default function ChartsPage() {
@@ -31,6 +32,7 @@ export default function ChartsPage() {
     regions: Array.from(new Set(data.teams.map((t) => t.region))).sort(),
     champions: Array.from(champions).sort(),
     stages: data.tournament.stages.map((s) => s.id),
+    players: data.players.map((p) => ({ id: p.id, name: p.name })).sort((a, b) => a.name.localeCompare(b.name)),
   };
   return (
     <div className="space-y-6">

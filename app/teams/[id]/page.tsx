@@ -7,7 +7,7 @@ import { Headlines, type Headline } from "@/components/headlines";
 import { PageHeader, Section } from "@/components/page-header";
 import { SeriesCard } from "@/components/series-card";
 import { Spoiler } from "@/components/spoilers";
-import { RegionTag, TeamPill } from "@/components/team-pill";
+import { RegionTag, TeamLogo, TeamPill } from "@/components/team-pill";
 import { formatUnit, type BarSpec, type RadarSpec, type Unit } from "@/lib/charts/spec";
 import { getData, teamRef } from "@/lib/data/load";
 import { regionInfo } from "@/lib/data/regions";
@@ -15,6 +15,7 @@ import { fmt, ROLE_LABEL, STAGE_LABEL } from "@/lib/format";
 import { aggregateByTeam, aggregateTeamGames, seriesRecord, type TeamAggregate } from "@/lib/metrics";
 import { swissStandings, teamStatus } from "@/lib/standings";
 import { champIcon, mostPlayedArt, seriesView } from "@/lib/views";
+import { chartHref, championRecordChart, teamProfileChart } from "@/lib/charts/page-charts";
 
 export const dynamicParams = false;
 
@@ -27,7 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const t = getData().teamsById.get(id);
   if (!t) return {};
   return {
-    title: `${t.name} (${t.short})`,
+    title: `${t.name}${t.short !== t.name ? ` (${t.short})` : ""}, Worlds 2026 stats`,
     description: `${t.name}'s 2026 World Championship: roster, record, blue/red side performance, objectives, most played champions and every series.`,
   };
 }
@@ -46,6 +47,7 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
   const data = getData();
   const team = data.teamsById.get(id);
   if (!team) notFound();
+  const ref = teamRef(team)!;
 
   const agg = aggregateTeamGames(data.confirmedGames, team.id);
   const all = aggregateByTeam(
@@ -142,7 +144,11 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
         eyebrow={<RegionTag region={team.region} />}
         title={
           <span className="flex items-center gap-3">
-            <TeamPill team={teamRef(team)} size="lg" link={false} />
+            {ref.logo ? (
+              <TeamLogo team={ref} className="size-10 sm:size-14" />
+            ) : (
+              <TeamPill team={ref} size="lg" link={false} />
+            )}
             {team.name}
           </span>
         }
@@ -177,6 +183,7 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
         >
           <Spoiler as="div" label="Reveal chart (contains results)">
             <Chart
+              builderHref={chartHref(teamProfileChart(team.id, team.short))}
               spec={radar}
               table={radarTable}
               height={340}
@@ -259,6 +266,7 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
         <Section title="Most played champions" description="Games and wins across the whole roster.">
           <Spoiler as="div" label="Reveal chart (contains results)">
             <Chart
+              builderHref={chartHref(championRecordChart({ teamId: team.id }, team.short, 10))}
               spec={champBar}
               table={{
                 columns: ["Champion", "Wins", "Losses"],

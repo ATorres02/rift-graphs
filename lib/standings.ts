@@ -50,20 +50,6 @@ export function swissStandings(series: Series[], teamIds: string[]): SwissRecord
   );
 }
 
-/** Groups Swiss records by "W-L" label, best records first. */
-export function swissGroups(
-  records: SwissRecord[],
-): { label: string; wins: number; losses: number; teams: SwissRecord[] }[] {
-  const groups = new Map<string, { label: string; wins: number; losses: number; teams: SwissRecord[] }>();
-  for (const r of records) {
-    const label = `${r.wins}-${r.losses}`;
-    const g = groups.get(label) ?? { label, wins: r.wins, losses: r.losses, teams: [] };
-    g.teams.push(r);
-    groups.set(label, g);
-  }
-  return Array.from(groups.values()).sort((a, b) => b.wins - a.wins || a.losses - b.losses);
-}
-
 export type TeamStatus = "champion" | "alive" | "eliminated";
 
 const KNOCKOUT_STAGES: StageId[] = ["quarterfinals", "semifinals", "final"];
