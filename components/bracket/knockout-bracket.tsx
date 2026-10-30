@@ -1,6 +1,6 @@
 import { LocalTime } from "@/components/local-time";
 import type { IndexedDataset } from "@/lib/data/load";
-import { knockoutBracket, type KnockoutColumn } from "@/lib/bracket";
+import { homeBracket, knockoutBracket, type KnockoutColumn } from "@/lib/bracket";
 import { STAGE_LABEL } from "@/lib/format";
 import { BracketFrame } from "./bracket-frame";
 import { bracketMinWidth, G, groupHeight, outcomeHeight, placeAt, stack, stackHeight, type Placed } from "./geometry";
@@ -53,9 +53,13 @@ export function KnockoutBracket({ data, id = "knockout" }: { data: IndexedDatase
   const height = Math.max(...placed.flat().map((p) => p.top + p.height), champion.top + champion.height);
 
   const steps = columns.length;
-  const currentIndex = bracket.currentStage
-    ? columns.findIndex((c) => c.stage === bracket.currentStage) + 1
-    : steps + 1;
+  // No knockout column is "now" while the Swiss stage is still being played.
+  const currentIndex =
+    homeBracket(data.series) !== "knockout"
+      ? 0
+      : bracket.currentStage
+        ? columns.findIndex((c) => c.stage === bracket.currentStage) + 1
+        : steps + 1;
   const teamIds = Array.from(
     new Set(columns.flatMap((c) => c.slots.flatMap((s) => [s?.team1Id, s?.team2Id])).filter((t): t is string => !!t)),
   );

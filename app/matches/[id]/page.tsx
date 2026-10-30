@@ -16,9 +16,9 @@ import { TeamPill } from "@/components/team-pill";
 import { getData, seriesHasPendingGames, seriesTeams, teamRef } from "@/lib/data/load";
 import type { Game, Side, Team } from "@/lib/data/types";
 import { lockedChampionsBefore } from "@/lib/draft";
-import { bestOfLabel, fmt, ROLE_LABEL, roundLabel, STAGE_LABEL } from "@/lib/format";
+import { bestOfLabel, fmt, ROLE_LABEL, roundLabel, STAGE_LABEL, STAGE_SHORT } from "@/lib/format";
 import { seriesRecord } from "@/lib/metrics";
-import { site } from "@/lib/site";
+import { baseOpenGraph, site } from "@/lib/site";
 import { swissStandings } from "@/lib/standings";
 import { compareTeamsHref } from "@/lib/links";
 import { champIcon, seriesArt, seriesView } from "@/lib/views";
@@ -36,11 +36,13 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const s = data.seriesById.get(id);
   if (!s) return {};
   const { team1, team2 } = seriesTeams(data, s);
-  const title = `${team1?.name ?? "TBD"} vs ${team2?.name ?? "TBD"}`;
+  const teams = `${team1?.name ?? "TBD"} vs ${team2?.name ?? "TBD"}`;
+  // The round keeps titles unique when two teams meet again (Swiss, then knockout).
+  const title = `${teams}, ${s.round ? `${STAGE_SHORT[s.stage]} Round ${s.round}` : STAGE_LABEL[s.stage]}`;
   return {
     title,
-    description: `${roundLabel(s.stage, s.round, s.tab)} (${bestOfLabel(s.bestOf)}) of the 2026 World Championship: draft, scoreboard and objectives for every game.`,
-    openGraph: { title: `${title}, ${STAGE_LABEL[s.stage]}` },
+    description: `${teams}: ${roundLabel(s.stage, s.round, s.tab)} (${bestOfLabel(s.bestOf)}) of the 2026 World Championship, with draft, scoreboard and objectives for every game.`,
+    openGraph: { ...baseOpenGraph, title },
   };
 }
 

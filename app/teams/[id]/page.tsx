@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const t = getData().teamsById.get(id);
   if (!t) return {};
   return {
-    title: `${t.name} (${t.short})`,
+    title: `${t.name}${t.short !== t.name ? ` (${t.short})` : ""}, Worlds 2026 stats`,
     description: `${t.name}'s 2026 World Championship: roster, record, blue/red side performance, objectives, most played champions and every series.`,
   };
 }

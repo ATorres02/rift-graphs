@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   if (!p) return {};
   const team = data.teamsById.get(p.teamId);
   return {
-    title: `${p.name}${team ? ` (${team.short})` : ""}`,
+    title: `${p.name}${team ? ` (${team.short})` : ""}, Worlds 2026 stats`,
     description: `${p.name}'s 2026 World Championship: KDA, kill participation, CS, damage and gold per minute, champion pool and game-by-game numbers.`,
   };
 }

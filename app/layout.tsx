@@ -8,7 +8,7 @@ import { BottomNav } from "@/components/layout/nav";
 import { Providers } from "@/components/providers";
 import { SPOILER_INIT_SCRIPT } from "@/components/spoilers";
 import { getData } from "@/lib/data/load";
-import { authorXHandle, defaultOgImage, site } from "@/lib/site";
+import { authorXHandle, baseOpenGraph, defaultOgImage, site } from "@/lib/site";
 
 // One web font only: the monospace stack is the system one (nothing on the site uses a mono face).
 const geistSans = Geist({ variable: "--font-sans", subsets: ["latin"] });
@@ -26,7 +26,10 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   manifest: "/site.webmanifest",
-  openGraph: { siteName: site.name, type: "website", locale: "en_US", images: [defaultOgImage] },
+  // `./` resolves to each page's own path, so every page gets a canonical link without repeating it; the query
+  // string is dropped, so shared chart and comparison links (/charts?d=players) point back to /charts and /compare.
+  alternates: { canonical: "./" },
+  openGraph: { ...baseOpenGraph, images: [defaultOgImage] },
   // No twitter:image here: X falls back to og:image, so the generated per-page images still win.
   twitter: { card: "summary_large_image", creator: authorXHandle },
   robots: { index: true, follow: true },

@@ -8,7 +8,7 @@ import { ROLE_LABEL } from "@/lib/format";
 import { aggregateByPlayer, aggregateByTeam, DEFAULT_MIN_GAMES } from "@/lib/metrics";
 
 export const metadata: Metadata = {
-  title: "Compare",
+  title: "Compare Worlds 2026 teams and players",
   description:
     "Two teams or two players side by side: an overlaid radar and a table of differences across the main metrics.",
 };

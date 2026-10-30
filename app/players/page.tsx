@@ -11,7 +11,7 @@ import { aggregateByPlayer, DEFAULT_MIN_GAMES, rankPlayers, ROLES } from "@/lib/
 import { playerCell, playerLabel } from "@/lib/views";
 
 export const metadata: Metadata = {
-  title: "Players",
+  title: "Worlds 2026 player stats and rankings",
   description:
     "Every player of the 2026 World Championship ranked by KDA, kill participation, CS, damage and gold per minute, with a role filter and a minimum-games threshold.",
 };

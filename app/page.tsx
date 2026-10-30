@@ -94,8 +94,21 @@ export default function HomePage() {
       : { label: "Kill participation", value: "–" },
   ];
 
+  // WebSite markup: search engines read the site name shown in results from it.
+  const sameAs = [site.author.linkedin, site.author.x].filter(Boolean);
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: site.name,
+    url: `${site.url}/`,
+    description: site.description,
+    inLanguage: "en",
+    author: { "@type": "Person", name: site.author.name, ...(sameAs.length ? { sameAs } : {}) },
+  };
+
   return (
     <div className="space-y-10">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <section className="space-y-4">
         <div className="relative -mx-4 overflow-hidden bg-black sm:mx-0 sm:rounded-md">
           {heroArt ? (

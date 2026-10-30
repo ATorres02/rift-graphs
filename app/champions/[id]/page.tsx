@@ -8,7 +8,7 @@ import { Section } from "@/components/page-header";
 import { Spoiler } from "@/components/spoilers";
 import { TeamPill } from "@/components/team-pill";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { getData, seriesTeams, teamRef } from "@/lib/data/load";
+import { draftedChampions, getData, seriesTeams, teamRef } from "@/lib/data/load";
 import type { BarSpec } from "@/lib/charts/spec";
 import type { ChampionRef, StageId } from "@/lib/data/types";
 import { fmt, ROLE_LABEL, roundLabel, STAGE_LABEL } from "@/lib/format";
@@ -20,22 +20,13 @@ import {
   championSplashUrl,
   normalizeChampionName,
 } from "@/lib/sources/ddragon";
-import { defaultOgImage } from "@/lib/site";
+import { baseOpenGraph, defaultOgImage } from "@/lib/site";
 import { chartHref, championRolesChart, championStagesChart } from "@/lib/charts/page-charts";
 
 export const dynamicParams = false;
 
-function drafted(): ChampionRef[] {
-  const data = getData();
-  const seen = new Set<string>();
-  for (const g of data.confirmedGames)
-    for (const side of ["blue", "red"] as const)
-      for (const n of [...g[side].picks, ...g[side].bans]) seen.add(normalizeChampionName(n));
-  return data.champions.champions.filter((c) => seen.has(normalizeChampionName(c.name)));
-}
-
 export function generateStaticParams() {
-  return drafted().map((c) => ({ id: championSlug(c.id) }));
+  return draftedChampions(getData()).map((c) => ({ id: championSlug(c.id) }));
 }
 
 function find(id: string): ChampionRef | undefined {
@@ -46,10 +37,11 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   const c = find(id);
   if (!c) return {};
+  const title = `${c.name}, Worlds 2026 stats`;
   return {
-    title: c.name,
+    title,
     description: `${c.name}${c.title ? `, ${c.title}` : ""} at the 2026 World Championship: presence, picks, bans, win rate by role and every game it was played in.`,
-    openGraph: { title: `${c.name}, Worlds 2026 stats`, images: [defaultOgImage] },
+    openGraph: { ...baseOpenGraph, title, images: [defaultOgImage] },
   };
 }
 

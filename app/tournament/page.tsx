@@ -15,7 +15,7 @@ import { SWISS_TARGET, swissStandings } from "@/lib/standings";
 import { seriesView } from "@/lib/views";
 
 export const metadata: Metadata = {
-  title: "Tournament",
+  title: "Worlds 2026 format, Swiss stage and bracket",
   description:
     "How the 2026 World Championship works: Play-In, the Swiss stage bracket round by round and the knockout bracket.",
 };

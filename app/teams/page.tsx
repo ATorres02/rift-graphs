@@ -15,7 +15,7 @@ import { regionColorVar } from "@/lib/views";
 import { chartHref, teamsStyleChart } from "@/lib/charts/page-charts";
 
 export const metadata: Metadata = {
-  title: "Teams",
+  title: "Worlds 2026 teams: records and win rates",
   description:
     "The 19 teams of the 2026 World Championship by region: records, win rates, average game length and whether they are still alive.",
 };

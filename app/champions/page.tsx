@@ -16,7 +16,7 @@ import { champIcon } from "@/lib/views";
 import { chartHref, championPresenceChart } from "@/lib/charts/page-charts";
 
 export const metadata: Metadata = {
-  title: "Champions",
+  title: "Worlds 2026 champion picks, bans and win rates",
   description:
     "Every champion drafted at the 2026 World Championship as a gallery: presence, pick and ban rates and win rates by role, plus the champions nobody has touched.",
 };

@@ -46,6 +46,15 @@ export function championRef(data: IndexedDataset, name: string): ChampionRef | n
   return data.championByName.get(normalizeChampionName(name)) ?? null;
 }
 
+/** Champions picked or banned in at least one confirmed game: the ones with a page under /champions. */
+export function draftedChampions(data: IndexedDataset): ChampionRef[] {
+  const seen = new Set<string>();
+  for (const g of data.confirmedGames)
+    for (const side of ["blue", "red"] as const)
+      for (const n of [...g[side].picks, ...g[side].bans]) seen.add(normalizeChampionName(n));
+  return data.champions.champions.filter((c) => seen.has(normalizeChampionName(c.name)));
+}
+
 /** Minimal team shape for client components (keeps RSC payloads small). */
 export interface TeamRef {
   id: string;
