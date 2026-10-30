@@ -11,14 +11,13 @@ import { TeamPill } from "@/components/team-pill";
 import { getData, teamRef } from "@/lib/data/load";
 import type { Series, StageId } from "@/lib/data/types";
 import { dateRange, STAGE_LABEL } from "@/lib/format";
-import { SWISS_TARGET, swissGroups, swissStandings } from "@/lib/standings";
+import { SWISS_TARGET, swissStandings } from "@/lib/standings";
 import { seriesView } from "@/lib/views";
-import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Tournament",
   description:
-    "How the 2026 World Championship works: Play-In, Swiss stage records round by round and the knockout bracket.",
+    "How the 2026 World Championship works: Play-In, the Swiss stage bracket round by round and the knockout bracket.",
 };
 
 const KNOCKOUT: { id: StageId; title: string }[] = [
@@ -43,7 +42,6 @@ export default function TournamentPage() {
     series,
     mainTeams.map((t) => t.id),
   );
-  const groups = swissGroups(swiss);
   const swissOut = swiss.filter((r) => r.losses >= SWISS_TARGET).length;
   const swissSeries = byStage("swiss");
   const rounds = Array.from(new Set(swissSeries.map((s) => s.round ?? 0))).sort((a, b) => b - a);
@@ -167,73 +165,6 @@ export default function TournamentPage() {
         description="Teams with the same record meet each round. Point at a team to follow its path; every series links to its page."
       >
         <SwissBracket data={data} />
-      </Section>
-
-      <Section
-        collapsible
-        defaultOpen={false}
-        title="Swiss stage by record"
-        description="Teams grouped by wins and losses. Each letter is a round: W for a win, L for a loss."
-      >
-        <Spoiler as="div" label="Reveal Swiss records">
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {groups.map((g) => (
-              <div
-                key={g.label}
-                className={cn(
-                  "rounded-xl border bg-card p-3",
-                  g.wins >= SWISS_TARGET && "border-brand/60",
-                  g.losses >= SWISS_TARGET && "opacity-80",
-                )}
-              >
-                <div className="mb-2 flex items-center justify-between">
-                  <span className="text-lg font-semibold tabular">{g.label}</span>
-                  <span className="text-xs text-muted-foreground">
-                    {g.wins >= SWISS_TARGET
-                      ? "Qualified"
-                      : g.losses >= SWISS_TARGET
-                        ? "Eliminated"
-                        : `${g.teams.length} teams`}
-                  </span>
-                </div>
-                <ul className="space-y-1.5">
-                  {g.teams.map((r) => (
-                    <li key={r.teamId} className="flex items-center justify-between gap-2 text-sm">
-                      <TeamPill team={teamRef(data.teamsById.get(r.teamId))} size="sm" withName />
-                      <span className="flex gap-1">
-                        {r.results.map((res) => (
-                          <span
-                            key={res.seriesId}
-                            className={cn(
-                              "inline-flex size-5 items-center justify-center rounded text-[10px] font-bold",
-                              res.won ? "bg-win/15 text-win" : "bg-loss/15 text-loss",
-                            )}
-                            title={`Round ${res.round}`}
-                          >
-                            {res.won ? "W" : "L"}
-                          </span>
-                        ))}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </Spoiler>
-      </Section>
-
-      <Section collapsible defaultOpen={false} title="Swiss stage, round by round" description="Latest round first.">
-        <div className="space-y-6">
-          {rounds.map((r) => (
-            <div key={r} className="space-y-2">
-              <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Round {r}</h3>
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                {swissSeries.filter((s) => s.round === r).map((s) => card(s))}
-              </div>
-            </div>
-          ))}
-        </div>
       </Section>
 
       <Section collapsible title="Knockout bracket" description="Best-of-five from the quarterfinals on.">
