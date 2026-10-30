@@ -993,7 +993,7 @@
     "dateTimeUtc": "2026-10-29T23:00:00Z",
     "hasTime": true,
     "score": {
-      "team1": 0,
+      "team1": 1,
       "team2": 1
     },
     "winnerId": null,
@@ -1003,7 +1003,7 @@
     "streamUrl": "https://www.twitch.tv/riotgames",
     "mvp": null,
     "gameIds": [],
-    "gamesPlayed": 1,
+    "gamesPlayed": 2,
     "source": "leaguepedia",
     "provisional": false,
     "lolesportsMatchId": "115660540726095069"
