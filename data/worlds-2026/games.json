@@ -4058,5 +4058,145 @@
     "source": "leaguepedia",
     "provisional": false,
     "statsComplete": true
+  },
+  {
+    "id": "main-event-round-4-4-1",
+    "seriesId": "main-event-round-4-4",
+    "stage": "swiss",
+    "gameNumber": 1,
+    "dateTimeUtc": "2026-10-29T22:38:00Z",
+    "durationSeconds": 1671,
+    "patch": "26.20",
+    "winnerSide": "blue",
+    "winnerTeamId": "bilibili-gaming",
+    "blue": {
+      "teamId": "bilibili-gaming",
+      "kills": 21,
+      "gold": 62797,
+      "towers": 10,
+      "inhibitors": 2,
+      "dragons": 2,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 1,
+      "voidGrubs": 3,
+      "bans": [
+        "Akali",
+        "Renata Glasc",
+        "Nocturne",
+        "Locke",
+        "Rumble"
+      ],
+      "picks": [
+        "Gnar",
+        "Vi",
+        "Orianna",
+        "Ezreal",
+        "Nautilus"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "top-esports",
+      "kills": 6,
+      "gold": 48937,
+      "towers": 1,
+      "inhibitors": 0,
+      "dragons": 2,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 0,
+      "bans": [
+        "Olaf",
+        "Cassiopeia",
+        "Ambessa",
+        "Kai'Sa",
+        "K'Sante"
+      ],
+      "picks": [
+        "Jayce",
+        "Qiyana",
+        "Viktor",
+        "Jhin",
+        "Alistar"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_486325",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
+  },
+  {
+    "id": "main-event-round-4-4-2",
+    "seriesId": "main-event-round-4-4",
+    "stage": "swiss",
+    "gameNumber": 2,
+    "dateTimeUtc": "2026-10-29T23:26:00Z",
+    "durationSeconds": 2256,
+    "patch": "26.20",
+    "winnerSide": "red",
+    "winnerTeamId": "top-esports",
+    "blue": {
+      "teamId": "bilibili-gaming",
+      "kills": 10,
+      "gold": 69206,
+      "towers": 6,
+      "inhibitors": 0,
+      "dragons": 3,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 1,
+      "voidGrubs": 0,
+      "bans": [
+        "Nocturne",
+        "Cassiopeia",
+        "Yunara",
+        "Sylas",
+        "Rumble"
+      ],
+      "picks": [
+        "K'Sante",
+        "Wukong",
+        "LeBlanc",
+        "Ashe",
+        "Seraphine"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "top-esports",
+      "kills": 13,
+      "gold": 72327,
+      "towers": 9,
+      "inhibitors": 1,
+      "dragons": 2,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 0,
+      "voidGrubs": 3,
+      "bans": [
+        "Olaf",
+        "Ambessa",
+        "Renata Glasc",
+        "Akali",
+        "Camille"
+      ],
+      "picks": [
+        "Aatrox",
+        "Jarvan IV",
+        "Locke",
+        "Lucian",
+        "Milio"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_485267",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   }
 ]
