@@ -3708,5 +3708,775 @@
     "source": "leaguepedia",
     "provisional": false,
     "statsComplete": true
+  },
+  {
+    "id": "main-event-round-4-2-1",
+    "seriesId": "main-event-round-4-2",
+    "stage": "swiss",
+    "gameNumber": 1,
+    "dateTimeUtc": "2026-10-28T22:02:00Z",
+    "durationSeconds": 1629,
+    "patch": "26.20",
+    "winnerSide": "red",
+    "winnerTeamId": "invictus-gaming",
+    "blue": {
+      "teamId": "lyon",
+      "kills": 4,
+      "gold": 46755,
+      "towers": 2,
+      "inhibitors": 0,
+      "dragons": 0,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 0,
+      "bans": [
+        "Syndra",
+        "Cassiopeia",
+        "Orianna",
+        "Ambessa",
+        "K'Sante"
+      ],
+      "picks": [
+        "Rumble",
+        "Nocturne",
+        "Sylas",
+        "Ezreal",
+        "Karma"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "invictus-gaming",
+      "kills": 19,
+      "gold": 55544,
+      "towers": 7,
+      "inhibitors": 1,
+      "dragons": 4,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 1,
+      "voidGrubs": 3,
+      "bans": [
+        "Wukong",
+        "Galio",
+        "Renata Glasc",
+        "Ahri",
+        "Annie"
+      ],
+      "picks": [
+        "Ornn",
+        "Vi",
+        "Aurora",
+        "Yunara",
+        "Lulu"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_486183",
+    "vodUrl": "https://youtu.be/0U1kZyurjyw?t=124",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
+  },
+  {
+    "id": "main-event-round-4-2-2",
+    "seriesId": "main-event-round-4-2",
+    "stage": "swiss",
+    "gameNumber": 2,
+    "dateTimeUtc": "2026-10-28T22:50:00Z",
+    "durationSeconds": 2284,
+    "patch": "26.20",
+    "winnerSide": "red",
+    "winnerTeamId": "lyon",
+    "blue": {
+      "teamId": "invictus-gaming",
+      "kills": 8,
+      "gold": 63841,
+      "towers": 3,
+      "inhibitors": 0,
+      "dragons": 3,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 1,
+      "voidGrubs": 1,
+      "bans": [
+        "Renata Glasc",
+        "Cassiopeia",
+        "Wukong",
+        "Ahri",
+        "Viktor"
+      ],
+      "picks": [
+        "Zaahen",
+        "Lee Sin",
+        "Annie",
+        "Jhin",
+        "Nautilus"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "lyon",
+      "kills": 18,
+      "gold": 75502,
+      "towers": 10,
+      "inhibitors": 2,
+      "dragons": 3,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 0,
+      "voidGrubs": 2,
+      "bans": [
+        "Syndra",
+        "Orianna",
+        "Jayce",
+        "Ambessa",
+        "Twisted Fate"
+      ],
+      "picks": [
+        "Olaf",
+        "Qiyana",
+        "Taliyah",
+        "Corki",
+        "Alistar"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_486186",
+    "vodUrl": "https://youtu.be/0U1kZyurjyw?t=2281",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
+  },
+  {
+    "id": "main-event-round-4-2-3",
+    "seriesId": "main-event-round-4-2",
+    "stage": "swiss",
+    "gameNumber": 3,
+    "dateTimeUtc": "2026-10-28T23:50:00Z",
+    "durationSeconds": 1439,
+    "patch": "26.20",
+    "winnerSide": "red",
+    "winnerTeamId": "invictus-gaming",
+    "blue": {
+      "teamId": "lyon",
+      "kills": 5,
+      "gold": 39615,
+      "towers": 1,
+      "inhibitors": 0,
+      "dragons": 0,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 3,
+      "bans": [
+        "Syndra",
+        "Cassiopeia",
+        "Renata Glasc",
+        "Naafiri",
+        "Skarner"
+      ],
+      "picks": [
+        "K'Sante",
+        "Xin Zhao",
+        "LeBlanc",
+        "Lucian",
+        "Milio"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "invictus-gaming",
+      "kills": 7,
+      "gold": 48058,
+      "towers": 9,
+      "inhibitors": 1,
+      "dragons": 4,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 1,
+      "voidGrubs": 0,
+      "bans": [
+        "Akali",
+        "Locke",
+        "Ryze",
+        "Jarvan IV",
+        "Wukong"
+      ],
+      "picks": [
+        "Jayce",
+        "Trundle",
+        "Orianna",
+        "Caitlyn",
+        "Lux"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_486192",
+    "vodUrl": "https://youtu.be/0U1kZyurjyw?t=5233",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
+  },
+  {
+    "id": "main-event-round-4-3-1",
+    "seriesId": "main-event-round-4-3",
+    "stage": "swiss",
+    "gameNumber": 1,
+    "dateTimeUtc": "2026-10-29T20:12:00Z",
+    "durationSeconds": 1655,
+    "patch": "26.20",
+    "winnerSide": "blue",
+    "winnerTeamId": "karmine-corp",
+    "blue": {
+      "teamId": "karmine-corp",
+      "kills": 19,
+      "gold": 59300,
+      "towers": 10,
+      "inhibitors": 2,
+      "dragons": 3,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 1,
+      "voidGrubs": 3,
+      "bans": [
+        "Qiyana",
+        "Vi",
+        "Nocturne",
+        "Jhin",
+        "Seraphine"
+      ],
+      "picks": [
+        "Galio",
+        "Wukong",
+        "Cassiopeia",
+        "Tristana",
+        "Nautilus"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "ctbc-flying-oyster",
+      "kills": 3,
+      "gold": 43822,
+      "towers": 0,
+      "inhibitors": 0,
+      "dragons": 1,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 0,
+      "bans": [
+        "Jayce",
+        "Renata Glasc",
+        "Lee Sin",
+        "Ezreal",
+        "Lulu"
+      ],
+      "picks": [
+        "Rumble",
+        "Jarvan IV",
+        "Syndra",
+        "Kai'Sa",
+        "Alistar"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_486299",
+    "vodUrl": "https://youtu.be/JTY49mvxJN4?t=113",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
+  },
+  {
+    "id": "main-event-round-4-3-2",
+    "seriesId": "main-event-round-4-3",
+    "stage": "swiss",
+    "gameNumber": 2,
+    "dateTimeUtc": "2026-10-29T20:59:00Z",
+    "durationSeconds": 2214,
+    "patch": "26.20",
+    "winnerSide": "red",
+    "winnerTeamId": "karmine-corp",
+    "blue": {
+      "teamId": "ctbc-flying-oyster",
+      "kills": 12,
+      "gold": 67954,
+      "towers": 7,
+      "inhibitors": 1,
+      "dragons": 4,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 1,
+      "voidGrubs": 3,
+      "bans": [
+        "Renata Glasc",
+        "Ezreal",
+        "Jayce",
+        "Orianna",
+        "Renekton"
+      ],
+      "picks": [
+        "Ambessa",
+        "Lee Sin",
+        "Ryze",
+        "Caitlyn",
+        "Karma"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "karmine-corp",
+      "kills": 20,
+      "gold": 75038,
+      "towers": 7,
+      "inhibitors": 1,
+      "dragons": 2,
+      "elders": 1,
+      "barons": 1,
+      "heralds": 0,
+      "voidGrubs": 0,
+      "bans": [
+        "Qiyana",
+        "Vi",
+        "Nocturne",
+        "Akali",
+        "Locke"
+      ],
+      "picks": [
+        "Camille",
+        "Pantheon",
+        "Viktor",
+        "Yunara",
+        "Lulu"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_486309",
+    "vodUrl": "https://youtu.be/JTY49mvxJN4?t=2203",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
+  },
+  {
+    "id": "main-event-round-4-4-1",
+    "seriesId": "main-event-round-4-4",
+    "stage": "swiss",
+    "gameNumber": 1,
+    "dateTimeUtc": "2026-10-29T22:38:00Z",
+    "durationSeconds": 1671,
+    "patch": "26.20",
+    "winnerSide": "blue",
+    "winnerTeamId": "bilibili-gaming",
+    "blue": {
+      "teamId": "bilibili-gaming",
+      "kills": 21,
+      "gold": 62797,
+      "towers": 10,
+      "inhibitors": 2,
+      "dragons": 2,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 1,
+      "voidGrubs": 3,
+      "bans": [
+        "Akali",
+        "Renata Glasc",
+        "Nocturne",
+        "Locke",
+        "Rumble"
+      ],
+      "picks": [
+        "Gnar",
+        "Vi",
+        "Orianna",
+        "Ezreal",
+        "Nautilus"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "top-esports",
+      "kills": 6,
+      "gold": 48937,
+      "towers": 1,
+      "inhibitors": 0,
+      "dragons": 2,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 0,
+      "bans": [
+        "Olaf",
+        "Cassiopeia",
+        "Ambessa",
+        "Kai'Sa",
+        "K'Sante"
+      ],
+      "picks": [
+        "Jayce",
+        "Qiyana",
+        "Viktor",
+        "Jhin",
+        "Alistar"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_486325",
+    "vodUrl": "https://youtu.be/ze_Sif5Ypd0?t=111",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
+  },
+  {
+    "id": "main-event-round-4-4-2",
+    "seriesId": "main-event-round-4-4",
+    "stage": "swiss",
+    "gameNumber": 2,
+    "dateTimeUtc": "2026-10-29T23:26:00Z",
+    "durationSeconds": 2256,
+    "patch": "26.20",
+    "winnerSide": "red",
+    "winnerTeamId": "top-esports",
+    "blue": {
+      "teamId": "bilibili-gaming",
+      "kills": 10,
+      "gold": 69206,
+      "towers": 6,
+      "inhibitors": 0,
+      "dragons": 3,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 1,
+      "voidGrubs": 0,
+      "bans": [
+        "Nocturne",
+        "Cassiopeia",
+        "Yunara",
+        "Sylas",
+        "Rumble"
+      ],
+      "picks": [
+        "K'Sante",
+        "Wukong",
+        "LeBlanc",
+        "Ashe",
+        "Seraphine"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "top-esports",
+      "kills": 13,
+      "gold": 72327,
+      "towers": 9,
+      "inhibitors": 1,
+      "dragons": 2,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 0,
+      "voidGrubs": 3,
+      "bans": [
+        "Olaf",
+        "Ambessa",
+        "Renata Glasc",
+        "Akali",
+        "Camille"
+      ],
+      "picks": [
+        "Aatrox",
+        "Jarvan IV",
+        "Locke",
+        "Lucian",
+        "Milio"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_485267",
+    "vodUrl": "https://youtu.be/ze_Sif5Ypd0?t=2209",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
+  },
+  {
+    "id": "main-event-round-4-4-3",
+    "seriesId": "main-event-round-4-4",
+    "stage": "swiss",
+    "gameNumber": 3,
+    "dateTimeUtc": "2026-10-30T00:24:00Z",
+    "durationSeconds": 1668,
+    "patch": "26.20",
+    "winnerSide": "blue",
+    "winnerTeamId": "top-esports",
+    "blue": {
+      "teamId": "top-esports",
+      "kills": 17,
+      "gold": 60395,
+      "towers": 11,
+      "inhibitors": 3,
+      "dragons": 2,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 1,
+      "voidGrubs": 3,
+      "bans": [
+        "Olaf",
+        "Cassiopeia",
+        "Lee Sin",
+        "Ahri",
+        "Sylas"
+      ],
+      "picks": [
+        "Renekton",
+        "Pantheon",
+        "Syndra",
+        "Tristana",
+        "Lulu"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "bilibili-gaming",
+      "kills": 3,
+      "gold": 49051,
+      "towers": 2,
+      "inhibitors": 0,
+      "dragons": 2,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 0,
+      "bans": [
+        "Akali",
+        "Rumble",
+        "Nocturne",
+        "Yunara",
+        "Xin Zhao"
+      ],
+      "picks": [
+        "Ambessa",
+        "Maokai",
+        "Yone",
+        "Kalista",
+        "Renata Glasc"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_486341",
+    "vodUrl": "https://youtu.be/ze_Sif5Ypd0?t=5699",
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
+  },
+  {
+    "id": "main-event-round-4-5-1",
+    "seriesId": "main-event-round-4-5",
+    "stage": "swiss",
+    "gameNumber": 1,
+    "dateTimeUtc": "2026-10-30T20:11:00Z",
+    "durationSeconds": 1792,
+    "patch": "26.20",
+    "winnerSide": "blue",
+    "winnerTeamId": "los",
+    "blue": {
+      "teamId": "los",
+      "kills": 15,
+      "gold": 61022,
+      "towers": 9,
+      "inhibitors": 1,
+      "dragons": 3,
+      "elders": 0,
+      "barons": 2,
+      "heralds": 0,
+      "voidGrubs": 3,
+      "bans": [
+        "Qiyana",
+        "Lee Sin",
+        "Orianna",
+        "Olaf",
+        "Camille"
+      ],
+      "picks": [
+        "Jayce",
+        "Trundle",
+        "Syndra",
+        "Ashe",
+        "Seraphine"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "team-liquid",
+      "kills": 7,
+      "gold": 51965,
+      "towers": 3,
+      "inhibitors": 0,
+      "dragons": 1,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 1,
+      "voidGrubs": 0,
+      "bans": [
+        "Cassiopeia",
+        "Vi",
+        "Renata Glasc",
+        "Wukong",
+        "Renekton"
+      ],
+      "picks": [
+        "Ambessa",
+        "Nocturne",
+        "Sylas",
+        "Ziggs",
+        "Nautilus"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_485366",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
+  },
+  {
+    "id": "main-event-round-4-5-2",
+    "seriesId": "main-event-round-4-5",
+    "stage": "swiss",
+    "gameNumber": 2,
+    "dateTimeUtc": "2026-10-30T21:02:00Z",
+    "durationSeconds": 2281,
+    "patch": "26.20",
+    "winnerSide": "red",
+    "winnerTeamId": "team-liquid",
+    "blue": {
+      "teamId": "los",
+      "kills": 8,
+      "gold": 67962,
+      "towers": 5,
+      "inhibitors": 0,
+      "dragons": 1,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 3,
+      "bans": [
+        "Lee Sin",
+        "Renata Glasc",
+        "Locke",
+        "Wukong",
+        "Jax"
+      ],
+      "picks": [
+        "Rumble",
+        "Jarvan IV",
+        "Galio",
+        "Ezreal",
+        "Karma"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "team-liquid",
+      "kills": 15,
+      "gold": 75083,
+      "towers": 9,
+      "inhibitors": 1,
+      "dragons": 5,
+      "elders": 1,
+      "barons": 1,
+      "heralds": 1,
+      "voidGrubs": 0,
+      "bans": [
+        "Vi",
+        "Cassiopeia",
+        "Qiyana",
+        "Viktor",
+        "Akali"
+      ],
+      "picks": [
+        "Ornn",
+        "Xin Zhao",
+        "Orianna",
+        "Lucian",
+        "Nami"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_485368",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
+  },
+  {
+    "id": "main-event-round-4-5-3",
+    "seriesId": "main-event-round-4-5",
+    "stage": "swiss",
+    "gameNumber": 3,
+    "dateTimeUtc": "2026-10-30T22:00:00Z",
+    "durationSeconds": 2836,
+    "patch": "26.20",
+    "winnerSide": "red",
+    "winnerTeamId": "los",
+    "blue": {
+      "teamId": "team-liquid",
+      "kills": 5,
+      "gold": 81580,
+      "towers": 6,
+      "inhibitors": 0,
+      "dragons": 2,
+      "elders": 0,
+      "barons": 2,
+      "heralds": 0,
+      "voidGrubs": 2,
+      "bans": [
+        "Cassiopeia",
+        "Vi",
+        "Locke",
+        "Akali",
+        "Vayne"
+      ],
+      "picks": [
+        "Gnar",
+        "Sejuani",
+        "Viktor",
+        "Yunara",
+        "Lulu"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "los",
+      "kills": 17,
+      "gold": 91382,
+      "towers": 10,
+      "inhibitors": 2,
+      "dragons": 5,
+      "elders": 1,
+      "barons": 1,
+      "heralds": 1,
+      "voidGrubs": 1,
+      "bans": [
+        "Lee Sin",
+        "Qiyana",
+        "Olaf",
+        "Wukong",
+        "Skarner"
+      ],
+      "picks": [
+        "Tristana",
+        "Pantheon",
+        "Taliyah",
+        "Kalista",
+        "Renata Glasc"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_485371",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   }
 ]

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "updatedAt": "2026-10-30T23:16:33Z",
+  "updatedAt": "2026-10-30T23:32:32Z",
   "tournamentId": "worlds-2026",
   "source": {
     "name": "Leaguepedia",
@@ -13,34 +13,16 @@
     "teams": 19,
     "players": 96,
     "series": 46,
-    "games": 53,
-    "playerGames": 530,
-    "drafts": 53
+    "games": 64,
+    "playerGames": 640,
+    "drafts": 64
   },
-  "pendingGameIds": [
-    "main-event-round-4-2-1",
-    "main-event-round-4-2-2",
-    "main-event-round-4-2-3",
-    "main-event-round-4-3-1",
-    "main-event-round-4-3-2",
-    "main-event-round-4-4-1",
-    "main-event-round-4-4-2",
-    "main-event-round-4-4-3"
-  ],
-  "warnings": [
-    "game 2026 Season World Championship/Main Event_Round 4_2_1 left pending: expected 10 player rows, found 3",
-    "game 2026 Season World Championship/Main Event_Round 4_2_2 left pending: expected 10 player rows, found 0",
-    "game 2026 Season World Championship/Main Event_Round 4_2_3 left pending: expected 10 player rows, found 0",
-    "game 2026 Season World Championship/Main Event_Round 4_3_1 left pending: expected 10 player rows, found 0",
-    "game 2026 Season World Championship/Main Event_Round 4_3_2 left pending: expected 10 player rows, found 0",
-    "game 2026 Season World Championship/Main Event_Round 4_4_1 left pending: expected 10 player rows, found 0",
-    "game 2026 Season World Championship/Main Event_Round 4_4_2 left pending: expected 10 player rows, found 0",
-    "game 2026 Season World Championship/Main Event_Round 4_4_3 left pending: expected 10 player rows, found 0"
-  ],
+  "pendingGameIds": [],
+  "warnings": [],
   "sources": {
     "lolesports": {
       "enabled": true,
-      "fetchedAt": "2026-10-30T23:16:58Z",
+      "fetchedAt": "2026-10-30T23:32:55Z",
       "matchedSeries": 36,
       "unmatchedEvents": 0,
       "error": null
