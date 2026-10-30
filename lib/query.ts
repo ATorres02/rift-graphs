@@ -1319,11 +1319,13 @@ export function runQuery(config: QueryConfig, data: IndexedDataset): QueryResult
   const firstKey = measures[0]?.key ?? "";
   const totalsByKey = new Map<string, number>();
   const firstRowByKey = new Map<string, BaseRow>();
+  const gamesByKey = new Map<string, number>();
   // Stacked bars without a series are ranked by their full height, the sum of every measure.
   const rankKeys = config.chart === "stackedBar" && !seriesDimension ? measures.map((m) => m.key) : [firstKey];
   for (const r of out) {
     const value = rankKeys.reduce((a, k) => a + (r.values[k] ?? 0), 0);
     totalsByKey.set(r.key, (totalsByKey.get(r.key) ?? 0) + value);
+    gamesByKey.set(r.key, (gamesByKey.get(r.key) ?? 0) + r.games);
     if (!firstRowByKey.has(r.key))
       firstRowByKey.set(r.key, groups.get(r.seriesKey === null ? r.key : `${r.key}\u0000${r.seriesKey}`)!.first);
   }
@@ -1340,7 +1342,10 @@ export function runQuery(config: QueryConfig, data: IndexedDataset): QueryResult
       (a, b) =>
         (config.sort === "asc"
           ? totalsByKey.get(a)! - totalsByKey.get(b)!
-          : totalsByKey.get(b)! - totalsByKey.get(a)!) || labelOf(a).localeCompare(labelOf(b)),
+          : totalsByKey.get(b)! - totalsByKey.get(a)!) ||
+        // Ties: more games first (as the site's own rankings), then by name.
+        gamesByKey.get(b)! - gamesByKey.get(a)! ||
+        labelOf(a).localeCompare(labelOf(b)),
     );
   }
   const limit =

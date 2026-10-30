@@ -1,5 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { ArrowUpRightIcon } from "lucide-react";
+import { MiniBars, type MiniBarRow } from "@/components/charts/mini";
 import { Spoiler } from "@/components/spoilers";
 import { cn } from "@/lib/utils";
 
@@ -10,6 +12,8 @@ export interface Headline {
   href?: string;
   /** Wrap the value in a spoiler (results). */
   spoiler?: boolean;
+  /** A short ranking under the value, with a link to the full one in the chart builder. */
+  ranking?: { rows: MiniBarRow[]; href: string };
 }
 
 /** Two or three automatic "headline" tiles at the top of a page. */
@@ -41,6 +45,17 @@ export function Headlines({ items, className }: { items: Headline[]; className?:
             ) : (
               body
             )}
+            {h.ranking ? (
+              <>
+                <MiniBars rows={h.ranking.rows} compact className="mt-3" />
+                <Link
+                  href={h.ranking.href}
+                  className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-brand no-underline hover:underline"
+                >
+                  Top 10 in Charts <ArrowUpRightIcon className="size-3.5" aria-hidden />
+                </Link>
+              </>
+            ) : null}
           </li>
         );
       })}
