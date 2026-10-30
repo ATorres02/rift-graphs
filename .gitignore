@@ -16,6 +16,8 @@
 # next.js
 /.next/
 /out/
+# Hero art copies made before each build (scripts/hero-art.ts)
+/public/art/
 
 # production
 /build
