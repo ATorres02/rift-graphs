@@ -941,11 +941,7 @@
     "patch": "26.20",
     "streamUrl": "https://www.twitch.tv/riotgames",
     "mvp": "Wei (Yan Yang-Wei)",
-    "gameIds": [
-      "main-event-round-4-2-1",
-      "main-event-round-4-2-2",
-      "main-event-round-4-2-3"
-    ],
+    "gameIds": [],
     "gamesPlayed": 3,
     "source": "leaguepedia",
     "provisional": false,
@@ -972,10 +968,7 @@
     "patch": "26.20",
     "streamUrl": "https://www.twitch.tv/riotgames",
     "mvp": null,
-    "gameIds": [
-      "main-event-round-4-3-1",
-      "main-event-round-4-3-2"
-    ],
+    "gameIds": [],
     "gamesPlayed": 2,
     "source": "leaguepedia",
     "provisional": false,
@@ -1002,11 +995,7 @@
     "patch": "26.20",
     "streamUrl": "https://www.twitch.tv/riotgames",
     "mvp": "Tian",
-    "gameIds": [
-      "main-event-round-4-4-1",
-      "main-event-round-4-4-2",
-      "main-event-round-4-4-3"
-    ],
+    "gameIds": [],
     "gamesPlayed": 3,
     "source": "leaguepedia",
     "provisional": false,
