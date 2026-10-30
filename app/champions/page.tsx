@@ -13,6 +13,7 @@ import { fmt, ROLE_LABEL } from "@/lib/format";
 import { aggregateChampions, ROLES } from "@/lib/metrics";
 import { normalizeChampionName } from "@/lib/sources/ddragon";
 import { champIcon } from "@/lib/views";
+import { chartHref, championPresenceChart } from "@/lib/charts/page-charts";
 
 export const metadata: Metadata = {
   title: "Champions",
@@ -127,6 +128,7 @@ export default function ChampionsPage() {
         description="Top 20 champions by presence. Presence is the share of games where a champion was picked or banned."
       >
         <Chart
+          builderHref={chartHref(championPresenceChart())}
           spec={bar}
           table={{ columns: ["Champion", "Picks", "Bans"], rows: top.map((c) => [c.champion, c.picks, c.bans]) }}
           height={360}

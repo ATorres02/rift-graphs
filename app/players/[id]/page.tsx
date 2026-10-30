@@ -13,6 +13,7 @@ import { getData, teamRef } from "@/lib/data/load";
 import { fmt, ROLE_LABEL, STAGE_SHORT } from "@/lib/format";
 import { aggregatePlayerGames, kda, killParticipation, perMinute } from "@/lib/metrics";
 import { champIcon, mostPlayedArt } from "@/lib/views";
+import { chartHref, championRecordChart, playerGamesChart } from "@/lib/charts/page-charts";
 
 export const dynamicParams = false;
 
@@ -174,7 +175,7 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
         title={
           <span className="flex flex-wrap items-center gap-3">
             {p.name}
-            <TeamPill team={teamRef(team)} size="md" logo={false} />
+            <TeamPill team={teamRef(team)} size="md" />
           </span>
         }
         description={[p.realName, p.nativeName, p.country].filter(Boolean).join(", ") || undefined}
@@ -209,6 +210,11 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
           <div className="grid gap-6 lg:grid-cols-2">
             <Section title={support ? "Vision score, game by game" : "Damage per minute, game by game"}>
               <Chart
+                builderHref={chartHref(
+                  support
+                    ? playerGamesChart(p.id, p.name, "vision", "vision score")
+                    : playerGamesChart(p.id, p.name, "dpm", "damage per minute"),
+                )}
                 spec={dpmLine}
                 table={{
                   columns: ["Game", support ? "Vision score" : "DPM"],
@@ -224,6 +230,7 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
             </Section>
             <Section title="KDA, game by game">
               <Chart
+                builderHref={chartHref(playerGamesChart(p.id, p.name, "kda", "KDA"))}
                 spec={kdaLine}
                 table={{
                   columns: ["Game", "KDA"],
@@ -238,6 +245,7 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
           <Section title="Champion pool" description="Games and wins per champion.">
             <Spoiler as="div" label="Reveal chart (contains results)">
               <Chart
+                builderHref={chartHref(championRecordChart({ playerId: p.id }, p.name, null))}
                 spec={champBar}
                 table={{
                   columns: ["Champion", "Wins", "Losses"],

@@ -71,7 +71,17 @@ export function ChartBuilder({ version, catalog }: { version: string; catalog: F
     [result, config.title],
   );
 
-  const update = useCallback((patch: Partial<QueryConfig>) => setConfig((c) => ({ ...c, ...patch })), []);
+  const update = useCallback(
+    (patch: Partial<QueryConfig>) =>
+      setConfig((c) => {
+        const next = { ...c, ...patch };
+        // The pick names entries of the group-by dimension: it means nothing once the grouping changes.
+        if ((patch.groupBy && patch.groupBy !== c.groupBy) || (patch.source && patch.source !== c.source))
+          delete next.pick;
+        return next;
+      }),
+    [],
+  );
 
   const switchSource = (source: DataSource) => {
     const keep = {
@@ -83,7 +93,9 @@ export function ChartBuilder({ version, catalog }: { version: string; catalog: F
     const playerLike = source === "players" || source === "champions";
     const filters = {
       ...keep,
-      ...(playerLike ? { roles: config.filters.roles, champions: config.filters.champions } : {}),
+      ...(playerLike
+        ? { roles: config.filters.roles, champions: config.filters.champions, players: config.filters.players }
+        : {}),
     };
     for (const k of Object.keys(filters) as (keyof typeof filters)[]) if (filters[k] === undefined) delete filters[k];
     update({ source, series: null, ...SOURCE_DEFAULTS[source], filters });
@@ -180,7 +192,12 @@ export function ChartBuilder({ version, catalog }: { version: string; catalog: F
               Filters {Object.keys(config.filters).length ? `(${Object.keys(config.filters).length} active)` : ""}
             </summary>
             <div className="mt-2">
-              <FiltersStep config={config} catalog={catalog} onChange={(filters) => update({ filters })} />
+              <FiltersStep
+                config={config}
+                catalog={catalog}
+                onChange={(filters) => update({ filters })}
+                onPick={(pick) => update({ pick })}
+              />
             </div>
           </details>
         </Step>

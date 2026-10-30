@@ -10,8 +10,6 @@ interface TeamPillProps {
   /** Show the full team name next to the tag. */
   withName?: boolean;
   link?: boolean;
-  /** False for page headers, which keep the plain tag. */
-  logo?: boolean;
   className?: string;
 }
 
@@ -54,11 +52,16 @@ function LogoImage({ logo, className }: { logo: TeamLogo; className: string }) {
   );
 }
 
+/** The logo alone, sized by the caller (team page header); nothing when the team has no logo file. */
+export function TeamLogo({ team, className }: { team: TeamRef; className: string }) {
+  return team.logo ? <LogoImage logo={team.logo} className={className} /> : null;
+}
+
 /**
  * Team identity: the team's logo and tag, with no colour of its own (region colours belong to regions). Teams without a
- * logo file, and page headers, show the tag on a neutral pill.
+ * logo file show the tag on a neutral pill.
  */
-export function TeamPill({ team, size = "md", withName = false, link = true, logo = true, className }: TeamPillProps) {
+export function TeamPill({ team, size = "md", withName = false, link = true, className }: TeamPillProps) {
   if (!team) {
     return (
       <span
@@ -73,26 +76,22 @@ export function TeamPill({ team, size = "md", withName = false, link = true, log
     );
   }
   const title = `${team.name}, ${regionInfo(team.region).code}`;
-  const pill =
-    logo && team.logo ? (
-      <span
-        className={cn("inline-flex items-center font-bold tracking-wide text-foreground", MARK[size])}
-        title={title}
-      >
-        <LogoImage logo={team.logo} className={LOGO[size]} />
-        {team.short}
-      </span>
-    ) : (
-      <span
-        className={cn(
-          "inline-flex items-center justify-center rounded-md border bg-muted font-bold tracking-wide text-foreground",
-          SIZES[size],
-        )}
-        title={title}
-      >
-        {team.short}
-      </span>
-    );
+  const pill = team.logo ? (
+    <span className={cn("inline-flex items-center font-bold tracking-wide text-foreground", MARK[size])} title={title}>
+      <LogoImage logo={team.logo} className={LOGO[size]} />
+      {team.short}
+    </span>
+  ) : (
+    <span
+      className={cn(
+        "inline-flex items-center justify-center rounded-md border bg-muted font-bold tracking-wide text-foreground",
+        SIZES[size],
+      )}
+      title={title}
+    >
+      {team.short}
+    </span>
+  );
   const content = withName ? (
     <span className="inline-flex items-center gap-2">
       {pill}

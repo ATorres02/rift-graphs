@@ -16,6 +16,19 @@ export interface FilterCatalog {
   regions: string[];
   champions: string[];
   stages: StageId[];
+  players: { id: string; name: string }[];
+}
+
+/** A removable chip for a value set from a link or a search box. */
+function Removable({ label, onRemove }: { label: string; onRemove: () => void }) {
+  return (
+    <span className="inline-flex items-center gap-1 rounded-md border border-brand bg-brand-soft px-2 py-1 text-xs font-medium">
+      {label}
+      <button type="button" onClick={onRemove} aria-label={`Remove ${label}`}>
+        <XIcon className="size-3" aria-hidden />
+      </button>
+    </span>
+  );
 }
 
 function Chip({
@@ -57,10 +70,13 @@ export function FiltersStep({
   config,
   catalog,
   onChange,
+  onPick,
 }: {
   config: QueryConfig;
   catalog: FilterCatalog;
   onChange: (filters: QueryFilters) => void;
+  /** Changes the "only these" selection of the group-by dimension (charts opened from other pages). */
+  onPick: (pick: string[] | undefined) => void;
 }) {
   const f = config.filters;
   const set = (patch: Partial<QueryFilters>) => {
@@ -71,6 +87,20 @@ export function FiltersStep({
   const playerLike = config.source === "players" || config.source === "champions";
   const entityDim = ["player", "team", "champion"].includes(config.groupBy);
   const [champQuery, setChampQuery] = useState("");
+  const [playerQuery, setPlayerQuery] = useState("");
+  const playerName = (id: string) => catalog.players.find((p) => p.id === id)?.name ?? id;
+  const playerMatches =
+    playerQuery.length >= 2
+      ? catalog.players
+          .filter((p) => p.name.toLowerCase().includes(playerQuery.toLowerCase()) && !f.players?.includes(p.id))
+          .slice(0, 8)
+      : [];
+  const pickLabel = (key: string) =>
+    config.groupBy === "team"
+      ? (catalog.teams.find((t) => t.id === key)?.short ?? key)
+      : config.groupBy === "player"
+        ? playerName(key)
+        : key;
   const champMatches =
     champQuery.length >= 2
       ? catalog.champions
@@ -242,6 +272,67 @@ export function FiltersStep({
               ))}
             </ul>
           ) : null}
+        </div>
+      ) : null}
+      {playerLike ? (
+        <div>
+          <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Player</p>
+          <div className="flex flex-wrap gap-1.5">
+            {(f.players ?? []).map((id) => (
+              <Removable key={id} label={playerName(id)} onRemove={() => set({ players: toggleIn(f.players, id) })} />
+            ))}
+          </div>
+          <input
+            className={cn(inputClass, "mt-1.5")}
+            placeholder="Type a player name…"
+            value={playerQuery}
+            onChange={(e) => setPlayerQuery(e.target.value)}
+            aria-label="Add a player filter"
+          />
+          {playerMatches.length ? (
+            <ul className="mt-1 flex flex-wrap gap-1.5">
+              {playerMatches.map((p) => (
+                <li key={p.id}>
+                  <Chip
+                    on={false}
+                    onClick={() => {
+                      set({ players: [...(f.players ?? []), p.id] });
+                      setPlayerQuery("");
+                    }}
+                  >
+                    + {p.name}
+                  </Chip>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </div>
+      ) : null}
+      {config.pick?.length ? (
+        <div>
+          <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Showing only</p>
+          <div className="flex flex-wrap items-center gap-1.5">
+            {config.pick.map((key) => (
+              <Removable
+                key={key}
+                label={pickLabel(key)}
+                onRemove={() => {
+                  const next = config.pick!.filter((k) => k !== key);
+                  onPick(next.length ? next : undefined);
+                }}
+              />
+            ))}
+            <button
+              type="button"
+              onClick={() => onPick(undefined)}
+              className="text-xs text-muted-foreground underline hover:text-foreground"
+            >
+              Show all
+            </button>
+          </div>
+          <p className="mt-1 text-xs text-muted-foreground">
+            The others still count for the tournament average and the scale.
+          </p>
         </div>
       ) : null}
       {Object.keys(f).length ? (

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ExternalLinkIcon } from "lucide-react";
+import { ExternalLinkIcon, GitCompareArrowsIcon } from "lucide-react";
 import { LocalTime } from "@/components/local-time";
 import { CompareBars } from "@/components/match/compare-bars";
 import { DraftBoard, type DraftPlayer } from "@/components/match/draft-board";
@@ -20,6 +20,7 @@ import { bestOfLabel, fmt, ROLE_LABEL, roundLabel, STAGE_LABEL } from "@/lib/for
 import { seriesRecord } from "@/lib/metrics";
 import { site } from "@/lib/site";
 import { swissStandings } from "@/lib/standings";
+import { compareTeamsHref } from "@/lib/links";
 import { champIcon, seriesArt, seriesView } from "@/lib/views";
 import { cn } from "@/lib/utils";
 
@@ -93,9 +94,9 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
         eyebrow={`${roundLabel(s.stage, s.round, s.tab)} / ${bestOfLabel(s.bestOf)}${s.patch ? ` / Patch ${s.patch}` : ""}`}
         title={
           <span className="flex flex-wrap items-center gap-3">
-            <TeamPill team={team1} size="lg" withName logo={false} />
+            <TeamPill team={team1} size="lg" withName />
             <span className="text-muted-foreground">vs</span>
-            <TeamPill team={team2} size="lg" withName logo={false} />
+            <TeamPill team={team2} size="lg" withName />
           </span>
         }
       >
@@ -115,6 +116,15 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
             <Spoiler label="MVP">
               <span>MVP: {s.mvp}</span>
             </Spoiler>
+          ) : null}
+          {team1 && team2 ? (
+            <Link
+              href={compareTeamsHref(team1.id, team2.id)}
+              className="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 font-medium text-foreground no-underline transition-colors hover:border-brand"
+            >
+              <GitCompareArrowsIcon className="size-4" aria-hidden />
+              Compare teams
+            </Link>
           ) : null}
           <a
             href={data.tournament.officialUrl ?? site.lolesportsUrl}

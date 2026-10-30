@@ -170,3 +170,23 @@ test("the bracket scrolls inside its frame on a 390 px phone", async ({ page }) 
     expect(overflow, path).toBeLessThanOrEqual(0);
   }
 });
+
+test("a chart on a team page opens the same chart in the builder", async ({ page }) => {
+  const errors = watchErrors(page);
+  await page.goto("/teams/t1");
+  const link = page.getByRole("link", { name: "Open in Charts" }).first();
+  await expect(link).toHaveAttribute("href", /^\/charts\?.*t=radar.*k=t1/);
+  await link.click();
+  await expect(page).toHaveURL(/\/charts\?.*k=t1/);
+  await expect(page.getByText("T1 vs tournament average")).toBeVisible({ timeout: 15_000 });
+  await expect(page.locator("canvas").first()).toBeVisible();
+  expect(errors).toEqual([]);
+});
+
+test("Compare teams opens the comparison with both teams of the series", async ({ page }) => {
+  await page.goto("/matches/main-event-round-1-1");
+  const link = page.getByRole("link", { name: "Compare teams" }).first();
+  await expect(link).toHaveAttribute("href", "/compare?type=teams&a=gen-g&b=invictus-gaming");
+  await link.click();
+  await expect(page).toHaveURL(/\/compare\?type=teams&a=gen-g&b=invictus-gaming/);
+});

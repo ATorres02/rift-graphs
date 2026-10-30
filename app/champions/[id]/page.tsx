@@ -21,6 +21,7 @@ import {
   normalizeChampionName,
 } from "@/lib/sources/ddragon";
 import { defaultOgImage } from "@/lib/site";
+import { chartHref, championRolesChart, championStagesChart } from "@/lib/charts/page-charts";
 
 export const dynamicParams = false;
 
@@ -67,6 +68,8 @@ export default async function ChampionPage({ params }: { params: Promise<{ id: s
   const games = data.confirmedGames.length;
 
   const rows = data.playerGames.filter((r) => normalizeChampionName(r.champion) === key);
+  // The builder filters on the name as the data spells it.
+  const dataName = agg?.champion ?? rows[0]?.champion ?? c.name;
   const byPlayer = new Map<string, { games: number; wins: number; k: number; d: number; a: number }>();
   for (const r of rows) {
     const p = byPlayer.get(r.playerId) ?? { games: 0, wins: 0, k: 0, d: 0, a: 0 };
@@ -184,6 +187,7 @@ export default async function ChampionPage({ params }: { params: Promise<{ id: s
         <Section title="By role" description="Games and wins when picked in each role.">
           <Spoiler as="div" label="Reveal win rates">
             <Chart
+              builderHref={chartHref(championRolesChart(dataName))}
               spec={roleBar}
               table={{
                 columns: ["Role", "Games", "W–L", "Win rate"],
@@ -202,6 +206,7 @@ export default async function ChampionPage({ params }: { params: Promise<{ id: s
         <Section title="By stage" description="Picks, bans and wins per stage of the tournament.">
           <Spoiler as="div" label="Reveal win rates">
             <Chart
+              builderHref={chartHref(championStagesChart(dataName))}
               spec={stageBar}
               table={{
                 columns: ["Stage", "Picks", "Bans", "W–L"],

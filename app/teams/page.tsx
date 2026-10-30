@@ -12,6 +12,7 @@ import { fmt } from "@/lib/format";
 import { aggregateByTeam, seriesRecord } from "@/lib/metrics";
 import { swissStandings, teamStatus, type TeamStatus } from "@/lib/standings";
 import { regionColorVar } from "@/lib/views";
+import { chartHref, teamsStyleChart } from "@/lib/charts/page-charts";
 
 export const metadata: Metadata = {
   title: "Teams",
@@ -173,6 +174,7 @@ export default function TeamsPage() {
       >
         <Spoiler as="div" label="Reveal chart (contains results)">
           <Chart
+            builderHref={chartHref(teamsStyleChart())}
             spec={scatter}
             table={scatterTable}
             height={360}

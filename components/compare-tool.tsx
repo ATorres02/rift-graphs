@@ -18,6 +18,7 @@ import type { Role } from "@/lib/data/types";
 import { ROLE_LABEL } from "@/lib/format";
 import { DEFAULT_MIN_GAMES } from "@/lib/metrics";
 import { cn } from "@/lib/utils";
+import { chartHref, compareChart } from "@/lib/charts/page-charts";
 
 export interface CompareMetric {
   key: string;
@@ -286,6 +287,21 @@ export function CompareTool({ groups }: { groups: CompareGroup[] }) {
           </div>
           <div className="grid gap-6 lg:grid-cols-2">
             <Chart
+              builderHref={
+                ea && eb
+                  ? chartHref(
+                      compareChart(
+                        group.type,
+                        ea.id,
+                        eb.id,
+                        group.metrics
+                          .filter((m) => m.radar)
+                          .slice(0, 8)
+                          .map((m) => m.key),
+                      ),
+                    )
+                  : undefined
+              }
               spec={radar}
               table={{
                 columns: ["Metric", ea.label, eb.label],

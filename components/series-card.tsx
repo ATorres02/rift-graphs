@@ -1,4 +1,4 @@
-import { ChevronRightIcon } from "lucide-react";
+import { ChevronRightIcon, GitCompareArrowsIcon } from "lucide-react";
 import Link from "next/link";
 import { Countdown } from "@/components/countdown";
 import { LocalTime } from "@/components/local-time";
@@ -9,6 +9,7 @@ import { TeamPill } from "@/components/team-pill";
 import type { TeamRef } from "@/lib/data/load";
 import type { Series } from "@/lib/data/types";
 import { bestOfLabel, roundLabel } from "@/lib/format";
+import { compareTeamsHref } from "@/lib/links";
 import { cn } from "@/lib/utils";
 
 export interface SeriesCardProps {
@@ -74,13 +75,25 @@ export function SeriesCard({
           {s.provisional ? <ProvisionalBadge source={s.source} /> : null}
           {pending ? <PendingData /> : null}
         </span>
-        <Link
-          href={`/matches/${s.id}`}
-          className="inline-flex shrink-0 items-center gap-0.5 font-medium text-muted-foreground no-underline transition-colors after:absolute after:inset-0 after:content-[''] group-hover:text-foreground hover:text-foreground"
-          aria-label={`Details: ${team1?.name ?? "TBD"} vs ${team2?.name ?? "TBD"}`}
-        >
-          Details <ChevronRightIcon className="size-3.5" aria-hidden />
-        </Link>
+        <span className="flex shrink-0 items-center gap-3">
+          {team1 && team2 ? (
+            <Link
+              href={compareTeamsHref(team1.id, team2.id)}
+              className="relative z-10 inline-flex items-center gap-1 font-medium text-muted-foreground no-underline transition-colors hover:text-foreground"
+              aria-label={`Compare teams: ${team1.name} and ${team2.name}`}
+            >
+              <GitCompareArrowsIcon className="size-3.5" aria-hidden />
+              Compare teams
+            </Link>
+          ) : null}
+          <Link
+            href={`/matches/${s.id}`}
+            className="inline-flex shrink-0 items-center gap-0.5 font-medium text-muted-foreground no-underline transition-colors after:absolute after:inset-0 after:content-[''] group-hover:text-foreground hover:text-foreground"
+            aria-label={`Details: ${team1?.name ?? "TBD"} vs ${team2?.name ?? "TBD"}`}
+          >
+            Details <ChevronRightIcon className="size-3.5" aria-hidden />
+          </Link>
+        </span>
       </div>
     </article>
   );
