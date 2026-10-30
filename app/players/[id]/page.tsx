@@ -174,7 +174,7 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
         title={
           <span className="flex flex-wrap items-center gap-3">
             {p.name}
-            <TeamPill team={teamRef(team)} size="md" />
+            <TeamPill team={teamRef(team)} size="md" logo={false} />
           </span>
         }
         description={[p.realName, p.nativeName, p.country].filter(Boolean).join(", ") || undefined}

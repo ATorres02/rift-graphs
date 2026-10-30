@@ -155,7 +155,7 @@ export default function TeamsPage() {
     <div className="space-y-8">
       <PageHeader
         title="Teams"
-        description="Nineteen teams from six regions. Tags on coloured pills stand in for logos; the colour is the team's region."
+        description="Nineteen teams from six regions. Pick a region on the map to see its teams."
       />
       <Headlines items={headlines} className="lg:grid-cols-4" />
       <ProvisionalNote meta={data.meta} />

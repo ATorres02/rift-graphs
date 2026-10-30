@@ -57,8 +57,18 @@ export default function AboutPage() {
         </li>
         <li>Role and objective icons are the League of Legends client&apos;s own.</li>
         <li>
-          No team logos, player photos or official artwork are used. Teams are identified by their tag on a pill
-          coloured by region.
+          Team logos come from lolesports.com and belong to their teams; they are shown only to tell the teams apart.
+          {site.imprint.email ? (
+            <>
+              {" "}
+              If you hold the rights to one and want it removed, write to{" "}
+              <a href={`mailto:${site.imprint.email}`} className="underline">
+                {site.imprint.email}
+              </a>
+              .
+            </>
+          ) : null}{" "}
+          No player photos are used.
         </li>
         <li>
           Data was last refreshed on {meta.updatedAt.replace("T", " ").replace("Z", " UTC")}. The site rebuilds itself

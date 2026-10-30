@@ -95,4 +95,6 @@ is not covered by it:
   [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/), like its source.
 - Champion art (loaded from Riot's Data Dragon) and the role and objective icons in `public/icons/` belong to Riot
   Games and are used under Riot's "Legal Jibber Jabber" policy.
+- Team logos in `public/teams/` come from lolesports.com and belong to their teams. They are shown only to identify
+  each team and are not covered by the MIT License.
 - The Rift Graphs name and logo (`assets/rift-graphs-logo/`, `public/brand/`) are not licensed for reuse.

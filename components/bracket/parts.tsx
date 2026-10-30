@@ -2,7 +2,7 @@ import type { CSSProperties, ReactNode } from "react";
 import Link from "next/link";
 import { EyeOffIcon } from "lucide-react";
 import { TeamPill } from "@/components/team-pill";
-import type { IndexedDataset, TeamRef } from "@/lib/data/load";
+import { teamRef, type IndexedDataset, type TeamRef } from "@/lib/data/load";
 import { regionInfo } from "@/lib/data/regions";
 import type { Series } from "@/lib/data/types";
 import { cn } from "@/lib/utils";
@@ -18,7 +18,7 @@ export function cellTeam(data: IndexedDataset, id: string | null): CellTeam | nu
   const t = id ? data.teamsById.get(id) : undefined;
   if (!t) return null;
   return {
-    team: { id: t.id, name: t.name, short: t.short, region: t.region },
+    team: teamRef(t)!,
     seed: t.seed ? `${t.seed.league} #${t.seed.seed}` : regionInfo(t.region).code,
   };
 }
@@ -40,15 +40,16 @@ export function bracketCss(steps: number, teamIds: string[]): string {
       `${hidden}[data-next="${s}"] [data-gate="${s}"]>.b-reveal{display:inline-flex}`,
       `${locked} [data-rgate="${s}"] :is(.b-score,.b-won){display:none}`,
       `${locked} [data-rgate="${s}"] .b-vs{display:inline}`,
-      // Losers get a grey pill once their result shows (opacity would drop the tag below AA contrast).
-      `:is(html:not([data-spoilers="hidden"]) [data-bracket],[data-bracket][data-revealed~="${s}"]) [data-rgate="${s}"] [data-outcome="loss"] .b-pill>span{background-color:var(--muted)!important;color:var(--muted-foreground)!important}`,
+      // Losers fade once their result shows: grey logo, muted tag (opacity on the text would drop it below AA).
+      `:is(html:not([data-spoilers="hidden"]) [data-bracket],[data-bracket][data-revealed~="${s}"]) [data-rgate="${s}"] [data-outcome="loss"] .b-pill img{filter:grayscale(1);opacity:.45}`,
+      `:is(html:not([data-spoilers="hidden"]) [data-bracket],[data-bracket][data-revealed~="${s}"]) [data-rgate="${s}"] [data-outcome="loss"] .b-pill>span{color:var(--muted-foreground)}`,
     );
   }
   for (const id of teamIds) {
     const on = `[data-bracket]:has([data-team="${id}"]:hover,[data-cell]:focus-visible [data-team="${id}"])`;
     rules.push(
       `${on} [data-team="${id}"]{background:var(--brand-soft);box-shadow:inset 0 0 0 1px var(--brand)}`,
-      `${on} .b-gated:not(:has([data-team="${id}"])){opacity:.35}`,
+      `${on} .b-gated:not([data-team="${id}"]):not(:has([data-team="${id}"])){opacity:.35}`,
     );
   }
   return rules.join("\n");
@@ -199,7 +200,10 @@ export function TeamsBox({
             className="b-slot flex h-7 min-w-0 flex-1 items-center justify-center rounded border border-dashed border-border"
           >
             {t ? (
-              <span data-team={t.id} className="b-gated inline-flex rounded p-0.5 transition-colors">
+              <span
+                data-team={t.id}
+                className="b-gated flex size-full items-center justify-center rounded transition-colors"
+              >
                 <TeamPill team={t} size={withName ? "sm" : "xs"} withName={withName} />
               </span>
             ) : null}

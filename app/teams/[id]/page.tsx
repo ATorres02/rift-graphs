@@ -142,7 +142,7 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
         eyebrow={<RegionTag region={team.region} />}
         title={
           <span className="flex items-center gap-3">
-            <TeamPill team={teamRef(team)} size="lg" link={false} />
+            <TeamPill team={teamRef(team)} size="lg" link={false} logo={false} />
             {team.name}
           </span>
         }

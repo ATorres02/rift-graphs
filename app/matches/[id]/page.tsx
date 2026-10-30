@@ -93,9 +93,9 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
         eyebrow={`${roundLabel(s.stage, s.round, s.tab)} / ${bestOfLabel(s.bestOf)}${s.patch ? ` / Patch ${s.patch}` : ""}`}
         title={
           <span className="flex flex-wrap items-center gap-3">
-            <TeamPill team={team1} size="lg" withName />
+            <TeamPill team={team1} size="lg" withName logo={false} />
             <span className="text-muted-foreground">vs</span>
-            <TeamPill team={team2} size="lg" withName />
+            <TeamPill team={team2} size="lg" withName logo={false} />
           </span>
         }
       >

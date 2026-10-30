@@ -127,7 +127,7 @@ export default function HomePage() {
             </h1>
             <p className="mt-4 max-w-xl text-sm text-zinc-300 sm:text-base">
               Matches, teams, players, champions and drafts of the 2026 World Championship, refreshed within minutes of
-              every game. Free, no ads, no logos.
+              every game. Free, no ads.
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
               <Link

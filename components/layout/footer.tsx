@@ -28,8 +28,8 @@ export function Footer() {
           >
             {site.leaguepedia.license}
           </a>
-          ). Champion art from Riot&apos;s Data Dragon, role and objective icons from the League client. No team logos
-          or player photos are used.
+          ). Champion art from Riot&apos;s Data Dragon, role and objective icons from the League client, team logos from
+          lolesports.com. No player photos are used.
         </p>
         <p>
           Free, no ads, no accounts. Developed with AI by <AuthorLinks />

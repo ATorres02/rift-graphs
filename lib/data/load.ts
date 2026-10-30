@@ -5,6 +5,7 @@ import { indexDataset, type IndexedDataset } from "./index";
 import { datasetFiles, type DatasetFileName } from "./schema";
 import type { ChampionRef, Dataset, Series, Team } from "./types";
 import { normalizeChampionName } from "@/lib/sources/ddragon";
+import { teamLogo, type TeamLogo } from "./team-logos";
 
 export type { IndexedDataset } from "./index";
 
@@ -51,10 +52,13 @@ export interface TeamRef {
   name: string;
   short: string;
   region: string;
+  logo: TeamLogo | null;
 }
 
 export function teamRef(team: Team | null | undefined): TeamRef | null {
-  return team ? { id: team.id, name: team.name, short: team.short, region: team.region } : null;
+  return team
+    ? { id: team.id, name: team.name, short: team.short, region: team.region, logo: teamLogo(team.id) }
+    : null;
 }
 
 export function seriesTeams(data: IndexedDataset, s: Series): { team1: TeamRef | null; team2: TeamRef | null } {
