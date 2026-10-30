@@ -1,14 +1,13 @@
 name: CI
 
-# Code checks for the development branch and pull requests: types, lint, formatting,
-# unit tests, the static build and the Playwright smoke tests against that build.
+# Code checks for pull requests into main: types, lint, formatting, unit tests,
+# the static build and the Playwright smoke tests against that build.
 # Deploys (deploy.yml) and data ingests (ingest.yml) stay separate so they remain fast.
 
 on:
-  push:
-    branches: [dev]
   pull_request:
-    branches: [main, dev]
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read

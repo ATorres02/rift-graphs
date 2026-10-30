@@ -24,7 +24,7 @@ pnpm build
 pnpm test:e2e     # Playwright smoke tests against the export (needs `pnpm build` and `pnpm exec playwright install chromium`)
 ```
 
-`.github/workflows/ci.yml` runs all of the above on the `dev` branch and on pull requests. `scripts/screenshots.mts` captures
+`.github/workflows/ci.yml` runs all of the above on every pull request into `main`. `scripts/screenshots.mts` captures
 the key pages (mobile and desktop) from a running `wrangler dev` for visual review.
 
 Copy `.env.example` to `.env.local` and fill in the public variables (author, LinkedIn, imprint, site URL, Cloudflare Web Analytics token). `.env.local` and every other `.env*` file are ignored by git and must never be committed; `NEXT_PUBLIC_*` values end up in the public bundle, so they hold only public information. Leaguepedia bot credentials and the lolesports key go in GitHub Actions secrets.
