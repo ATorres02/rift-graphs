@@ -4198,5 +4198,75 @@
     "source": "leaguepedia",
     "provisional": false,
     "statsComplete": true
+  },
+  {
+    "id": "main-event-round-4-4-3",
+    "seriesId": "main-event-round-4-4",
+    "stage": "swiss",
+    "gameNumber": 3,
+    "dateTimeUtc": "2026-10-30T00:24:00Z",
+    "durationSeconds": 1668,
+    "patch": "26.20",
+    "winnerSide": "blue",
+    "winnerTeamId": "top-esports",
+    "blue": {
+      "teamId": "top-esports",
+      "kills": 17,
+      "gold": 60395,
+      "towers": 11,
+      "inhibitors": 3,
+      "dragons": 2,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 1,
+      "voidGrubs": 3,
+      "bans": [
+        "Olaf",
+        "Cassiopeia",
+        "Lee Sin",
+        "Ahri",
+        "Sylas"
+      ],
+      "picks": [
+        "Renekton",
+        "Pantheon",
+        "Syndra",
+        "Tristana",
+        "Lulu"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "bilibili-gaming",
+      "kills": 3,
+      "gold": 49051,
+      "towers": 2,
+      "inhibitors": 0,
+      "dragons": 2,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 0,
+      "bans": [
+        "Akali",
+        "Rumble",
+        "Nocturne",
+        "Yunara",
+        "Xin Zhao"
+      ],
+      "picks": [
+        "Ambessa",
+        "Maokai",
+        "Yone",
+        "Kalista",
+        "Renata Glasc"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_486341",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   }
 ]

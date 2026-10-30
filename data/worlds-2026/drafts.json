@@ -2998,5 +2998,55 @@
       ]
     },
     "complete": true
+  },
+  {
+    "gameId": "main-event-round-4-4-3",
+    "blue": {
+      "bans": [
+        "Olaf",
+        "Cassiopeia",
+        "Lee Sin",
+        "Ahri",
+        "Sylas"
+      ],
+      "picks": [
+        "Syndra",
+        "Lulu",
+        "Renekton",
+        "Pantheon",
+        "Tristana"
+      ],
+      "picksByRole": [
+        "Renekton",
+        "Pantheon",
+        "Syndra",
+        "Tristana",
+        "Lulu"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Akali",
+        "Rumble",
+        "Nocturne",
+        "Yunara",
+        "Xin Zhao"
+      ],
+      "picks": [
+        "Renata Glasc",
+        "Ambessa",
+        "Kalista",
+        "Yone",
+        "Maokai"
+      ],
+      "picksByRole": [
+        "Ambessa",
+        "Maokai",
+        "Yone",
+        "Kalista",
+        "Renata Glasc"
+      ]
+    },
+    "complete": true
   }
 ]
