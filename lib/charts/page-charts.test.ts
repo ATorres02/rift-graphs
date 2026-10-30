@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { indexDataset } from "@/lib/data/index";
 import { readDataset } from "@/lib/data/load";
-import { aggregateChampions, aggregateTeamGames } from "@/lib/metrics";
+import { aggregateByPlayer, aggregateChampions, aggregateTeamGames, rankPlayers } from "@/lib/metrics";
 import { runQuery, validateConfig, type QueryConfig } from "@/lib/query";
 import {
   championPresenceChart,
@@ -10,7 +10,10 @@ import {
   championStagesChart,
   chartHref,
   compareChart,
+  gameLengthByRoundChart,
+  killsByRegionChart,
   playerGamesChart,
+  playerRankingChart,
   teamProfileChart,
   teamsStyleChart,
 } from "./page-charts";
@@ -36,6 +39,11 @@ const PAGE_CHARTS: [string, QueryConfig][] = [
   ["player champions", championRecordChart({ playerId: player.id }, player.name, null)],
   ["compare teams", compareChart("teams", team.id, otherTeam.id, ["winRate", "killsPerGame", "goldPerMinute"])],
   ["compare players", compareChart("players", player.id, otherPlayer.id, ["kda", "kp", "cspm", "dpm"])],
+  ["top KDA", playerRankingChart("kda", "KDA")],
+  ["top DPM", playerRankingChart("dpm", "damage per minute")],
+  ["top KP", playerRankingChart("kp", "kill participation")],
+  ["game length by round", gameLengthByRoundChart()],
+  ["kills by region", killsByRegionChart()],
 ];
 
 describe("page charts in the builder", () => {
@@ -85,5 +93,15 @@ describe("page charts in the builder", () => {
     const result = runQuery(playerGamesChart(player.id, player.name, "dpm", "damage per minute"), data);
     expect(result.rows).toHaveLength((data.playerGamesByPlayer.get(player.id) ?? []).length);
     expect(result.rows[0].label).toMatch(/G\d+ vs /);
+  });
+
+  it.each([
+    ["kda", (a: { kda: number }) => a.kda],
+    ["dpm", (a: { dpm: number }) => a.dpm],
+    ["kp", (a: { killParticipation: number }) => a.killParticipation],
+  ] as const)("ranks players by %s like the homepage tiles", (measure, metric) => {
+    const result = runQuery(playerRankingChart(measure, measure), data);
+    const tiles = rankPlayers(aggregateByPlayer(data.playerGames), metric as never, { limit: 10 });
+    expect(result.rows.map((r) => r.key)).toEqual(tiles.map((r) => r.playerId));
   });
 });

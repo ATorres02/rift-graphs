@@ -2,6 +2,7 @@
  * Chart builder configurations that reproduce the charts drawn on other pages, behind their "Open in Charts" links.
  * Safe to import from client components (the comparison tool builds its link in the browser).
  */
+import { DEFAULT_MIN_GAMES } from "@/lib/metrics";
 import { DEFAULT_CONFIG, type QueryConfig } from "@/lib/query";
 import { serializeConfig } from "./url";
 
@@ -131,4 +132,41 @@ export const compareChart = (type: "teams" | "players", a: string, b: string, me
     pick: [a, b],
     topN: 2,
     colorBy: "region",
+  });
+
+/** Homepage tiles: the top 10 players on one measure, among those with enough games (as the tiles rank them). */
+export const playerRankingChart = (measure: "kda" | "dpm" | "kp", label: string) =>
+  config({
+    source: "players",
+    measures: [measure],
+    groupBy: "player",
+    filters: { minGames: DEFAULT_MIN_GAMES },
+    chart: "bar",
+    topN: 10,
+    colorBy: "region",
+    showAverage: true,
+    title: `Top 10 players by ${label}`,
+  });
+
+/** Homepage strip: average game length in each Swiss round. */
+export const gameLengthByRoundChart = () =>
+  config({
+    source: "games",
+    measures: ["duration"],
+    groupBy: "round",
+    filters: { stages: ["swiss"] },
+    chart: "line",
+    title: "Average game length by Swiss round",
+  });
+
+/** Homepage strip: kills per game by region. */
+export const killsByRegionChart = () =>
+  config({
+    source: "teams",
+    measures: ["kills"],
+    groupBy: "region",
+    chart: "bar",
+    colorBy: "region",
+    showAverage: true,
+    title: "Kills per game by region",
   });

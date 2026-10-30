@@ -190,3 +190,18 @@ test("Compare teams opens the comparison with both teams of the series", async (
   await link.click();
   await expect(page).toHaveURL(/\/compare\?type=teams&a=gen-g&b=invictus-gaming/);
 });
+
+test("the homepage charts open in the chart builder", async ({ page }) => {
+  const errors = watchErrors(page);
+  await page.goto("/");
+  const strip = page.locator("section").filter({ has: page.getByRole("heading", { name: "Charts", level: 2 }) });
+  await expect(strip.getByRole("link", { name: /^Open in Charts/ })).toHaveCount(3);
+  await expect(page.getByRole("link", { name: /Top 10 in Charts/ })).toHaveCount(3);
+  await strip
+    .getByRole("link", { name: /^Open in Charts/ })
+    .first()
+    .click();
+  await expect(page).toHaveURL(/\/charts\?d=champions/);
+  await expect(page.locator("canvas").first()).toBeVisible({ timeout: 15_000 });
+  expect(errors).toEqual([]);
+});

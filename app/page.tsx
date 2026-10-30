@@ -15,6 +15,8 @@ import { site } from "@/lib/site";
 import { swissStandings } from "@/lib/standings";
 import { TEMPLATES } from "@/lib/charts/templates";
 import { serializeConfig } from "@/lib/charts/url";
+import { chartHref, playerRankingChart } from "@/lib/charts/page-charts";
+import { ChartStrip } from "@/components/home/chart-strip";
 import { playerLabel, seriesView } from "@/lib/views";
 
 export default function HomePage() {
@@ -33,11 +35,27 @@ export default function HomePage() {
   const eliminated = swiss.filter((r) => r.status === "eliminated").length;
 
   const byPlayer = aggregateByPlayer(data.playerGames);
-  const leaders = {
-    kda: rankPlayers(byPlayer, (a) => a.kda, { limit: 1 })[0],
-    dpm: rankPlayers(byPlayer, (a) => a.dpm, { limit: 1 })[0],
-    kp: rankPlayers(byPlayer, (a) => a.killParticipation, { limit: 1 })[0],
+  const top5 = {
+    kda: rankPlayers(byPlayer, (a) => a.kda, { limit: 5 }),
+    dpm: rankPlayers(byPlayer, (a) => a.dpm, { limit: 5 }),
+    kp: rankPlayers(byPlayer, (a) => a.killParticipation, { limit: 5 }),
   };
+  const leaders = { kda: top5.kda[0], dpm: top5.dpm[0], kp: top5.kp[0] };
+  // Top 5 under each leader tile, linked to the same ranking (top 10) in the chart builder.
+  const ranking = (
+    rows: (typeof top5)["kda"],
+    format: (v: number) => string,
+    measure: "kda" | "dpm" | "kp",
+    label: string,
+  ) => ({
+    rows: rows.map((r) => ({
+      key: r.playerId,
+      label: data.playersById.get(r.playerId)?.name ?? r.playerId,
+      value: r.value,
+      display: format(r.value),
+    })),
+    href: chartHref(playerRankingChart(measure, label)),
+  });
 
   const next = upcoming[0];
 
@@ -74,6 +92,7 @@ export default function HomePage() {
           value: fmt.dec(leaders.kda.value, 1),
           detail: `${playerLabel(data, leaders.kda.playerId)}, ${leaders.kda.aggregate.games} games`,
           href: `/players/${leaders.kda.playerId}`,
+          ranking: ranking(top5.kda, (v) => fmt.dec(v, 1), "kda", "KDA"),
         }
       : { label: "KDA leader", value: "–", detail: `Needs ${DEFAULT_MIN_GAMES}+ games` },
     leaders.dpm
@@ -82,6 +101,7 @@ export default function HomePage() {
           value: fmt.int(leaders.dpm.value),
           detail: `${playerLabel(data, leaders.dpm.playerId)}, ${leaders.dpm.aggregate.games} games`,
           href: `/players/${leaders.dpm.playerId}`,
+          ranking: ranking(top5.dpm, (v) => fmt.int(v), "dpm", "damage per minute"),
         }
       : { label: "Damage per minute", value: "–" },
     leaders.kp
@@ -90,6 +110,7 @@ export default function HomePage() {
           value: fmt.pct(leaders.kp.value),
           detail: `${playerLabel(data, leaders.kp.playerId)}, ${leaders.kp.aggregate.games} games`,
           href: `/players/${leaders.kp.playerId}`,
+          ranking: ranking(top5.kp, (v) => fmt.pct(v), "kp", "kill participation"),
         }
       : { label: "Kill participation", value: "–" },
   ];
@@ -198,6 +219,8 @@ export default function HomePage() {
           <SwissBracket data={data} />
         </Section>
       )}
+
+      <ChartStrip data={data} />
 
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
         <div className="space-y-10">
