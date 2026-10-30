@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { KnockoutBracket } from "@/components/bracket/knockout-bracket";
+import { SwissBracket } from "@/components/bracket/swiss-bracket";
 import { Headlines, type Headline } from "@/components/headlines";
 import { LocalTime } from "@/components/local-time";
 import { ProvisionalNote } from "@/components/provisional";
@@ -53,7 +55,6 @@ export default function TournamentPage() {
   const knockout = KNOCKOUT.flatMap((b) => byStage(b.id));
   // Every finished knockout series sends one team home.
   const knockoutOut = knockout.filter((s) => s.status === "finished" && s.winnerId).length;
-  const pairingsKnown = knockout.some((s) => s.team1Id || s.team2Id);
   const bracketSeries = [...byStage("quarterfinals"), ...byStage("semifinals")];
   const bracketPlayed = bracketSeries.filter((s) => s.status === "finished").length;
   const finalSeries = byStage("final")[0];
@@ -162,6 +163,15 @@ export default function TournamentPage() {
 
       <Section
         collapsible
+        title="Swiss bracket"
+        description="Teams with the same record meet each round. Point at a team to follow its path; every series links to its page."
+      >
+        <SwissBracket data={data} />
+      </Section>
+
+      <Section
+        collapsible
+        defaultOpen={false}
         title="Swiss stage by record"
         description="Teams grouped by wins and losses. Each letter is a round: W for a win, L for a loss."
       >
@@ -213,7 +223,7 @@ export default function TournamentPage() {
         </Spoiler>
       </Section>
 
-      <Section collapsible title="Swiss stage, round by round" description="Latest round first.">
+      <Section collapsible defaultOpen={false} title="Swiss stage, round by round" description="Latest round first.">
         <div className="space-y-6">
           {rounds.map((r) => (
             <div key={r} className="space-y-2">
@@ -227,15 +237,8 @@ export default function TournamentPage() {
       </Section>
 
       <Section collapsible title="Knockout bracket" description="Best-of-five from the quarterfinals on.">
-        {pairingsKnown ? (
-          <div className="grid gap-4 lg:grid-cols-3">
-            {KNOCKOUT.map((b) => (
-              <div key={b.id} className="space-y-3">
-                <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">{b.title}</h3>
-                <div className="space-y-3">{byStage(b.id).map((s) => card(s))}</div>
-              </div>
-            ))}
-          </div>
+        {knockout.length ? (
+          <KnockoutBracket data={data} />
         ) : (
           <div className="rounded-xl border border-dashed bg-card/60 p-5">
             <p className="kicker text-xs text-brand">Coming soon</p>

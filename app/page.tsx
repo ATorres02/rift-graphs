@@ -3,14 +3,16 @@ import { Headlines, type Headline } from "@/components/headlines";
 import { LocalTime } from "@/components/local-time";
 import { Section } from "@/components/page-header";
 import { SeriesCard } from "@/components/series-card";
-import { Spoiler, SpoilerToggle } from "@/components/spoilers";
-import { TeamPill } from "@/components/team-pill";
-import { championRef, getData, teamRef } from "@/lib/data/load";
+import { KnockoutBracket } from "@/components/bracket/knockout-bracket";
+import { SwissBracket } from "@/components/bracket/swiss-bracket";
+import { SpoilerToggle } from "@/components/spoilers";
+import { homeBracket } from "@/lib/bracket";
+import { championRef, getData } from "@/lib/data/load";
 import { championLoadingUrl, championSplashUrl } from "@/lib/sources/ddragon";
 import { fmt, STAGE_LABEL } from "@/lib/format";
 import { aggregateByPlayer, aggregateChampions, DEFAULT_MIN_GAMES, rankPlayers } from "@/lib/metrics";
 import { site } from "@/lib/site";
-import { swissGroups, swissStandings } from "@/lib/standings";
+import { swissStandings } from "@/lib/standings";
 import { TEMPLATES } from "@/lib/charts/templates";
 import { serializeConfig } from "@/lib/charts/url";
 import { playerLabel, seriesView } from "@/lib/views";
@@ -27,7 +29,6 @@ export default function HomePage() {
 
   const mainTeamIds = data.teams.filter((t) => t.stages.includes("main")).map((t) => t.id);
   const swiss = swissStandings(series, mainTeamIds);
-  const groups = swissGroups(swiss);
   const qualified = swiss.filter((r) => r.status === "qualified").length;
   const eliminated = swiss.filter((r) => r.status === "eliminated").length;
 
@@ -159,6 +160,32 @@ export default function HomePage() {
         </div>
       </section>
 
+      {homeBracket(series) === "knockout" ? (
+        <Section
+          title="Knockout stage"
+          description="Quarterfinals, semifinals and the final, all best of five."
+          action={
+            <Link href="/tournament" className="text-sm text-brand underline">
+              Full format
+            </Link>
+          }
+        >
+          <KnockoutBracket data={data} />
+        </Section>
+      ) : (
+        <Section
+          title="Swiss Stage"
+          description={`${qualified} qualified, ${eliminated} eliminated, ${mainTeamIds.length - qualified - eliminated} still playing. Every series links to its page.`}
+          action={
+            <Link href="/tournament" className="text-sm text-brand underline">
+              Full format
+            </Link>
+          }
+        >
+          <SwissBracket data={data} />
+        </Section>
+      )}
+
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
         <div className="space-y-10">
           <Section
@@ -195,36 +222,6 @@ export default function HomePage() {
         </div>
 
         <aside className="space-y-10">
-          <Section
-            title="Swiss Stage"
-            description={`${qualified} qualified, ${eliminated} eliminated, ${mainTeamIds.length - qualified - eliminated} still playing`}
-            action={
-              <Link href="/tournament" className="text-sm text-brand underline">
-                Full format
-              </Link>
-            }
-          >
-            <Spoiler as="div" label="Reveal standings">
-              <ol className="space-y-2">
-                {groups.map((g) => (
-                  <li key={g.label} className="rounded-xl border bg-card p-3">
-                    <div className="mb-2 flex items-center justify-between text-xs font-medium text-muted-foreground">
-                      <span className="tabular text-sm font-semibold text-foreground">{g.label}</span>
-                      <span>
-                        {g.wins >= 3 ? "Qualified" : g.losses >= 3 ? "Eliminated" : `${g.teams.length} teams`}
-                      </span>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5">
-                      {g.teams.map((r) => (
-                        <TeamPill key={r.teamId} team={teamRef(data.teamsById.get(r.teamId))} size="sm" />
-                      ))}
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            </Spoiler>
-          </Section>
-
           <Section
             title="Build your own chart"
             description="Pick a measure, group, filter and chart type; share the link."

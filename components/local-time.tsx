@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { dateRange } from "@/lib/format";
 
 type Mode = "datetime" | "time" | "date" | "weekday" | "day";
 
@@ -42,6 +43,19 @@ export function LocalTime({
   return (
     <time dateTime={iso} className={className} suppressHydrationWarning>
       {local ?? `${utc}${mode === "date" || mode === "day" || !hasTime ? "" : " UTC"}`}
+    </time>
+  );
+}
+
+const localDay = (iso: string) => new Intl.DateTimeFormat("en-CA", { dateStyle: "short" }).format(new Date(iso));
+
+/** Days from the first to the last instant in the visitor's time zone, as "25 to 26 Oct" (UTC until hydrated). */
+export function LocalDayRange({ from, to, className }: { from: string; to: string; className?: string }) {
+  const [local, setLocal] = useState<string | null>(null);
+  useEffect(() => setLocal(dateRange(localDay(from), localDay(to))), [from, to]);
+  return (
+    <time dateTime={from} className={className} suppressHydrationWarning>
+      {local ?? dateRange(from.slice(0, 10), to.slice(0, 10))}
     </time>
   );
 }

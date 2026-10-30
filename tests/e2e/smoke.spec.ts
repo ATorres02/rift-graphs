@@ -130,3 +130,43 @@ test("the legal notice and attribution are in the footer of every page", async (
     await expect(footer.getByRole("link", { name: "Leaguepedia" })).toBeVisible();
   }
 });
+
+test("every bracket series links to its page", async ({ page, request }) => {
+  await page.goto("/");
+  const bracket = page.getByRole("region", { name: /bracket/ });
+  const hrefs = await bracket.locator("a[data-cell]").evaluateAll((links) => links.map((a) => a.getAttribute("href")));
+  expect(hrefs.length).toBeGreaterThan(0);
+  for (const href of new Set(hrefs)) {
+    expect(href).toMatch(/^\/matches\/[a-z0-9-]+$/);
+    expect((await request.get(href!)).status(), href!).toBe(200);
+  }
+});
+
+test("hidden spoilers keep every bracket score hidden until revealed round by round", async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem("rg-spoilers", "hidden"));
+  await page.goto("/");
+  const bracket = page.getByRole("region", { name: /bracket/ });
+  await expect(bracket.locator(".b-score")).not.toHaveCount(0);
+  for (const score of await bracket.locator(".b-score").all()) await expect(score).toBeHidden();
+  await expect(bracket.locator("[data-gate='1'] a[data-cell]").first()).toBeHidden();
+
+  // Keyboard: the first reveal button shows round 1 scores and round 2 pairings, then focus moves to round 2.
+  const reveal = bracket.getByRole("button", { name: /^Reveal / });
+  await expect(reveal).toHaveCount(1);
+  await reveal.focus();
+  await page.keyboard.press("Enter");
+  await expect(bracket.locator("[data-rgate='1'] .b-score").first()).toBeVisible();
+  await expect(bracket.locator("[data-gate='1'] a[data-cell]").first()).toBeVisible();
+  await expect(bracket.locator("[data-rgate='2'] .b-score").first()).toBeHidden();
+  await expect(bracket.locator("[data-gate='1'] h3")).toBeFocused();
+});
+
+test("the bracket scrolls inside its frame on a 390 px phone", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  for (const path of ["/", "/tournament"]) {
+    await page.goto(path);
+    await expect(page.getByRole("region", { name: /bracket/ }).first()).toBeVisible();
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+    expect(overflow, path).toBeLessThanOrEqual(0);
+  }
+});

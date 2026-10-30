@@ -262,6 +262,17 @@
   }
 }
 
+/* Brackets (components/bracket): the VS that stands in for a hidden score and the pattern of locked slots. Spoiler
+   steps, grey losers and path highlighting are generated per bracket by bracketCss(). */
+@layer components {
+  [data-bracket] {
+    --b-locked: repeating-linear-gradient(135deg, transparent 0 6px, var(--muted) 6px 7px);
+  }
+  [data-bracket] .b-vs {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

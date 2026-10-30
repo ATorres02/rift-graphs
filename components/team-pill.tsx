@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 interface TeamPillProps {
   team: TeamRef | null;
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "lg";
   /** Show the full team name next to the tag. */
   withName?: boolean;
   link?: boolean;
@@ -13,6 +13,7 @@ interface TeamPillProps {
 }
 
 const SIZES = {
+  xs: "h-5 min-w-9 px-1 text-[10px]",
   sm: "h-6 min-w-10 px-1.5 text-[11px]",
   md: "h-7 min-w-12 px-2 text-xs",
   lg: "h-9 min-w-16 px-3 text-sm",
