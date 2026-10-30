@@ -260,6 +260,9 @@ importers:
       prettier:
         specifier: ^3.9.10
         version: 3.9.10
+      sharp:
+        specifier: 0.35.5
+        version: 0.35.5(@types/node@20.19.43)
       tailwindcss:
         specifier: ^4
         version: 4.3.3

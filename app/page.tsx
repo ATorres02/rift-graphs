@@ -7,10 +7,10 @@ import { KnockoutBracket } from "@/components/bracket/knockout-bracket";
 import { SwissBracket } from "@/components/bracket/swiss-bracket";
 import { SpoilerToggle } from "@/components/spoilers";
 import { homeBracket } from "@/lib/bracket";
-import { championRef, getData } from "@/lib/data/load";
-import { championLoadingUrl, championSplashUrl } from "@/lib/sources/ddragon";
+import { getData } from "@/lib/data/load";
+import { heroArt, heroChampion } from "@/lib/hero-art";
 import { fmt, STAGE_LABEL } from "@/lib/format";
-import { aggregateByPlayer, aggregateChampions, DEFAULT_MIN_GAMES, rankPlayers } from "@/lib/metrics";
+import { aggregateByPlayer, DEFAULT_MIN_GAMES, rankPlayers } from "@/lib/metrics";
 import { site } from "@/lib/site";
 import { swissStandings } from "@/lib/standings";
 import { TEMPLATES } from "@/lib/charts/templates";
@@ -61,17 +61,8 @@ export default function HomePage() {
 
   const next = upcoming[0];
 
-  const mostPicked = aggregateChampions(data.confirmedGames, data.playerGames)
-    .filter((c) => c.picks > 0)
-    .sort((a, b) => b.picks - a.picks)[0];
-  const mostPickedRef = mostPicked ? championRef(data, mostPicked.champion) : null;
-  const heroArt = mostPickedRef
-    ? {
-        name: mostPickedRef.name,
-        splash: championSplashUrl(mostPickedRef.id),
-        portrait: championLoadingUrl(mostPickedRef.id),
-      }
-    : null;
+  const heroPick = heroChampion(data);
+  const art = heroPick ? heroArt(heroPick) : null;
   const headlines: Headline[] = [
     live.length
       ? {
@@ -134,12 +125,12 @@ export default function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <section className="space-y-4">
         <div className="relative -mx-4 overflow-hidden bg-black sm:mx-0 sm:rounded-md">
-          {heroArt ? (
+          {art ? (
             <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-full sm:w-3/5">
               <picture>
-                <source media="(max-width: 640px)" srcSet={heroArt.portrait} />
+                <source media="(max-width: 640px)" srcSet={art.portrait} />
                 <img
-                  src={heroArt.splash}
+                  src={art.splash}
                   alt=""
                   width={1215}
                   height={717}
@@ -174,9 +165,9 @@ export default function HomePage() {
               </Link>
               <BuildChartButton />
             </div>
-            {heroArt ? (
+            {art ? (
               <p className="kicker mt-6 text-[10px] text-zinc-500">
-                {heroArt.name}, most picked champion of the tournament
+                {art.name}, most picked champion of the tournament
               </p>
             ) : null}
           </div>
