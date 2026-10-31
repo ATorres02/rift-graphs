@@ -4758,5 +4758,215 @@
     "source": "leaguepedia",
     "provisional": false,
     "statsComplete": true
+  },
+  {
+    "id": "main-event-round-5-2-1",
+    "seriesId": "main-event-round-5-2",
+    "stage": "swiss",
+    "gameNumber": 1,
+    "dateTimeUtc": "2026-10-31T18:59:00Z",
+    "durationSeconds": 2106,
+    "patch": "26.20",
+    "winnerSide": "red",
+    "winnerTeamId": "los",
+    "blue": {
+      "teamId": "lyon",
+      "kills": 8,
+      "gold": 60465,
+      "towers": 1,
+      "inhibitors": 0,
+      "dragons": 2,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 1,
+      "voidGrubs": 3,
+      "bans": [
+        "Renata Glasc",
+        "Jarvan IV",
+        "Trundle",
+        "Ambessa",
+        "K'Sante"
+      ],
+      "picks": [
+        "Rumble",
+        "Pantheon",
+        "Syndra",
+        "Ezreal",
+        "Alistar"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "los",
+      "kills": 11,
+      "gold": 68360,
+      "towers": 8,
+      "inhibitors": 1,
+      "dragons": 3,
+      "elders": 0,
+      "barons": 2,
+      "heralds": 0,
+      "voidGrubs": 0,
+      "bans": [
+        "Qiyana",
+        "Nocturne",
+        "Olaf",
+        "Karma",
+        "Jayce"
+      ],
+      "picks": [
+        "Aurora",
+        "Vi",
+        "Cassiopeia",
+        "Kai'Sa",
+        "Nautilus"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_485482",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
+  },
+  {
+    "id": "main-event-round-5-2-2",
+    "seriesId": "main-event-round-5-2",
+    "stage": "swiss",
+    "gameNumber": 2,
+    "dateTimeUtc": "2026-10-31T19:54:00Z",
+    "durationSeconds": 2826,
+    "patch": "26.20",
+    "winnerSide": "red",
+    "winnerTeamId": "lyon",
+    "blue": {
+      "teamId": "los",
+      "kills": 9,
+      "gold": 88244,
+      "towers": 7,
+      "inhibitors": 0,
+      "dragons": 4,
+      "elders": 1,
+      "barons": 2,
+      "heralds": 1,
+      "voidGrubs": 2,
+      "bans": [
+        "Renata Glasc",
+        "Wukong",
+        "Jarvan IV",
+        "Xin Zhao",
+        "Renekton"
+      ],
+      "picks": [
+        "Ambessa",
+        "Qiyana",
+        "LeBlanc",
+        "Caitlyn",
+        "Karma"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "lyon",
+      "kills": 9,
+      "gold": 85167,
+      "towers": 10,
+      "inhibitors": 2,
+      "dragons": 4,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 0,
+      "voidGrubs": 1,
+      "bans": [
+        "Nocturne",
+        "Seraphine",
+        "Jayce",
+        "Viktor",
+        "Taliyah"
+      ],
+      "picks": [
+        "Gnar",
+        "Lee Sin",
+        "Orianna",
+        "Yunara",
+        "Lulu"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_485488",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
+  },
+  {
+    "id": "main-event-round-5-2-3",
+    "seriesId": "main-event-round-5-2",
+    "stage": "swiss",
+    "gameNumber": 3,
+    "dateTimeUtc": "2026-10-31T21:01:00Z",
+    "durationSeconds": 2202,
+    "patch": "26.20",
+    "winnerSide": "blue",
+    "winnerTeamId": "lyon",
+    "blue": {
+      "teamId": "lyon",
+      "kills": 17,
+      "gold": 70374,
+      "towers": 9,
+      "inhibitors": 1,
+      "dragons": 3,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 1,
+      "voidGrubs": 3,
+      "bans": [
+        "Trundle",
+        "Viktor",
+        "Kha'Zix",
+        "Vayne",
+        "Jayce"
+      ],
+      "picks": [
+        "K'Sante",
+        "Nocturne",
+        "Taliyah",
+        "Lucian",
+        "Milio"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "los",
+      "kills": 7,
+      "gold": 66038,
+      "towers": 6,
+      "inhibitors": 1,
+      "dragons": 2,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 0,
+      "voidGrubs": 0,
+      "bans": [
+        "Wukong",
+        "Jarvan IV",
+        "Olaf",
+        "Anivia",
+        "Twisted Fate"
+      ],
+      "picks": [
+        "Renekton",
+        "Cho'Gath",
+        "Ryze",
+        "Kalista",
+        "Renata Glasc"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_486555",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   }
 ]

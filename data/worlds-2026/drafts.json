@@ -3398,5 +3398,155 @@
       ]
     },
     "complete": true
+  },
+  {
+    "gameId": "main-event-round-5-2-1",
+    "blue": {
+      "bans": [
+        "Renata Glasc",
+        "Jarvan IV",
+        "Trundle",
+        "Ambessa",
+        "K'Sante"
+      ],
+      "picks": [
+        "Syndra",
+        "Ezreal",
+        "Pantheon",
+        "Alistar",
+        "Rumble"
+      ],
+      "picksByRole": [
+        "Rumble",
+        "Pantheon",
+        "Syndra",
+        "Ezreal",
+        "Alistar"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Qiyana",
+        "Nocturne",
+        "Olaf",
+        "Karma",
+        "Jayce"
+      ],
+      "picks": [
+        "Cassiopeia",
+        "Vi",
+        "Kai'Sa",
+        "Nautilus",
+        "Aurora"
+      ],
+      "picksByRole": [
+        "Aurora",
+        "Vi",
+        "Cassiopeia",
+        "Kai'Sa",
+        "Nautilus"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-5-2-2",
+    "blue": {
+      "bans": [
+        "Renata Glasc",
+        "Wukong",
+        "Jarvan IV",
+        "Xin Zhao",
+        "Renekton"
+      ],
+      "picks": [
+        "Qiyana",
+        "Caitlyn",
+        "Karma",
+        "Ambessa",
+        "LeBlanc"
+      ],
+      "picksByRole": [
+        "Ambessa",
+        "Qiyana",
+        "LeBlanc",
+        "Caitlyn",
+        "Karma"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Nocturne",
+        "Seraphine",
+        "Jayce",
+        "Viktor",
+        "Taliyah"
+      ],
+      "picks": [
+        "Yunara",
+        "Lulu",
+        "Orianna",
+        "Lee Sin",
+        "Gnar"
+      ],
+      "picksByRole": [
+        "Gnar",
+        "Lee Sin",
+        "Orianna",
+        "Yunara",
+        "Lulu"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-round-5-2-3",
+    "blue": {
+      "bans": [
+        "Trundle",
+        "Viktor",
+        "Kha'Zix",
+        "Vayne",
+        "Jayce"
+      ],
+      "picks": [
+        "Nocturne",
+        "Lucian",
+        "Milio",
+        "Taliyah",
+        "K'Sante"
+      ],
+      "picksByRole": [
+        "K'Sante",
+        "Nocturne",
+        "Taliyah",
+        "Lucian",
+        "Milio"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Wukong",
+        "Jarvan IV",
+        "Olaf",
+        "Anivia",
+        "Twisted Fate"
+      ],
+      "picks": [
+        "Kalista",
+        "Renata Glasc",
+        "Ryze",
+        "Cho'Gath",
+        "Renekton"
+      ],
+      "picksByRole": [
+        "Renekton",
+        "Cho'Gath",
+        "Ryze",
+        "Kalista",
+        "Renata Glasc"
+      ]
+    },
+    "complete": true
   }
 ]
