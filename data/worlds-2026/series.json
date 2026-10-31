@@ -1116,16 +1116,16 @@
     "hasTime": true,
     "score": {
       "team1": 1,
-      "team2": 1
+      "team2": 2
     },
-    "winnerId": null,
-    "status": "live",
+    "winnerId": "lyon",
+    "status": "finished",
     "matchDay": 1,
     "patch": "26.20",
     "streamUrl": "https://www.twitch.tv/riotgames",
     "mvp": null,
     "gameIds": [],
-    "gamesPlayed": 2,
+    "gamesPlayed": 3,
     "source": "leaguepedia",
     "provisional": false,
     "lolesportsMatchId": "115660540726095089"
