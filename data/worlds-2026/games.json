@@ -4548,5 +4548,75 @@
     "source": "leaguepedia",
     "provisional": false,
     "statsComplete": true
+  },
+  {
+    "id": "main-event-round-4-6-2",
+    "seriesId": "main-event-round-4-6",
+    "stage": "swiss",
+    "gameNumber": 2,
+    "dateTimeUtc": "2026-10-31T00:02:00Z",
+    "durationSeconds": 1572,
+    "patch": "26.20",
+    "winnerSide": "blue",
+    "winnerTeamId": "hanwha-life-esports",
+    "blue": {
+      "teamId": "hanwha-life-esports",
+      "kills": 19,
+      "gold": 54025,
+      "towers": 6,
+      "inhibitors": 1,
+      "dragons": 4,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 1,
+      "voidGrubs": 2,
+      "bans": [
+        "Renata Glasc",
+        "Vi",
+        "Orianna",
+        "Akali",
+        "Annie"
+      ],
+      "picks": [
+        "Ambessa",
+        "Jarvan IV",
+        "Swain",
+        "Lucian",
+        "Milio"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "g2-esports",
+      "kills": 7,
+      "gold": 46992,
+      "towers": 3,
+      "inhibitors": 0,
+      "dragons": 0,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 1,
+      "bans": [
+        "Jayce",
+        "Nocturne",
+        "Naafiri",
+        "Viktor",
+        "Renekton"
+      ],
+      "picks": [
+        "Camille",
+        "Qiyana",
+        "Galio",
+        "Xayah",
+        "Rakan"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_486481",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   }
 ]

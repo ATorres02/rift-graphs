@@ -3248,5 +3248,55 @@
       ]
     },
     "complete": true
+  },
+  {
+    "gameId": "main-event-round-4-6-2",
+    "blue": {
+      "bans": [
+        "Renata Glasc",
+        "Vi",
+        "Orianna",
+        "Akali",
+        "Annie"
+      ],
+      "picks": [
+        "Lucian",
+        "Milio",
+        "Jarvan IV",
+        "Ambessa",
+        "Swain"
+      ],
+      "picksByRole": [
+        "Ambessa",
+        "Jarvan IV",
+        "Swain",
+        "Lucian",
+        "Milio"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Jayce",
+        "Nocturne",
+        "Naafiri",
+        "Viktor",
+        "Renekton"
+      ],
+      "picks": [
+        "Qiyana",
+        "Xayah",
+        "Rakan",
+        "Camille",
+        "Galio"
+      ],
+      "picksByRole": [
+        "Camille",
+        "Qiyana",
+        "Galio",
+        "Xayah",
+        "Rakan"
+      ]
+    },
+    "complete": true
   }
 ]

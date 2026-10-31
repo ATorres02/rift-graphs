@@ -1065,7 +1065,8 @@
     "streamUrl": "https://www.twitch.tv/riotgames",
     "mvp": "Kanavi",
     "gameIds": [
-      "main-event-round-4-6-1"
+      "main-event-round-4-6-1",
+      "main-event-round-4-6-2"
     ],
     "gamesPlayed": 2,
     "source": "leaguepedia",
@@ -1094,7 +1095,7 @@
     "gamesPlayed": 0,
     "source": "leaguepedia",
     "provisional": false,
-    "lolesportsMatchId": null
+    "lolesportsMatchId": "115660540726095089"
   },
   {
     "id": "main-event-round-5-2",
@@ -1118,7 +1119,7 @@
     "gamesPlayed": 0,
     "source": "leaguepedia",
     "provisional": false,
-    "lolesportsMatchId": null
+    "lolesportsMatchId": "115660540726095085"
   },
   {
     "id": "main-event-round-5-3",
@@ -1142,7 +1143,7 @@
     "gamesPlayed": 0,
     "source": "leaguepedia",
     "provisional": false,
-    "lolesportsMatchId": null
+    "lolesportsMatchId": "115660540726095093"
   },
   {
     "id": "main-event-quarterfinals-1",
