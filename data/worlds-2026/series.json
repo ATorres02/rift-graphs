@@ -1080,8 +1080,8 @@
     "tab": "Round 5",
     "round": 5,
     "bestOf": 3,
-    "team1Id": "los",
-    "team2Id": "lyon",
+    "team1Id": "karmine-corp",
+    "team2Id": "movistar-koi",
     "dateTimeUtc": "2026-10-31T17:00:00Z",
     "hasTime": true,
     "score": null,
@@ -1095,7 +1095,7 @@
     "gamesPlayed": 0,
     "source": "leaguepedia",
     "provisional": false,
-    "lolesportsMatchId": "115660540726095089"
+    "lolesportsMatchId": "115660540726095085"
   },
   {
     "id": "main-event-round-5-2",
@@ -1104,8 +1104,8 @@
     "tab": "Round 5",
     "round": 5,
     "bestOf": 3,
-    "team1Id": "karmine-corp",
-    "team2Id": "movistar-koi",
+    "team1Id": "los",
+    "team2Id": "lyon",
     "dateTimeUtc": "2026-10-31T20:00:00Z",
     "hasTime": true,
     "score": null,
@@ -1119,7 +1119,7 @@
     "gamesPlayed": 0,
     "source": "leaguepedia",
     "provisional": false,
-    "lolesportsMatchId": "115660540726095085"
+    "lolesportsMatchId": "115660540726095089"
   },
   {
     "id": "main-event-round-5-3",
