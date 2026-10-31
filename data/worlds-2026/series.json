@@ -1095,7 +1095,8 @@
     "streamUrl": "https://www.twitch.tv/riotgames",
     "mvp": null,
     "gameIds": [
-      "main-event-round-5-1-1"
+      "main-event-round-5-1-1",
+      "main-event-round-5-1-2"
     ],
     "gamesPlayed": 2,
     "source": "leaguepedia",

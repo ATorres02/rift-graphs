@@ -4688,5 +4688,75 @@
     "source": "leaguepedia",
     "provisional": false,
     "statsComplete": true
+  },
+  {
+    "id": "main-event-round-5-1-2",
+    "seriesId": "main-event-round-5-1",
+    "stage": "swiss",
+    "gameNumber": 2,
+    "dateTimeUtc": "2026-10-31T18:09:00Z",
+    "durationSeconds": 1570,
+    "patch": "26.20",
+    "winnerSide": "blue",
+    "winnerTeamId": "karmine-corp",
+    "blue": {
+      "teamId": "karmine-corp",
+      "kills": 18,
+      "gold": 57769,
+      "towers": 8,
+      "inhibitors": 1,
+      "dragons": 3,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 1,
+      "voidGrubs": 3,
+      "bans": [
+        "Qiyana",
+        "Vi",
+        "Nocturne",
+        "Galio",
+        "Ryze"
+      ],
+      "picks": [
+        "Rumble",
+        "Pantheon",
+        "Viktor",
+        "Sivir",
+        "Lulu"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "movistar-koi",
+      "kills": 4,
+      "gold": 42484,
+      "towers": 1,
+      "inhibitors": 0,
+      "dragons": 0,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 0,
+      "bans": [
+        "Renata Glasc",
+        "Nautilus",
+        "Jarvan IV",
+        "Jayce",
+        "Orianna"
+      ],
+      "picks": [
+        "Ornn",
+        "Lee Sin",
+        "Anivia",
+        "Ezreal",
+        "Karma"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_485476",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   }
 ]
