@@ -725,10 +725,10 @@
     "page": "ON",
     "teamId": "bilibili-gaming",
     "role": "support",
-    "country": "China",
-    "realName": "Luo Wen-Jun",
-    "nativeName": "骆文俊",
-    "residency": "China",
+    "country": null,
+    "realName": null,
+    "nativeName": null,
+    "residency": null,
     "fromScoreboardOnly": false
   },
   {
