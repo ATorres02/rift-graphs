@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "updatedAt": "2026-10-31T23:38:38Z",
+  "updatedAt": "2026-10-31T23:54:31Z",
   "tournamentId": "worlds-2026",
   "source": {
     "name": "Leaguepedia",
@@ -18,11 +18,13 @@
     "drafts": 71
   },
   "pendingGameIds": [],
-  "warnings": [],
+  "warnings": [
+    "series 2026 Season World Championship/Main Event_Quarterfinals_3: unknown team \"Lyon\""
+  ],
   "sources": {
     "lolesports": {
       "enabled": true,
-      "fetchedAt": "2026-10-31T23:39:05Z",
+      "fetchedAt": "2026-10-31T23:54:54Z",
       "matchedSeries": 39,
       "unmatchedEvents": 0,
       "error": null
