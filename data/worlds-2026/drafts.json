@@ -3198,5 +3198,55 @@
       ]
     },
     "complete": true
+  },
+  {
+    "gameId": "main-event-round-4-6-1",
+    "blue": {
+      "bans": [
+        "Jayce",
+        "Nocturne",
+        "Vi",
+        "Camille",
+        "Ambessa"
+      ],
+      "picks": [
+        "Pantheon",
+        "Nautilus",
+        "Olaf",
+        "Cassiopeia",
+        "Jhin"
+      ],
+      "picksByRole": [
+        "Olaf",
+        "Pantheon",
+        "Cassiopeia",
+        "Jhin",
+        "Nautilus"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Renata Glasc",
+        "Jarvan IV",
+        "Orianna",
+        "Viktor",
+        "Draven"
+      ],
+      "picks": [
+        "Lee Sin",
+        "Alistar",
+        "Syndra",
+        "Corki",
+        "K'Sante"
+      ],
+      "picksByRole": [
+        "K'Sante",
+        "Lee Sin",
+        "Syndra",
+        "Corki",
+        "Alistar"
+      ]
+    },
+    "complete": true
   }
 ]

@@ -1064,7 +1064,9 @@
     "patch": "26.20",
     "streamUrl": "https://www.twitch.tv/riotgames",
     "mvp": "Kanavi",
-    "gameIds": [],
+    "gameIds": [
+      "main-event-round-4-6-1"
+    ],
     "gamesPlayed": 2,
     "source": "leaguepedia",
     "provisional": false,

@@ -4478,5 +4478,75 @@
     "source": "leaguepedia",
     "provisional": false,
     "statsComplete": true
+  },
+  {
+    "id": "main-event-round-4-6-1",
+    "seriesId": "main-event-round-4-6",
+    "stage": "swiss",
+    "gameNumber": 1,
+    "dateTimeUtc": "2026-10-30T23:14:00Z",
+    "durationSeconds": 1685,
+    "patch": "26.20",
+    "winnerSide": "red",
+    "winnerTeamId": "hanwha-life-esports",
+    "blue": {
+      "teamId": "g2-esports",
+      "kills": 11,
+      "gold": 49906,
+      "towers": 1,
+      "inhibitors": 0,
+      "dragons": 0,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 1,
+      "bans": [
+        "Jayce",
+        "Nocturne",
+        "Vi",
+        "Camille",
+        "Ambessa"
+      ],
+      "picks": [
+        "Olaf",
+        "Pantheon",
+        "Cassiopeia",
+        "Jhin",
+        "Nautilus"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "hanwha-life-esports",
+      "kills": 22,
+      "gold": 59151,
+      "towers": 9,
+      "inhibitors": 1,
+      "dragons": 3,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 1,
+      "voidGrubs": 2,
+      "bans": [
+        "Renata Glasc",
+        "Jarvan IV",
+        "Orianna",
+        "Viktor",
+        "Draven"
+      ],
+      "picks": [
+        "K'Sante",
+        "Lee Sin",
+        "Syndra",
+        "Corki",
+        "Alistar"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_486479",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   }
 ]
