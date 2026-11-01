@@ -5038,5 +5038,75 @@
     "source": "leaguepedia",
     "provisional": false,
     "statsComplete": true
+  },
+  {
+    "id": "main-event-round-5-3-2",
+    "seriesId": "main-event-round-5-3",
+    "stage": "swiss",
+    "gameNumber": 2,
+    "dateTimeUtc": "2026-10-31T23:05:00Z",
+    "durationSeconds": 1964,
+    "patch": "26.20",
+    "winnerSide": "blue",
+    "winnerTeamId": "bilibili-gaming",
+    "blue": {
+      "teamId": "bilibili-gaming",
+      "kills": 14,
+      "gold": 67717,
+      "towers": 10,
+      "inhibitors": 2,
+      "dragons": 4,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 1,
+      "voidGrubs": 0,
+      "bans": [
+        "Jayce",
+        "Vi",
+        "Nocturne",
+        "Xin Zhao",
+        "Wukong"
+      ],
+      "picks": [
+        "Olaf",
+        "Pantheon",
+        "Locke",
+        "Yunara",
+        "Lulu"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "hanwha-life-esports",
+      "kills": 3,
+      "gold": 53406,
+      "towers": 0,
+      "inhibitors": 0,
+      "dragons": 1,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 3,
+      "bans": [
+        "Qiyana",
+        "Akali",
+        "LeBlanc",
+        "Naafiri",
+        "Camille"
+      ],
+      "picks": [
+        "K'Sante",
+        "Skarner",
+        "Syndra",
+        "Caitlyn",
+        "Karma"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_486571",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   }
 ]
