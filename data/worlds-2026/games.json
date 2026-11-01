@@ -4968,5 +4968,75 @@
     "source": "leaguepedia",
     "provisional": false,
     "statsComplete": true
+  },
+  {
+    "id": "main-event-round-5-3-1",
+    "seriesId": "main-event-round-5-3",
+    "stage": "swiss",
+    "gameNumber": 1,
+    "dateTimeUtc": "2026-10-31T22:02:00Z",
+    "durationSeconds": 2511,
+    "patch": "26.20",
+    "winnerSide": "blue",
+    "winnerTeamId": "bilibili-gaming",
+    "blue": {
+      "teamId": "bilibili-gaming",
+      "kills": 19,
+      "gold": 80910,
+      "towers": 7,
+      "inhibitors": 1,
+      "dragons": 4,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 0,
+      "bans": [
+        "Jayce",
+        "Vi",
+        "Nocturne",
+        "Jhin",
+        "Sivir"
+      ],
+      "picks": [
+        "Gnar",
+        "Lee Sin",
+        "Orianna",
+        "Ezreal",
+        "Nautilus"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "hanwha-life-esports",
+      "kills": 18,
+      "gold": 78899,
+      "towers": 8,
+      "inhibitors": 1,
+      "dragons": 3,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 1,
+      "voidGrubs": 3,
+      "bans": [
+        "Renata Glasc",
+        "Qiyana",
+        "Syndra",
+        "Wukong",
+        "Ambessa"
+      ],
+      "picks": [
+        "Rumble",
+        "Jarvan IV",
+        "Cassiopeia",
+        "Corki",
+        "Alistar"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_486564",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   }
 ]

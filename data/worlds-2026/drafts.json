@@ -3548,5 +3548,55 @@
       ]
     },
     "complete": true
+  },
+  {
+    "gameId": "main-event-round-5-3-1",
+    "blue": {
+      "bans": [
+        "Jayce",
+        "Vi",
+        "Nocturne",
+        "Jhin",
+        "Sivir"
+      ],
+      "picks": [
+        "Orianna",
+        "Nautilus",
+        "Ezreal",
+        "Lee Sin",
+        "Gnar"
+      ],
+      "picksByRole": [
+        "Gnar",
+        "Lee Sin",
+        "Orianna",
+        "Ezreal",
+        "Nautilus"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Renata Glasc",
+        "Qiyana",
+        "Syndra",
+        "Wukong",
+        "Ambessa"
+      ],
+      "picks": [
+        "Cassiopeia",
+        "Jarvan IV",
+        "Alistar",
+        "Corki",
+        "Rumble"
+      ],
+      "picksByRole": [
+        "Rumble",
+        "Jarvan IV",
+        "Cassiopeia",
+        "Corki",
+        "Alistar"
+      ]
+    },
+    "complete": true
   }
 ]
