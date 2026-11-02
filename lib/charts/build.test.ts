@@ -234,7 +234,7 @@ describe("autoTitle and CSV", () => {
           ["@cmd", 6],
         ],
       }),
-    ).toBe("Name,Value\n\"'=HYPERLINK(\"\"http://example.com\"\",\"\"x\"\")\",1\n-5,2\n-5,3\n'-SUM(A1),4\n'+1,5\n'@cmd,6");
+    ).toBe('Name,Value\n"\'=HYPERLINK(""http://example.com"",""x"")",1\n-5,2\n-5,3\n\'-SUM(A1),4\n\'+1,5\n\'@cmd,6');
   });
   it("computes five-number summaries", () => {
     expect(boxStats([5, 1, 3, 2, 4])).toEqual([1, 2, 3, 4, 5]);
