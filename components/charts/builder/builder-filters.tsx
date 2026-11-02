@@ -8,7 +8,7 @@ import { regionInfo } from "@/lib/data/regions";
 import type { Role, StageId } from "@/lib/data/types";
 import { ROLE_LABEL, STAGE_LABEL } from "@/lib/format";
 import { ROLES } from "@/lib/metrics";
-import { RADAR_MAX_ENTITIES, RADAR_OVERLAY_MAX, type QueryConfig, type QueryFilters } from "@/lib/query";
+import { RADAR_MAX_ENTITIES, type QueryConfig, type QueryFilters } from "@/lib/query";
 import { cn } from "@/lib/utils";
 
 export interface FilterCatalog {
@@ -472,9 +472,7 @@ export function PickStep({
         </p>
       ) : null}
       <p className="text-[11px] text-muted-foreground">
-        {radar
-          ? `Up to ${RADAR_MAX_ENTITIES} on a radar: past ${RADAR_OVERLAY_MAX}, each gets its own small radar on the same scale. `
-          : ""}
+        {radar ? `Up to ${RADAR_MAX_ENTITIES} on a radar, all on one or one radar each (step 4). ` : ""}
         Everyone still counts for the average and the scales.
       </p>
     </div>

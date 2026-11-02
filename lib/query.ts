@@ -13,6 +13,7 @@ import { ROLE_LABEL, STAGE_LABEL, STAGE_SHORT } from "./format";
 import { kda as kdaOf } from "./metrics";
 
 export type DataSource = "players" | "teams" | "champions" | "games";
+export type RadarLayout = "together" | "separate";
 export type ChartType = "bar" | "groupedBar" | "stackedBar" | "line" | "scatter" | "radar" | "heatmap" | "boxplot";
 export type Aggregation = "mean" | "median" | "sum" | "max" | "min" | "perGame" | "perMinute";
 export type SortMode = "desc" | "asc" | "label";
@@ -52,6 +53,11 @@ export interface QueryConfig {
    * the tournament average and for the radar scale. Top N does not apply to a pick.
    */
   pick?: string[];
+  /**
+   * Radars only: every entry on one radar ("together") or one small radar each ("separate"). Unset, a radar
+   * overlays up to four entries and splits beyond.
+   */
+  radarLayout?: RadarLayout;
 }
 
 export const DEFAULT_CONFIG: QueryConfig = {

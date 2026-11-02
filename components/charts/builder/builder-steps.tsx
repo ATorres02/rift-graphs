@@ -7,6 +7,7 @@ import {
   CHART_LABEL,
   MEASURE_GROUP_LABEL,
   RADAR_MAX_ENTITIES,
+  RADAR_OVERLAY_MAX,
   allowedAggregations,
   chartProblems,
   dimensionsFor,
@@ -18,6 +19,7 @@ import {
   type DataSource,
   type MeasureGroup,
   type QueryConfig,
+  type RadarLayout,
   type SortMode,
 } from "@/lib/query";
 import { cn } from "@/lib/utils";
@@ -255,6 +257,44 @@ export function ChartTypeStep({ config, onChange }: { config: QueryConfig; onCha
           </button>
         );
       })}
+    </div>
+  );
+}
+
+/** Radars: every entry on one radar, or one small radar each. Unset, it follows the number of entries. */
+export function RadarLayoutStep({
+  config,
+  count,
+  onChange,
+}: {
+  config: QueryConfig;
+  /** Entries on the radar now. */
+  count: number;
+  onChange: (layout: RadarLayout) => void;
+}) {
+  const current: RadarLayout = config.radarLayout ?? (count > RADAR_OVERLAY_MAX ? "separate" : "together");
+  const options: { key: RadarLayout; label: string; hint: string }[] = [
+    { key: "together", label: "All on one radar", hint: "Every shape overlaid, each in its own colour" },
+    { key: "separate", label: "One radar each", hint: "Small radars side by side, same scale" },
+  ];
+  return (
+    <div className="grid grid-cols-2 gap-1.5" role="radiogroup" aria-label="Radar layout">
+      {options.map((o) => (
+        <button
+          key={o.key}
+          type="button"
+          role="radio"
+          aria-checked={current === o.key}
+          onClick={() => onChange(o.key)}
+          className={cn(
+            "rounded-md border px-2 py-1.5 text-left text-xs transition-colors hover:border-brand",
+            current === o.key && "border-brand bg-brand-soft",
+          )}
+        >
+          <span className="font-medium">{o.label}</span>
+          <span className="block text-[11px] text-muted-foreground">{o.hint}</span>
+        </button>
+      ))}
     </div>
   );
 }

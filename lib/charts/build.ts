@@ -78,8 +78,10 @@ function describe(result: QueryResult, spec: ChartSpec): string {
     return `${kind}: ${n} ${dimension.label.toLowerCase()}s plotted by ${first.label} (X) and ${second?.label ?? ""} (Y). Highest ${first.label}: ${max.label} (${unitF(max.v)}).`;
   }
   const text = `${kind}: ${n} ${dimension.label.toLowerCase()}${n === 1 ? "" : "s"} by ${first.label}; highest ${max.label} (${unitF(max.v)}), lowest ${min.label} (${unitF(min.v)}).`;
-  if (spec.type === "radar" && spec.grid)
-    return `${text} One small radar each, all on the same scale${spec.reference ? `; the dashed shape is the ${spec.reference.name.toLowerCase()}` : ""}.`;
+  if (spec.type === "radar") {
+    const dashed = spec.reference ? `The dashed shape is the ${spec.reference.name.toLowerCase()}.` : "";
+    return [text, spec.grid ? "One small radar each, all on the same scale." : "", dashed].filter(Boolean).join(" ");
+  }
   return text;
 }
 
@@ -107,6 +109,9 @@ function pivot(
   });
   return { categories, series };
 }
+
+/** Colours of the chart palette (--viz-1 to --viz-6). */
+const RADAR_COLOURS = 6;
 
 /** Axis names for small radars, where the full labels do not fit. */
 const SHORT_LABEL: Record<string, string> = {
@@ -263,32 +268,34 @@ export function buildChart(result: QueryResult): BuiltChart {
       const average = config.showAverage
         ? { name: averageLabel(config), values: measures.map((m) => result.overall[m.key] ?? 0) }
         : null;
-      const shapes = entities.map((r) => ({
-        name: r.label,
-        values: measures.map((m) => r.values[m.key] ?? 0),
-        color: r.color ?? undefined,
-      }));
+      // Colour follows the entry: the order it was picked in, or its rank. Past the palette's six colours the
+      // marker changes too, so no two shapes look the same.
+      const slot = (key: string, i: number) => (config.pick?.length ? Math.max(0, config.pick.indexOf(key)) : i);
+      const shapes = entities.map((r, i) => {
+        const n = slot(r.key, i);
+        return {
+          name: r.label,
+          values: measures.map((m) => r.values[m.key] ?? 0),
+          color: r.color ?? `var(--viz-${(n % RADAR_COLOURS) + 1})`,
+          ...(n >= RADAR_COLOURS ? { symbol: "triangle" as const } : {}),
+        };
+      });
       const indicators = measures.map((m, i) => ({
         name: m.label,
         max: maxes[i],
         unit: m.unit,
         ...(SHORT_LABEL[m.key] ? { short: SHORT_LABEL[m.key] } : {}),
       }));
-      // Past four overlaid shapes nobody can tell them apart: each entry gets its own small radar instead.
-      spec =
-        entities.length > RADAR_OVERLAY_MAX
-          ? ({
-              type: "radar",
-              indicators,
-              series: shapes,
-              grid: true,
-              ...(average ? { reference: average } : {}),
-            } satisfies RadarSpec)
-          : ({
-              type: "radar",
-              indicators,
-              series: [...shapes, ...(average ? [average] : [])],
-            } satisfies RadarSpec);
+      // Unless the reader chose, more than four shapes split into one small radar each.
+      const grid =
+        config.radarLayout === "separate" || (config.radarLayout !== "together" && entities.length > RADAR_OVERLAY_MAX);
+      spec = {
+        type: "radar",
+        indicators,
+        series: shapes,
+        ...(grid ? { grid: true } : {}),
+        ...(average ? { reference: average } : {}),
+      } satisfies RadarSpec;
       break;
     }
     case "heatmap": {

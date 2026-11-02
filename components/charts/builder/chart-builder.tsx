@@ -10,7 +10,7 @@ import { useThemeKey } from "@/components/charts/chart";
 import type { EChartsInstance } from "@/components/charts/echart";
 import { Button } from "@/components/ui/button";
 import { FiltersStep, PickStep, type FilterCatalog } from "./builder-filters";
-import { ChartTypeStep, GroupStep, MeasureStep, OptionsStep, SourceStep, Step } from "./builder-steps";
+import { ChartTypeStep, GroupStep, MeasureStep, OptionsStep, RadarLayoutStep, SourceStep, Step } from "./builder-steps";
 import { buildChart, tableToCsv } from "@/lib/charts/build";
 import { composeChartPng, downloadText } from "@/lib/charts/export-png";
 import { TEMPLATES } from "@/lib/charts/templates";
@@ -203,6 +203,13 @@ export function ChartBuilder({ version, catalog }: { version: string; catalog: F
         </Step>
         <Step n={4} title="Chart type">
           <ChartTypeStep config={config} onChange={switchChart} />
+          {config.chart === "radar" ? (
+            <RadarLayoutStep
+              config={config}
+              count={Math.min(shownKeys.length, RADAR_MAX_ENTITIES)}
+              onChange={(radarLayout) => update({ radarLayout })}
+            />
+          ) : null}
         </Step>
         <Step n={5} title="Options">
           <OptionsStep config={config} onChange={update} orderedDimension={orderedDimension} />

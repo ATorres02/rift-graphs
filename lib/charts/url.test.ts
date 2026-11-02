@@ -29,6 +29,18 @@ describe("chart URL codec", () => {
       expect(parsed).toEqual(t.config);
     }
   });
+  it("keeps the radar layout and the pick in the link", () => {
+    const config: QueryConfig = {
+      ...TEMPLATES[0].config,
+      chart: "radar",
+      measures: ["kda", "dpm", "cspm"],
+      pick: ["zeus", "kiin"],
+      radarLayout: "separate",
+    };
+    expect(parseConfig(new URLSearchParams(serializeConfig(config)))).toEqual(config);
+    // Other charts do not carry it.
+    expect(serializeConfig({ ...config, chart: "bar" })).not.toContain("rl=");
+  });
   it("round-trips filters", () => {
     const f = parseFilters(
       "stage:swiss|playin;team:t1|gen-g;region:Korea;role:mid|top;side:blue;res:win;champ:Ahri|Jarvan IV;min:3;dur:1500-2400",

@@ -101,6 +101,9 @@ function wrapWords(text: string, max: number): string {
 /** Below this width (px) the chart uses its phone layout: smaller radar, wrapped names, earlier rotation. */
 const NARROW_WIDTH = 480;
 
+/** Legend icon for a dashed reference shape, as drawn in the radars. */
+const DASH_ICON = "path://M0,0h5v2H0zM8,0h5v2H8zM16,0h5v2h-5z";
+
 /** Grid of small radars: two columns on phones, three or four wider; every cell has the same height. */
 export function radarGridLayout(count: number, width: number) {
   const w = width || 360;
@@ -144,8 +147,7 @@ function radarGridOption(
           data: [ref.name],
           top: 0,
           left: "center",
-          // A dashed line, as drawn in the radars.
-          icon: "path://M0,0h5v2H0zM8,0h5v2H8zM16,0h5v2h-5z",
+          icon: DASH_ICON,
           itemWidth: 21,
           itemHeight: 2,
           textStyle: { color: p.muted },
@@ -402,14 +404,21 @@ export function buildOption(
   if (spec.type === "radar" && spec.grid) return radarGridOption(spec, p, base, color, width);
 
   if (spec.type === "radar") {
+    const ref = spec.reference;
+    const many = spec.series.length > 4;
     return {
       ...base,
       legend: {
-        type: "scroll",
+        type: "plain",
         bottom: 0,
         textStyle: { color: p.muted },
-        icon: "roundRect",
-        pageTextStyle: { color: p.muted },
+        itemGap: 12,
+        itemWidth: 16,
+        itemHeight: 10,
+        data: [
+          ...spec.series.map((s) => ({ name: s.name, icon: s.symbol === "triangle" ? "triangle" : "roundRect" })),
+          ...(ref ? [{ name: ref.name, icon: DASH_ICON, itemStyle: { color: p.muted } }] : []),
+        ],
       },
       tooltip: {
         ...base.tooltip,
@@ -423,7 +432,8 @@ export function buildOption(
       },
       radar: {
         indicator: spec.indicators.map(({ name, max }) => ({ name, max })),
-        // Long names wrap instead of running off the canvas on phones.
+        // Long names wrap instead of running off the canvas on phones; many entries leave room for the legend.
+        center: ["50%", many ? (narrow ? "43%" : "44%") : "50%"],
         axisName: {
           color: p.muted,
           fontSize: narrow ? 10 : 12,
@@ -432,18 +442,40 @@ export function buildOption(
         splitLine: { lineStyle: { color: p.grid } },
         splitArea: { show: false },
         axisLine: { lineStyle: { color: p.grid } },
-        radius: narrow ? "52%" : "62%",
+        radius: narrow ? (many ? "56%" : "52%") : many ? "58%" : "62%",
       },
       series: [
         {
           type: "radar",
-          data: spec.series.map((s, i) => ({
-            name: s.name,
-            value: s.values.map((v) => v ?? 0),
-            itemStyle: { color: color(s.color, p.series[i % p.series.length]) },
-            lineStyle: { width: 2 },
-            areaStyle: { opacity: 0.15 },
-          })),
+          // Hovering a shape (or its legend entry) fades the others.
+          emphasis: { focus: "self", lineStyle: { width: 3 } },
+          blur: { lineStyle: { opacity: 0.12 }, itemStyle: { opacity: 0.12 }, areaStyle: { opacity: 0.02 } },
+          data: [
+            ...(ref
+              ? [
+                  {
+                    name: ref.name,
+                    value: ref.values.map((v) => v ?? 0),
+                    symbol: "none",
+                    itemStyle: { color: p.muted },
+                    lineStyle: { type: "dashed" as const, width: 1.5, color: p.muted },
+                  },
+                ]
+              : []),
+            ...spec.series.map((s, i) => {
+              const c = color(s.color, p.series[i % p.series.length]);
+              return {
+                name: s.name,
+                value: s.values.map((v) => v ?? 0),
+                symbol: s.symbol ?? "circle",
+                symbolSize: s.symbol === "triangle" ? 8 : 5,
+                itemStyle: { color: c },
+                lineStyle: { width: 2, color: c },
+                // Fills add up: with many shapes they stay faint so the outlines carry the reading.
+                areaStyle: { opacity: many ? 0.05 : 0.15, color: c },
+              };
+            }),
+          ],
         },
       ],
     };

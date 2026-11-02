@@ -11,6 +11,8 @@ export interface ChartSeries {
   color?: string;
   /** Per-point colours (bars/scatter), overriding `color`. */
   colors?: (string | null)[];
+  /** Radar point marker; with more entries than colours the marker tells repeated colours apart. */
+  symbol?: "circle" | "triangle";
 }
 
 export interface BarSpec {
@@ -57,9 +59,9 @@ export interface RadarSpec {
   /** `unit` formats the tooltip and the table (defaults to "number"). */
   indicators: { name: string; max: number; unit?: Unit; /** Axis name in a grid of small radars. */ short?: string }[];
   series: ChartSeries[];
-  /** One small radar per series, all on the same scale (too many shapes to overlay). */
+  /** One small radar per series, all on the same scale, instead of every shape on one radar. */
   grid?: boolean;
-  /** Grid only: a dashed shape drawn in every small radar (e.g. the tournament average). */
+  /** A dashed grey shape (e.g. the tournament average), drawn under the series (in every small radar of a grid). */
   reference?: ChartSeries;
 }
 
