@@ -9,7 +9,7 @@ import { useImageExport } from "@/components/charts/image-export";
 import { useThemeKey } from "@/components/charts/chart";
 import type { EChartsInstance } from "@/components/charts/echart";
 import { Button } from "@/components/ui/button";
-import { FiltersStep, type FilterCatalog } from "./builder-filters";
+import { FiltersStep, PickStep, type FilterCatalog } from "./builder-filters";
 import { ChartTypeStep, GroupStep, MeasureStep, OptionsStep, SourceStep, Step } from "./builder-steps";
 import { buildChart, tableToCsv } from "@/lib/charts/build";
 import { composeChartPng, downloadText } from "@/lib/charts/export-png";
@@ -18,6 +18,8 @@ import { parseConfig, serializeConfig } from "@/lib/charts/url";
 import { useDataset } from "@/lib/data/use-dataset";
 import {
   DEFAULT_CONFIG,
+  RADAR_MAX_ENTITIES,
+  RADAR_OVERLAY_MAX,
   chartProblems,
   dimensionByKey,
   dimensionsFor,
@@ -116,7 +118,7 @@ export function ChartBuilder({ version, catalog }: { version: string; catalog: F
 
   const switchChart = (chart: ChartType) => {
     const patch: Partial<QueryConfig> = { chart };
-    if (chart === "radar" && (config.topN === null || config.topN > 4)) patch.topN = 4;
+    if (chart === "radar" && (config.topN === null || config.topN > RADAR_MAX_ENTITIES)) patch.topN = RADAR_OVERLAY_MAX;
     if (chart === "line" && !dimensionByKey.get(config.groupBy)?.ordered)
       patch.groupBy = dimensionsFor(config.source).find((d) => d.ordered)?.key ?? config.groupBy;
     if (chart === "heatmap" && !config.series)
@@ -163,6 +165,7 @@ export function ChartBuilder({ version, catalog }: { version: string; catalog: F
     if (built) downloadText(tableToCsv(built.table), `${fileName()}.csv`);
   };
 
+  const shownKeys = useMemo(() => Array.from(new Set(result?.rows.map((r) => r.key) ?? [])), [result]);
   const orderedDimension = !!dimensionByKey.get(config.groupBy)?.ordered;
   const problems = result?.problems ?? chartProblems(config, config.chart);
 
@@ -180,19 +183,21 @@ export function ChartBuilder({ version, catalog }: { version: string; catalog: F
             onSwap={() => update({ measures: [config.measures[1], config.measures[0]] })}
           />
         </Step>
-        <Step n={3} title="Group and filter">
+        <Step n={3} title="Group and compare">
           <GroupStep config={config} onChange={update} />
+          <PickStep
+            config={config}
+            catalog={catalog}
+            shown={shownKeys}
+            ready={!!result && !problems.length}
+            onPick={(pick) => update({ pick })}
+          />
           <details className="mt-2" open={Object.keys(config.filters).length > 1}>
             <summary className="cursor-pointer text-xs font-medium text-muted-foreground hover:text-foreground">
               Filters {Object.keys(config.filters).length ? `(${Object.keys(config.filters).length} active)` : ""}
             </summary>
             <div className="mt-2">
-              <FiltersStep
-                config={config}
-                catalog={catalog}
-                onChange={(filters) => update({ filters })}
-                onPick={(pick) => update({ pick })}
-              />
+              <FiltersStep config={config} catalog={catalog} onChange={(filters) => update({ filters })} />
             </div>
           </details>
         </Step>
@@ -282,7 +287,11 @@ export function ChartBuilder({ version, catalog }: { version: string; catalog: F
 
           {data && built && result && result.rows.length ? (
             view === "chart" ? (
-              <div style={{ height: 460 }} role="img" aria-label={built.description}>
+              <div
+                style={built.spec.type === "radar" && built.spec.grid ? undefined : { height: 460 }}
+                role="img"
+                aria-label={built.description}
+              >
                 <EChart spec={built.spec} themeKey={themeKey} onReady={(instance) => (chartRef.current = instance)} />
               </div>
             ) : (

@@ -6,6 +6,7 @@ import {
   AGGREGATION_LABEL,
   CHART_LABEL,
   MEASURE_GROUP_LABEL,
+  RADAR_MAX_ENTITIES,
   allowedAggregations,
   chartProblems,
   dimensionsFor,
@@ -286,18 +287,24 @@ export function OptionsStep({
       </label>
       <label className="text-xs text-muted-foreground">
         Top N
-        <select
-          className={selectClass}
-          value={config.topN === null ? "all" : String(config.topN)}
-          onChange={(e) => onChange({ topN: e.target.value === "all" ? null : Number(e.target.value) })}
-        >
-          {config.chart === "radar" ? null : <option value="all">All</option>}
-          {[4, 5, 10, 20].map((n) => (
-            <option key={n} value={n} disabled={config.chart === "radar" && n > 4}>
-              {n}
-            </option>
-          ))}
-        </select>
+        {config.pick?.length ? (
+          <select className={selectClass} disabled value="pick" title="The chart shows the ones you picked to compare">
+            <option value="pick">Your {config.pick.length} picked</option>
+          </select>
+        ) : (
+          <select
+            className={selectClass}
+            value={config.topN === null ? "all" : String(config.topN)}
+            onChange={(e) => onChange({ topN: e.target.value === "all" ? null : Number(e.target.value) })}
+          >
+            {config.chart === "radar" ? null : <option value="all">All</option>}
+            {[4, 5, 8, 10, 12, 20].map((n) => (
+              <option key={n} value={n} disabled={config.chart === "radar" && n > RADAR_MAX_ENTITIES}>
+                {n}
+              </option>
+            ))}
+          </select>
+        )}
       </label>
       <label className="text-xs text-muted-foreground">
         Colour by

@@ -18,6 +18,7 @@ import {
   AGGREGATION_LABEL,
   CHART_LABEL,
   RADAR_MAX_ENTITIES,
+  RADAR_OVERLAY_MAX,
   type QueryConfig,
   type QueryResult,
   type QueryRow,
@@ -38,12 +39,24 @@ export function autoTitle(result: QueryResult): string {
     config.aggregation !== "mean" && measures.some((m) => m.kind === "sum")
       ? ` (${AGGREGATION_LABEL[config.aggregation].toLowerCase()})`
       : "";
-  const top = config.topN && dimension?.entity ? `Top ${config.topN} ` : "";
-  const by = dimension ? ` by ${dimension.label.toLowerCase()}` : "";
-  const series = seriesDimension ? ` and ${seriesDimension.label.toLowerCase()}` : "";
   const stages = config.filters.stages?.length
     ? `, ${config.filters.stages.map((s) => STAGE_LABEL[s]).join(", ")}`
     : "";
+  // A pick is a comparison: name who is in it (a few) or how many, instead of "Top N".
+  const picked = config.pick?.length && dimension ? Array.from(new Set(result.rows.map((r) => r.label))) : null;
+  if (picked?.length) {
+    const who =
+      picked.length <= 3
+        ? picked.length === 1
+          ? picked[0]
+          : `${picked.slice(0, -1).join(", ")} and ${picked[picked.length - 1]}`
+        : `${picked.length} ${dimension!.label.toLowerCase()}s compared`;
+    const series = seriesDimension ? ` by ${seriesDimension.label.toLowerCase()}` : "";
+    return `${who}: ${measureText}${agg}${series}${stages}`;
+  }
+  const top = config.topN && dimension?.entity ? `Top ${config.topN} ` : "";
+  const by = dimension ? ` by ${dimension.label.toLowerCase()}` : "";
+  const series = seriesDimension ? ` and ${seriesDimension.label.toLowerCase()}` : "";
   return `${top}${measureText}${agg}${by}${series}${stages}`;
 }
 
@@ -64,7 +77,10 @@ function describe(result: QueryResult, spec: ChartSpec): string {
     const second = measures[1];
     return `${kind}: ${n} ${dimension.label.toLowerCase()}s plotted by ${first.label} (X) and ${second?.label ?? ""} (Y). Highest ${first.label}: ${max.label} (${unitF(max.v)}).`;
   }
-  return `${kind}: ${n} ${dimension.label.toLowerCase()}${n === 1 ? "" : "s"} by ${first.label}; highest ${max.label} (${unitF(max.v)}), lowest ${min.label} (${unitF(min.v)}).`;
+  const text = `${kind}: ${n} ${dimension.label.toLowerCase()}${n === 1 ? "" : "s"} by ${first.label}; highest ${max.label} (${unitF(max.v)}), lowest ${min.label} (${unitF(min.v)}).`;
+  if (spec.type === "radar" && spec.grid)
+    return `${text} One small radar each, all on the same scale${spec.reference ? `; the dashed shape is the ${spec.reference.name.toLowerCase()}` : ""}.`;
+  return text;
 }
 
 function pivot(
@@ -91,6 +107,36 @@ function pivot(
   });
   return { categories, series };
 }
+
+/** Axis names for small radars, where the full labels do not fit. */
+const SHORT_LABEL: Record<string, string> = {
+  kp: "KP",
+  killsPerMinute: "Kills/min",
+  totalKills: "Kills (all)",
+  gpm: "GPM",
+  goldShare: "Gold %",
+  cspm: "CS/min",
+  totalGold: "Gold (all)",
+  damage: "Damage",
+  dpm: "DPM",
+  damageShare: "Dmg %",
+  vision: "Vision",
+  vspm: "Vis/min",
+  inhibitors: "Inhibs",
+  elders: "Elders",
+  heralds: "Heralds",
+  voidGrubs: "Grubs",
+  dragonControl: "Drag ctrl",
+  baronControl: "Baron ctrl",
+  totalDragons: "Drags (all)",
+  totalBarons: "Barons (all)",
+  totalTowers: "Towers (all)",
+  duration: "Length",
+  pickRate: "Pick %",
+  banRate: "Ban %",
+  winRate: "Win %",
+  blueWinRate: "Blue win %",
+};
 
 /** The average covers the filtered rows: with any filter on it is the selection's, not the tournament's. */
 function averageLabel(config: QueryConfig): string {
@@ -214,20 +260,35 @@ export function buildChart(result: QueryResult): BuiltChart {
           0.0001,
         ),
       );
-      spec = {
-        type: "radar",
-        indicators: measures.map((m, i) => ({ name: m.label, max: maxes[i], unit: m.unit })),
-        series: [
-          ...entities.map((r) => ({
-            name: r.label,
-            values: measures.map((m) => r.values[m.key] ?? 0),
-            color: r.color ?? undefined,
-          })),
-          ...(config.showAverage
-            ? [{ name: averageLabel(config), values: measures.map((m) => result.overall[m.key] ?? 0) }]
-            : []),
-        ],
-      } satisfies RadarSpec;
+      const average = config.showAverage
+        ? { name: averageLabel(config), values: measures.map((m) => result.overall[m.key] ?? 0) }
+        : null;
+      const shapes = entities.map((r) => ({
+        name: r.label,
+        values: measures.map((m) => r.values[m.key] ?? 0),
+        color: r.color ?? undefined,
+      }));
+      const indicators = measures.map((m, i) => ({
+        name: m.label,
+        max: maxes[i],
+        unit: m.unit,
+        ...(SHORT_LABEL[m.key] ? { short: SHORT_LABEL[m.key] } : {}),
+      }));
+      // Past four overlaid shapes nobody can tell them apart: each entry gets its own small radar instead.
+      spec =
+        entities.length > RADAR_OVERLAY_MAX
+          ? ({
+              type: "radar",
+              indicators,
+              series: shapes,
+              grid: true,
+              ...(average ? { reference: average } : {}),
+            } satisfies RadarSpec)
+          : ({
+              type: "radar",
+              indicators,
+              series: [...shapes, ...(average ? [average] : [])],
+            } satisfies RadarSpec);
       break;
     }
     case "heatmap": {

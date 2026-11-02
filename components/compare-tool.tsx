@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { DownloadIcon, FileSpreadsheetIcon } from "lucide-react";
 import { Chart } from "@/components/charts/chart";
@@ -177,6 +178,21 @@ export function CompareTool({ groups }: { groups: CompareGroup[] }) {
     };
   };
   const fileName = () => slugify(`${ea?.label ?? "a"} vs ${eb?.label ?? "b"}`) || "compare";
+  /** The same two on the builder's radar, where more can be added. */
+  const chartsHref =
+    ea && eb
+      ? chartHref(
+          compareChart(
+            group.type,
+            ea.id,
+            eb.id,
+            group.metrics
+              .filter((m) => m.radar)
+              .slice(0, 8)
+              .map((m) => m.key),
+          ),
+        )
+      : undefined;
   const exportPng = async () => {
     const instance = chartRef.current;
     const table = exportTable();
@@ -279,6 +295,11 @@ export function CompareTool({ groups }: { groups: CompareGroup[] }) {
       {ea && eb && radar ? (
         <>
           <div className="flex flex-wrap items-center justify-end gap-2">
+            {chartsHref ? (
+              <Link href={chartsHref} className="mr-auto text-sm text-brand underline">
+                Compare more than two in Charts
+              </Link>
+            ) : null}
             <Button variant="outline" size="sm" onClick={exportPng}>
               <DownloadIcon className="size-4" aria-hidden />
               PNG with table
@@ -290,21 +311,7 @@ export function CompareTool({ groups }: { groups: CompareGroup[] }) {
           </div>
           <div className="grid gap-6 lg:grid-cols-2">
             <Chart
-              builderHref={
-                ea && eb
-                  ? chartHref(
-                      compareChart(
-                        group.type,
-                        ea.id,
-                        eb.id,
-                        group.metrics
-                          .filter((m) => m.radar)
-                          .slice(0, 8)
-                          .map((m) => m.key),
-                      ),
-                    )
-                  : undefined
-              }
+              builderHref={chartsHref}
               spec={radar}
               table={{
                 columns: ["Metric", ea.label, eb.label],

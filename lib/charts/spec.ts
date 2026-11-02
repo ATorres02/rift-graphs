@@ -55,8 +55,12 @@ export interface ScatterSpec {
 export interface RadarSpec {
   type: "radar";
   /** `unit` formats the tooltip and the table (defaults to "number"). */
-  indicators: { name: string; max: number; unit?: Unit }[];
+  indicators: { name: string; max: number; unit?: Unit; /** Axis name in a grid of small radars. */ short?: string }[];
   series: ChartSeries[];
+  /** One small radar per series, all on the same scale (too many shapes to overlay). */
+  grid?: boolean;
+  /** Grid only: a dashed shape drawn in every small radar (e.g. the tournament average). */
+  reference?: ChartSeries;
 }
 
 export interface HeatmapSpec {

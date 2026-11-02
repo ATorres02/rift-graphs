@@ -86,6 +86,27 @@ describe("buildChart", () => {
     expect(built.spec.indicators.map((i) => i.unit)).toEqual(["number", "decimal1", "decimal1"]);
     expect(built.spec.series.map((s) => s.name)).toEqual(["A", "B", "Tournament average"]);
   });
+  it("splits a radar of more than four entries into small radars with the average in each", () => {
+    const r = result({
+      config: { ...DEFAULT_CONFIG, filters: {}, topN: 12, chart: "radar", measures: ["dpm", "kda", "cspm"] },
+      measures: [m("dpm"), m("kda"), m("cspm")],
+      overall: { dpm: 600, kda: 4, cspm: 9 },
+    });
+    const base = r.rows[0];
+    r.rows = ["A", "B", "C", "D", "E", "F"].map((label, i) => ({
+      ...base,
+      key: label.toLowerCase(),
+      label,
+      values: { dpm: 500 + i * 10, kda: 3, cspm: 8 },
+    }));
+    const built = buildChart(r);
+    if (built.spec.type !== "radar") throw new Error("expected radar");
+    expect(built.spec.grid).toBe(true);
+    expect(built.spec.series.map((s) => s.name)).toEqual(["A", "B", "C", "D", "E", "F"]);
+    expect(built.spec.reference?.name).toBe("Tournament average");
+    expect(built.spec.indicators.map((i) => i.short ?? i.name)).toEqual(["DPM", "KDA", "CS/min"]);
+    expect(built.description).toContain("dashed shape is the tournament average");
+  });
   it("pivots a series dimension into heat map cells", () => {
     const side = dimensionByKey.get("side")!;
     const r = result({
