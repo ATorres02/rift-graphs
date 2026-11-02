@@ -221,6 +221,21 @@ describe("autoTitle and CSV", () => {
   it("rounds CSV numbers to four decimals", () => {
     expect(tableToCsv({ columns: ["Name", "Value"], rows: [["A", 2 / 3]] })).toBe("Name,Value\nA,0.6667");
   });
+  it("neutralises spreadsheet formulas but keeps negative numbers", () => {
+    expect(
+      tableToCsv({
+        columns: ["Name", "Value"],
+        rows: [
+          ['=HYPERLINK("http://example.com","x")', 1],
+          ["-5", 2],
+          [-5, 3],
+          ["-SUM(A1)", 4],
+          ["+1", 5],
+          ["@cmd", 6],
+        ],
+      }),
+    ).toBe('Name,Value\n"\'=HYPERLINK(""http://example.com"",""x"")",1\n-5,2\n-5,3\n\'-SUM(A1),4\n\'+1,5\n\'@cmd,6');
+  });
   it("computes five-number summaries", () => {
     expect(boxStats([5, 1, 3, 2, 4])).toEqual([1, 2, 3, 4, 5]);
     expect(boxStats([])).toBeNull();

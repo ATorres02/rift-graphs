@@ -47,6 +47,15 @@ export function decodeEntities(input: string): string {
   return once(once(input)).replace(/\s+/g, " ").trim();
 }
 
+/**
+ * Display text from the wiki: decode entities, then drop anything that could
+ * become markup. The schemas reject `<` and `>` as a last line of defence, so
+ * the ingest must clean the value first.
+ */
+export function cleanText(input: string): string {
+  return decodeEntities(input).replace(/[<>\u0000-\u001F\u007F]/g, "").trim();
+}
+
 /** "2026 Season World Championship/Main Event_Round 1_1" → "main-event-round-1-1". Unique within a tournament. */
 export function idFromCargoKey(key: string): string {
   const tail = key.includes("/") ? key.slice(key.lastIndexOf("/") + 1) : key;

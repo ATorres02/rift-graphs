@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { jsonLdHtml } from "@/lib/jsonld";
 import { Headlines, type Headline } from "@/components/headlines";
 import { LocalTime } from "@/components/local-time";
 import { Section } from "@/components/page-header";
@@ -122,7 +123,7 @@ export default function HomePage() {
 
   return (
     <div className="space-y-10">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(jsonLd) }} />
       <section className="space-y-4">
         <div className="relative -mx-4 overflow-hidden bg-black sm:mx-0 sm:rounded-md">
           {art ? (
