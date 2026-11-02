@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { jsonLdHtml } from "@/lib/jsonld";
 import { notFound } from "next/navigation";
 import { ExternalLinkIcon, GitCompareArrowsIcon } from "lucide-react";
 import { LocalTime } from "@/components/local-time";
@@ -90,7 +91,7 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
 
   return (
     <div className="space-y-8">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(jsonLd) }} />
       <PageHeader
         art={seriesArt(data, s, games)}
         eyebrow={`${roundLabel(s.stage, s.round, s.tab)} / ${bestOfLabel(s.bestOf)}${s.patch ? ` / Patch ${s.patch}` : ""}`}

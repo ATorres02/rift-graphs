@@ -87,6 +87,10 @@ function readPalette(): Palette {
 
 const axisValueFormatter = (unit: Unit | undefined) => (value: number) => formatUnit(value, unit);
 
+/** Escapes text interpolated into a tooltip: ECharts renders custom tooltips with innerHTML. */
+const esc = (value: unknown): string =>
+  String(value).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
+
 /** Splits a label into lines of about `max` characters, at spaces. */
 function wrapWords(text: string, max: number): string {
   const lines: string[] = [];
@@ -224,7 +228,7 @@ export function buildOption(
         formatter: (params) => {
           const item = Array.isArray(params) ? params[0] : params;
           const v = item.value as number[];
-          return `<b>${item.name}</b><br/>${spec.xLabel}: ${formatUnit(v[0], spec.xUnit)}<br/>${spec.yLabel}: ${formatUnit(v[1], spec.yUnit)}`;
+          return `<b>${esc(item.name)}</b><br/>${esc(spec.xLabel)}: ${formatUnit(v[0], spec.xUnit)}<br/>${esc(spec.yLabel)}: ${formatUnit(v[1], spec.yUnit)}`;
         },
       },
       xAxis: {
@@ -295,8 +299,8 @@ export function buildOption(
         formatter: (params) => {
           const item = Array.isArray(params) ? params[0] : params;
           const values = item.value as number[];
-          const lines = spec.indicators.map((ind, i) => `${ind.name}: ${formatUnit(values[i] ?? null, ind.unit)}`);
-          return `<b>${item.name}</b><br/>${lines.join("<br/>")}`;
+          const lines = spec.indicators.map((ind, i) => `${esc(ind.name)}: ${formatUnit(values[i] ?? null, ind.unit)}`);
+          return `<b>${esc(item.name)}</b><br/>${lines.join("<br/>")}`;
         },
       },
       radar: {
@@ -342,7 +346,7 @@ export function buildOption(
         formatter: (params) => {
           const item = Array.isArray(params) ? params[0] : params;
           const v = item.value as [number, number, number];
-          return `<b>${spec.yLabels[v[1]]}</b>, ${spec.xLabels[v[0]]}<br/>${formatUnit(v[2], spec.unit)}`;
+          return `<b>${esc(spec.yLabels[v[1]])}</b>, ${esc(spec.xLabels[v[0]])}<br/>${formatUnit(v[2], spec.unit)}`;
         },
       },
       xAxis: {

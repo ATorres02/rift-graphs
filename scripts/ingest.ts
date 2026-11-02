@@ -23,7 +23,7 @@ try {
   /* no .env.local: rely on the environment (GitHub Actions) */
 }
 import { SCHEMA_VERSION, datasetFiles, seedsFileSchema } from "../lib/data/schema";
-import { aliasFromPage, decodeEntities, idFromCargoKey, slugify } from "../lib/data/ids";
+import { aliasFromPage, cleanText, idFromCargoKey, slugify } from "../lib/data/ids";
 import type {
   ChampionIndex,
   Draft,
@@ -345,7 +345,7 @@ function buildTeams(raw: Raw): { teams: Team[]; teamIdByPage: Map<string, string
   const pages = new Set<string>([...rosterStages.keys(), ...teamRowsByPage.keys()]);
   for (const page of Array.from(pages).sort()) {
     const row = teamRowsByPage.get(page);
-    const name = decodeEntities(asString(row?.Name) ?? page);
+    const name = cleanText(asString(row?.Name) ?? page);
     let short = asString(row?.Short);
     if (!short) {
       warn(`team "${page}" has no Short in Teams; using its name as tag`);
@@ -378,7 +378,7 @@ function buildTeams(raw: Raw): { teams: Team[]; teamIdByPage: Map<string, string
     if (!/coach/i.test(asString(r.Role) ?? "")) continue;
     const page = asString(r.Team);
     const link = asString(r.Link);
-    const name = decodeEntities(asString(r.Player) ?? (link ? aliasFromPage(link) : ""));
+    const name = cleanText(asString(r.Player) ?? (link ? aliasFromPage(link) : ""));
     const team = page ? byPage.get(page) : undefined;
     if (!team || !name) continue;
     if (!team.coaches.includes(name)) team.coaches.push(name);
@@ -421,7 +421,7 @@ function buildPlayers(
       return;
     }
     const row = playerRowByPage.get(page);
-    const alias = decodeEntities(asString(row?.ID) ?? aliasFromPage(page));
+    const alias = cleanText(asString(row?.ID) ?? aliasFromPage(page));
     const player: Player = {
       id: makeId(page, alias),
       name: alias,
@@ -429,8 +429,8 @@ function buildPlayers(
       teamId,
       role,
       country: asString(row?.Country),
-      realName: row?.Name ? decodeEntities(String(row.Name)) : null,
-      nativeName: row?.NativeName ? decodeEntities(String(row.NativeName)) : null,
+      realName: row?.Name ? cleanText(String(row.Name)) : null,
+      nativeName: row?.NativeName ? cleanText(String(row.NativeName)) : null,
       residency: asString(row?.Residency),
       fromScoreboardOnly,
     };
@@ -536,7 +536,7 @@ function buildSeries(raw: Raw, teamIdByPage: Map<string, string>, now: Date): Se
       matchDay: asInt(r.MatchDay),
       patch: unprefix(r.PatchV),
       streamUrl: asString(r.Stream),
-      mvp: mvp && mvp !== "N/A" ? decodeEntities(mvp) : null,
+      mvp: mvp && mvp !== "N/A" ? cleanText(mvp) : null,
       gameIds: [],
       gamesPlayed: playedBySeries.get(matchId) ?? (s1 !== null && s2 !== null ? s1 + s2 : 0),
       source: "leaguepedia",
@@ -785,7 +785,7 @@ function buildTournament(raw: Raw, series: Series[], patch: string | null, ddrag
   const links = asString(main.Links);
   return {
     id: TOURNAMENT.id,
-    name: decodeEntities(asString(main.Name) ?? TOURNAMENT.id),
+    name: cleanText(asString(main.Name) ?? TOURNAMENT.id),
     overviewPage: TOURNAMENT.overviewPage,
     dateStart: asString(main.DateStart) ?? allDates.sort()[0],
     dateEnd: asString(main.Date) ?? allDates.sort()[allDates.length - 1],

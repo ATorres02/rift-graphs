@@ -288,7 +288,10 @@ export function tableToCsv(table: ChartTable): string {
   const esc = (v: string | number | null) => {
     if (v === null) return "";
     // Four decimals keep fractions (percentages) exact to 0.01% without float noise.
-    const s = typeof v === "number" && !Number.isInteger(v) ? String(Number(v.toFixed(4))) : String(v);
+    let s = typeof v === "number" && !Number.isInteger(v) ? String(Number(v.toFixed(4))) : String(v);
+    // A cell starting with = + @ (or a control char) is a formula in Excel/LibreOffice.
+    // A leading "-" only matters when it is not a plain negative number.
+    if (/^[=+@\u0009\u000D]/.test(s) || (/^-/.test(s) && !/^-?\d+(\.\d+)?$/.test(s))) s = `'${s}`;
     return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
   };
   return [table.columns.map(esc).join(","), ...table.rows.map((r) => r.map(esc).join(","))].join("\n");
