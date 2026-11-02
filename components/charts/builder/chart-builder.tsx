@@ -5,13 +5,14 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CheckIcon, ChartColumnIcon, DownloadIcon, FileSpreadsheetIcon, LinkIcon, TableIcon } from "lucide-react";
 import { SpecTable } from "@/components/charts/chart-table";
+import { useImageExport } from "@/components/charts/image-export";
 import { useThemeKey } from "@/components/charts/chart";
 import type { EChartsInstance } from "@/components/charts/echart";
 import { Button } from "@/components/ui/button";
 import { FiltersStep, type FilterCatalog } from "./builder-filters";
 import { ChartTypeStep, GroupStep, MeasureStep, OptionsStep, SourceStep, Step } from "./builder-steps";
 import { buildChart, tableToCsv } from "@/lib/charts/build";
-import { composeChartPng, downloadDataUrl } from "@/lib/charts/export-png";
+import { composeChartPng, downloadText } from "@/lib/charts/export-png";
 import { TEMPLATES } from "@/lib/charts/templates";
 import { parseConfig, serializeConfig } from "@/lib/charts/url";
 import { useDataset } from "@/lib/data/use-dataset";
@@ -48,6 +49,7 @@ export function ChartBuilder({ version, catalog }: { version: string; catalog: F
   const chartRef = useRef<EChartsInstance | null>(null);
   const themeKey = useThemeKey();
   const { data, error } = useDataset(version);
+  const image = useImageExport();
 
   // Config lives in the URL so any chart can be shared with a link.
   useEffect(() => {
@@ -149,23 +151,16 @@ export function ChartBuilder({ version, catalog }: { version: string; catalog: F
     const instance = chartRef.current;
     if (!instance || !built) return;
     const bg = getComputedStyle(document.documentElement).getPropertyValue("--card").trim() || "#ffffff";
-    const url = await composeChartPng({
+    const png = await composeChartPng({
       title: built.title,
       summary: `${built.description} ${result?.universeGames ?? 0} games in the selection.`,
       chartDataUrl: instance.getDataURL({ type: "png", pixelRatio: 2, backgroundColor: bg }),
     });
-    downloadDataUrl(url, `${fileName()}.png`);
+    image.save(png, `${fileName()}.png`, built.title);
   };
 
   const exportCsv = () => {
-    if (!built) return;
-    const blob = new Blob([tableToCsv(built.table)], { type: "text/csv;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${fileName()}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
+    if (built) downloadText(tableToCsv(built.table), `${fileName()}.csv`);
   };
 
   const orderedDimension = !!dimensionByKey.get(config.groupBy)?.ordered;
@@ -310,6 +305,7 @@ export function ChartBuilder({ version, catalog }: { version: string; catalog: F
           .
         </p>
       </div>
+      {image.sheet}
     </div>
   );
 }
