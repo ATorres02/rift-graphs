@@ -27,7 +27,7 @@ export function exportFooter(path = "/charts"): string {
   return `${site.name}, ${host}${path}. Data: Leaguepedia (CC BY-SA). Not affiliated with Riot Games.`;
 }
 
-export async function composeChartPng({ title, summary, chartDataUrl, table, scale = 2 }: PngOptions): Promise<string> {
+export async function composeChartPng({ title, summary, chartDataUrl, table, scale = 2 }: PngOptions): Promise<Blob> {
   const bg = cssToken("--card", "#ffffff");
   const fg = cssToken("--foreground", "#111111");
   const muted = cssToken("--muted-foreground", "#777777");
@@ -134,19 +134,28 @@ export async function composeChartPng({ title, summary, chartDataUrl, table, sca
   ctx.textAlign = "right";
   ctx.fillText(new Date().toISOString().slice(0, 10), width - pad, y);
   ctx.textAlign = "left";
-  return canvas.toDataURL("image/png");
+  return new Promise((resolve, reject) =>
+    canvas.toBlob((blob) => (blob ? resolve(blob) : reject(new Error("Could not encode the PNG"))), "image/png"),
+  );
 }
 
-export function downloadDataUrl(url: string, filename: string): void {
+/**
+ * Saves a file through a temporary link. Phones refuse `data:` links and links that are not in the page, and some
+ * cancel the download when the object URL is revoked at once, so the link is attached and the URL kept for a minute.
+ */
+export function downloadBlob(blob: Blob, filename: string): void {
+  const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
   a.download = filename;
+  a.rel = "noopener";
+  a.style.display = "none";
+  document.body.appendChild(a);
   a.click();
+  a.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
 }
 
 export function downloadText(text: string, filename: string, mime = "text/csv;charset=utf-8"): void {
-  const blob = new Blob([text], { type: mime });
-  const url = URL.createObjectURL(blob);
-  downloadDataUrl(url, filename);
-  URL.revokeObjectURL(url);
+  downloadBlob(new Blob([text], { type: mime }), filename);
 }

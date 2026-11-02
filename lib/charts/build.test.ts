@@ -84,7 +84,48 @@ describe("buildChart", () => {
     if (built.spec.type !== "radar") throw new Error("expected radar");
     expect(built.spec.indicators.map((i) => i.max)).toEqual([700, 5, 10]);
     expect(built.spec.indicators.map((i) => i.unit)).toEqual(["number", "decimal1", "decimal1"]);
-    expect(built.spec.series.map((s) => s.name)).toEqual(["A", "B", "Tournament average"]);
+    expect(built.spec.series.map((s) => s.name)).toEqual(["A", "B"]);
+    expect(built.spec.reference?.name).toBe("Tournament average");
+    expect(built.spec.grid).toBeUndefined();
+  });
+  it("splits a radar of more than four entries into small radars with the average in each", () => {
+    const r = result({
+      config: { ...DEFAULT_CONFIG, filters: {}, topN: 12, chart: "radar", measures: ["dpm", "kda", "cspm"] },
+      measures: [m("dpm"), m("kda"), m("cspm")],
+      overall: { dpm: 600, kda: 4, cspm: 9 },
+    });
+    const base = r.rows[0];
+    r.rows = ["A", "B", "C", "D", "E", "F"].map((label, i) => ({
+      ...base,
+      key: label.toLowerCase(),
+      label,
+      color: null,
+      values: { dpm: 500 + i * 10, kda: 3, cspm: 8 },
+    }));
+    const built = buildChart(r);
+    if (built.spec.type !== "radar") throw new Error("expected radar");
+    expect(built.spec.grid).toBe(true);
+    expect(built.spec.series.map((s) => s.name)).toEqual(["A", "B", "C", "D", "E", "F"]);
+    expect(built.spec.reference?.name).toBe("Tournament average");
+    expect(built.spec.indicators.map((i) => i.short ?? i.name)).toEqual(["DPM", "KDA", "CS/min"]);
+    expect(built.description).toContain("dashed shape is the tournament average");
+    // Each entry keeps its own colour; past six colours the marker changes.
+    expect(built.spec.series.map((s) => s.color)).toEqual([1, 2, 3, 4, 5, 6].map((n) => `var(--viz-${n})`));
+    expect(built.spec.series.every((s) => !s.symbol)).toBe(true);
+
+    const together = buildChart({ ...r, config: { ...r.config, radarLayout: "together" } });
+    if (together.spec.type !== "radar") throw new Error("expected radar");
+    expect(together.spec.grid).toBeUndefined();
+    expect(together.spec.series).toHaveLength(6);
+
+    const seven = { ...r, rows: [...r.rows, { ...r.rows[0], key: "g", label: "G" }] };
+    const withG = buildChart({ ...seven, config: { ...r.config, radarLayout: "together" } });
+    if (withG.spec.type !== "radar") throw new Error("expected radar");
+    expect(withG.spec.series[6]).toMatchObject({ name: "G", color: "var(--viz-1)", symbol: "triangle" });
+
+    const twoApart = buildChart({ ...r, rows: r.rows.slice(0, 2), config: { ...r.config, radarLayout: "separate" } });
+    if (twoApart.spec.type !== "radar") throw new Error("expected radar");
+    expect(twoApart.spec.grid).toBe(true);
   });
   it("pivots a series dimension into heat map cells", () => {
     const side = dimensionByKey.get("side")!;

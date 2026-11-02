@@ -6,6 +6,8 @@ import {
   AGGREGATION_LABEL,
   CHART_LABEL,
   MEASURE_GROUP_LABEL,
+  RADAR_MAX_ENTITIES,
+  RADAR_OVERLAY_MAX,
   allowedAggregations,
   chartProblems,
   dimensionsFor,
@@ -17,6 +19,7 @@ import {
   type DataSource,
   type MeasureGroup,
   type QueryConfig,
+  type RadarLayout,
   type SortMode,
 } from "@/lib/query";
 import { cn } from "@/lib/utils";
@@ -258,6 +261,44 @@ export function ChartTypeStep({ config, onChange }: { config: QueryConfig; onCha
   );
 }
 
+/** Radars: every entry on one radar, or one small radar each. Unset, it follows the number of entries. */
+export function RadarLayoutStep({
+  config,
+  count,
+  onChange,
+}: {
+  config: QueryConfig;
+  /** Entries on the radar now. */
+  count: number;
+  onChange: (layout: RadarLayout) => void;
+}) {
+  const current: RadarLayout = config.radarLayout ?? (count > RADAR_OVERLAY_MAX ? "separate" : "together");
+  const options: { key: RadarLayout; label: string; hint: string }[] = [
+    { key: "together", label: "All on one radar", hint: "Every shape overlaid, each in its own colour" },
+    { key: "separate", label: "One radar each", hint: "Small radars side by side, same scale" },
+  ];
+  return (
+    <div className="grid grid-cols-2 gap-1.5" role="radiogroup" aria-label="Radar layout">
+      {options.map((o) => (
+        <button
+          key={o.key}
+          type="button"
+          role="radio"
+          aria-checked={current === o.key}
+          onClick={() => onChange(o.key)}
+          className={cn(
+            "rounded-md border px-2 py-1.5 text-left text-xs transition-colors hover:border-brand",
+            current === o.key && "border-brand bg-brand-soft",
+          )}
+        >
+          <span className="font-medium">{o.label}</span>
+          <span className="block text-[11px] text-muted-foreground">{o.hint}</span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export function OptionsStep({
   config,
   onChange,
@@ -286,18 +327,24 @@ export function OptionsStep({
       </label>
       <label className="text-xs text-muted-foreground">
         Top N
-        <select
-          className={selectClass}
-          value={config.topN === null ? "all" : String(config.topN)}
-          onChange={(e) => onChange({ topN: e.target.value === "all" ? null : Number(e.target.value) })}
-        >
-          {config.chart === "radar" ? null : <option value="all">All</option>}
-          {[4, 5, 10, 20].map((n) => (
-            <option key={n} value={n} disabled={config.chart === "radar" && n > 4}>
-              {n}
-            </option>
-          ))}
-        </select>
+        {config.pick?.length ? (
+          <select className={selectClass} disabled value="pick" title="The chart shows the ones you picked to compare">
+            <option value="pick">Your {config.pick.length} picked</option>
+          </select>
+        ) : (
+          <select
+            className={selectClass}
+            value={config.topN === null ? "all" : String(config.topN)}
+            onChange={(e) => onChange({ topN: e.target.value === "all" ? null : Number(e.target.value) })}
+          >
+            {config.chart === "radar" ? null : <option value="all">All</option>}
+            {[4, 5, 8, 10, 12, 20].map((n) => (
+              <option key={n} value={n} disabled={config.chart === "radar" && n > RADAR_MAX_ENTITIES}>
+                {n}
+              </option>
+            ))}
+          </select>
+        )}
       </label>
       <label className="text-xs text-muted-foreground">
         Colour by

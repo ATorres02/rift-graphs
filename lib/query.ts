@@ -13,6 +13,7 @@ import { ROLE_LABEL, STAGE_LABEL, STAGE_SHORT } from "./format";
 import { kda as kdaOf } from "./metrics";
 
 export type DataSource = "players" | "teams" | "champions" | "games";
+export type RadarLayout = "together" | "separate";
 export type ChartType = "bar" | "groupedBar" | "stackedBar" | "line" | "scatter" | "radar" | "heatmap" | "boxplot";
 export type Aggregation = "mean" | "median" | "sum" | "max" | "min" | "perGame" | "perMinute";
 export type SortMode = "desc" | "asc" | "label";
@@ -49,9 +50,14 @@ export interface QueryConfig {
   title: string | null;
   /**
    * Keys of the group-by dimension to keep (e.g. two teams for a radar). Unlike a filter, the others still count for
-   * the tournament average and for the radar scale.
+   * the tournament average and for the radar scale. Top N does not apply to a pick.
    */
   pick?: string[];
+  /**
+   * Radars only: every entry on one radar ("together") or one small radar each ("separate"). Unset, a radar
+   * overlays up to four entries and splits beyond.
+   */
+  radarLayout?: RadarLayout;
 }
 
 export const DEFAULT_CONFIG: QueryConfig = {
@@ -969,7 +975,10 @@ export function allowedAggregations(measure: MeasureDef): Aggregation[] {
   return ["mean", "median", "sum", "max", "min", "perGame", "perMinute"];
 }
 
-export const RADAR_MAX_ENTITIES = 4;
+/** Radars overlay up to this many shapes; with more, each entry gets its own small radar on the same scale. */
+export const RADAR_OVERLAY_MAX = 4;
+/** Most entries a radar takes (overlaid or as a grid of small radars). */
+export const RADAR_MAX_ENTITIES = 12;
 
 /** Explains why a configuration cannot be drawn; empty when it can. */
 export function validateConfig(config: QueryConfig): string[] {
@@ -1040,7 +1049,10 @@ export function chartProblems(config: QueryConfig, chart: ChartType): string[] {
     case "radar":
       if (measures.length < 3 || measures.length > 8) problems.push("Radar needs between three and eight measures.");
       if (config.series) problems.push("Radar cannot use a series dimension.");
-      if (config.topN === null || config.topN > RADAR_MAX_ENTITIES)
+      if (config.pick?.length) {
+        if (config.pick.length > RADAR_MAX_ENTITIES)
+          problems.push(`A radar compares at most ${RADAR_MAX_ENTITIES} entries: remove some from the comparison.`);
+      } else if (config.topN === null || config.topN > RADAR_MAX_ENTITIES)
         problems.push(
           `Radar shows at most ${RADAR_MAX_ENTITIES} entities: set Top N to ${RADAR_MAX_ENTITIES} or fewer.`,
         );
@@ -1348,8 +1360,13 @@ export function runQuery(config: QueryConfig, data: IndexedDataset): QueryResult
         labelOf(a).localeCompare(labelOf(b)),
     );
   }
-  const limit =
-    config.chart === "radar" ? Math.min(config.topN ?? RADAR_MAX_ENTITIES, RADAR_MAX_ENTITIES) : config.topN;
+  // A pick names exactly what to show, so Top N does not apply to it; radars still stop at their maximum.
+  const cap = config.chart === "radar" ? RADAR_MAX_ENTITIES : null;
+  const limit = config.pick?.length
+    ? cap
+    : config.chart === "radar"
+      ? Math.min(config.topN ?? RADAR_MAX_ENTITIES, RADAR_MAX_ENTITIES)
+      : config.topN;
   const keptKeys = limit ? keys.slice(0, limit) : keys;
   const keyIndex = new Map(keptKeys.map((k, i) => [k, i]));
   out = out.filter((r) => keyIndex.has(r.key));

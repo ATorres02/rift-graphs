@@ -14,7 +14,7 @@ import {
 import { CanvasRenderer } from "echarts/renderers";
 import type { EChartsOption } from "echarts";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { formatUnit, type ChartSpec, type Unit } from "@/lib/charts/spec";
+import { formatUnit, type ChartSpec, type RadarSpec, type Unit } from "@/lib/charts/spec";
 
 echarts.use([
   BarChart,
@@ -89,7 +89,10 @@ const axisValueFormatter = (unit: Unit | undefined) => (value: number) => format
 
 /** Escapes text interpolated into a tooltip: ECharts renders custom tooltips with innerHTML. */
 const esc = (value: unknown): string =>
-  String(value).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
+  String(value).replace(
+    /[&<>"']/g,
+    (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!,
+  );
 
 /** Splits a label into lines of about `max` characters, at spaces. */
 function wrapWords(text: string, max: number): string {
@@ -105,12 +108,134 @@ function wrapWords(text: string, max: number): string {
 /** Below this width (px) the chart uses its phone layout: smaller radar, wrapped names, earlier rotation. */
 const NARROW_WIDTH = 480;
 
+/** Legend icon for a dashed reference shape, as drawn in the radars. */
+const DASH_ICON = "path://M0,0h5v2H0zM8,0h5v2H8zM16,0h5v2h-5z";
+
+/** Grid of small radars: two columns on phones, three or four wider; every cell has the same height. */
+export function radarGridLayout(count: number, width: number) {
+  const w = width || 360;
+  const narrow = w < NARROW_WIDTH;
+  const cols = Math.max(1, Math.min(count, narrow ? 2 : w < 820 ? 3 : 4));
+  const rows = Math.ceil(count / cols);
+  const cellW = w / cols;
+  const cellH = narrow ? 184 : 232;
+  const top = 30;
+  const nameH = 22;
+  return {
+    narrow,
+    cols,
+    cellW,
+    cellH,
+    top,
+    nameH,
+    // Phones keep the axis names of neighbouring radars apart.
+    radius: Math.round(Math.min(cellW * (narrow ? 0.22 : 0.28), (cellH - nameH) * 0.32)),
+    height: top + rows * cellH + 8,
+  };
+}
+
+/** Small multiples: one radar per series on the same scale, the reference dashed in each, the name above. */
+function radarGridOption(
+  spec: RadarSpec,
+  p: Palette,
+  base: EChartsOption,
+  color: (value: string | undefined, fallback: string) => string,
+  width: number,
+): EChartsOption {
+  const L = radarGridLayout(spec.series.length, width);
+  const ref = spec.reference;
+  const cell = (i: number) => ({ x: ((i % L.cols) + 0.5) * L.cellW, y: L.top + Math.floor(i / L.cols) * L.cellH });
+  const indicator = spec.indicators.map(({ name, short, max }) => ({ name: short ?? name, max }));
+  const baseGraphic = Array.isArray(base.graphic) ? base.graphic : base.graphic ? [base.graphic] : [];
+  return {
+    ...base,
+    legend: ref
+      ? {
+          data: [ref.name],
+          top: 0,
+          left: "center",
+          icon: DASH_ICON,
+          itemWidth: 21,
+          itemHeight: 2,
+          textStyle: { color: p.muted },
+        }
+      : undefined,
+    tooltip: {
+      ...base.tooltip,
+      trigger: "item",
+      formatter: (params) => {
+        const item = Array.isArray(params) ? params[0] : params;
+        const values = item.value as number[];
+        const lines = spec.indicators.map((ind, i) => `${esc(ind.name)}: ${formatUnit(values[i] ?? null, ind.unit)}`);
+        return `<b>${esc(item.name)}</b><br/>${lines.join("<br/>")}`;
+      },
+    },
+    graphic: [
+      ...baseGraphic,
+      ...spec.series.map((s, i) => ({
+        type: "text" as const,
+        x: cell(i).x,
+        y: cell(i).y + 4,
+        silent: true,
+        style: {
+          text: s.name,
+          fill: p.text,
+          fontSize: L.narrow ? 12 : 13,
+          fontWeight: 600,
+          align: "center" as const,
+          verticalAlign: "top" as const,
+        },
+      })),
+    ],
+    radar: spec.series.map((_, i) => ({
+      indicator,
+      center: [cell(i).x, cell(i).y + L.nameH + (L.cellH - L.nameH) / 2],
+      radius: L.radius,
+      splitNumber: 4,
+      axisName: { color: p.muted, fontSize: L.narrow ? 9 : 10 },
+      axisNameGap: 4,
+      splitLine: { lineStyle: { color: p.grid } },
+      splitArea: { show: false },
+      axisLine: { lineStyle: { color: p.grid } },
+    })),
+    series: spec.series.map((s, i) => {
+      const c = color(s.color, p.series[0]);
+      return {
+        type: "radar" as const,
+        radarIndex: i,
+        symbolSize: 4,
+        data: [
+          ...(ref
+            ? [
+                {
+                  name: ref.name,
+                  value: ref.values.map((v) => v ?? 0),
+                  symbol: "none",
+                  itemStyle: { color: p.muted },
+                  lineStyle: { type: "dashed" as const, width: 1.5, color: p.muted },
+                },
+              ]
+            : []),
+          {
+            name: s.name,
+            value: s.values.map((v) => v ?? 0),
+            itemStyle: { color: c },
+            lineStyle: { width: 2, color: c },
+            areaStyle: { opacity: 0.18, color: c },
+          },
+        ],
+      };
+    }),
+  };
+}
+
 export function buildOption(
   spec: ChartSpec,
   p: Palette,
   css: CSSStyleDeclaration,
   watermark?: string,
   narrow = false,
+  width = 0,
 ): EChartsOption {
   const color = (value: string | undefined, fallback: string) => resolveColor(value, css) ?? fallback;
   const base: EChartsOption = {
@@ -283,15 +408,24 @@ export function buildOption(
     };
   }
 
+  if (spec.type === "radar" && spec.grid) return radarGridOption(spec, p, base, color, width);
+
   if (spec.type === "radar") {
+    const ref = spec.reference;
+    const many = spec.series.length > 4;
     return {
       ...base,
       legend: {
-        type: "scroll",
+        type: "plain",
         bottom: 0,
         textStyle: { color: p.muted },
-        icon: "roundRect",
-        pageTextStyle: { color: p.muted },
+        itemGap: 12,
+        itemWidth: 16,
+        itemHeight: 10,
+        data: [
+          ...spec.series.map((s) => ({ name: s.name, icon: s.symbol === "triangle" ? "triangle" : "roundRect" })),
+          ...(ref ? [{ name: ref.name, icon: DASH_ICON, itemStyle: { color: p.muted } }] : []),
+        ],
       },
       tooltip: {
         ...base.tooltip,
@@ -305,7 +439,8 @@ export function buildOption(
       },
       radar: {
         indicator: spec.indicators.map(({ name, max }) => ({ name, max })),
-        // Long names wrap instead of running off the canvas on phones.
+        // Long names wrap instead of running off the canvas on phones; many entries leave room for the legend.
+        center: ["50%", many ? (narrow ? "43%" : "44%") : "50%"],
         axisName: {
           color: p.muted,
           fontSize: narrow ? 10 : 12,
@@ -314,18 +449,40 @@ export function buildOption(
         splitLine: { lineStyle: { color: p.grid } },
         splitArea: { show: false },
         axisLine: { lineStyle: { color: p.grid } },
-        radius: narrow ? "52%" : "62%",
+        radius: narrow ? (many ? "56%" : "52%") : many ? "58%" : "62%",
       },
       series: [
         {
           type: "radar",
-          data: spec.series.map((s, i) => ({
-            name: s.name,
-            value: s.values.map((v) => v ?? 0),
-            itemStyle: { color: color(s.color, p.series[i % p.series.length]) },
-            lineStyle: { width: 2 },
-            areaStyle: { opacity: 0.15 },
-          })),
+          // Hovering a shape (or its legend entry) fades the others.
+          emphasis: { focus: "self", lineStyle: { width: 3 } },
+          blur: { lineStyle: { opacity: 0.12 }, itemStyle: { opacity: 0.12 }, areaStyle: { opacity: 0.02 } },
+          data: [
+            ...(ref
+              ? [
+                  {
+                    name: ref.name,
+                    value: ref.values.map((v) => v ?? 0),
+                    symbol: "none",
+                    itemStyle: { color: p.muted },
+                    lineStyle: { type: "dashed" as const, width: 1.5, color: p.muted },
+                  },
+                ]
+              : []),
+            ...spec.series.map((s, i) => {
+              const c = color(s.color, p.series[i % p.series.length]);
+              return {
+                name: s.name,
+                value: s.values.map((v) => v ?? 0),
+                symbol: s.symbol ?? "circle",
+                symbolSize: s.symbol === "triangle" ? 8 : 5,
+                itemStyle: { color: c },
+                lineStyle: { width: 2, color: c },
+                // Fills add up: with many shapes they stay faint so the outlines carry the reading.
+                areaStyle: { opacity: many ? 0.05 : 0.15, color: c },
+              };
+            }),
+          ],
         },
       ],
     };
@@ -402,7 +559,7 @@ export function buildOption(
         const item = Array.isArray(params) ? params[0] : params;
         const v = item.value as number[];
         const f = (n: number) => formatUnit(n, spec.unit);
-        return `<b>${item.name}</b><br/>Min ${f(v[1])}, Q1 ${f(v[2])}, Median ${f(v[3])}, Q3 ${f(v[4])}, Max ${f(v[5])}`;
+        return `<b>${esc(item.name)}</b><br/>Min ${f(v[1])}, Q1 ${f(v[2])}, Median ${f(v[3])}, Q3 ${f(v[4])}, Max ${f(v[5])}`;
       },
     },
     xAxis: {
@@ -453,20 +610,25 @@ export function EChart({ spec, themeKey, watermark, onReady }: EChartProps) {
     return { palette: readPalette(), css: getComputedStyle(document.documentElement) };
   }, [themeKey]);
   const wrapRef = useRef<HTMLDivElement>(null);
-  const [narrow, setNarrow] = useState(false);
+  const [width, setWidth] = useState(0);
   useEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
-    const observer = new ResizeObserver(([entry]) => setNarrow(entry.contentRect.width < NARROW_WIDTH));
+    // Rounded so sub-pixel changes do not rebuild the chart.
+    const observer = new ResizeObserver(([entry]) => setWidth(Math.round(entry.contentRect.width / 8) * 8));
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
+  const narrow = width > 0 && width < NARROW_WIDTH;
+  const grid = spec.type === "radar" && spec.grid ? radarGridLayout(spec.series.length, width) : null;
   const option = useMemo(
-    () => buildOption(spec, env.palette, env.css, watermark, narrow),
-    [spec, env, watermark, narrow],
+    () => buildOption(spec, env.palette, env.css, watermark, narrow, grid ? width : 0),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- `grid` is derived from spec and width
+    [spec, env, watermark, narrow, grid ? width : 0],
   );
   return (
-    <div ref={wrapRef} className="h-full w-full">
+    // A grid of small radars sets its own height; every other chart fills its box.
+    <div ref={wrapRef} className={grid ? "w-full" : "h-full w-full"} style={grid ? { height: grid.height } : undefined}>
       <ReactEChartsCore
         ref={ref}
         echarts={echarts}
