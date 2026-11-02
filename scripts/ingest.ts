@@ -59,6 +59,7 @@ import {
   pickDdragonVersion,
 } from "../lib/sources/ddragon";
 import { mergeSources } from "../lib/ingest/merge";
+import { sanitizeDataset } from "../lib/ingest/sanitize";
 import { LolesportsClient, fetchLeagueId, fetchSchedule, type LolesportsMatch } from "../lib/sources/lolesports";
 import { loadManualDir } from "../lib/sources/manual";
 
@@ -1000,7 +1001,9 @@ async function main(): Promise<void> {
     "conflicts.json": merged.conflicts,
   };
 
-  // Validate everything before touching the disk.
+  // Clean what the readers above did not (any source), then validate everything before touching the disk.
+  for (const file of Object.keys(outputs) as (keyof Outputs)[])
+    outputs[file] = sanitizeDataset(outputs[file], (message) => warn(`${file} ${message}`));
   for (const [file, schema] of Object.entries(datasetFiles)) {
     const result = schema.safeParse(outputs[file as keyof Outputs]);
     if (!result.success) {
