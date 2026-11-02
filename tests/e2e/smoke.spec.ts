@@ -144,8 +144,9 @@ test("every bracket series links to its page", async ({ page, request }) => {
 
 test("hidden spoilers keep every bracket score hidden until revealed round by round", async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem("rg-spoilers", "hidden"));
-  await page.goto("/");
-  const bracket = page.getByRole("region", { name: /bracket/ });
+  // The Swiss bracket on /tournament always has scores; the homepage moves on to the knockout bracket, empty at first.
+  await page.goto("/tournament");
+  const bracket = page.getByRole("region", { name: "Swiss stage bracket" });
   await expect(bracket.locator(".b-score")).not.toHaveCount(0);
   for (const score of await bracket.locator(".b-score").all()) await expect(score).toBeHidden();
   await expect(bracket.locator("[data-gate='1'] a[data-cell]").first()).toBeHidden();

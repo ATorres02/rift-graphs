@@ -10,6 +10,7 @@ import {
   type DataSource,
   type QueryConfig,
   type QueryFilters,
+  type RadarLayout,
   type SortMode,
 } from "@/lib/query";
 import type { Role, Side, StageId } from "@/lib/data/types";
@@ -133,6 +134,9 @@ export function parseConfig(params: URLSearchParams): QueryConfig {
     showAverage: params.get("avg") === null ? DEFAULT_CONFIG.showAverage : params.get("avg") === "1",
     title: params.get("ttl") || null,
     ...(params.get("k") ? { pick: list(params.get("k")!) } : {}),
+    ...(params.get("rl") === "together" || params.get("rl") === "separate"
+      ? { radarLayout: params.get("rl") as RadarLayout }
+      : {}),
   };
 }
 
@@ -152,5 +156,6 @@ export function serializeConfig(config: QueryConfig): string {
   if (config.showAverage !== DEFAULT_CONFIG.showAverage) p.set("avg", config.showAverage ? "1" : "0");
   if (config.title) p.set("ttl", config.title);
   if (config.pick?.length) p.set("k", config.pick.join("|"));
+  if (config.chart === "radar" && config.radarLayout) p.set("rl", config.radarLayout);
   return p.toString();
 }

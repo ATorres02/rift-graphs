@@ -8,7 +8,7 @@ import { regionInfo } from "@/lib/data/regions";
 import type { Role, StageId } from "@/lib/data/types";
 import { ROLE_LABEL, STAGE_LABEL } from "@/lib/format";
 import { ROLES } from "@/lib/metrics";
-import type { QueryConfig, QueryFilters } from "@/lib/query";
+import { RADAR_MAX_ENTITIES, type QueryConfig, type QueryFilters } from "@/lib/query";
 import { cn } from "@/lib/utils";
 
 export interface FilterCatalog {
@@ -16,13 +16,19 @@ export interface FilterCatalog {
   regions: string[];
   champions: string[];
   stages: StageId[];
-  players: { id: string; name: string }[];
+  /** Players with at least one game; `team` is the short tag. */
+  players: { id: string; name: string; teamId: string; team: string; role: Role }[];
 }
 
 /** A removable chip for a value set from a link or a search box. */
-function Removable({ label, onRemove }: { label: string; onRemove: () => void }) {
+function Removable({ label, onRemove, absent }: { label: string; onRemove: () => void; absent?: boolean }) {
   return (
-    <span className="inline-flex items-center gap-1 rounded-md border border-brand bg-brand-soft px-2 py-1 text-xs font-medium">
+    <span
+      className={cn(
+        "inline-flex items-center gap-1 rounded-md border px-2 py-1 text-xs font-medium",
+        absent ? "border-dashed text-muted-foreground line-through" : "border-brand bg-brand-soft",
+      )}
+    >
       {label}
       <button type="button" onClick={onRemove} aria-label={`Remove ${label}`}>
         <XIcon className="size-3" aria-hidden />
@@ -70,13 +76,10 @@ export function FiltersStep({
   config,
   catalog,
   onChange,
-  onPick,
 }: {
   config: QueryConfig;
   catalog: FilterCatalog;
   onChange: (filters: QueryFilters) => void;
-  /** Changes the "only these" selection of the group-by dimension (charts opened from other pages). */
-  onPick: (pick: string[] | undefined) => void;
 }) {
   const f = config.filters;
   const set = (patch: Partial<QueryFilters>) => {
@@ -95,12 +98,6 @@ export function FiltersStep({
           .filter((p) => p.name.toLowerCase().includes(playerQuery.toLowerCase()) && !f.players?.includes(p.id))
           .slice(0, 8)
       : [];
-  const pickLabel = (key: string) =>
-    config.groupBy === "team"
-      ? (catalog.teams.find((t) => t.id === key)?.short ?? key)
-      : config.groupBy === "player"
-        ? playerName(key)
-        : key;
   const champMatches =
     champQuery.length >= 2
       ? catalog.champions
@@ -274,7 +271,7 @@ export function FiltersStep({
           ) : null}
         </div>
       ) : null}
-      {playerLike ? (
+      {playerLike && (config.groupBy !== "player" || f.players?.length) ? (
         <div>
           <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Player</p>
           <div className="flex flex-wrap gap-1.5">
@@ -308,33 +305,6 @@ export function FiltersStep({
           ) : null}
         </div>
       ) : null}
-      {config.pick?.length ? (
-        <div>
-          <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Showing only</p>
-          <div className="flex flex-wrap items-center gap-1.5">
-            {config.pick.map((key) => (
-              <Removable
-                key={key}
-                label={pickLabel(key)}
-                onRemove={() => {
-                  const next = config.pick!.filter((k) => k !== key);
-                  onPick(next.length ? next : undefined);
-                }}
-              />
-            ))}
-            <button
-              type="button"
-              onClick={() => onPick(undefined)}
-              className="text-xs text-muted-foreground underline hover:text-foreground"
-            >
-              Show all
-            </button>
-          </div>
-          <p className="mt-1 text-xs text-muted-foreground">
-            The others still count for the tournament average and the scale.
-          </p>
-        </div>
-      ) : null}
       {Object.keys(f).length ? (
         <button
           type="button"
@@ -344,6 +314,167 @@ export function FiltersStep({
           Clear all filters
         </button>
       ) : null}
+    </div>
+  );
+}
+
+const PICK_NOUN: Record<string, string> = { player: "players", team: "teams", champion: "champions" };
+
+/**
+ * "Compare": names exactly which players, teams or champions the chart shows (the config's pick). Unlike a filter,
+ * everyone else still counts for the average and the scales, and Top N no longer applies.
+ */
+export function PickStep({
+  config,
+  catalog,
+  shown,
+  ready,
+  onPick,
+}: {
+  config: QueryConfig;
+  catalog: FilterCatalog;
+  /** Keys on the chart right now, in order, to start a comparison from them. */
+  shown: string[];
+  /** The data has loaded, so `shown` can say who is missing. */
+  ready: boolean;
+  onPick: (pick: string[] | undefined) => void;
+}) {
+  const [query, setQuery] = useState("");
+  const f = config.filters;
+  const singleRole = f.roles?.length === 1 ? f.roles[0] : null;
+  const [browseRole, setBrowseRole] = useState<Role | null>(null);
+  const noun = PICK_NOUN[config.groupBy];
+  if (!noun) return null;
+
+  const pick = config.pick ?? [];
+  const role = browseRole ?? singleRole;
+  type Option = { key: string; label: string; detail?: string; role?: Role };
+  const options: Option[] =
+    config.groupBy === "player"
+      ? catalog.players
+          .filter(
+            (p) => (!f.roles?.length || f.roles.includes(p.role)) && (!f.teams?.length || f.teams.includes(p.teamId)),
+          )
+          .map((p) => ({ key: p.id, label: p.name, detail: `${p.team}, ${ROLE_LABEL[p.role]}`, role: p.role }))
+      : config.groupBy === "team"
+        ? catalog.teams
+            .filter(
+              (t) =>
+                (!f.regions?.length || f.regions.includes(t.region)) && (!f.teams?.length || f.teams.includes(t.id)),
+            )
+            .map((t) => ({ key: t.id, label: t.short, detail: t.name }))
+        : catalog.champions
+            .filter((c) => !f.champions?.length || f.champions.includes(c))
+            .map((c) => ({ key: c, label: c }));
+  const labelOf = (key: string) =>
+    options.find((o) => o.key === key)?.label ??
+    catalog.players.find((p) => p.id === key)?.name ??
+    catalog.teams.find((t) => t.id === key)?.short ??
+    key;
+  const q = query.trim().toLowerCase();
+  // Teams are few enough to list; players can be browsed by role; otherwise type to search.
+  const listed: Option[] = q
+    ? options.filter((o) => o.label.toLowerCase().includes(q)).slice(0, 12)
+    : config.groupBy === "team"
+      ? options
+      : config.groupBy === "player" && role
+        ? options.filter((o) => o.role === role)
+        : [];
+  const toggle = (key: string) => {
+    const next = pick.includes(key) ? pick.filter((k) => k !== key) : [...pick, key];
+    onPick(next.length ? next : undefined);
+  };
+  const radar = config.chart === "radar";
+  const absent = ready ? pick.filter((k) => !shown.includes(k)) : [];
+
+  return (
+    <div className="space-y-2 rounded-lg border border-dashed p-2.5">
+      <div className="flex items-baseline justify-between gap-2">
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-brand">Compare {noun}</p>
+        {pick.length ? (
+          <button
+            type="button"
+            onClick={() => onPick(undefined)}
+            className="text-xs text-muted-foreground underline hover:text-foreground"
+          >
+            Clear ({pick.length})
+          </button>
+        ) : null}
+      </div>
+      {pick.length ? (
+        <div className="flex flex-wrap gap-1.5">
+          {pick.map((key) => (
+            <Removable
+              key={key}
+              label={labelOf(key)}
+              onRemove={() => toggle(key)}
+              absent={ready && !shown.includes(key)}
+            />
+          ))}
+        </div>
+      ) : (
+        <p className="text-xs text-muted-foreground">
+          Pick the {noun} to show, as many as you like.
+          {shown.length > 1 ? (
+            <>
+              {" "}
+              <button
+                type="button"
+                onClick={() => onPick(shown.slice(0, radar ? RADAR_MAX_ENTITIES : shown.length))}
+                className="underline hover:text-foreground"
+              >
+                Start from the {Math.min(shown.length, radar ? RADAR_MAX_ENTITIES : shown.length)} on the chart
+              </button>
+              .
+            </>
+          ) : null}
+        </p>
+      )}
+      {absent.length ? (
+        <p className="text-xs text-muted-foreground">
+          Not on the chart with these filters (minimum games, role, stage): {absent.map(labelOf).join(", ")}.
+        </p>
+      ) : null}
+      <input
+        className={inputClass}
+        placeholder={`Type a ${noun.slice(0, -1)} name…`}
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        aria-label={`Add ${noun.slice(0, -1)} to compare`}
+      />
+      {config.groupBy === "player" && !q ? (
+        <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="Browse players by role">
+          <span className="text-xs text-muted-foreground">Browse:</span>
+          {ROLES.filter((r) => !f.roles?.length || f.roles.includes(r)).map((r) => (
+            <Chip key={r} on={role === r} onClick={() => setBrowseRole(role === r ? null : r)}>
+              {ROLE_LABEL[r]}
+            </Chip>
+          ))}
+        </div>
+      ) : null}
+      {listed.length ? (
+        <ul className="flex max-h-48 flex-wrap gap-1.5 overflow-y-auto" aria-label={`${noun} to add`}>
+          {listed.map((o) => (
+            <li key={o.key}>
+              <Chip on={pick.includes(o.key)} onClick={() => toggle(o.key)} title={o.detail}>
+                {pick.includes(o.key) ? "" : "+ "}
+                {o.label}
+                {o.detail && config.groupBy === "player" ? (
+                  <span className="ml-1 text-[10px] text-muted-foreground">{o.detail.split(",")[0]}</span>
+                ) : null}
+              </Chip>
+            </li>
+          ))}
+        </ul>
+      ) : q ? (
+        <p className="text-xs text-muted-foreground">
+          No {noun} match “{query}” in this selection.
+        </p>
+      ) : null}
+      <p className="text-[11px] text-muted-foreground">
+        {radar ? `Up to ${RADAR_MAX_ENTITIES} on a radar, all on one or one radar each (step 4). ` : ""}
+        Everyone still counts for the average and the scales.
+      </p>
     </div>
   );
 }

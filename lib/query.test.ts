@@ -277,6 +277,15 @@ describe("runQuery", () => {
     expect(res.rows[0].games).toBe(2);
     expect(res.overall.dpm).toBeCloseTo((24000 + 15000 + 18000 + 12000 + 16000 + 20000 + 30000 + 14000) / 280);
   });
+  it("shows every picked entry whatever Top N says, keeping the tournament average", () => {
+    const all = runQuery(cfg({ source: "players", measures: ["dpm"], groupBy: "player" }), data);
+    const res = runQuery(
+      cfg({ source: "players", measures: ["dpm"], groupBy: "player", topN: 1, pick: ["a", "b", "d"] }),
+      data,
+    );
+    expect(res.rows.map((r) => r.label)).toEqual(["A", "B", "D"]);
+    expect(res.overall.dpm).toBeCloseTo(all.overall.dpm!);
+  });
   it("applies aggregations to sum-kind measures", () => {
     const by = (aggregation: QueryConfig["aggregation"]) =>
       runQuery(cfg({ measures: ["kills"], groupBy: "player", aggregation }), data).rows.find((r) => r.key === "a")!
@@ -390,7 +399,24 @@ describe("validateConfig", () => {
     ]);
     expect(
       validateConfig(cfg({ measures: ["kda", "dpm", "cspm"], groupBy: "player", chart: "radar", topN: null })),
-    ).toEqual([expect.stringContaining("at most 4")]);
+    ).toEqual([expect.stringContaining("at most 12")]);
+    const twelve = Array.from({ length: 13 }, (_, i) => `p${i}`);
+    expect(
+      validateConfig(
+        cfg({
+          measures: ["kda", "dpm", "cspm"],
+          groupBy: "player",
+          chart: "radar",
+          topN: null,
+          pick: twelve.slice(0, 12),
+        }),
+      ),
+    ).toEqual([]);
+    expect(
+      validateConfig(
+        cfg({ measures: ["kda", "dpm", "cspm"], groupBy: "player", chart: "radar", topN: 4, pick: twelve }),
+      ),
+    ).toEqual([expect.stringContaining("compares at most 12")]);
     expect(validateConfig(cfg({ measures: ["kda"], groupBy: "player", chart: "line" }))).toEqual([
       expect.stringContaining("ordered dimension"),
     ]);

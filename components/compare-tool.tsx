@@ -1,15 +1,17 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { DownloadIcon, FileSpreadsheetIcon } from "lucide-react";
 import { Chart } from "@/components/charts/chart";
 import type { EChartsInstance } from "@/components/charts/echart";
+import { useImageExport } from "@/components/charts/image-export";
 import { RoleGlyph } from "@/components/rift/role-glyph";
 import { TeamPill } from "@/components/team-pill";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { tableToCsv } from "@/lib/charts/build";
-import { composeChartPng, downloadDataUrl, downloadText } from "@/lib/charts/export-png";
+import { composeChartPng, downloadText } from "@/lib/charts/export-png";
 import type { RadarSpec, Unit } from "@/lib/charts/spec";
 import { formatUnit } from "@/lib/charts/spec";
 import type { TeamRef } from "@/lib/data/load";
@@ -69,6 +71,7 @@ export function CompareTool({ groups }: { groups: CompareGroup[] }) {
   const [sameTeam, setSameTeam] = useState(false);
   const [ready, setReady] = useState(false);
   const chartRef = useRef<EChartsInstance | null>(null);
+  const image = useImageExport();
 
   const group = groups.find((g) => g.type === type) ?? groups[0];
 
@@ -175,18 +178,34 @@ export function CompareTool({ groups }: { groups: CompareGroup[] }) {
     };
   };
   const fileName = () => slugify(`${ea?.label ?? "a"} vs ${eb?.label ?? "b"}`) || "compare";
+  /** The same two on the builder's radar, where more can be added. */
+  const chartsHref =
+    ea && eb
+      ? chartHref(
+          compareChart(
+            group.type,
+            ea.id,
+            eb.id,
+            group.metrics
+              .filter((m) => m.radar)
+              .slice(0, 8)
+              .map((m) => m.key),
+          ),
+        )
+      : undefined;
   const exportPng = async () => {
     const instance = chartRef.current;
     const table = exportTable();
     if (!instance || !ea || !eb || !table) return;
     const bg = getComputedStyle(document.documentElement).getPropertyValue("--card").trim() || "#ffffff";
-    const url = await composeChartPng({
-      title: `${ea.label} vs ${eb.label}`,
+    const title = `${ea.label} vs ${eb.label}`;
+    const png = await composeChartPng({
+      title,
       summary: `${ea.label} (${ea.detail}) and ${eb.label} (${eb.detail}) side by side. Positions in brackets are ranks among the ${ranked.of} ${group.label.toLowerCase()}${group.type === "players" ? ` with at least ${DEFAULT_MIN_GAMES} games` : ""}.`,
       chartDataUrl: instance.getDataURL({ type: "png", pixelRatio: 2, backgroundColor: bg }),
       table,
     });
-    downloadDataUrl(url, `${fileName()}.png`);
+    image.save(png, `${fileName()}.png`, title);
   };
   const exportCsv = () => {
     const table = exportTable();
@@ -276,6 +295,11 @@ export function CompareTool({ groups }: { groups: CompareGroup[] }) {
       {ea && eb && radar ? (
         <>
           <div className="flex flex-wrap items-center justify-end gap-2">
+            {chartsHref ? (
+              <Link href={chartsHref} className="mr-auto text-sm text-brand underline">
+                Compare more than two in Charts
+              </Link>
+            ) : null}
             <Button variant="outline" size="sm" onClick={exportPng}>
               <DownloadIcon className="size-4" aria-hidden />
               PNG with table
@@ -287,21 +311,7 @@ export function CompareTool({ groups }: { groups: CompareGroup[] }) {
           </div>
           <div className="grid gap-6 lg:grid-cols-2">
             <Chart
-              builderHref={
-                ea && eb
-                  ? chartHref(
-                      compareChart(
-                        group.type,
-                        ea.id,
-                        eb.id,
-                        group.metrics
-                          .filter((m) => m.radar)
-                          .slice(0, 8)
-                          .map((m) => m.key),
-                      ),
-                    )
-                  : undefined
-              }
+              builderHref={chartsHref}
               spec={radar}
               table={{
                 columns: ["Metric", ea.label, eb.label],
@@ -375,6 +385,7 @@ export function CompareTool({ groups }: { groups: CompareGroup[] }) {
       ) : (
         <p className="text-sm text-muted-foreground">Pick two {group.label.toLowerCase()} to compare.</p>
       )}
+      {image.sheet}
     </div>
   );
 }

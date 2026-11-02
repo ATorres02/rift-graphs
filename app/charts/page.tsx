@@ -27,12 +27,22 @@ export default function ChartsPage() {
   const champions = new Set<string>();
   for (const g of data.confirmedGames)
     for (const side of ["blue", "red"] as const) for (const c of [...g[side].picks, ...g[side].bans]) champions.add(c);
+  const played = new Set(data.playerGames.map((pg) => pg.playerId));
   const catalog = {
     teams: data.teams.map((t) => teamRef(t)!).sort((a, b) => a.short.localeCompare(b.short)),
     regions: Array.from(new Set(data.teams.map((t) => t.region))).sort(),
     champions: Array.from(champions).sort(),
     stages: data.tournament.stages.map((s) => s.id),
-    players: data.players.map((p) => ({ id: p.id, name: p.name })).sort((a, b) => a.name.localeCompare(b.name)),
+    players: data.players
+      .filter((p) => played.has(p.id))
+      .map((p) => ({
+        id: p.id,
+        name: p.name,
+        teamId: p.teamId,
+        team: data.teamsById.get(p.teamId)?.short ?? "",
+        role: p.role,
+      }))
+      .sort((a, b) => a.name.localeCompare(b.name)),
   };
   return (
     <div className="space-y-6">
