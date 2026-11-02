@@ -87,6 +87,13 @@ function readPalette(): Palette {
 
 const axisValueFormatter = (unit: Unit | undefined) => (value: number) => formatUnit(value, unit);
 
+/** Escapes text interpolated into a tooltip: ECharts renders custom tooltips with innerHTML. */
+const esc = (value: unknown): string =>
+  String(value).replace(
+    /[&<>"']/g,
+    (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!,
+  );
+
 /** Splits a label into lines of about `max` characters, at spaces. */
 function wrapWords(text: string, max: number): string {
   const lines: string[] = [];
@@ -159,8 +166,8 @@ function radarGridOption(
       formatter: (params) => {
         const item = Array.isArray(params) ? params[0] : params;
         const values = item.value as number[];
-        const lines = spec.indicators.map((ind, i) => `${ind.name}: ${formatUnit(values[i] ?? null, ind.unit)}`);
-        return `<b>${item.name}</b><br/>${lines.join("<br/>")}`;
+        const lines = spec.indicators.map((ind, i) => `${esc(ind.name)}: ${formatUnit(values[i] ?? null, ind.unit)}`);
+        return `<b>${esc(item.name)}</b><br/>${lines.join("<br/>")}`;
       },
     },
     graphic: [
@@ -426,8 +433,8 @@ export function buildOption(
         formatter: (params) => {
           const item = Array.isArray(params) ? params[0] : params;
           const values = item.value as number[];
-          const lines = spec.indicators.map((ind, i) => `${ind.name}: ${formatUnit(values[i] ?? null, ind.unit)}`);
-          return `<b>${item.name}</b><br/>${lines.join("<br/>")}`;
+          const lines = spec.indicators.map((ind, i) => `${esc(ind.name)}: ${formatUnit(values[i] ?? null, ind.unit)}`);
+          return `<b>${esc(item.name)}</b><br/>${lines.join("<br/>")}`;
         },
       },
       radar: {
