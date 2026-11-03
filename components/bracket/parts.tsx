@@ -222,6 +222,7 @@ export function BracketColumn({
   index,
   title,
   current,
+  focus = current,
   height,
   revealLabel,
   maxWidth,
@@ -231,7 +232,10 @@ export function BracketColumn({
   /** 1-based column index: its reveal step is index - 1. */
   index: number;
   title: string;
+  /** The round being played now: marked in the brand colour and read out as "now". */
   current: boolean;
+  /** Where the bracket scrolls to when it loads; the current column unless told otherwise. */
+  focus?: boolean;
   height: number;
   revealLabel: string;
   /** Cap for brackets with few columns, so their boxes do not stretch across the page. */
@@ -241,7 +245,7 @@ export function BracketColumn({
   return (
     <section
       data-gate={index - 1}
-      data-current={current ? "" : undefined}
+      data-focus={focus ? "" : undefined}
       aria-labelledby={id}
       className="relative flex-1 snap-start"
       style={{ minWidth: G.colMin, maxWidth }}
