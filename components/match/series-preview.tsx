@@ -135,12 +135,15 @@ function LaneSide({ p, align }: { p: LanePlayer | null; align: "left" | "right" 
   );
 }
 
-function ChampionList({ title, rows }: { title: string; rows: ChampionCount[] }) {
+function ChampionList({ title, team, rows }: { title: string; team: string; rows: ChampionCount[] }) {
   const data = getData();
   const max = Math.max(...rows.map((r) => r.count), 1);
   return (
     <div>
-      <h4 className="kicker mb-2 text-[11px] text-muted-foreground">{title}</h4>
+      <h3 className="kicker mb-2 text-[11px] text-muted-foreground">
+        {title}
+        <span className="sr-only">, {team}</span>
+      </h3>
       {rows.length ? (
         <ol className="space-y-1.5">
           {rows.map((r) => (
@@ -245,8 +248,8 @@ function Matchup({ data, a, b }: { data: IndexedDataset; a: Team; b: Team }) {
                   <span className="text-[11px] text-muted-foreground">{plural(pool.games, "game")}</span>
                 </div>
                 <div className="grid flex-1 gap-4 lg:grid-cols-2">
-                  <ChampionList title="Most played" rows={pool.played} />
-                  <ChampionList title="Banned against them" rows={pool.bannedAgainst} />
+                  <ChampionList title="Most played" team={team.short} rows={pool.played} />
+                  <ChampionList title="Banned against them" team={team.short} rows={pool.bannedAgainst} />
                 </div>
                 <div className="flex justify-end border-t pt-2">
                   <ChartsLink

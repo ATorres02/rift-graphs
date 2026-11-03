@@ -1,7 +1,16 @@
 import { describe, expect, it } from "vitest";
 import { indexDataset } from "./data/index";
 import type { Dataset, Game, GameTeamStats, PlayerGame, Team } from "./data/types";
-import { championPool, formatPreview, laneMatchups, leader, teamMatchup, type PreviewMetric } from "./preview";
+import {
+  championPool,
+  formatPreview,
+  laneMatchups,
+  leader,
+  previewRound,
+  showsPreview,
+  teamMatchup,
+  type PreviewMetric,
+} from "./preview";
 
 const stats = (teamId: string, o: Partial<GameTeamStats> = {}): GameTeamStats => ({
   teamId,
@@ -217,5 +226,23 @@ describe("championPool", () => {
       { champion: "Yone", count: 2 },
       { champion: "Orianna", count: 1 },
     ]);
+  });
+});
+
+describe("showsPreview", () => {
+  it("previews a series until its first game is in", () => {
+    expect(showsPreview({ status: "scheduled", gamesPlayed: 0 }, 0)).toBe(true);
+    expect(showsPreview({ status: "live", gamesPlayed: 0 }, 0)).toBe(true);
+    expect(showsPreview({ status: "live", gamesPlayed: 1 }, 0)).toBe(false);
+    expect(showsPreview({ status: "live", gamesPlayed: 1 }, 1)).toBe(false);
+    expect(showsPreview({ status: "finished", gamesPlayed: 3 }, 3)).toBe(false);
+  });
+});
+
+describe("previewRound", () => {
+  it("names the round in the singular", () => {
+    expect(previewRound("quarterfinals", null)).toBe("quarterfinal");
+    expect(previewRound("final", null)).toBe("final");
+    expect(previewRound("swiss", 5)).toBe("Swiss Round 5");
   });
 });

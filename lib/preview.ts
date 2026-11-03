@@ -3,7 +3,7 @@
  * each team plays and sees banned against it. Built from confirmed games only, like every other stat on the site.
  */
 import type { IndexedDataset } from "@/lib/data/load";
-import type { Game, PlayerGame, Role, Side } from "@/lib/data/types";
+import type { Game, PlayerGame, Role, Series, Side, StageId } from "@/lib/data/types";
 import {
   aggregatePlayerGames,
   aggregateTeamGames,
@@ -13,6 +13,27 @@ import {
   type PlayerAggregate,
   type TeamAggregate,
 } from "@/lib/metrics";
+
+/** A series page shows the preview until a game is in: scheduled, or live before the first game ends. */
+export function showsPreview(s: Pick<Series, "status" | "gamesPlayed">, games: number): boolean {
+  return games === 0 && (s.status === "scheduled" || (s.status === "live" && s.gamesPlayed === 0));
+}
+
+/** The round as it reads in a preview title: "quarterfinal", "Swiss Round 5". */
+export function previewRound(stage: StageId, round: number | null): string {
+  switch (stage) {
+    case "quarterfinals":
+      return "quarterfinal";
+    case "semifinals":
+      return "semifinal";
+    case "final":
+      return "final";
+    case "swiss":
+      return round ? `Swiss Round ${round}` : "Swiss Stage";
+    case "playin":
+      return round ? `Play-In Round ${round}` : "Play-In";
+  }
+}
 
 export type PreviewFormat = "int" | "dec1" | "dec2" | "pct" | "time";
 

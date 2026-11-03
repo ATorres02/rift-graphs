@@ -19,6 +19,7 @@ import { getData, seriesHasPendingGames, seriesTeams, teamRef } from "@/lib/data
 import type { Game, Side } from "@/lib/data/types";
 import { lockedChampionsBefore } from "@/lib/draft";
 import { bestOfLabel, fmt, roundLabel, STAGE_LABEL, STAGE_SHORT } from "@/lib/format";
+import { previewRound, showsPreview } from "@/lib/preview";
 import { baseOpenGraph, site } from "@/lib/site";
 import { compareTeamsHref } from "@/lib/links";
 import { champIcon, seriesArt } from "@/lib/views";
@@ -36,6 +37,16 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   if (!s) return {};
   const { team1, team2 } = seriesTeams(data, s);
   const teams = `${team1?.name ?? "TBD"} vs ${team2?.name ?? "TBD"}`;
+  // Before the first game the page is a preview, and its title and description say so.
+  if (team1 && team2 && showsPreview(s, data.gamesBySeries.get(s.id)?.length ?? 0)) {
+    const round = previewRound(s.stage, s.round);
+    const title = `${teams}: Worlds 2026 ${round} preview`;
+    return {
+      title,
+      description: `${teams} before their Worlds 2026 ${round} (${bestOfLabel(s.bestOf)}): team stats side by side, the five lane match-ups and each team's champions.`,
+      openGraph: { ...baseOpenGraph, title },
+    };
+  }
   // The round keeps titles unique when two teams meet again (Swiss, then knockout).
   const title = `${teams}, ${s.round ? `${STAGE_SHORT[s.stage]} Round ${s.round}` : STAGE_LABEL[s.stage]}`;
   return {
@@ -55,7 +66,7 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
   const icon = (name: string) => champIcon(data, name);
   const pending = seriesHasPendingGames(s);
   const missing = Math.max(0, s.gamesPlayed - games.length);
-  const preview = games.length === 0 && (s.status === "scheduled" || (s.status === "live" && missing === 0));
+  const preview = showsPreview(s, games.length);
 
   /** Who played what, from the scoreboard rows or, for a manual game, the typed line-up. */
   const lineupFor = (g: Game, side: Side): DraftPlayer[] => {
@@ -94,9 +105,9 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
         art={seriesArt(data, s, games)}
         eyebrow={`${roundLabel(s.stage, s.round, s.tab)} / ${bestOfLabel(s.bestOf)}${s.patch ? ` / Patch ${s.patch}` : ""}`}
         title={
+          // The spaces are for search engines and screen readers, which read the heading as text; flex hides them.
           <span className="flex flex-wrap items-center gap-3">
-            <TeamPill team={team1} size="lg" withName />
-            <span className="text-muted-foreground">vs</span>
+            <TeamPill team={team1} size="lg" withName /> <span className="text-muted-foreground">vs</span>{" "}
             <TeamPill team={team2} size="lg" withName />
           </span>
         }

@@ -206,6 +206,9 @@ test("a series yet to be played previews both teams lane by lane", async ({ page
   test.skip(!next, "no scheduled series with both teams known");
   const errors = watchErrors(page);
   await page.goto(`/matches/${next!.id}`);
+  await expect(page).toHaveTitle(/ preview \| Rift Graphs$/);
+  // Read as text, the heading keeps its words apart: "TES Top Esports vs iG Invictus Gaming".
+  expect(await page.getByRole("heading", { level: 1 }).textContent()).toMatch(/\S \S+ vs \S+ \S/);
   await expect(page.getByRole("heading", { name: "Tale of the tape", level: 2 })).toBeVisible();
   const lanes = page.locator("section").filter({ has: page.getByRole("heading", { name: "Lane by lane", level: 2 }) });
   await expect(lanes.getByRole("article")).toHaveCount(5);

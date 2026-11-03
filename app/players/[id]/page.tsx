@@ -174,8 +174,7 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
         eyebrow={ROLE_LABEL[p.role]}
         title={
           <span className="flex flex-wrap items-center gap-3">
-            {p.name}
-            <TeamPill team={teamRef(team)} size="md" />
+            <span>{p.name}</span> <TeamPill team={teamRef(team)} size="md" />
           </span>
         }
         description={[p.realName, p.nativeName, p.country].filter(Boolean).join(", ") || undefined}
