@@ -37,6 +37,8 @@ export default function ComparePage() {
       { key: "avgDeaths", label: "Deaths per game", unit: "decimal1", lowerIsBetter: true },
       { key: "avgAssists", label: "Assists per game", unit: "decimal1" },
       { key: "goldShare", label: "Gold share", unit: "percent" },
+      { key: "goldDiffAt15", label: "Gold diff at 15", unit: "number" },
+      { key: "csDiffAt15", label: "CS diff at 15", unit: "decimal1" },
     ],
     entities: data.players
       .filter((p) => (byPlayer.get(p.id)?.games ?? 0) >= 1)
@@ -64,6 +66,8 @@ export default function ComparePage() {
             avgDeaths: a.avgDeaths,
             avgAssists: a.avgAssists,
             goldShare: a.goldShare,
+            goldDiffAt15: a.goldDiffAt15,
+            csDiffAt15: a.csDiffAt15,
           },
         };
       })
@@ -85,6 +89,8 @@ export default function ComparePage() {
       { key: "dragonControl", label: "Dragon control", unit: "percent", radar: true },
       { key: "baronControl", label: "Baron control", unit: "percent", radar: true },
       { key: "deathsPerGame", label: "Deaths per game", unit: "decimal1", lowerIsBetter: true },
+      { key: "firstBloodRate", label: "First blood rate", unit: "percent" },
+      { key: "goldDiffAt15", label: "Gold diff at 15", unit: "number" },
       { key: "dragonsPerGame", label: "Dragons per game", unit: "decimal1" },
       { key: "baronsPerGame", label: "Barons per game", unit: "decimal2" },
       { key: "heraldsPerGame", label: "Heralds per game", unit: "decimal2" },
@@ -112,6 +118,8 @@ export default function ComparePage() {
             dragonControl: a.dragonControl,
             baronControl: a.baronControl,
             deathsPerGame: a.deathsPerGame,
+            firstBloodRate: a.firstBloodRate,
+            goldDiffAt15: a.goldDiffAt15,
             dragonsPerGame: a.dragonsPerGame,
             baronsPerGame: a.baronsPerGame,
             heraldsPerGame: a.heraldsPerGame,

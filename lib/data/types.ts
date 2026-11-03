@@ -157,6 +157,10 @@ export interface GameTeamStats {
   picks: string[];
   /** Player lines of a manual game; null for Leaguepedia games (use PlayerGame rows). */
   lineup: LineupEntry[] | null;
+  /** Whether this team drew first blood (lolesports live stats; absent when unknown). */
+  firstBlood?: boolean;
+  /** Team gold at 15:00 of game time (lolesports live stats; absent when unknown). */
+  goldAt15?: number;
 }
 
 export interface Game {
@@ -225,6 +229,12 @@ export interface PlayerGame {
   runes: string[];
   summonerSpells: string[];
   pentakills: number;
+  /** At 15:00 of game time, from the lolesports live stats; absent when unknown. */
+  goldAt15?: number;
+  csAt15?: number;
+  /** The same against the opponent in the same role. */
+  goldDiffAt15?: number;
+  csDiffAt15?: number;
 }
 
 export interface ChampionRef {

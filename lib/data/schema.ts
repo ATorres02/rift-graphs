@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { EarlyGame } from "../sources/livestats";
 import type {
   ChampionIndex,
   Draft,
@@ -158,6 +159,8 @@ const gameTeamStatsSchema = z.object({
   bans: z.array(text()),
   picks: z.array(text()),
   lineup: z.array(lineupEntrySchema).nullable(),
+  firstBlood: z.boolean().optional(),
+  goldAt15: z.number().nonnegative().optional(),
 });
 
 export const gameSchema: z.ZodType<Game> = z.object({
@@ -222,6 +225,10 @@ export const playerGameSchema: z.ZodType<PlayerGame> = z.object({
   runes: z.array(z.string()),
   summonerSpells: z.array(z.string()),
   pentakills: z.number().int().nonnegative(),
+  goldAt15: z.number().nonnegative().optional(),
+  csAt15: z.number().int().nonnegative().optional(),
+  goldDiffAt15: z.number().optional(),
+  csDiffAt15: z.number().int().optional(),
 });
 
 export const championIndexSchema: z.ZodType<ChampionIndex> = z.object({
@@ -265,6 +272,43 @@ export const metaSchema: z.ZodType<Meta> = z.object({
   conflicts: z.number().int().nonnegative(),
 });
 
+const earlyTeamSchema = z.object({
+  gold: z.number().nonnegative(),
+  kills: z.number().int().nonnegative(),
+  towers: z.number().int().nonnegative(),
+  dragons: z.number().int().nonnegative(),
+});
+
+export const earlyGameSchema: z.ZodType<EarlyGame> = z.object({
+  esportsGameId: z.string().min(1).max(40),
+  firstBlood: sideSchema.nullable(),
+  at15: z
+    .object({
+      blue: earlyTeamSchema,
+      red: earlyTeamSchema,
+      players: z.array(
+        z.object({
+          side: sideSchema,
+          role: roleSchema,
+          gold: z.number().nonnegative(),
+          cs: z.number().int().nonnegative(),
+          level: z.number().int().nonnegative(),
+          kills: z.number().int().nonnegative(),
+          deaths: z.number().int().nonnegative(),
+          assists: z.number().int().nonnegative(),
+        }),
+      ),
+    })
+    .nullable(),
+  pausedSeconds: z.number().int().nonnegative(),
+});
+
+/** Game id → early game numbers from the lolesports live stats feed, or why there are none. */
+export const earlyCacheSchema = z.record(
+  z.string(),
+  z.union([earlyGameSchema, z.object({ unavailable: text(200) })]),
+);
+
 export const SCHEMA_VERSION = 2;
 
 /** File name → schema, used by both the pipeline (write) and the app (read). */
@@ -278,6 +322,7 @@ export const datasetFiles = {
   "drafts.json": z.array(draftSchema),
   "player-games.json": z.array(playerGameSchema),
   "champions.json": championIndexSchema,
+  "early-game.json": earlyCacheSchema,
 } as const;
 
 export type DatasetFileName = keyof typeof datasetFiles;

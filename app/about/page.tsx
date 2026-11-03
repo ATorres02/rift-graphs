@@ -49,6 +49,11 @@ export default function AboutPage() {
           them.
         </li>
         <li>
+          First blood and the gold and CS at 15 minutes come from the live stats behind the lolesports.com scoreboard,
+          read once a game is over. The 15 minutes are game time: pauses are taken out. A game missing there simply
+          does not count towards these numbers.
+        </li>
+        <li>
           Champion names and art come from Riot&apos;s{" "}
           <a href={site.dataDragonUrl} target="_blank" rel="noopener noreferrer" className="underline">
             Data Dragon

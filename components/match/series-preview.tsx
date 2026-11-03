@@ -14,6 +14,7 @@ import { fmt, ROLE_LABEL } from "@/lib/format";
 import { seriesRecord } from "@/lib/metrics";
 import {
   championPool,
+  barShare,
   formatPreview,
   LANE_CHART_MEASURES,
   laneMatchups,
@@ -49,8 +50,8 @@ function MetricRow({ m, aName, bName }: { m: PreviewMetric; aName: string; bName
   const lead = leader(m);
   const fa = formatPreview(m.a, m.format);
   const fb = formatPreview(m.b, m.format);
-  const width = (v: number | null) => `${v === null ? 0 : Math.min(100, (Math.max(v, 0) / m.max) * 100)}%`;
-  const tick = m.avg === null ? null : `${Math.min(100, (m.avg / m.max) * 100)}%`;
+  const width = (v: number | null) => `${barShare(m, v) * 100}%`;
+  const tick = m.avg === null ? null : `${barShare(m, m.avg) * 100}%`;
   const bar = (side: "a" | "b") => (
     <span className={cn("relative h-2 bg-muted", side === "a" ? "rounded-l-full" : "rounded-r-full")}>
       <span

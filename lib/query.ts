@@ -18,7 +18,8 @@ export type ChartType = "bar" | "groupedBar" | "stackedBar" | "line" | "scatter"
 export type Aggregation = "mean" | "median" | "sum" | "max" | "min" | "perGame" | "perMinute";
 export type SortMode = "desc" | "asc" | "label";
 export type ColorBy = "none" | "region" | "team" | "role";
-export type MeasureGroup = "combat" | "economy" | "damage" | "vision" | "objectives" | "duration" | "draft" | "results";
+export type MeasureGroup =
+  "combat" | "economy" | "early" | "damage" | "vision" | "objectives" | "duration" | "draft" | "results";
 
 export interface QueryFilters {
   stages?: StageId[];
@@ -157,6 +158,9 @@ export function buildRows(data: IndexedDataset, source: DataSource): BaseRow[] {
           pick: 1,
           ban: 0,
           games: 1,
+          ...(pg.goldDiffAt15 === undefined
+            ? {}
+            : { at15: 1, goldDiff15: pg.goldDiffAt15, csDiff15: pg.csDiffAt15 ?? 0 }),
         },
       });
     }
@@ -240,6 +244,10 @@ export function buildRows(data: IndexedDataset, source: DataSource): BaseRow[] {
             oppBarons: opp.barons,
             oppTowers: opp.towers,
             games: 1,
+            ...(own.firstBlood === undefined ? {} : { fbKnown: 1, firstBlood: own.firstBlood ? 1 : 0 }),
+            ...(own.goldAt15 === undefined || opp.goldAt15 === undefined
+              ? {}
+              : { at15: 1, goldDiff15: own.goldAt15 - opp.goldAt15 }),
           },
         });
       }
@@ -527,6 +535,42 @@ export const MEASURES: MeasureDef[] = [
     perRow: (r) => safeDiv(r.n.vision, r.duration / 60),
     description: "Vision score divided by minutes played.",
   },
+  // early game (lolesports live stats; games without them do not count)
+  {
+    key: "firstBloodRate",
+    label: "First blood rate",
+    group: "early",
+    unit: "percent",
+    kind: "ratio",
+    sources: ["teams"],
+    ratio: (s) => safeDiv(s.firstBlood ?? 0, s.fbKnown ?? 0),
+    perRow: (r) => (r.n.fbKnown ? r.n.firstBlood : null),
+    description: "Share of games in which the team drew first blood.",
+  },
+  {
+    key: "goldDiffAt15",
+    label: "Gold diff at 15",
+    group: "early",
+    unit: "number",
+    kind: "ratio",
+    sources: ["players", "teams", "champions"],
+    rowFilter: picksOnly,
+    ratio: (s) => safeDiv(s.goldDiff15 ?? 0, s.at15 ?? 0),
+    perRow: (r) => (r.n.at15 ? r.n.goldDiff15 : null),
+    description: "Gold lead at 15:00 of game time, against the lane opponent for players. Negative when behind.",
+  },
+  {
+    key: "csDiffAt15",
+    label: "CS diff at 15",
+    group: "early",
+    unit: "decimal1",
+    kind: "ratio",
+    sources: ["players", "champions"],
+    rowFilter: picksOnly,
+    ratio: (s) => safeDiv(s.csDiff15 ?? 0, s.at15 ?? 0),
+    perRow: (r) => (r.n.at15 ? r.n.csDiff15 : null),
+    description: "CS lead over the lane opponent at 15:00 of game time. Negative when behind.",
+  },
   // objectives
   {
     key: "towers",
@@ -776,6 +820,7 @@ export const MEASURES: MeasureDef[] = [
 export const MEASURE_GROUP_LABEL: Record<MeasureGroup, string> = {
   combat: "Combat",
   economy: "Economy",
+  early: "Early game",
   damage: "Damage",
   vision: "Vision",
   objectives: "Objectives",

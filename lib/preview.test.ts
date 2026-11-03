@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { indexDataset } from "./data/index";
 import type { Dataset, Game, GameTeamStats, PlayerGame, Team } from "./data/types";
 import {
+  barShare,
   championPool,
   formatPreview,
   laneMatchups,
@@ -128,6 +129,7 @@ const metric = (o: Partial<PreviewMetric>): PreviewMetric => ({
   a: 1,
   b: 2,
   max: 2,
+  min: 0,
   avg: 1.5,
   better: "higher",
   ...o,
@@ -139,6 +141,16 @@ describe("formatPreview", () => {
     expect(formatPreview(0.625, "pct")).toBe("63%");
     expect(formatPreview(1859.7, "time")).toBe("31:00");
     expect(formatPreview(null, "dec1")).toBe("–");
+    expect(formatPreview(1612.6, "signed")).toBe("+1613");
+    expect(formatPreview(-149.2, "signed")).toBe("-149");
+  });
+});
+
+describe("barShare", () => {
+  it("runs from zero, or from the lowest in the group for a signed difference", () => {
+    expect(barShare(metric({ max: 4 }), 1)).toBe(0.25);
+    expect(barShare(metric({ min: -800, max: 1600, format: "signed" }), -200)).toBe(0.25);
+    expect(barShare(metric({}), null)).toBe(0);
   });
 });
 
@@ -205,8 +217,8 @@ describe("laneMatchups", () => {
   });
   it("uses CS per minute in lane and vision per minute for supports", () => {
     const lanes = laneMatchups(data, "a", "b");
-    expect(lanes[0].metrics.map((x) => x.key)).toEqual(["kda", "kp", "dpm", "cspm"]);
-    expect(lanes[4].metrics.map((x) => x.key)).toEqual(["kda", "kp", "dpm", "vspm"]);
+    expect(lanes[0].metrics.map((x) => x.key)).toEqual(["kda", "kp", "dpm", "goldDiffAt15", "cspm"]);
+    expect(lanes[4].metrics.map((x) => x.key)).toEqual(["kda", "kp", "dpm", "goldDiffAt15", "vspm"]);
   });
 });
 

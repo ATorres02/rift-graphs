@@ -65,6 +65,11 @@ export interface PlayerAggregate {
   /** 0–1 share of the team's gold / damage, null when the denominator is zero. */
   goldShare: number | null;
   damageShare: number | null;
+  /** Averages at 15:00 of game time, and against the lane opponent; null without live stats for any game. */
+  goldAt15: number | null;
+  csAt15: number | null;
+  goldDiffAt15: number | null;
+  csDiffAt15: number | null;
   totalMinutes: number;
   champions: ChampionUsage[];
   pentakills: number;
@@ -126,6 +131,10 @@ export function aggregatePlayerGames(rows: PlayerGame[]): PlayerAggregate {
     totalMinutes,
     champions: Array.from(champMap.values()).sort((a, b) => b.games - a.games || a.champion.localeCompare(b.champion)),
     pentakills: sum((r) => r.pentakills),
+    goldAt15: mean(rows.flatMap((r) => (r.goldAt15 === undefined ? [] : [r.goldAt15]))),
+    csAt15: mean(rows.flatMap((r) => (r.csAt15 === undefined ? [] : [r.csAt15]))),
+    goldDiffAt15: mean(rows.flatMap((r) => (r.goldDiffAt15 === undefined ? [] : [r.goldDiffAt15]))),
+    csDiffAt15: mean(rows.flatMap((r) => (r.csDiffAt15 === undefined ? [] : [r.csDiffAt15]))),
   };
 }
 
@@ -185,6 +194,10 @@ export interface TeamAggregate {
   /** Share (0–1) of all dragons / barons taken in the team's games; null when none were taken. */
   dragonControl: number | null;
   baronControl: number | null;
+  /** Share (0–1) of games where the team drew first blood; null without live stats for any game. */
+  firstBloodRate: number | null;
+  /** Average gold lead at 15:00 (negative when behind); null without live stats for any game. */
+  goldDiffAt15: number | null;
   totalMinutes: number;
 }
 
@@ -266,8 +279,19 @@ export function aggregateTeamGames(games: Game[], teamId: string): TeamAggregate
           baronsAll,
         )
       : null,
+    firstBloodRate: mean(rows.flatMap((r) => (r.own.firstBlood === undefined ? [] : [r.own.firstBlood ? 1 : 0]))),
+    goldDiffAt15: mean(
+      rows.flatMap((r) =>
+        r.own.goldAt15 === undefined || r.opp.goldAt15 === undefined ? [] : [r.own.goldAt15 - r.opp.goldAt15],
+      ),
+    ),
     totalMinutes,
   };
+}
+
+/** Mean of the values present; null when there are none (a stat the source did not have for any game). */
+function mean(values: number[]): number | null {
+  return values.length ? values.reduce((a, b) => a + b, 0) / values.length : null;
 }
 
 export function aggregateByTeam(games: Game[], teamIds: string[]): Map<string, TeamAggregate> {
