@@ -69,8 +69,8 @@ test("spoiler mode hides scores until revealed and survives navigation", async (
   const toggle = page.getByRole("button", { name: /Spoilers/ }).first();
   await toggle.click();
   await expect(toggle).toHaveAttribute("aria-pressed", "true");
-  await expect(page.getByRole("button", { name: /score/i }).first()).toBeVisible();
   await page.goto("/matches");
+  await expect(page.getByRole("button", { name: /score/i }).first()).toBeVisible();
   await expect(page.getByRole("button", { name: /Spoilers/ }).first()).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("main").getByText("WIN")).toHaveCount(0);
   // Reveal a finished series: a live one has a score but no winner yet.
@@ -216,12 +216,21 @@ test("a series yet to be played previews both teams lane by lane", async ({ page
   expect(errors).toEqual([]);
 });
 
+test("the homepage leaders switch ranking with tabs on a phone", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await page.getByRole("tab", { name: "Damage/min" }).click();
+  await expect(page.getByRole("tabpanel", { name: "Damage/min" })).toBeVisible();
+  await expect(page.getByRole("tabpanel", { name: "KDA" })).toBeHidden();
+});
+
 test("the homepage charts open in the chart builder", async ({ page }) => {
   const errors = watchErrors(page);
   await page.goto("/");
   const strip = page.locator("section").filter({ has: page.getByRole("heading", { name: "Charts", level: 2 }) });
   await expect(strip.getByRole("link", { name: /^Open in Charts/ })).toHaveCount(3);
-  await expect(page.getByRole("link", { name: /Top 10 in Charts/ })).toHaveCount(3);
+  // One ranking per leader; a phone shows one at a time behind tabs, so count the links whether shown or not.
+  await expect(page.locator("a", { hasText: "Top 10 in Charts" })).toHaveCount(3);
   await strip
     .getByRole("link", { name: /^Open in Charts/ })
     .first()

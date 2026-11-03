@@ -1,113 +1,97 @@
 import Link from "next/link";
 import { jsonLdHtml } from "@/lib/jsonld";
-import { Headlines, type Headline } from "@/components/headlines";
-import { LocalTime } from "@/components/local-time";
 import { Section } from "@/components/page-header";
-import { SeriesCard } from "@/components/series-card";
 import { KnockoutBracket } from "@/components/bracket/knockout-bracket";
 import { SwissBracket } from "@/components/bracket/swiss-bracket";
-import { SpoilerToggle } from "@/components/spoilers";
 import { homeBracket } from "@/lib/bracket";
 import { getData } from "@/lib/data/load";
 import { heroArt, heroChampion } from "@/lib/hero-art";
 import { fmt, STAGE_LABEL } from "@/lib/format";
 import { aggregateByPlayer, DEFAULT_MIN_GAMES, rankPlayers } from "@/lib/metrics";
+import { showsPreview } from "@/lib/preview";
 import { site } from "@/lib/site";
 import { swissStandings } from "@/lib/standings";
-import { TEMPLATES } from "@/lib/charts/templates";
-import { serializeConfig } from "@/lib/charts/url";
 import { chartHref, playerRankingChart } from "@/lib/charts/page-charts";
 import { BuildChartButton } from "@/components/home/build-chart-button";
 import { ChartStrip } from "@/components/home/chart-strip";
-import { ChartTypeThumb } from "@/components/charts/mini";
+import { Leaders, type LeaderBoard } from "@/components/home/leaders";
+import { NextMatch } from "@/components/home/next-match";
 import { playerLabel, seriesView } from "@/lib/views";
 
 export default function HomePage() {
   const data = getData();
   const { series, tournament } = data;
 
-  const upcoming = series.filter((s) => s.status !== "finished").slice(0, 6);
+  const upcoming = series.filter((s) => s.status !== "finished");
   const live = series.filter((s) => s.status === "live");
-  const latest = [...series.filter((s) => s.status === "finished")]
-    .sort((a, b) => b.dateTimeUtc.localeCompare(a.dateTimeUtc))
-    .slice(0, 6);
+  // The series to watch: the one in progress, else the next on the schedule.
+  const next = live[0] ?? upcoming[0];
+  const nextView = next ? seriesView(data, next) : null;
 
   const mainTeamIds = data.teams.filter((t) => t.stages.includes("main")).map((t) => t.id);
   const swiss = swissStandings(series, mainTeamIds);
   const qualified = swiss.filter((r) => r.status === "qualified").length;
   const eliminated = swiss.filter((r) => r.status === "eliminated").length;
 
+  // Leaders: a top 5 per measure, each linked to the same ranking (top 10) in the chart builder.
   const byPlayer = aggregateByPlayer(data.playerGames);
-  const top5 = {
-    kda: rankPlayers(byPlayer, (a) => a.kda, { limit: 5 }),
-    dpm: rankPlayers(byPlayer, (a) => a.dpm, { limit: 5 }),
-    kp: rankPlayers(byPlayer, (a) => a.killParticipation, { limit: 5 }),
-  };
-  const leaders = { kda: top5.kda[0], dpm: top5.dpm[0], kp: top5.kp[0] };
-  // Top 5 under each leader tile, linked to the same ranking (top 10) in the chart builder.
-  const ranking = (
-    rows: (typeof top5)["kda"],
-    format: (v: number) => string,
-    measure: "kda" | "dpm" | "kp",
+  const board = (
+    key: "kda" | "dpm" | "kp",
     label: string,
-  ) => ({
-    rows: rows.map((r) => ({
-      key: r.playerId,
-      label: data.playersById.get(r.playerId)?.name ?? r.playerId,
-      value: r.value,
-      display: format(r.value),
-    })),
-    href: chartHref(playerRankingChart(measure, label)),
-  });
-
-  const next = upcoming[0];
+    short: string,
+    chartLabel: string,
+    get: Parameters<typeof rankPlayers>[1],
+    format: (v: number) => string,
+  ): LeaderBoard[] => {
+    const top = rankPlayers(byPlayer, get, { limit: 5 });
+    if (!top.length) return [];
+    return [
+      {
+        key,
+        label,
+        short,
+        value: format(top[0].value),
+        detail: `${playerLabel(data, top[0].playerId)}, ${top[0].aggregate.games} games`,
+        playerHref: `/players/${top[0].playerId}`,
+        rows: top.map((r) => ({
+          key: r.playerId,
+          label: data.playersById.get(r.playerId)?.name ?? r.playerId,
+          value: r.value,
+          display: format(r.value),
+        })),
+        chartHref: chartHref(playerRankingChart(key, chartLabel)),
+      },
+    ];
+  };
+  const boards = [
+    ...board(
+      "kda",
+      "KDA",
+      "KDA",
+      "KDA",
+      (a) => a.kda,
+      (v) => fmt.dec(v, 1),
+    ),
+    ...board(
+      "dpm",
+      "Damage per minute",
+      "Damage/min",
+      "damage per minute",
+      (a) => a.dpm,
+      (v) => fmt.int(v),
+    ),
+    ...board(
+      "kp",
+      "Kill participation",
+      "Participation",
+      "kill participation",
+      (a) => a.killParticipation,
+      (v) => fmt.pct(v),
+    ),
+  ];
 
   const heroPick = heroChampion(data);
   const art = heroPick ? heroArt(heroPick) : null;
-  const headlines: Headline[] = [
-    live.length
-      ? {
-          label: "Right now",
-          value: `${live.length} series in progress`,
-          detail: STAGE_LABEL[live[0].stage],
-          href: `/matches/${live[0].id}`,
-        }
-      : next
-        ? {
-            label: "Next up",
-            value: STAGE_LABEL[next.stage] + (next.round ? ` / Round ${next.round}` : ""),
-            detail: <LocalTime iso={next.dateTimeUtc} hasTime={next.hasTime} />,
-            href: `/matches/${next.id}`,
-          }
-        : { label: "Tournament", value: "Completed", detail: tournament.name, href: "/tournament" },
-    leaders.kda
-      ? {
-          label: "KDA leader",
-          value: fmt.dec(leaders.kda.value, 1),
-          detail: `${playerLabel(data, leaders.kda.playerId)}, ${leaders.kda.aggregate.games} games`,
-          href: `/players/${leaders.kda.playerId}`,
-          ranking: ranking(top5.kda, (v) => fmt.dec(v, 1), "kda", "KDA"),
-        }
-      : { label: "KDA leader", value: "–", detail: `Needs ${DEFAULT_MIN_GAMES}+ games` },
-    leaders.dpm
-      ? {
-          label: "Damage per minute",
-          value: fmt.int(leaders.dpm.value),
-          detail: `${playerLabel(data, leaders.dpm.playerId)}, ${leaders.dpm.aggregate.games} games`,
-          href: `/players/${leaders.dpm.playerId}`,
-          ranking: ranking(top5.dpm, (v) => fmt.int(v), "dpm", "damage per minute"),
-        }
-      : { label: "Damage per minute", value: "–" },
-    leaders.kp
-      ? {
-          label: "Kill participation",
-          value: fmt.pct(leaders.kp.value),
-          detail: `${playerLabel(data, leaders.kp.playerId)}, ${leaders.kp.aggregate.games} games`,
-          href: `/players/${leaders.kp.playerId}`,
-          ranking: ranking(top5.kp, (v) => fmt.pct(v), "kp", "kill participation"),
-        }
-      : { label: "Kill participation", value: "–" },
-  ];
 
   // WebSite markup: search engines read the site name shown in results from it.
   const sameAs = [site.author.linkedin, site.author.x].filter(Boolean);
@@ -121,77 +105,77 @@ export default function HomePage() {
     author: { "@type": "Person", name: site.author.name, ...(sameAs.length ? { sameAs } : {}) },
   };
 
+  const links = (
+    <div className="flex gap-4 text-sm">
+      <Link href="/matches" className="text-brand underline">
+        All matches
+      </Link>
+      <Link href="/tournament" className="text-brand underline">
+        Full format
+      </Link>
+    </div>
+  );
+
   return (
-    <div className="space-y-10">
+    <div className="space-y-14 sm:space-y-20">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(jsonLd) }} />
-      <section className="space-y-4">
-        <div className="relative -mx-4 overflow-hidden bg-black sm:mx-0 sm:rounded-md">
-          {art ? (
-            <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-full sm:w-3/5">
-              <picture>
-                <source media="(max-width: 640px)" srcSet={art.portrait} />
-                <img
-                  src={art.splash}
-                  alt=""
-                  width={1215}
-                  height={717}
-                  fetchPriority="high"
-                  decoding="async"
-                  className="size-full object-cover object-[70%_20%] opacity-80"
-                />
-              </picture>
-              <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-black/10 sm:via-black/40" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
-            </div>
-          ) : null}
-          <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-1.5 bg-brand" />
-          <div className="relative flex min-h-[380px] flex-col justify-end p-5 sm:min-h-[460px] sm:p-10">
-            <p className="kicker text-xs text-brand sm:text-sm">
-              {tournament.name}
-              {next ? ` / ${STAGE_LABEL[next.stage]}${next.round ? ` / Round ${next.round}` : ""}` : ""}
-            </p>
-            <h1 className="display mt-2 max-w-3xl text-5xl font-extrabold text-white sm:text-7xl lg:text-8xl">
-              {site.tagline}
-            </h1>
-            <p className="mt-4 max-w-xl text-sm text-zinc-300 sm:text-base">
-              Matches, teams, players, champions and drafts of the 2026 World Championship, refreshed within minutes of
-              every game. Free, no ads.
-            </p>
-            <div className="mt-6 flex flex-wrap items-center gap-3">
-              <Link
-                href="/matches"
-                className="cut-corner border border-white/25 bg-white/5 px-5 py-2.5 text-sm font-semibold text-white no-underline backdrop-blur hover:bg-white/10"
-              >
-                Schedule and results
-              </Link>
-              <BuildChartButton />
-            </div>
-            {art ? (
-              <p className="kicker mt-6 text-[10px] text-zinc-500">
-                {art.name}, most picked champion of the tournament
-              </p>
-            ) : null}
+      <section className="relative -mx-4 overflow-hidden bg-black sm:mx-0 sm:rounded-md">
+        {art ? (
+          <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-full sm:w-3/5">
+            <picture>
+              <source media="(max-width: 640px)" srcSet={art.portrait} />
+              <img
+                src={art.splash}
+                alt=""
+                width={1215}
+                height={717}
+                fetchPriority="high"
+                decoding="async"
+                className="size-full object-cover object-[70%_20%] opacity-80"
+              />
+            </picture>
+            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-black/10 sm:via-black/40" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
           </div>
-        </div>
-        <Headlines items={headlines} className="lg:grid-cols-4" />
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-dashed bg-card/60 px-4 py-3 text-sm">
-          <p className="text-muted-foreground">
-            <span className="font-medium text-foreground">Spoilers:</span> scores and winners are shown by default. Hide
-            them to browse the schedule safely and reveal results one by one.
+        ) : null}
+        <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-1.5 bg-brand" />
+        <div className="relative flex flex-col justify-end p-5 pt-14 sm:min-h-[460px] sm:p-10">
+          <p className="kicker text-xs text-brand sm:text-sm">
+            {tournament.name}
+            {next ? ` / ${STAGE_LABEL[next.stage]}${next.round ? ` / Round ${next.round}` : ""}` : ""}
           </p>
-          <SpoilerToggle />
+          <h1 className="display mt-2 max-w-3xl text-5xl font-extrabold text-white sm:text-7xl lg:text-8xl">
+            {site.tagline}
+          </h1>
+          <p className="mt-4 max-w-xl text-sm text-zinc-300 sm:text-base">
+            Matches, teams, players, champions and drafts of the 2026 World Championship, refreshed within minutes of
+            every game. Free, no ads.
+          </p>
+          <div className="mt-6 grid max-w-3xl gap-3 sm:grid-cols-2">
+            {next && nextView ? (
+              <NextMatch
+                series={next}
+                team1={nextView.team1}
+                team2={nextView.team2}
+                preview={
+                  !!(nextView.team1 && nextView.team2) &&
+                  showsPreview(next, data.gamesBySeries.get(next.id)?.length ?? 0)
+                }
+              />
+            ) : null}
+            <BuildChartButton />
+          </div>
+          {art ? (
+            <p className="kicker mt-6 text-[10px] text-zinc-500">{art.name}, most picked champion of the tournament</p>
+          ) : null}
         </div>
       </section>
 
       {homeBracket(series) === "knockout" ? (
         <Section
           title="Knockout stage"
-          description="Quarterfinals, semifinals and the final, all best of five."
-          action={
-            <Link href="/tournament" className="text-sm text-brand underline">
-              Full format
-            </Link>
-          }
+          description="Quarterfinals, semifinals and the final, all best of five. Every series links to its page."
+          action={links}
         >
           <KnockoutBracket data={data} />
         </Section>
@@ -199,89 +183,29 @@ export default function HomePage() {
         <Section
           title="Swiss Stage"
           description={`${qualified} qualified, ${eliminated} eliminated, ${mainTeamIds.length - qualified - eliminated} still playing. Every series links to its page.`}
-          action={
-            <Link href="/tournament" className="text-sm text-brand underline">
-              Full format
-            </Link>
-          }
+          action={links}
         >
           <SwissBracket data={data} />
         </Section>
       )}
 
-      <ChartStrip data={data} />
-
-      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-        <div className="space-y-10">
+      {boards.length ? (
+        <div className="bg-muted/40 py-10 shadow-[0_0_0_100vmax_color-mix(in_oklab,var(--muted)_40%,transparent)] [clip-path:inset(0_-100vmax)]">
           <Section
-            title="Upcoming series"
-            description="Times shown in your local time zone."
+            title="Leaders"
+            description={`Players with ${DEFAULT_MIN_GAMES} games or more.`}
             action={
-              <Link href="/matches" className="text-sm text-brand underline">
-                All matches
+              <Link href="/players" className="text-sm text-brand underline">
+                All players
               </Link>
             }
           >
-            {upcoming.length ? (
-              <div className="grid gap-3 sm:grid-cols-2">
-                {upcoming.map((s) => {
-                  const v = seriesView(data, s);
-                  return (
-                    <SeriesCard key={s.id} series={v.series} team1={v.team1} team2={v.team2} pending={v.pending} />
-                  );
-                })}
-              </div>
-            ) : (
-              <p className="text-sm text-muted-foreground">No series left on the schedule.</p>
-            )}
-          </Section>
-
-          <Section title="Latest results">
-            <div className="grid gap-3 sm:grid-cols-2">
-              {latest.map((s) => {
-                const v = seriesView(data, s);
-                return <SeriesCard key={s.id} series={v.series} team1={v.team1} team2={v.team2} pending={v.pending} />;
-              })}
-            </div>
+            <Leaders boards={boards} />
           </Section>
         </div>
+      ) : null}
 
-        <aside className="space-y-10">
-          <Section
-            title="Build your own chart"
-            description="Pick a measure, group, filter and chart type; share the link."
-            action={
-              <Link href="/charts" className="text-sm text-brand underline">
-                Open the builder
-              </Link>
-            }
-          >
-            <ul className="space-y-1.5">
-              {TEMPLATES.map((t) => (
-                <li key={t.id}>
-                  <Link
-                    href={`/charts?${serializeConfig(t.config)}`}
-                    className="flex items-center gap-3 rounded-lg border bg-card px-3 py-2 text-sm no-underline transition-colors hover:border-brand/60"
-                  >
-                    <ChartTypeThumb type={t.config.chart} />
-                    <span>
-                      <span className="font-medium">{t.name}</span>
-                      <span className="block text-xs text-muted-foreground">{t.description}</span>
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <p className="text-xs text-muted-foreground">
-              Or compare two teams or players head to head on the{" "}
-              <Link href="/compare" className="underline hover:text-foreground">
-                comparison page
-              </Link>
-              .
-            </p>
-          </Section>
-        </aside>
-      </div>
+      <ChartStrip data={data} />
     </div>
   );
 }
