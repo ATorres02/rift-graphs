@@ -1,6 +1,7 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { cache } from "react";
+import { applyEarly } from "@/lib/ingest/early";
 import { indexDataset, type IndexedDataset } from "./index";
 import { datasetFiles, type DatasetFileName } from "./schema";
 import type { ChampionRef, Dataset, Series, Team } from "./types";
@@ -20,15 +21,22 @@ let memo: IndexedDataset | null = null;
 
 export function readDataset(): Dataset {
   const dir = path.join(process.cwd(), "data", TOURNAMENT_ID);
+  // First blood and the 15:00 numbers live in their own file, written by the ingest as it reads the live stats feed.
+  const early = existsSync(path.join(dir, "early-game.json")) ? readJson(dir, "early-game.json") : {};
+  const { games, playerGames } = applyEarly(
+    readJson(dir, "games.json"),
+    readJson(dir, "player-games.json"),
+    early,
+  );
   return {
     meta: readJson(dir, "meta.json"),
     tournament: readJson(dir, "tournament.json"),
     teams: readJson(dir, "teams.json"),
     players: readJson(dir, "players.json"),
     series: readJson(dir, "series.json"),
-    games: readJson(dir, "games.json"),
+    games,
     drafts: readJson(dir, "drafts.json"),
-    playerGames: readJson(dir, "player-games.json"),
+    playerGames,
     champions: readJson(dir, "champions.json"),
   };
 }

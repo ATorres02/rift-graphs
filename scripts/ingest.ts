@@ -10,7 +10,9 @@
  *   LEAGUEPEDIA_DELAY_MS    pause between requests (default 1500)
  *   INGEST_USER_AGENT       custom User-Agent (add a contact if you run this a lot)
  *   INGEST_MAX_STALE_HOURS  rewrite meta.json even without data changes after N hours (default 6)
- *   LOLESPORTS_API_KEY      public key of lolesports.com; enables provisional series results (unset = skipped)
+ *   LOLESPORTS_API_KEY      public key of lolesports.com; enables provisional series results and the early game
+ *                           numbers from the live stats feed (unset = skipped)
+ *   EARLY_MAX_GAMES         games read from the live stats feed per run (default 25)
  *
  * Sources are merged by priority (lib/ingest/merge.ts): Leaguepedia > data/manual/ > lolesports.
  */
@@ -58,9 +60,11 @@ import {
   normalizeChampionName,
   pickDdragonVersion,
 } from "../lib/sources/ddragon";
+import { fetchEarly, type EarlyCache } from "../lib/ingest/early";
 import { mergeSources } from "../lib/ingest/merge";
 import { sanitizeDataset } from "../lib/ingest/sanitize";
 import { LolesportsClient, fetchLeagueId, fetchSchedule, type LolesportsMatch } from "../lib/sources/lolesports";
+import { feedReader } from "../lib/sources/livestats";
 import { loadManualDir } from "../lib/sources/manual";
 
 /* ------------------------------------------------------------------ config */
@@ -857,6 +861,25 @@ async function fetchLolesports(
   }
 }
 
+/** First blood and the 15:00 snapshot for finished games not read yet; fails soft and keeps what was read before. */
+async function updateEarly(series: Series[], games: Game[], teams: Team[]): Promise<EarlyCache> {
+  const cache = ((await readExisting("early-game.json")) as EarlyCache | null) ?? {};
+  const apiKey = process.env.LOLESPORTS_API_KEY;
+  if (!apiKey) return cache;
+  let requests = 0;
+  const result = await fetchEarly(series, games, teams, cache, {
+    client: new LolesportsClient({ apiKey, log }),
+    reader: (id) => feedReader(id, { onRequest: () => (requests += 1) }),
+    log: (m) => warn(m),
+    maxGames: Number(process.env.EARLY_MAX_GAMES ?? 25),
+  });
+  const missing = games.filter((g) => !g.provisional && !(g.id in result.cache)).length;
+  log(
+    `early game: ${result.read} games read (${requests} feed requests), ${result.failed} failed, ${missing} still missing`,
+  );
+  return result.cache;
+}
+
 async function readExisting(file: string): Promise<unknown | null> {
   try {
     return JSON.parse(await readFile(path.join(OUT_DIR, file), "utf8"));
@@ -950,9 +973,11 @@ async function main(): Promise<void> {
   );
 
   const tournament = buildTournament(raw, merged.series, patch, ddragonVersion);
-  const games = merged.games;
   const drafts = merged.drafts;
+  const games = merged.games;
   const playerGames = builds.flatMap((b) => b.playerGames);
+  // Kept in its own file; the site joins it to games and player rows when it loads the dataset (lib/data/load.ts).
+  const early = await updateEarly(merged.series, merged.games, teams);
 
   const meta: Meta = {
     schemaVersion: SCHEMA_VERSION,
@@ -999,6 +1024,7 @@ async function main(): Promise<void> {
     "player-games.json": playerGames,
     "champions.json": champions,
     "conflicts.json": merged.conflicts,
+    "early-game.json": early,
   };
 
   // Clean what the readers above did not (any source), then validate everything before touching the disk.

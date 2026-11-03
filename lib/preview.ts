@@ -35,7 +35,7 @@ export function previewRound(stage: StageId, round: number | null): string {
   }
 }
 
-export type PreviewFormat = "int" | "dec1" | "dec2" | "pct" | "time";
+export type PreviewFormat = "int" | "signed" | "dec1" | "dec2" | "pct" | "time";
 
 export interface PreviewMetric {
   key: string;
@@ -45,6 +45,9 @@ export interface PreviewMetric {
   b: number | null;
   /** Largest value in the reference group (every team, or every player in the role): a full-length bar. */
   max: number;
+  /** Where a bar starts: 0, or for a signed difference the smallest value in the group, so that two teams both
+   * behind at 15 minutes still show who is less behind. */
+  min: number;
   /** Average of the reference group, drawn as a tick; null when nobody qualifies. */
   avg: number | null;
   /** Which way is better; null when neither is (game length). */
@@ -56,6 +59,10 @@ export function formatPreview(value: number | null, format: PreviewFormat): stri
   switch (format) {
     case "int":
       return String(Math.round(value));
+    case "signed": {
+      const n = Math.round(value);
+      return n > 0 ? `+${n}` : String(n);
+    }
     case "dec1":
       return value.toFixed(1);
     case "dec2":
@@ -71,6 +78,12 @@ export function formatPreview(value: number | null, format: PreviewFormat): stri
 }
 
 /** The side that does better on a metric; none when the values read the same once rounded, or neither is better. */
+/** Length of a value's bar as a share (0–1) of the full bar. */
+export function barShare(m: PreviewMetric, v: number | null): number {
+  if (v === null || m.max <= m.min) return 0;
+  return Math.min(1, Math.max(0, (v - m.min) / (m.max - m.min)));
+}
+
 export function leader(m: PreviewMetric): "a" | "b" | null {
   if (m.a === null || m.b === null || m.better === null) return null;
   if (formatPreview(m.a, m.format) === formatPreview(m.b, m.format)) return null;
@@ -96,6 +109,7 @@ function buildMetric<T>(def: MetricDef<T>, a: T | null, b: T | null, reference: 
     a: va,
     b: vb,
     max: Math.max(...values, va ?? 0, vb ?? 0, 0.0001),
+    min: def.format === "signed" ? Math.min(...values, va ?? 0, vb ?? 0) : 0,
     avg: values.length ? values.reduce((s, v) => s + v, 0) / values.length : null,
     better: def.better,
   };
@@ -106,6 +120,8 @@ function buildMetric<T>(def: MetricDef<T>, a: T | null, b: T | null, reference: 
 const TEAM_METRICS: MetricDef<TeamAggregate>[] = [
   { key: "killsPerGame", label: "Kills per game", format: "dec1", better: "higher", get: (t) => t.killsPerGame },
   { key: "deathsPerGame", label: "Deaths per game", format: "dec1", better: "lower", get: (t) => t.deathsPerGame },
+  { key: "firstBloodRate", label: "First blood rate", format: "pct", better: "higher", get: (t) => t.firstBloodRate },
+  { key: "goldDiffAt15", label: "Gold diff at 15", format: "signed", better: "higher", get: (t) => t.goldDiffAt15 },
   { key: "goldPerMinute", label: "Gold per minute", format: "int", better: "higher", get: (t) => t.goldPerMinute },
   { key: "towersPerGame", label: "Towers per game", format: "dec1", better: "higher", get: (t) => t.towersPerGame },
   {
@@ -151,8 +167,13 @@ export interface TeamMatchup {
   results: PreviewMetric[];
 }
 
-export function teamMatchup(data: IndexedDataset, a: string, b: string): TeamMatchup {
-  const games = data.confirmedGames;
+/** `games` narrows the sample, e.g. to the games played before a series for its share card. */
+export function teamMatchup(
+  data: IndexedDataset,
+  a: string,
+  b: string,
+  games: Game[] = data.confirmedGames,
+): TeamMatchup {
   const byTeam = new Map(data.teams.map((t) => [t.id, aggregateTeamGames(games, t.id)]));
   const reference = Array.from(byTeam.values()).filter((t) => t.games > 0);
   const ta = byTeam.get(a) ?? null;
@@ -192,6 +213,7 @@ const LANE_METRICS = (role: Role): MetricDef<PlayerAggregate>[] => [
   { key: "kda", label: "KDA", format: "dec1", better: "higher", get: (p) => p.kda },
   { key: "kp", label: "KP", format: "pct", better: "higher", get: (p) => p.killParticipation },
   { key: "dpm", label: "DPM", format: "int", better: "higher", get: (p) => p.dpm },
+  { key: "goldDiffAt15", label: "GD@15", format: "signed", better: "higher", get: (p) => p.goldDiffAt15 },
   role === "support"
     ? { key: "vspm", label: "Vision/min", format: "dec1", better: "higher", get: (p) => p.visionPerMinute }
     : { key: "cspm", label: "CS/min", format: "dec1", better: "higher", get: (p) => p.cspm },

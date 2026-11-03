@@ -85,6 +85,7 @@ export function SourceStep({ value, onChange }: { value: DataSource; onChange: (
 const GROUP_ORDER: MeasureGroup[] = [
   "combat",
   "economy",
+  "early",
   "damage",
   "vision",
   "objectives",
