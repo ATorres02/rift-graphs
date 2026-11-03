@@ -164,6 +164,12 @@ test("hidden spoilers keep every bracket score hidden until revealed round by ro
   await expect(bracket.locator("[data-gate='1'] h3")).toBeFocused();
 });
 
+test("only the round being played is marked as now", async ({ page }) => {
+  // The Swiss bracket and the knockout bracket share the page: once the Swiss stage is over, its last round is not "now".
+  await page.goto("/tournament");
+  await expect(page.locator("main h3 .sr-only", { hasText: "now" })).toHaveCount(1);
+});
+
 test("the bracket scrolls inside its frame on a 390 px phone", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   for (const path of ["/", "/tournament"]) {
