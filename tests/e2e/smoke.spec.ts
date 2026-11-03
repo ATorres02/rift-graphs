@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import { expect, test, type Page } from "@playwright/test";
 
 const CORE_PAGES = [
@@ -190,6 +192,25 @@ test("Compare teams opens the comparison with both teams of the series", async (
   await expect(link).toHaveAttribute("href", "/compare?type=teams&a=gen-g&b=invictus-gaming");
   await link.click();
   await expect(page).toHaveURL(/\/compare\?type=teams&a=gen-g&b=invictus-gaming/);
+});
+
+test("a series yet to be played previews both teams lane by lane", async ({ page }) => {
+  // Any scheduled series with both teams known; none is left once the tournament is over.
+  const series = JSON.parse(readFileSync(path.join("data", "worlds-2026", "series.json"), "utf8")) as {
+    id: string;
+    status: string;
+    team1Id: string | null;
+    team2Id: string | null;
+  }[];
+  const next = series.find((s) => s.status === "scheduled" && s.team1Id && s.team2Id);
+  test.skip(!next, "no scheduled series with both teams known");
+  const errors = watchErrors(page);
+  await page.goto(`/matches/${next!.id}`);
+  await expect(page.getByRole("heading", { name: "Tale of the tape", level: 2 })).toBeVisible();
+  const lanes = page.locator("section").filter({ has: page.getByRole("heading", { name: "Lane by lane", level: 2 }) });
+  await expect(lanes.getByRole("article")).toHaveCount(5);
+  await expect(page.getByRole("link", { name: /^Open in Charts/ })).toHaveCount(8);
+  expect(errors).toEqual([]);
 });
 
 test("the homepage charts open in the chart builder", async ({ page }) => {
