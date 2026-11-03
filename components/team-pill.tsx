@@ -93,9 +93,9 @@ export function TeamPill({ team, size = "md", withName = false, link = true, cla
     </span>
   );
   const content = withName ? (
+    // The space keeps "TES Top Esports" apart when the page is read as text; flex does not render it.
     <span className="inline-flex items-center gap-2">
-      {pill}
-      <span className="font-medium">{team.name}</span>
+      {pill} <span className="font-medium">{team.name}</span>
     </span>
   ) : (
     pill
