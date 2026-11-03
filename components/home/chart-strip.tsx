@@ -1,12 +1,14 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { ArrowUpRightIcon } from "lucide-react";
-import { MiniBars, MiniLine } from "@/components/charts/mini";
+import { ChartTypeThumb, MiniBars, MiniLine } from "@/components/charts/mini";
 import { Section } from "@/components/page-header";
 import { championPresenceChart, chartHref, gameLengthByRoundChart, killsByRegionChart } from "@/lib/charts/page-charts";
 import type { IndexedDataset } from "@/lib/data/load";
 import { fmt } from "@/lib/format";
-import { MEASURES, runQuery } from "@/lib/query";
+import { TEMPLATES } from "@/lib/charts/templates";
+import { serializeConfig } from "@/lib/charts/url";
+import { runQuery } from "@/lib/query";
 import { cn } from "@/lib/utils";
 
 /** Phones swipe through the cards (as through the bracket); wider screens lay them out in a grid. */
@@ -46,8 +48,9 @@ function ChartCard({
 }
 
 /**
- * Three small charts on the homepage, drawn at build time from the same queries as the chart builder, and a way into
- * it. Only charts that give nothing away about results (no win rates, no scores).
+ * Three small charts on the homepage, drawn at build time from the same queries as the chart builder, and the
+ * builder's templates as a row of shortcuts. Only charts that give nothing away about results (no win rates, no
+ * scores).
  */
 export function ChartStrip({ data }: { data: IndexedDataset }) {
   const cards: ReactNode[] = [];
@@ -137,31 +140,39 @@ export function ChartStrip({ data }: { data: IndexedDataset }) {
   return (
     <Section
       title="Charts"
-      description="The tournament in numbers, drawn. Open any chart in the builder to change it or share it."
+      description="The tournament in numbers. Open any chart in the builder to change it or share it."
       action={
         <Link href="/charts" className="text-sm text-brand underline">
           Chart builder
         </Link>
       }
     >
-      <div className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-4">
+      <div className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3">
         {cards}
-        <article className={cn(CARD, "flex flex-col justify-between gap-4 border-brand/50 bg-brand-soft p-4")}>
-          <div>
-            <p className="kicker text-xs text-brand">Build your own</p>
-            <p className="display mt-1 text-2xl font-bold">Any stat, any chart</p>
-            <p className="mt-2 text-sm text-muted-foreground">
-              {MEASURES.length} measures for players, teams, champions and games, eight chart types, filters by stage,
-              team, role or champion. Every chart is a link you can share.
-            </p>
-          </div>
-          <Link
-            href="/charts"
-            className="cut-corner self-start bg-brand px-4 py-2 text-sm font-semibold text-brand-foreground no-underline hover:brightness-110"
-          >
-            Build a chart
-          </Link>
-        </article>
+      </div>
+      <div>
+        <h3 className="kicker text-[11px] text-muted-foreground">Or start from a template</h3>
+        <ul className="-mx-4 mt-2 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:px-0">
+          {TEMPLATES.map((t) => (
+            <li key={t.id} className="shrink-0">
+              <Link
+                href={`/charts?${serializeConfig(t.config)}`}
+                className="flex items-center gap-2 rounded-full border bg-card py-1 pr-3 pl-1 text-xs font-medium whitespace-nowrap no-underline transition-colors hover:border-brand/60"
+              >
+                <ChartTypeThumb type={t.config.chart} className="h-6 w-9 rounded-full p-0.5" />
+                {t.name}
+              </Link>
+            </li>
+          ))}
+          <li className="shrink-0">
+            <Link
+              href="/compare"
+              className="flex h-8 items-center rounded-full border border-dashed bg-card px-3 text-xs font-medium whitespace-nowrap no-underline transition-colors hover:border-brand/60"
+            >
+              Compare two teams or players
+            </Link>
+          </li>
+        </ul>
       </div>
     </Section>
   );

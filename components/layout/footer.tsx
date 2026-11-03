@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AuthorLinks } from "@/components/layout/author-links";
+import { BrandLogo } from "@/components/layout/brand-logo";
 import { NAV } from "@/components/layout/nav-items";
 import { riotNotice, site } from "@/lib/site";
 
@@ -8,6 +9,10 @@ export function Footer() {
   return (
     <footer className="mt-12 border-t pb-20 md:pb-8">
       <div className="mx-auto max-w-6xl space-y-4 px-4 py-8 text-sm text-muted-foreground">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pb-2">
+          <BrandLogo />
+          <p className="text-foreground">{site.tagline}</p>
+        </div>
         <p>{riotNotice}</p>
         <p>
           Data:{" "}

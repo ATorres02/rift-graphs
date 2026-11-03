@@ -34,7 +34,7 @@ export function BracketFrame({
     const el = scroller.current;
     if (!el) return;
     // With spoilers hidden the bracket stays at its start, where the first reveal button is.
-    const current = el.querySelector<HTMLElement>("[data-current]");
+    const current = el.querySelector<HTMLElement>("[data-focus]");
     const hidden = document.documentElement.dataset.spoilers === "hidden";
     if (current && !hidden && el.scrollWidth > el.clientWidth) {
       // Phones fit about two columns: the current one goes first. Wider screens centre it.

@@ -33,7 +33,8 @@ export function SwissBracket({ data, id = "swiss" }: { data: IndexedDataset; id?
   const heights = bracket.columns.map((c) => c.blocks.map(blockHeight));
   const height = Math.max(...heights.map(stackHeight));
   const placed = heights.map((h) => stack(h, height));
-  const currentColumn = bracket.currentRound ?? bracket.columns.length;
+  // Once the stage is over no round is "now", but the bracket still opens on its last column.
+  const focusColumn = bracket.currentRound ?? bracket.columns.length;
 
   return (
     <>
@@ -48,7 +49,8 @@ export function SwissBracket({ data, id = "swiss" }: { data: IndexedDataset; id?
                 id={`${id}-col-${index}`}
                 index={index}
                 title={col.outcomesOnly ? `Round ${col.round} results` : `Round ${col.round}`}
-                current={index === currentColumn}
+                current={index === bracket.currentRound}
+                focus={index === focusColumn}
                 height={height}
                 revealLabel={col.outcomesOnly ? `Reveal round ${col.round} results` : `Reveal round ${col.round}`}
               >
