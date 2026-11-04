@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "updatedAt": "2026-11-04T00:00:34Z",
+  "updatedAt": "2026-11-04T00:54:33Z",
   "tournamentId": "worlds-2026",
   "source": {
     "name": "Leaguepedia",
@@ -22,7 +22,7 @@
   "sources": {
     "lolesports": {
       "enabled": true,
-      "fetchedAt": "2026-11-04T00:00:59Z",
+      "fetchedAt": "2026-11-04T00:54:56Z",
       "matchedSeries": 43,
       "unmatchedEvents": 0,
       "error": null
