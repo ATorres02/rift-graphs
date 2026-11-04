@@ -1294,7 +1294,7 @@
     "tab": "Semifinals",
     "round": null,
     "bestOf": 5,
-    "team1Id": null,
+    "team1Id": "invictus-gaming",
     "team2Id": null,
     "dateTimeUtc": "2026-11-08T22:00:00Z",
     "hasTime": true,
