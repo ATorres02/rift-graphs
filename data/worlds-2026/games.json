@@ -5108,5 +5108,285 @@
     "source": "leaguepedia",
     "provisional": false,
     "statsComplete": true
+  },
+  {
+    "id": "main-event-quarterfinals-1-1",
+    "seriesId": "main-event-quarterfinals-1",
+    "stage": "quarterfinals",
+    "gameNumber": 1,
+    "dateTimeUtc": "2026-11-03T22:15:00Z",
+    "durationSeconds": 1862,
+    "patch": "26.20",
+    "winnerSide": "blue",
+    "winnerTeamId": "invictus-gaming",
+    "blue": {
+      "teamId": "invictus-gaming",
+      "kills": 27,
+      "gold": 68046,
+      "towers": 9,
+      "inhibitors": 1,
+      "dragons": 4,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 0,
+      "voidGrubs": 2,
+      "bans": [
+        "Nocturne",
+        "Renata Glasc",
+        "Rumble",
+        "Leona",
+        "Alistar"
+      ],
+      "picks": [
+        "Gnar",
+        "Qiyana",
+        "Syndra",
+        "Kai'Sa",
+        "Nautilus"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "top-esports",
+      "kills": 12,
+      "gold": 52798,
+      "towers": 2,
+      "inhibitors": 0,
+      "dragons": 1,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 1,
+      "voidGrubs": 1,
+      "bans": [
+        "Olaf",
+        "Jarvan IV",
+        "Galio",
+        "Jhin",
+        "Renekton"
+      ],
+      "picks": [
+        "Ambessa",
+        "Vi",
+        "Cassiopeia",
+        "Ezreal",
+        "Rell"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_485703",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
+  },
+  {
+    "id": "main-event-quarterfinals-1-2",
+    "seriesId": "main-event-quarterfinals-1",
+    "stage": "quarterfinals",
+    "gameNumber": 2,
+    "dateTimeUtc": "2026-11-03T23:07:00Z",
+    "durationSeconds": 2829,
+    "patch": "26.20",
+    "winnerSide": "red",
+    "winnerTeamId": "top-esports",
+    "blue": {
+      "teamId": "invictus-gaming",
+      "kills": 17,
+      "gold": 85090,
+      "towers": 4,
+      "inhibitors": 0,
+      "dragons": 4,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 3,
+      "bans": [
+        "Nocturne",
+        "Pantheon",
+        "Lee Sin",
+        "Rumble",
+        "Maokai"
+      ],
+      "picks": [
+        "Vayne",
+        "Wukong",
+        "Viktor",
+        "Yunara",
+        "Lulu"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "top-esports",
+      "kills": 20,
+      "gold": 91664,
+      "towers": 11,
+      "inhibitors": 2,
+      "dragons": 3,
+      "elders": 0,
+      "barons": 3,
+      "heralds": 1,
+      "voidGrubs": 0,
+      "bans": [
+        "Olaf",
+        "Jarvan IV",
+        "Locke",
+        "Jayce",
+        "Trundle"
+      ],
+      "picks": [
+        "Renekton",
+        "Xin Zhao",
+        "Orianna",
+        "Kalista",
+        "Renata Glasc"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_485705",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
+  },
+  {
+    "id": "main-event-quarterfinals-1-3",
+    "seriesId": "main-event-quarterfinals-1",
+    "stage": "quarterfinals",
+    "gameNumber": 3,
+    "dateTimeUtc": "2026-11-04T00:16:00Z",
+    "durationSeconds": 1769,
+    "patch": "26.20",
+    "winnerSide": "red",
+    "winnerTeamId": "invictus-gaming",
+    "blue": {
+      "teamId": "top-esports",
+      "kills": 9,
+      "gold": 53346,
+      "towers": 4,
+      "inhibitors": 0,
+      "dragons": 1,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 2,
+      "bans": [
+        "Olaf",
+        "Nocturne",
+        "Jarvan IV",
+        "Trundle",
+        "Maokai"
+      ],
+      "picks": [
+        "Rumble",
+        "Skarner",
+        "Yone",
+        "Ashe",
+        "Seraphine"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "invictus-gaming",
+      "kills": 16,
+      "gold": 62505,
+      "towers": 9,
+      "inhibitors": 2,
+      "dragons": 3,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 1,
+      "voidGrubs": 1,
+      "bans": [
+        "Pantheon",
+        "Lee Sin",
+        "K'Sante",
+        "Locke",
+        "Akali"
+      ],
+      "picks": [
+        "Ornn",
+        "Jayce",
+        "Annie",
+        "Zeri",
+        "Yuumi"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_485710",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
+  },
+  {
+    "id": "main-event-quarterfinals-1-4",
+    "seriesId": "main-event-quarterfinals-1",
+    "stage": "quarterfinals",
+    "gameNumber": 4,
+    "dateTimeUtc": "2026-11-04T02:20:00Z",
+    "durationSeconds": 1858,
+    "patch": "26.20",
+    "winnerSide": "blue",
+    "winnerTeamId": "invictus-gaming",
+    "blue": {
+      "teamId": "invictus-gaming",
+      "kills": 16,
+      "gold": 61656,
+      "towers": 8,
+      "inhibitors": 1,
+      "dragons": 4,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 1,
+      "voidGrubs": 3,
+      "bans": [
+        "Nocturne",
+        "Pantheon",
+        "Jarvan IV",
+        "Locke",
+        "Akali"
+      ],
+      "picks": [
+        "K'Sante",
+        "Naafiri",
+        "Taliyah",
+        "Jhin",
+        "Alistar"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "top-esports",
+      "kills": 10,
+      "gold": 55362,
+      "towers": 0,
+      "inhibitors": 0,
+      "dragons": 1,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 0,
+      "bans": [
+        "Olaf",
+        "Caitlyn",
+        "Lee Sin",
+        "Camille",
+        "Gwen"
+      ],
+      "picks": [
+        "Aatrox",
+        "Maokai",
+        "Aurora",
+        "Lucian",
+        "Milio"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT05_234191",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   }
 ]
