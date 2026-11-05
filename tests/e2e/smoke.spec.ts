@@ -4,6 +4,7 @@ import { expect, test, type Page } from "@playwright/test";
 
 const CORE_PAGES = [
   "/",
+  "/updates",
   "/tournament",
   "/matches",
   "/teams",

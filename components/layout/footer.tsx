@@ -47,6 +47,9 @@ export function Footer() {
           ))}
         </nav>
         <nav aria-label="Legal" className="flex flex-wrap gap-x-4 gap-y-1">
+          <Link href="/updates" className="underline hover:text-foreground">
+            Updates
+          </Link>
           <Link href="/about" className="underline hover:text-foreground">
             About
           </Link>
@@ -56,16 +59,6 @@ export function Footer() {
           <Link href="/imprint" className="underline hover:text-foreground">
             Imprint
           </Link>
-          {site.repoUrl ? (
-            <a
-              href={site.repoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:text-foreground"
-            >
-              Source code
-            </a>
-          ) : null}
         </nav>
       </div>
     </footer>
