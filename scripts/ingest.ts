@@ -13,6 +13,8 @@
  *   LOLESPORTS_API_KEY      public key of lolesports.com; enables provisional series results and the early game
  *                           numbers from the live stats feed (unset = skipped)
  *   EARLY_MAX_GAMES         games read from the live stats feed per run (default 25)
+ *   TIMELINE_MAX_GAMES      gold graph timelines read per run (default 6; about 80 feed requests each)
+ *   TIMELINE_CONCURRENCY    timelines read at the same time (default 3)
  *
  * Sources are merged by priority (lib/ingest/merge.ts): Leaguepedia > data/manual/ > lolesports.
  */
@@ -61,6 +63,7 @@ import {
   pickDdragonVersion,
 } from "../lib/sources/ddragon";
 import { fetchEarly, type EarlyCache } from "../lib/ingest/early";
+import { fetchTimelines, timelineJson, type TimelineCache } from "../lib/ingest/timeline";
 import { mergeSources } from "../lib/ingest/merge";
 import { sanitizeDataset } from "../lib/ingest/sanitize";
 import { LolesportsClient, fetchLeagueId, fetchSchedule, type LolesportsMatch } from "../lib/sources/lolesports";
@@ -880,6 +883,27 @@ async function updateEarly(series: Series[], games: Game[], teams: Team[]): Prom
   return result.cache;
 }
 
+/** The gold graph's timeline for finished games not read yet; fails soft and keeps what was read before. */
+async function updateTimelines(series: Series[], games: Game[], teams: Team[]): Promise<TimelineCache> {
+  const cache = ((await readExisting("gold-timeline.json")) as TimelineCache | null) ?? {};
+  const apiKey = process.env.LOLESPORTS_API_KEY;
+  if (!apiKey) return cache;
+  let requests = 0;
+  const result = await fetchTimelines(series, games, teams, cache, {
+    client: new LolesportsClient({ apiKey, log }),
+    reader: (id) => feedReader(id, { onRequest: () => (requests += 1) }),
+    log: (m) => warn(m),
+    // A game takes about 80 requests: a few per run keeps the match-night runs short; a backfill raises it.
+    maxGames: Number(process.env.TIMELINE_MAX_GAMES ?? 6),
+    concurrency: Number(process.env.TIMELINE_CONCURRENCY ?? 3),
+  });
+  const missing = games.filter((g) => !g.provisional && !(g.id in result.cache)).length;
+  log(
+    `gold timeline: ${result.read} games read (${requests} feed requests), ${result.failed} failed, ${missing} still missing`,
+  );
+  return result.cache;
+}
+
 async function readExisting(file: string): Promise<unknown | null> {
   try {
     return JSON.parse(await readFile(path.join(OUT_DIR, file), "utf8"));
@@ -978,6 +1002,7 @@ async function main(): Promise<void> {
   const playerGames = builds.flatMap((b) => b.playerGames);
   // Kept in its own file; the site joins it to games and player rows when it loads the dataset (lib/data/load.ts).
   const early = await updateEarly(merged.series, merged.games, teams);
+  const timelines = await updateTimelines(merged.series, merged.games, teams);
 
   const meta: Meta = {
     schemaVersion: SCHEMA_VERSION,
@@ -1025,6 +1050,7 @@ async function main(): Promise<void> {
     "champions.json": champions,
     "conflicts.json": merged.conflicts,
     "early-game.json": early,
+    "gold-timeline.json": timelines,
   };
 
   // Clean what the readers above did not (any source), then validate everything before touching the disk.
@@ -1066,7 +1092,8 @@ async function main(): Promise<void> {
 
   await mkdir(OUT_DIR, { recursive: true });
   for (const [file, value] of Object.entries(outputs)) {
-    await writeFile(path.join(OUT_DIR, file), stableJson(value), "utf8");
+    const text = file === "gold-timeline.json" ? timelineJson(value as TimelineCache) : stableJson(value);
+    await writeFile(path.join(OUT_DIR, file), text, "utf8");
   }
   log(
     `wrote ${Object.keys(outputs).length} files: ${meta.counts.series} series, ${meta.counts.games} games (${pending.length} pending), ${meta.counts.playerGames} player rows, ${meta.counts.teams} teams, ${meta.counts.players} players · ddragon ${ddragonVersion} · ${warnings.length} warnings · ${Math.round((Date.now() - started) / 1000)}s`,

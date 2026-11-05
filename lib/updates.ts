@@ -1,7 +1,8 @@
 /**
  * What changed on the site, newest first. The /updates page and the homepage's latest-update bar read this list.
- * Every change to the site adds its entry here in the same pull request. Features only: the data refreshes after
- * every game on its own, so that is not an update, and no entry may give away a result.
+ * Every new feature or visible improvement adds its entry here in the same pull request; small fixes and adjustments
+ * get none. The data refreshes after every game on its own, so that is not an update, and no entry may give away a
+ * result.
  */
 export type UpdateKind = "new" | "improved" | "fixed";
 
@@ -20,6 +21,20 @@ export interface SiteUpdate {
 export const UPDATE_KIND_LABEL: Record<UpdateKind, string> = { new: "New", improved: "Improved", fixed: "Fixed" };
 
 export const UPDATES: SiteUpdate[] = [
+  {
+    id: "gold-graph",
+    date: "2026-11-05",
+    kind: "new",
+    title: "Gold graph for every game",
+    summary:
+      "Every game on a series page now shows the gold difference through the game, read from the live stats of lolesports.com every 30 seconds.",
+    items: [
+      "Blue side's lead above the line, red side's below, with the dragons and barons each side took.",
+      "The largest lead of each team, and the time and lead of any stretch on hover.",
+      "It sits with the game, behind the spoiler switch.",
+    ],
+    link: { href: "/matches", label: "Matches" },
+  },
   {
     id: "lane-duels",
     date: "2026-11-05",

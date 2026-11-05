@@ -77,44 +77,52 @@ export function parseEventGames(payload: unknown): FeedGame[] {
   return games;
 }
 
-export interface FetchEarlyOptions {
+export interface FetchFeedOptions {
   client: LolesportsClient;
   reader: (esportsGameId: string) => WindowReader;
   log: (message: string) => void;
   /** Stop after this many games so one run stays short; the rest come on the next runs. */
   maxGames?: number;
+  /** Games read at the same time (a backfill); one at a time by default. */
+  concurrency?: number;
+  /** How the log names this data, e.g. "early game". */
+  label?: string;
 }
 
-/** Reads the games that are finished and missing from the cache; returns the new cache and how many were read. */
-export async function fetchEarly(
+/**
+ * Reads, for every finished game missing from the cache, what `readGame` takes from the live stats feed. Finds the
+ * feed's game through getEventDetails and checks both sides against the dataset first. Returns the new cache.
+ */
+export async function fetchFeedGames<T>(
   series: Series[],
   games: Game[],
   teams: Team[],
-  cache: EarlyCache,
-  { client, reader, log, maxGames = 25 }: FetchEarlyOptions,
-): Promise<{ cache: EarlyCache; read: number; failed: number }> {
-  const next: EarlyCache = { ...cache };
+  cache: Record<string, T | { unavailable: string }>,
+  readGame: (esportsGameId: string, reader: WindowReader, game: Game) => Promise<T | null>,
+  { client, reader, log, maxGames = 25, concurrency = 1, label = "feed" }: FetchFeedOptions,
+): Promise<{ cache: Record<string, T | { unavailable: string }>; read: number; failed: number }> {
+  const next: Record<string, T | { unavailable: string }> = { ...cache };
   const teamsById = new Map(teams.map((t) => [t.id, t]));
   const seriesById = new Map(series.map((s) => [s.id, s]));
   const events = new Map<string, Promise<FeedGame[]>>();
   let read = 0;
   let failed = 0;
-  const todo = games.filter((g) => !g.provisional && !(g.id in cache));
-  for (const g of todo) {
-    if (read + failed >= maxGames) break;
-    const s = seriesById.get(g.seriesId);
-    if (!s?.lolesportsMatchId) continue;
+  const todo = games
+    .filter((g) => !g.provisional && !(g.id in cache) && seriesById.get(g.seriesId)?.lolesportsMatchId)
+    .slice(0, maxGames);
+  const one = async (g: Game) => {
+    const s = seriesById.get(g.seriesId)!;
     try {
       if (!events.has(s.id)) {
         events.set(
           s.id,
-          client.get("getEventDetails", { id: s.lolesportsMatchId }).then((p) => parseEventGames(p)),
+          client.get("getEventDetails", { id: s.lolesportsMatchId! }).then((p) => parseEventGames(p)),
         );
       }
       const feedGame = (await events.get(s.id)!).find((x) => x.number === g.gameNumber);
       if (!feedGame) {
         next[g.id] = { unavailable: "no game with this number on lolesports" };
-        continue;
+        return;
       }
       const blue = teamsById.get(g.blue.teamId);
       const red = teamsById.get(g.red.teamId);
@@ -127,17 +135,41 @@ export async function fetchEarly(
         !teamMatches(red, feedGame.red)
       ) {
         next[g.id] = { unavailable: "sides do not match lolesports" };
-        log(`early game: ${g.id} sides do not match lolesports, skipped`);
-        continue;
+        log(`${label}: ${g.id} sides do not match lolesports, skipped`);
+        return;
       }
-      const early = await readEarlyGame(feedGame.id, reader(feedGame.id), g.durationSeconds * 1000);
-      next[g.id] = early ?? { unavailable: "no frames in the live stats feed" };
+      const value = await readGame(feedGame.id, reader(feedGame.id), g);
+      next[g.id] = value ?? { unavailable: "no frames in the live stats feed" };
       read += 1;
     } catch (err) {
       // Not cached: the next run tries again.
       failed += 1;
-      log(`early game: ${g.id} failed (${err instanceof Error ? err.message : String(err)})`);
+      log(`${label}: ${g.id} failed (${err instanceof Error ? err.message : String(err)})`);
     }
-  }
+  };
+  const queue = [...todo];
+  await Promise.all(
+    Array.from({ length: Math.max(1, Math.min(concurrency, queue.length)) }, async () => {
+      for (let g = queue.shift(); g; g = queue.shift()) await one(g);
+    }),
+  );
   return { cache: next, read, failed };
+}
+
+/** Reads the games that are finished and missing from the cache; returns the new cache and how many were read. */
+export async function fetchEarly(
+  series: Series[],
+  games: Game[],
+  teams: Team[],
+  cache: EarlyCache,
+  options: FetchFeedOptions,
+): Promise<{ cache: EarlyCache; read: number; failed: number }> {
+  return fetchFeedGames(
+    series,
+    games,
+    teams,
+    cache,
+    (id, reader, g) => readEarlyGame(id, reader, g.durationSeconds * 1000),
+    { label: "early game", ...options },
+  );
 }

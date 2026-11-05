@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { EarlyGame } from "../sources/livestats";
+import type { EarlyGame, GameTimeline } from "../sources/livestats";
 import type {
   ChampionIndex,
   Draft,
@@ -309,6 +309,46 @@ export const earlyCacheSchema = z.record(
   z.union([earlyGameSchema, z.object({ unavailable: text(200) })]),
 );
 
+const counts = z.array(z.number().int().nonnegative()).max(400);
+
+const timelineTeamSchema = z.object({
+  gold: z.array(z.number().nonnegative()).max(400),
+  kills: counts,
+  towers: counts,
+  inhibitors: counts,
+  barons: counts,
+  dragons: counts,
+  dragonTypes: z.array(text(30)).max(20),
+});
+
+export const gameTimelineSchema: z.ZodType<GameTimeline> = z
+  .object({
+    esportsGameId: z.string().min(1).max(40),
+    step: z.number().int().positive(),
+    t: counts,
+    end: z.number().int().nonnegative(),
+    pausedSeconds: z.number().int().nonnegative(),
+    blue: timelineTeamSchema,
+    red: timelineTeamSchema,
+  })
+  .refine(
+    (t) =>
+      [t.blue, t.red].every((side) =>
+        [side.kills, side.towers, side.inhibitors, side.barons, side.dragons].every(
+          (a) => a.length === t.blue.gold.length,
+        ),
+      ) &&
+      t.red.gold.length === t.blue.gold.length &&
+      t.t.length === t.blue.gold.length,
+    { message: "every series of a timeline needs one value per sample" },
+  );
+
+/** Game id → the whole game every 30 s from the lolesports live stats feed (gold graph), or why there is none. */
+export const timelineCacheSchema = z.record(
+  z.string(),
+  z.union([gameTimelineSchema, z.object({ unavailable: text(200) })]),
+);
+
 export const SCHEMA_VERSION = 2;
 
 /** File name → schema, used by both the pipeline (write) and the app (read). */
@@ -323,6 +363,7 @@ export const datasetFiles = {
   "player-games.json": z.array(playerGameSchema),
   "champions.json": championIndexSchema,
   "early-game.json": earlyCacheSchema,
+  "gold-timeline.json": timelineCacheSchema,
 } as const;
 
 export type DatasetFileName = keyof typeof datasetFiles;

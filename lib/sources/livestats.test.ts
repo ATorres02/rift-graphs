@@ -1,5 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { parseWindow, readEarlyGame, type FeedFrame, type FeedWindow } from "./livestats";
+import {
+  parseWindow,
+  readEarlyGame,
+  readTimeline,
+  type FeedFrame,
+  type FeedTeam,
+  type FeedWindow,
+  type WindowReader,
+} from "./livestats";
 
 const T = Date.parse("2026-10-23T17:00:00Z");
 const ROLES = ["top", "jungle", "mid", "bottom", "support"];
@@ -92,5 +100,101 @@ describe("parseWindow", () => {
     });
     expect(w.frames).toHaveLength(1);
     expect(w.roles.get(6)).toBe("bottom");
+  });
+});
+
+/* ------------------------------------------------------------------ timeline over a simulated feed */
+
+interface Sim {
+  /** Seconds of game time; play starts 60 s after the first frame. */
+  end: number;
+  /** A pause at this game time, lasting `pauseFor` wall-clock seconds. */
+  pauseAt?: number;
+  pauseFor?: number;
+  /** After the pause, the feed sends nothing for this many seconds of play. */
+  silentAfterPause?: number;
+}
+
+const W0 = Date.parse("2026-11-03T22:00:00Z");
+
+/** One frame a second, like the feed: frozen with a single paused frame during a pause, nothing after the end. */
+function simulatedFeed(sim: Sim): WindowReader {
+  const frames: FeedFrame[] = [];
+  const frame = (wall: number, game: number | null, state: string): FeedFrame => {
+    const team = (rate: number): FeedTeam => ({
+      totalGold: game === null ? 0 : 2500 + rate * game,
+      totalKills: 0,
+      towers: 0,
+      inhibitors: 0,
+      barons: 0,
+      dragons: [],
+      participants: [],
+    });
+    return { rfc460Timestamp: new Date(wall).toISOString(), gameState: state, blueTeam: team(10), redTeam: team(9) };
+  };
+  for (let s = 0; s < 60; s++) frames.push(frame(W0 + s * 1000, null, "in_game"));
+  let wall = W0 + 60_000;
+  for (let g = 0; g <= sim.end; g++) {
+    if (sim.pauseAt !== undefined && g === sim.pauseAt) {
+      frames.push(frame(wall, g, "paused"));
+      wall += (sim.pauseFor ?? 0) * 1000;
+      if (sim.silentAfterPause) {
+        wall += sim.silentAfterPause * 1000;
+        g += sim.silentAfterPause;
+      }
+    }
+    frames.push(frame(wall, g, g === sim.end ? "finished" : "in_game"));
+    wall += 1000;
+  }
+  return async (at) => {
+    if (at === undefined) return { frames: frames.slice(0, 10), roles: new Map() };
+    const k = Math.floor(at / 10_000) * 10_000;
+    const inside = frames.filter(
+      (f) => Date.parse(f.rfc460Timestamp) >= k && Date.parse(f.rfc460Timestamp) < k + 10_000,
+    );
+    // Like the feed: a window with nothing new repeats the frames before it.
+    return {
+      frames: inside.length ? inside : frames.filter((f) => Date.parse(f.rfc460Timestamp) < k).slice(-10),
+      roles: new Map(),
+    };
+  };
+}
+
+describe("readTimeline", () => {
+  it("samples every 30 s of game time and ends on the finished frame", async () => {
+    const tl = (await readTimeline("g", simulatedFeed({ end: 615 }), 615_000))!;
+    expect(tl.t.slice(0, 3)).toEqual([0, 30, 60]);
+    expect(tl.t.at(-1)).toBe(615);
+    expect(tl.end).toBe(615);
+    expect(tl.blue.gold[2]).toBe(2500 + 10 * 60);
+    expect(tl.red.gold.at(-1)).toBe(2500 + 9 * 615);
+    expect(tl.pausedSeconds).toBe(0);
+  });
+
+  it("takes a pause out, so samples after it still read the game time", async () => {
+    const tl = (await readTimeline("g", simulatedFeed({ end: 600, pauseAt: 190, pauseFor: 95 }), 600_000))!;
+    expect(tl.pausedSeconds).toBeGreaterThanOrEqual(94);
+    expect(tl.pausedSeconds).toBeLessThanOrEqual(96);
+    const i = tl.t.indexOf(300);
+    expect(Math.abs(tl.blue.gold[i] - (2500 + 10 * 300))).toBeLessThanOrEqual(10);
+    expect(tl.end).toBeGreaterThanOrEqual(599);
+  });
+
+  it("gives back play the feed missed after a pause when the game ends short of the scoreboard", async () => {
+    const tl = (await readTimeline(
+      "g",
+      simulatedFeed({ end: 900, pauseAt: 300, pauseFor: 120, silentAfterPause: 240 }),
+      900_000,
+    ))!;
+    expect(Math.abs(tl.end - 900)).toBeLessThanOrEqual(2);
+    expect(tl.pausedSeconds).toBeGreaterThanOrEqual(119);
+    expect(tl.pausedSeconds).toBeLessThanOrEqual(121);
+    // The first sample after the gap sits at its real game time.
+    const after = tl.t.findIndex((t) => t > 300);
+    expect(Math.abs(tl.blue.gold[after] - (2500 + 10 * tl.t[after]))).toBeLessThanOrEqual(20);
+  });
+
+  it("has nothing for a game without frames", async () => {
+    expect(await readTimeline("g", async () => ({ frames: [], roles: new Map() }), 600_000)).toBeNull();
   });
 });

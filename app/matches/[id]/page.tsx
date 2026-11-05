@@ -6,6 +6,7 @@ import { ExternalLinkIcon, GitCompareArrowsIcon } from "lucide-react";
 import { LocalTime } from "@/components/local-time";
 import { CompareBars } from "@/components/match/compare-bars";
 import { DraftBoard, type DraftPlayer } from "@/components/match/draft-board";
+import { GoldGraph } from "@/components/match/gold-graph";
 import { LineupTable } from "@/components/match/lineup";
 import { Scoreboard } from "@/components/match/scoreboard";
 import { DuelStrip } from "@/components/match/duel-strip";
@@ -16,7 +17,7 @@ import { ProvisionalBadge } from "@/components/provisional";
 import { StatusLabel } from "@/components/series-card";
 import { Spoiler } from "@/components/spoilers";
 import { TeamPill } from "@/components/team-pill";
-import { getData, seriesHasPendingGames, seriesTeams, teamRef } from "@/lib/data/load";
+import { getData, getTimelines, seriesHasPendingGames, seriesTeams, teamRef } from "@/lib/data/load";
 import type { Game, Side } from "@/lib/data/types";
 import { lockedChampionsBefore } from "@/lib/draft";
 import { bestOfLabel, fmt, roundLabel, STAGE_LABEL, STAGE_SHORT } from "@/lib/format";
@@ -69,6 +70,7 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
   const pending = seriesHasPendingGames(s);
   const missing = Math.max(0, s.gamesPlayed - games.length);
   const preview = showsPreview(s, games.length);
+  const timelines = getTimelines();
 
   /** Who played what, from the scoreboard rows or, for a manual game, the typed line-up. */
   const lineupFor = (g: Game, side: Side): DraftPlayer[] => {
@@ -226,6 +228,15 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
                 ) : (
                   <p className="text-sm text-muted-foreground">Draft order not published yet.</p>
                 )}
+                {timelines.has(g.id) ? (
+                  <GoldGraph
+                    id={g.id}
+                    timeline={timelines.get(g.id)!}
+                    blue={blue}
+                    red={red}
+                    duration={g.durationSeconds}
+                  />
+                ) : null}
                 <div className="grid grid-cols-1 gap-3 lg:grid-cols-[minmax(0,1fr)_320px]">
                   <div className="space-y-3">
                     {rows.length ? (
