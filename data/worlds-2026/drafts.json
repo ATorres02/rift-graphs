@@ -3848,5 +3848,155 @@
       ]
     },
     "complete": true
+  },
+  {
+    "gameId": "main-event-quarterfinals-2-1",
+    "blue": {
+      "bans": [
+        "Nocturne",
+        "Renata Glasc",
+        "Cassiopeia",
+        "Rumble",
+        "K'Sante"
+      ],
+      "picks": [
+        "Qiyana",
+        "Jhin",
+        "Leona",
+        "Olaf",
+        "Galio"
+      ],
+      "picksByRole": [
+        "Olaf",
+        "Qiyana",
+        "Galio",
+        "Jhin",
+        "Leona"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Akali",
+        "Syndra",
+        "Vi",
+        "Jayce",
+        "Locke"
+      ],
+      "picks": [
+        "Ezreal",
+        "Lee Sin",
+        "Nautilus",
+        "Jax",
+        "Orianna"
+      ],
+      "picksByRole": [
+        "Jax",
+        "Lee Sin",
+        "Orianna",
+        "Ezreal",
+        "Nautilus"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-quarterfinals-2-2",
+    "blue": {
+      "bans": [
+        "Nocturne",
+        "Renata Glasc",
+        "Lucian",
+        "Lulu",
+        "Zeri"
+      ],
+      "picks": [
+        "Jarvan IV",
+        "Ashe",
+        "Seraphine",
+        "Sion",
+        "Viktor"
+      ],
+      "picksByRole": [
+        "Sion",
+        "Jarvan IV",
+        "Viktor",
+        "Ashe",
+        "Seraphine"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Akali",
+        "Syndra",
+        "Vi",
+        "K'Sante",
+        "Rumble"
+      ],
+      "picks": [
+        "Cassiopeia",
+        "Wukong",
+        "Jayce",
+        "Mel",
+        "Pyke"
+      ],
+      "picksByRole": [
+        "Jayce",
+        "Wukong",
+        "Cassiopeia",
+        "Mel",
+        "Pyke"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-quarterfinals-2-3",
+    "blue": {
+      "bans": [
+        "Renata Glasc",
+        "Nocturne",
+        "Caitlyn",
+        "Akali",
+        "Ahri"
+      ],
+      "picks": [
+        "Pantheon",
+        "Xayah",
+        "Rakan",
+        "Aurora",
+        "Taliyah"
+      ],
+      "picksByRole": [
+        "Aurora",
+        "Pantheon",
+        "Taliyah",
+        "Xayah",
+        "Rakan"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Vi",
+        "Syndra",
+        "Lulu",
+        "Ambessa",
+        "Gnar"
+      ],
+      "picks": [
+        "Alistar",
+        "Trundle",
+        "Corki",
+        "Anivia",
+        "Gangplank"
+      ],
+      "picksByRole": [
+        "Gangplank",
+        "Trundle",
+        "Anivia",
+        "Corki",
+        "Alistar"
+      ]
+    },
+    "complete": true
   }
 ]

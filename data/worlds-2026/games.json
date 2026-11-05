@@ -5388,5 +5388,215 @@
     "source": "leaguepedia",
     "provisional": false,
     "statsComplete": true
+  },
+  {
+    "id": "main-event-quarterfinals-2-1",
+    "seriesId": "main-event-quarterfinals-2",
+    "stage": "quarterfinals",
+    "gameNumber": 1,
+    "dateTimeUtc": "2026-11-04T22:14:00Z",
+    "durationSeconds": 1933,
+    "patch": "26.20",
+    "winnerSide": "blue",
+    "winnerTeamId": "gen-g",
+    "blue": {
+      "teamId": "gen-g",
+      "kills": 19,
+      "gold": 70928,
+      "towers": 12,
+      "inhibitors": 5,
+      "dragons": 4,
+      "elders": 0,
+      "barons": 2,
+      "heralds": 1,
+      "voidGrubs": 0,
+      "bans": [
+        "Nocturne",
+        "Renata Glasc",
+        "Cassiopeia",
+        "Rumble",
+        "K'Sante"
+      ],
+      "picks": [
+        "Olaf",
+        "Qiyana",
+        "Galio",
+        "Jhin",
+        "Leona"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "lyon",
+      "kills": 8,
+      "gold": 58033,
+      "towers": 3,
+      "inhibitors": 0,
+      "dragons": 1,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 3,
+      "bans": [
+        "Akali",
+        "Syndra",
+        "Vi",
+        "Jayce",
+        "Locke"
+      ],
+      "picks": [
+        "Jax",
+        "Lee Sin",
+        "Orianna",
+        "Ezreal",
+        "Nautilus"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_488030",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
+  },
+  {
+    "id": "main-event-quarterfinals-2-2",
+    "seriesId": "main-event-quarterfinals-2",
+    "stage": "quarterfinals",
+    "gameNumber": 2,
+    "dateTimeUtc": "2026-11-04T23:06:00Z",
+    "durationSeconds": 1592,
+    "patch": "26.20",
+    "winnerSide": "blue",
+    "winnerTeamId": "gen-g",
+    "blue": {
+      "teamId": "gen-g",
+      "kills": 22,
+      "gold": 60577,
+      "towers": 10,
+      "inhibitors": 2,
+      "dragons": 2,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 0,
+      "voidGrubs": 2,
+      "bans": [
+        "Nocturne",
+        "Renata Glasc",
+        "Lucian",
+        "Lulu",
+        "Zeri"
+      ],
+      "picks": [
+        "Sion",
+        "Jarvan IV",
+        "Viktor",
+        "Ashe",
+        "Seraphine"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "lyon",
+      "kills": 6,
+      "gold": 47693,
+      "towers": 2,
+      "inhibitors": 0,
+      "dragons": 2,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 1,
+      "voidGrubs": 1,
+      "bans": [
+        "Akali",
+        "Syndra",
+        "Vi",
+        "K'Sante",
+        "Rumble"
+      ],
+      "picks": [
+        "Jayce",
+        "Wukong",
+        "Cassiopeia",
+        "Mel",
+        "Pyke"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_488033",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
+  },
+  {
+    "id": "main-event-quarterfinals-2-3",
+    "seriesId": "main-event-quarterfinals-2",
+    "stage": "quarterfinals",
+    "gameNumber": 3,
+    "dateTimeUtc": "2026-11-04T23:54:00Z",
+    "durationSeconds": 2009,
+    "patch": "26.20",
+    "winnerSide": "blue",
+    "winnerTeamId": "gen-g",
+    "blue": {
+      "teamId": "gen-g",
+      "kills": 16,
+      "gold": 69590,
+      "towers": 9,
+      "inhibitors": 1,
+      "dragons": 2,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 1,
+      "voidGrubs": 3,
+      "bans": [
+        "Renata Glasc",
+        "Nocturne",
+        "Caitlyn",
+        "Akali",
+        "Ahri"
+      ],
+      "picks": [
+        "Aurora",
+        "Pantheon",
+        "Taliyah",
+        "Xayah",
+        "Rakan"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "lyon",
+      "kills": 10,
+      "gold": 58692,
+      "towers": 1,
+      "inhibitors": 0,
+      "dragons": 3,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 0,
+      "bans": [
+        "Vi",
+        "Syndra",
+        "Lulu",
+        "Ambessa",
+        "Gnar"
+      ],
+      "picks": [
+        "Gangplank",
+        "Trundle",
+        "Anivia",
+        "Corki",
+        "Alistar"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_488039",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   }
 ]
