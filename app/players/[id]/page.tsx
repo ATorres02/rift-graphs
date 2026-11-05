@@ -5,6 +5,7 @@ import { ChampionIcon } from "@/components/champion-icon";
 import { Chart } from "@/components/charts/chart";
 import { DataTable, type TableColumn } from "@/components/data-table";
 import { Headlines, type Headline } from "@/components/headlines";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { PageHeader, Section } from "@/components/page-header";
 import { Spoiler } from "@/components/spoilers";
 import { TeamPill } from "@/components/team-pill";
@@ -169,6 +170,13 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
 
   return (
     <div className="space-y-8">
+      <Breadcrumbs
+        items={[
+          { label: "Players", href: "/players" },
+          ...(team ? [{ label: team.name, href: `/teams/${team.id}` }] : []),
+          { label: p.name },
+        ]}
+      />
       <PageHeader
         art={mostPlayedArt(data, data.playerGamesByPlayer.get(p.id) ?? [])}
         eyebrow={ROLE_LABEL[p.role]}

@@ -67,6 +67,9 @@ test("a finished series shows its games, draft and scoreboards", async ({ page }
   await expect(graphs.first()).toBeVisible();
   expect(await graphs.count()).toBe(await page.getByRole("heading", { name: /^Game \d/ }).count());
   await expect(graphs.first()).toContainText(/Largest lead|Level all game/);
+  // Breadcrumbs above the header, linking back to the matches.
+  const crumbs = page.getByRole("navigation", { name: "Breadcrumb" });
+  await expect(crumbs.getByRole("link", { name: "Matches" })).toHaveAttribute("href", "/matches");
   expect(errors).toEqual([]);
 });
 

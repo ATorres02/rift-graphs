@@ -1,3 +1,4 @@
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -137,6 +138,7 @@ export default async function ChampionPage({ params }: { params: Promise<{ id: s
 
   return (
     <div className="space-y-8">
+      <Breadcrumbs items={[{ label: "Champions", href: "/champions" }, { label: c.name }]} />
       <header className="relative -mx-4 overflow-hidden sm:mx-0 sm:rounded-3xl">
         <div className="absolute inset-0">
           <picture>

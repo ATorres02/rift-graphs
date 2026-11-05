@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { jsonLdHtml } from "@/lib/jsonld";
+import { jsonLdHtml, seriesEventJsonLd, STAGE_VENUE, venueLabel, venueTown } from "@/lib/jsonld";
 import { notFound } from "next/navigation";
 import { ExternalLinkIcon, GitCompareArrowsIcon } from "lucide-react";
 import { LocalTime } from "@/components/local-time";
@@ -9,6 +9,7 @@ import { DraftBoard, type DraftPlayer } from "@/components/match/draft-board";
 import { GoldGraph } from "@/components/match/gold-graph";
 import { LineupTable } from "@/components/match/lineup";
 import { Scoreboard } from "@/components/match/scoreboard";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { DuelStrip } from "@/components/match/duel-strip";
 import { SeriesPreview } from "@/components/match/series-preview";
 import { PageHeader, Section } from "@/components/page-header";
@@ -20,7 +21,8 @@ import { TeamPill } from "@/components/team-pill";
 import { getData, getTimelines, seriesHasPendingGames, seriesTeams, teamRef } from "@/lib/data/load";
 import type { Game, Side } from "@/lib/data/types";
 import { lockedChampionsBefore } from "@/lib/draft";
-import { bestOfLabel, fmt, roundLabel, STAGE_LABEL, STAGE_SHORT } from "@/lib/format";
+import { bestOfLabel, fmt, roundLabel, STAGE_LABEL } from "@/lib/format";
+import { seriesNumberInStage, seriesTitleLabel, weekdayDate } from "@/lib/series-labels";
 import { hasDuels } from "@/lib/duels";
 import { previewRound, showsPreview } from "@/lib/preview";
 import { baseOpenGraph, site } from "@/lib/site";
@@ -40,9 +42,20 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   if (!s) return {};
   const { team1, team2 } = seriesTeams(data, s);
   const teams = `${team1?.name ?? "TBD"} vs ${team2?.name ?? "TBD"}`;
+  const town = venueTown(STAGE_VENUE[s.stage]);
+  // Before the teams are known, the page is what people find for "Worlds 2026 final": name it by the round and day.
+  if (!team1 || !team2) {
+    const label = seriesTitleLabel(s, seriesNumberInStage(data.series, s));
+    const title = `Worlds 2026 ${label}, ${weekdayDate(s.dateTimeUtc)}: bracket and stats`;
+    return {
+      title,
+      description: `The Worlds 2026 ${label.toLowerCase()} (${bestOfLabel(s.bestOf)}) on ${weekdayDate(s.dateTimeUtc)} in ${town}: ${team1 || team2 ? `${(team1 ?? team2)!.name} and an opponent still to be decided` : "both teams once known"}, a preview of the two, then draft and scoreboards for every game.`,
+      openGraph: { ...baseOpenGraph, title },
+    };
+  }
   // Before the first game the page is a preview, and its title and description say so.
-  if (team1 && team2 && showsPreview(s, data.gamesBySeries.get(s.id)?.length ?? 0)) {
-    const round = previewRound(s.stage, s.round);
+  const round = previewRound(s.stage, s.round);
+  if (showsPreview(s, data.gamesBySeries.get(s.id)?.length ?? 0)) {
     const title = `${teams}: Worlds 2026 ${round} preview`;
     return {
       title,
@@ -50,11 +63,11 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       openGraph: { ...baseOpenGraph, title },
     };
   }
-  // The round keeps titles unique when two teams meet again (Swiss, then knockout).
-  const title = `${teams}, ${s.round ? `${STAGE_SHORT[s.stage]} Round ${s.round}` : STAGE_LABEL[s.stage]}`;
+  // The round keeps titles unique when two teams meet again (Swiss, then knockout). No score: titles show in search.
+  const title = `${teams}: Worlds 2026 ${round} stats`;
   return {
     title,
-    description: `${teams}: ${roundLabel(s.stage, s.round, s.tab)} (${bestOfLabel(s.bestOf)}) of the 2026 World Championship, with draft, scoreboard and objectives for every game.`,
+    description: `${teams}, Worlds 2026 ${round} (${bestOfLabel(s.bestOf)}): draft, gold graph, scoreboard and objectives for every game${hasDuels(s) ? ", plus the five lane duels" : ""}.`,
     openGraph: { ...baseOpenGraph, title },
   };
 }
@@ -91,20 +104,28 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
     }));
   };
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "SportsEvent",
-    name: `${team1?.name ?? "TBD"} vs ${team2?.name ?? "TBD"}, ${roundLabel(s.stage, s.round, s.tab)}`,
-    startDate: s.dateTimeUtc,
-    eventStatus: s.status === "finished" ? "https://schema.org/EventScheduled" : "https://schema.org/EventScheduled",
-    competitor: [team1, team2].filter(Boolean).map((t) => ({ "@type": "SportsTeam", name: t!.name })),
+  const label = seriesTitleLabel(s, seriesNumberInStage(data.series, s));
+  const jsonLd = seriesEventJsonLd({
+    name: team1 && team2 ? `${team1.name} vs ${team2.name}, Worlds 2026 ${label}` : `Worlds 2026 ${label}`,
+    description: `${label} of the 2026 League of Legends World Championship (${bestOfLabel(s.bestOf)}) at ${venueLabel(STAGE_VENUE[s.stage])}.`,
     url: `${site.url}/matches/${s.id}`,
-    organizer: { "@type": "Organization", name: "Riot Games" },
-  };
+    image: `${site.url}/matches/${s.id}/opengraph-image`,
+    startDate: s.dateTimeUtc,
+    stage: s.stage,
+    competitors: [team1, team2].flatMap((t) => (t ? [t.name] : [])),
+    streamUrl: s.streamUrl ?? data.tournament.officialUrl ?? site.lolesportsUrl,
+  });
 
   return (
     <div className="space-y-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(jsonLd) }} />
+      <Breadcrumbs
+        items={[
+          { label: "Matches", href: "/matches" },
+          { label: STAGE_LABEL[s.stage], href: `/matches?stage=${s.stage}` },
+          { label: team1 && team2 ? `${team1.short} vs ${team2.short}` : label },
+        ]}
+      />
       <PageHeader
         art={seriesArt(data, s, games)}
         eyebrow={`${roundLabel(s.stage, s.round, s.tab)} / ${bestOfLabel(s.bestOf)}${s.patch ? ` / Patch ${s.patch}` : ""}`}

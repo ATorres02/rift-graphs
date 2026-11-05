@@ -4,13 +4,15 @@ import { championSlug } from "@/lib/sources/ddragon";
 import { site } from "@/lib/site";
 import { UPDATES } from "@/lib/updates";
 import { duelHref, duelSeries } from "@/lib/duels";
+import { lastModifiedDates } from "@/lib/last-modified";
 import { ROLES } from "@/lib/metrics";
 
 export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const data = getData();
-  const updated = new Date(data.meta.updatedAt);
+  const when = lastModifiedDates(data);
+  const updated = when.overall;
   const url = (p: string) => `${site.url}${p}`;
   return [
     { url: url("/"), lastModified: updated, changeFrequency: "hourly", priority: 1 },
@@ -27,32 +29,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.4,
     },
-    { url: url("/about"), lastModified: updated, changeFrequency: "monthly", priority: 0.3 },
-    { url: url("/privacy"), lastModified: updated, changeFrequency: "yearly", priority: 0.1 },
-    { url: url("/imprint"), lastModified: updated, changeFrequency: "yearly", priority: 0.1 },
+    { url: url("/about"), changeFrequency: "monthly", priority: 0.3 },
+    { url: url("/privacy"), changeFrequency: "yearly", priority: 0.1 },
+    { url: url("/imprint"), changeFrequency: "yearly", priority: 0.1 },
     ...data.series.map((s) => ({
       url: url(`/matches/${s.id}`),
-      lastModified: updated,
+      lastModified: when.series(s),
       changeFrequency: "hourly" as const,
       priority: 0.6,
     })),
     ...duelSeries(data).flatMap((s) =>
       ROLES.map((role) => ({
         url: url(duelHref(s.id, role)),
-        lastModified: updated,
+        lastModified: when.duel(s),
         changeFrequency: "daily" as const,
         priority: 0.5,
       })),
     ),
     ...data.teams.map((t) => ({
       url: url(`/teams/${t.id}`),
-      lastModified: updated,
+      lastModified: when.team(t.id),
       changeFrequency: "daily" as const,
       priority: 0.6,
     })),
     ...data.players.map((p) => ({
       url: url(`/players/${p.id}`),
-      lastModified: updated,
+      lastModified: when.player(p.id),
       changeFrequency: "daily" as const,
       priority: 0.5,
     })),

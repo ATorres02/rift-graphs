@@ -16,7 +16,8 @@ const display = Barlow_Condensed({ variable: "--font-display", subsets: ["latin"
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  title: { default: `${site.name} | ${site.tagline}`, template: `%s | ${site.name}` },
+  // The homepage's title: how people search for the site's subject ("LoL", "Worlds 2026"), not the tagline.
+  title: { default: `${site.name} | LoL Worlds 2026 stats, bracket and charts`, template: `%s | ${site.name}` },
   description: site.description,
   icons: {
     icon: [
