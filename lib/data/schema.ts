@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { EarlyGame, GameTimeline } from "../sources/livestats";
+import type { LoadoutIndex } from "../sources/loadout";
 import type {
   ChampionIndex,
   Draft,
@@ -349,6 +350,17 @@ export const timelineCacheSchema = z.record(
   z.union([gameTimelineSchema, z.object({ unavailable: text(200) })]),
 );
 
+/** Item, rune and summoner spell names → Data Dragon icons (see lib/sources/loadout.ts). */
+export const loadoutSchema: z.ZodType<LoadoutIndex> = z.object({
+  version: z.string().regex(/^[0-9.]{1,20}$/),
+  items: z.record(
+    text(120),
+    z.object({ id: z.string().regex(/^\d{1,7}$/), kind: z.enum(["legendary", "boots", "support", "other"]) }),
+  ),
+  runes: z.record(text(120), z.string().regex(/^perk-images\/[A-Za-z0-9_./-]{1,160}\.png$/)),
+  spells: z.record(text(120), z.string().regex(/^[A-Za-z0-9]{1,40}$/)),
+});
+
 export const SCHEMA_VERSION = 2;
 
 /** File name → schema, used by both the pipeline (write) and the app (read). */
@@ -364,6 +376,7 @@ export const datasetFiles = {
   "champions.json": championIndexSchema,
   "early-game.json": earlyCacheSchema,
   "gold-timeline.json": timelineCacheSchema,
+  "loadout.json": loadoutSchema,
 } as const;
 
 export type DatasetFileName = keyof typeof datasetFiles;

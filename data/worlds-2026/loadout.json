@@ -1,0 +1,833 @@
+{
+  "version": "16.20.1",
+  "items": {
+    "Abyssal Mask": {
+      "id": "8020",
+      "kind": "legendary"
+    },
+    "Actualizer": {
+      "id": "2522",
+      "kind": "legendary"
+    },
+    "Aether Wisp": {
+      "id": "3113",
+      "kind": "other"
+    },
+    "Amplifying Tome": {
+      "id": "1052",
+      "kind": "other"
+    },
+    "Ardent Censer": {
+      "id": "3504",
+      "kind": "legendary"
+    },
+    "Armored Advance": {
+      "id": "3174",
+      "kind": "boots"
+    },
+    "B. F. Sword": {
+      "id": "1038",
+      "kind": "other"
+    },
+    "Bandleglass Mirror": {
+      "id": "4642",
+      "kind": "other"
+    },
+    "Bandlepipes": {
+      "id": "2524",
+      "kind": "legendary"
+    },
+    "Banshee's Veil": {
+      "id": "3102",
+      "kind": "legendary"
+    },
+    "Bastionbreaker": {
+      "id": "2520",
+      "kind": "legendary"
+    },
+    "Berserker's Greaves": {
+      "id": "3006",
+      "kind": "boots"
+    },
+    "Black Cleaver": {
+      "id": "3071",
+      "kind": "legendary"
+    },
+    "Blackfire Torch": {
+      "id": "2503",
+      "kind": "legendary"
+    },
+    "Blade of the Ruined King": {
+      "id": "3153",
+      "kind": "legendary"
+    },
+    "Blasting Wand": {
+      "id": "1026",
+      "kind": "other"
+    },
+    "Blighting Jewel": {
+      "id": "4630",
+      "kind": "other"
+    },
+    "Bloodletter's Curse": {
+      "id": "8010",
+      "kind": "legendary"
+    },
+    "Bloodsong": {
+      "id": "3877",
+      "kind": "support"
+    },
+    "Bloodthirster": {
+      "id": "3072",
+      "kind": "legendary"
+    },
+    "Boots": {
+      "id": "1001",
+      "kind": "other"
+    },
+    "Boots of Swiftness": {
+      "id": "3009",
+      "kind": "boots"
+    },
+    "Bramble Vest": {
+      "id": "3076",
+      "kind": "other"
+    },
+    "Caulfield's Warhammer": {
+      "id": "3133",
+      "kind": "other"
+    },
+    "Celestial Opposition": {
+      "id": "3869",
+      "kind": "support"
+    },
+    "Chain Vest": {
+      "id": "1031",
+      "kind": "other"
+    },
+    "Chainlaced Crushers": {
+      "id": "3173",
+      "kind": "boots"
+    },
+    "Cloak of Agility": {
+      "id": "1018",
+      "kind": "other"
+    },
+    "Cloth Armor": {
+      "id": "1029",
+      "kind": "other"
+    },
+    "Control Ward": {
+      "id": "2055",
+      "kind": "other"
+    },
+    "Cosmic Drive": {
+      "id": "4629",
+      "kind": "legendary"
+    },
+    "Crimson Lucidity": {
+      "id": "3171",
+      "kind": "boots"
+    },
+    "Cryptbloom": {
+      "id": "3137",
+      "kind": "legendary"
+    },
+    "Cull": {
+      "id": "1083",
+      "kind": "other"
+    },
+    "Dagger": {
+      "id": "1042",
+      "kind": "other"
+    },
+    "Dark Seal": {
+      "id": "1082",
+      "kind": "other"
+    },
+    "Dawncore": {
+      "id": "6621",
+      "kind": "legendary"
+    },
+    "Dead Man's Plate": {
+      "id": "3742",
+      "kind": "legendary"
+    },
+    "Death's Dance": {
+      "id": "6333",
+      "kind": "legendary"
+    },
+    "Diadem of Songs": {
+      "id": "2530",
+      "kind": "legendary"
+    },
+    "Doran's Blade": {
+      "id": "1055",
+      "kind": "other"
+    },
+    "Doran's Bow": {
+      "id": "1086",
+      "kind": "other"
+    },
+    "Doran's Helm": {
+      "id": "1120",
+      "kind": "other"
+    },
+    "Doran's Ring": {
+      "id": "1056",
+      "kind": "other"
+    },
+    "Doran's Shield": {
+      "id": "1054",
+      "kind": "other"
+    },
+    "Dream Maker": {
+      "id": "3870",
+      "kind": "support"
+    },
+    "Dusk and Dawn": {
+      "id": "2510",
+      "kind": "legendary"
+    },
+    "Echoes of Helia": {
+      "id": "6620",
+      "kind": "legendary"
+    },
+    "Eclipse": {
+      "id": "6692",
+      "kind": "legendary"
+    },
+    "Edge of Night": {
+      "id": "3814",
+      "kind": "legendary"
+    },
+    "Elixir of Sorcery": {
+      "id": "2139",
+      "kind": "other"
+    },
+    "Endless Hunger": {
+      "id": "2517",
+      "kind": "legendary"
+    },
+    "Essence Reaver": {
+      "id": "3508",
+      "kind": "legendary"
+    },
+    "Executioner's Calling": {
+      "id": "3123",
+      "kind": "other"
+    },
+    "Experimental Hexplate": {
+      "id": "3073",
+      "kind": "legendary"
+    },
+    "Faerie Charm": {
+      "id": "1004",
+      "kind": "other"
+    },
+    "Farsight Alteration": {
+      "id": "3363",
+      "kind": "other"
+    },
+    "Fated Ashes": {
+      "id": "2508",
+      "kind": "other"
+    },
+    "Fiendhunter Bolts": {
+      "id": "2512",
+      "kind": "legendary"
+    },
+    "Fiendish Codex": {
+      "id": "3108",
+      "kind": "other"
+    },
+    "Fimbulwinter": {
+      "id": "3121",
+      "kind": "legendary"
+    },
+    "Forbidden Idol": {
+      "id": "3114",
+      "kind": "other"
+    },
+    "Force of Nature": {
+      "id": "4401",
+      "kind": "legendary"
+    },
+    "Frozen Heart": {
+      "id": "3110",
+      "kind": "legendary"
+    },
+    "Giant's Belt": {
+      "id": "1011",
+      "kind": "other"
+    },
+    "Glacial Buckler": {
+      "id": "3024",
+      "kind": "other"
+    },
+    "Glowing Mote": {
+      "id": "2022",
+      "kind": "other"
+    },
+    "Guardian Angel": {
+      "id": "3026",
+      "kind": "legendary"
+    },
+    "Guinsoo's Rageblade": {
+      "id": "3124",
+      "kind": "legendary"
+    },
+    "Gunmetal Greaves": {
+      "id": "3172",
+      "kind": "boots"
+    },
+    "Haunting Guise": {
+      "id": "3147",
+      "kind": "other"
+    },
+    "Hearthbound Axe": {
+      "id": "3051",
+      "kind": "other"
+    },
+    "Heartsteel": {
+      "id": "3084",
+      "kind": "legendary"
+    },
+    "Hexdrinker": {
+      "id": "3155",
+      "kind": "other"
+    },
+    "Hexoptics C44": {
+      "id": "2523",
+      "kind": "legendary"
+    },
+    "Hextech Alternator": {
+      "id": "3145",
+      "kind": "other"
+    },
+    "Hextech Gunblade": {
+      "id": "3146",
+      "kind": "legendary"
+    },
+    "Hextech Rocketbelt": {
+      "id": "3152",
+      "kind": "legendary"
+    },
+    "Hollow Radiance": {
+      "id": "6664",
+      "kind": "legendary"
+    },
+    "Horizon Focus": {
+      "id": "4628",
+      "kind": "legendary"
+    },
+    "Hubris": {
+      "id": "6697",
+      "kind": "legendary"
+    },
+    "Hullbreaker": {
+      "id": "3181",
+      "kind": "legendary"
+    },
+    "Iceborn Gauntlet": {
+      "id": "6662",
+      "kind": "legendary"
+    },
+    "Immortal Shieldbow": {
+      "id": "6673",
+      "kind": "legendary"
+    },
+    "Imperial Mandate": {
+      "id": "4005",
+      "kind": "legendary"
+    },
+    "Infinity Edge": {
+      "id": "3031",
+      "kind": "legendary"
+    },
+    "Ionian Boots of Lucidity": {
+      "id": "3158",
+      "kind": "boots"
+    },
+    "Jak'Sho, The Protean": {
+      "id": "6665",
+      "kind": "legendary"
+    },
+    "Kaenic Rookern": {
+      "id": "2504",
+      "kind": "legendary"
+    },
+    "Kindlegem": {
+      "id": "3067",
+      "kind": "other"
+    },
+    "Knight's Vow": {
+      "id": "3109",
+      "kind": "legendary"
+    },
+    "Kraken Slayer": {
+      "id": "6672",
+      "kind": "legendary"
+    },
+    "Last Whisper": {
+      "id": "3035",
+      "kind": "other"
+    },
+    "Liandry's Torment": {
+      "id": "6653",
+      "kind": "legendary"
+    },
+    "Lich Bane": {
+      "id": "3100",
+      "kind": "legendary"
+    },
+    "Locket of the Iron Solari": {
+      "id": "3190",
+      "kind": "legendary"
+    },
+    "Long Sword": {
+      "id": "1036",
+      "kind": "other"
+    },
+    "Lord Dominik's Regards": {
+      "id": "3036",
+      "kind": "legendary"
+    },
+    "Lost Chapter": {
+      "id": "3802",
+      "kind": "other"
+    },
+    "Luden's Echo": {
+      "id": "6655",
+      "kind": "legendary"
+    },
+    "Malignance": {
+      "id": "3118",
+      "kind": "legendary"
+    },
+    "Maw of Malmortius": {
+      "id": "3156",
+      "kind": "legendary"
+    },
+    "Mejai's Soulstealer": {
+      "id": "3041",
+      "kind": "other"
+    },
+    "Mercurial Scimitar": {
+      "id": "3139",
+      "kind": "legendary"
+    },
+    "Mercury's Treads": {
+      "id": "3111",
+      "kind": "boots"
+    },
+    "Mikael's Blessing": {
+      "id": "3222",
+      "kind": "legendary"
+    },
+    "Moonstone Renewer": {
+      "id": "6617",
+      "kind": "legendary"
+    },
+    "Morellonomicon": {
+      "id": "3165",
+      "kind": "legendary"
+    },
+    "Mortal Reminder": {
+      "id": "3033",
+      "kind": "legendary"
+    },
+    "Muramana": {
+      "id": "3042",
+      "kind": "legendary"
+    },
+    "Nashor's Tooth": {
+      "id": "3115",
+      "kind": "legendary"
+    },
+    "Navori Flickerblade": {
+      "id": "6675",
+      "kind": "legendary"
+    },
+    "Needlessly Large Rod": {
+      "id": "1058",
+      "kind": "other"
+    },
+    "Negatron Cloak": {
+      "id": "1057",
+      "kind": "other"
+    },
+    "Noonquiver": {
+      "id": "6670",
+      "kind": "other"
+    },
+    "Null-Magic Mantle": {
+      "id": "1033",
+      "kind": "other"
+    },
+    "Oblivion Orb": {
+      "id": "3916",
+      "kind": "other"
+    },
+    "Oracle Lens": {
+      "id": "3364",
+      "kind": "other"
+    },
+    "Phantom Dancer": {
+      "id": "3046",
+      "kind": "legendary"
+    },
+    "Pickaxe": {
+      "id": "1037",
+      "kind": "other"
+    },
+    "Plated Steelcaps": {
+      "id": "3047",
+      "kind": "boots"
+    },
+    "Profane Hydra": {
+      "id": "6698",
+      "kind": "legendary"
+    },
+    "Protoplasm Harness": {
+      "id": "2525",
+      "kind": "legendary"
+    },
+    "Quicksilver Sash": {
+      "id": "3140",
+      "kind": "other"
+    },
+    "Rabadon's Deathcap": {
+      "id": "3089",
+      "kind": "legendary"
+    },
+    "Randuin's Omen": {
+      "id": "3143",
+      "kind": "legendary"
+    },
+    "Rapid Firecannon": {
+      "id": "3094",
+      "kind": "legendary"
+    },
+    "Ravenous Hydra": {
+      "id": "3074",
+      "kind": "legendary"
+    },
+    "Recurve Bow": {
+      "id": "1043",
+      "kind": "other"
+    },
+    "Redemption": {
+      "id": "3107",
+      "kind": "legendary"
+    },
+    "Refillable Potion": {
+      "id": "2031",
+      "kind": "other"
+    },
+    "Rejuvenation Bead": {
+      "id": "1006",
+      "kind": "other"
+    },
+    "Riftmaker": {
+      "id": "4633",
+      "kind": "legendary"
+    },
+    "Rod of Ages": {
+      "id": "6657",
+      "kind": "legendary"
+    },
+    "Ruby Crystal": {
+      "id": "1028",
+      "kind": "other"
+    },
+    "Runaan's Hurricane": {
+      "id": "3085",
+      "kind": "legendary"
+    },
+    "Rylai's Crystal Scepter": {
+      "id": "3116",
+      "kind": "legendary"
+    },
+    "Seeker's Armguard": {
+      "id": "2420",
+      "kind": "other"
+    },
+    "Seraph's Embrace": {
+      "id": "3040",
+      "kind": "legendary"
+    },
+    "Serpent's Fang": {
+      "id": "6695",
+      "kind": "legendary"
+    },
+    "Serrated Dirk": {
+      "id": "3134",
+      "kind": "other"
+    },
+    "Serylda's Grudge": {
+      "id": "6694",
+      "kind": "legendary"
+    },
+    "Shadowflame": {
+      "id": "4645",
+      "kind": "legendary"
+    },
+    "Shattered Armguard": {
+      "id": "2421",
+      "kind": "other"
+    },
+    "Sheen": {
+      "id": "3057",
+      "kind": "other"
+    },
+    "Shurelya's Battlesong": {
+      "id": "2065",
+      "kind": "legendary"
+    },
+    "Slightly Magical Footwear": {
+      "id": "2422",
+      "kind": "other"
+    },
+    "Solstice Sleigh": {
+      "id": "3876",
+      "kind": "support"
+    },
+    "Sorcerer's Shoes": {
+      "id": "3020",
+      "kind": "boots"
+    },
+    "Spear of Shojin": {
+      "id": "3161",
+      "kind": "legendary"
+    },
+    "Spectre's Cowl": {
+      "id": "3211",
+      "kind": "other"
+    },
+    "Spellslinger's Shoes": {
+      "id": "3175",
+      "kind": "boots"
+    },
+    "Spirit Visage": {
+      "id": "3065",
+      "kind": "legendary"
+    },
+    "Statikk Shiv": {
+      "id": "3087",
+      "kind": "legendary"
+    },
+    "Stealth Ward": {
+      "id": "3340",
+      "kind": "other"
+    },
+    "Steel Sigil": {
+      "id": "2019",
+      "kind": "other"
+    },
+    "Sterak's Gage": {
+      "id": "3053",
+      "kind": "legendary"
+    },
+    "Stormrazor": {
+      "id": "3095",
+      "kind": "legendary"
+    },
+    "Stormsurge": {
+      "id": "4646",
+      "kind": "legendary"
+    },
+    "Stridebreaker": {
+      "id": "6631",
+      "kind": "legendary"
+    },
+    "Sundered Sky": {
+      "id": "6610",
+      "kind": "legendary"
+    },
+    "Sunfire Aegis": {
+      "id": "3068",
+      "kind": "legendary"
+    },
+    "Swiftmarch": {
+      "id": "3170",
+      "kind": "boots"
+    },
+    "Tear of the Goddess": {
+      "id": "3070",
+      "kind": "other"
+    },
+    "Terminus": {
+      "id": "3302",
+      "kind": "legendary"
+    },
+    "The Brutalizer": {
+      "id": "2020",
+      "kind": "other"
+    },
+    "The Collector": {
+      "id": "6676",
+      "kind": "legendary"
+    },
+    "Thornmail": {
+      "id": "3075",
+      "kind": "legendary"
+    },
+    "Titanic Hydra": {
+      "id": "3748",
+      "kind": "legendary"
+    },
+    "Trinity Force": {
+      "id": "3078",
+      "kind": "legendary"
+    },
+    "Tunneler": {
+      "id": "2021",
+      "kind": "other"
+    },
+    "Umbral Glaive": {
+      "id": "3179",
+      "kind": "legendary"
+    },
+    "Unending Despair": {
+      "id": "2502",
+      "kind": "legendary"
+    },
+    "Vampiric Scepter": {
+      "id": "1053",
+      "kind": "other"
+    },
+    "Verdant Barrier": {
+      "id": "4632",
+      "kind": "other"
+    },
+    "Void Staff": {
+      "id": "3135",
+      "kind": "legendary"
+    },
+    "Voltaic Cyclosword": {
+      "id": "6699",
+      "kind": "legendary"
+    },
+    "Warden's Mail": {
+      "id": "3082",
+      "kind": "other"
+    },
+    "Winged Moonplate": {
+      "id": "3066",
+      "kind": "other"
+    },
+    "Wit's End": {
+      "id": "3091",
+      "kind": "legendary"
+    },
+    "Youmuu's Ghostblade": {
+      "id": "3142",
+      "kind": "legendary"
+    },
+    "Yun Tal Wildarrows": {
+      "id": "3032",
+      "kind": "legendary"
+    },
+    "Zaz'Zak's Realmspike": {
+      "id": "3871",
+      "kind": "support"
+    },
+    "Zeal": {
+      "id": "3086",
+      "kind": "other"
+    },
+    "Zeke's Convergence": {
+      "id": "3050",
+      "kind": "legendary"
+    },
+    "Zhonya's Hourglass": {
+      "id": "3157",
+      "kind": "legendary"
+    }
+  },
+  "runes": {
+    "Ability Haste": "perk-images/StatMods/StatModsCDRScalingIcon.png",
+    "Absolute Focus": "perk-images/Styles/Sorcery/AbsoluteFocus/AbsoluteFocus.png",
+    "Absorb Life": "perk-images/Styles/Precision/AbsorbLife/AbsorbLife.png",
+    "Adaptive Force": "perk-images/StatMods/StatModsAdaptiveForceIcon.png",
+    "Aftershock": "perk-images/Styles/Resolve/VeteranAftershock/VeteranAftershock.png",
+    "Approach Velocity": "perk-images/Styles/Resolve/ApproachVelocity/ApproachVelocity.png",
+    "Arcane Comet": "perk-images/Styles/Sorcery/ArcaneComet/ArcaneComet.png",
+    "Attack Speed": "perk-images/StatMods/StatModsAttackSpeedIcon.png",
+    "Axiom Arcanist": "perk-images/Styles/Sorcery/NullifyingOrb/Axiom_Arcanist.png",
+    "Biscuit Delivery": "perk-images/Styles/Inspiration/BiscuitDelivery/BiscuitDelivery.png",
+    "Bone Plating": "perk-images/Styles/Resolve/BonePlating/BonePlating.png",
+    "Cash Back": "perk-images/Styles/Inspiration/CashBack/CashBack2.png",
+    "Celerity": "perk-images/Styles/Sorcery/Celerity/CelerityTemp.png",
+    "Cheap Shot": "perk-images/Styles/Domination/CheapShot/CheapShot.png",
+    "Conditioning": "perk-images/Styles/Resolve/Conditioning/Conditioning.png",
+    "Conqueror": "perk-images/Styles/Precision/Conqueror/Conqueror.png",
+    "Cosmic Insight": "perk-images/Styles/Inspiration/CosmicInsight/CosmicInsight.png",
+    "Coup de Grace": "perk-images/Styles/Precision/CoupDeGrace/CoupDeGrace.png",
+    "Cut Down": "perk-images/Styles/Precision/CutDown/CutDown.png",
+    "Deathfire Touch": "perk-images/Styles/Sorcery/DeathfireTouch/DEATHFIRE_TOUCH_KEYSTONE.png",
+    "Deep Ward": "perk-images/Styles/Domination/DeepWard/DeepWard.png",
+    "Demolish": "perk-images/Styles/Resolve/Demolish/Demolish.png",
+    "Domination": "perk-images/Styles/7200_Domination.png",
+    "Electrocute": "perk-images/Styles/Domination/Electrocute/Electrocute.png",
+    "First Strike": "perk-images/Styles/Inspiration/FirstStrike/FirstStrike.png",
+    "Fleet Footwork": "perk-images/Styles/Precision/FleetFootwork/FleetFootwork.png",
+    "Font of Life": "perk-images/Styles/Resolve/FontOfLife/FontOfLife.png",
+    "Gathering Storm": "perk-images/Styles/Sorcery/GatheringStorm/GatheringStorm.png",
+    "Grasp of the Undying": "perk-images/Styles/Resolve/GraspOfTheUndying/GraspOfTheUndying.png",
+    "Grisly Mementos": "perk-images/Styles/Domination/GrislyMementos/GrislyMementos.png",
+    "Guardian": "perk-images/Styles/Resolve/Guardian/Guardian.png",
+    "Hail of Blades": "perk-images/Styles/Domination/HailOfBlades/HailOfBlades.png",
+    "Health": "perk-images/StatMods/StatModsHealthPlusIcon.png",
+    "Health Scaling": "perk-images/StatMods/StatModsHealthScalingIcon.png",
+    "Hextech Flashtraption": "perk-images/Styles/Inspiration/HextechFlashtraption/HextechFlashtraption.png",
+    "Inspiration": "perk-images/Styles/7203_Whimsy.png",
+    "Jack Of All Trades": "perk-images/Styles/Inspiration/JackOfAllTrades/JackofAllTrades2.png",
+    "Last Stand": "perk-images/Styles/Sorcery/LastStand/LastStand.png",
+    "Legend: Alacrity": "perk-images/Styles/Precision/LegendAlacrity/LegendAlacrity.png",
+    "Legend: Bloodline": "perk-images/Styles/Precision/LegendBloodline/LegendBloodline.png",
+    "Legend: Haste": "perk-images/Styles/Precision/LegendHaste/LegendHaste.png",
+    "Lethal Tempo": "perk-images/Styles/Precision/LethalTempo/LethalTempoTemp.png",
+    "Magical Footwear": "perk-images/Styles/Inspiration/MagicalFootwear/MagicalFootwear.png",
+    "Manaflow Band": "perk-images/Styles/Sorcery/ManaflowBand/ManaflowBand.png",
+    "Move Speed": "perk-images/StatMods/StatModsMovementSpeedIcon.png",
+    "Nimbus Cloak": "perk-images/Styles/Sorcery/NimbusCloak/6361.png",
+    "Overgrowth": "perk-images/Styles/Resolve/Overgrowth/Overgrowth.png",
+    "Precision": "perk-images/Styles/7201_Precision.png",
+    "Presence of Mind": "perk-images/Styles/Precision/PresenceOfMind/PresenceOfMind.png",
+    "Press the Attack": "perk-images/Styles/Precision/PressTheAttack/PressTheAttack.png",
+    "Relentless Hunter": "perk-images/Styles/Domination/RelentlessHunter/RelentlessHunter.png",
+    "Resolve": "perk-images/Styles/7204_Resolve.png",
+    "Revitalize": "perk-images/Styles/Resolve/Revitalize/Revitalize.png",
+    "Scorch": "perk-images/Styles/Sorcery/Scorch/Scorch.png",
+    "Second Wind": "perk-images/Styles/Resolve/SecondWind/SecondWind.png",
+    "Shield Bash": "perk-images/Styles/Resolve/MirrorShell/MirrorShell.png",
+    "Sixth Sense": "perk-images/Styles/Domination/SixthSense/SixthSense.png",
+    "Sorcery": "perk-images/Styles/7202_Sorcery.png",
+    "Stormraider's Surge": "perk-images/Styles/Sorcery/PhaseRush/StormraidersSurgeRuneIcon2.png",
+    "Sudden Impact": "perk-images/Styles/Domination/SuddenImpact/SuddenImpact.png",
+    "Summon Aery": "perk-images/Styles/Sorcery/SummonAery/SummonAery.png",
+    "Taste of Blood": "perk-images/Styles/Domination/TasteOfBlood/GreenTerror_TasteOfBlood.png",
+    "Tenacity and Slow Resist": "perk-images/StatMods/StatModsTenacityIcon.png",
+    "Transcendence": "perk-images/Styles/Sorcery/Transcendence/Transcendence.png",
+    "Treasure Hunter": "perk-images/Styles/Domination/TreasureHunter/TreasureHunter.png",
+    "Triple Tonic": "perk-images/Styles/Inspiration/PerfectTiming/AlchemistCabinet.png",
+    "Triumph": "perk-images/Styles/Precision/Triumph.png",
+    "Ultimate Hunter": "perk-images/Styles/Domination/UltimateHunter/UltimateHunter.png",
+    "Unflinching": "perk-images/Styles/Sorcery/Unflinching/Unflinching.png",
+    "Unsealed Spellbook": "perk-images/Styles/Inspiration/UnsealedSpellbook/UnsealedSpellbook.png",
+    "Waterwalking": "perk-images/Styles/Sorcery/Waterwalking/Waterwalking.png"
+  },
+  "spells": {
+    "Barrier": "SummonerBarrier",
+    "Cleanse": "SummonerBoost",
+    "Exhaust": "SummonerExhaust",
+    "Flash": "SummonerFlash",
+    "Ghost": "SummonerHaste",
+    "Heal": "SummonerHeal",
+    "Ignite": "SummonerDot",
+    "Smite": "SummonerSmite",
+    "Teleport": "SummonerTeleport"
+  }
+}

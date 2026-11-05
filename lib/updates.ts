@@ -22,6 +22,20 @@ export const UPDATE_KIND_LABEL: Record<UpdateKind, string> = { new: "New", impro
 
 export const UPDATES: SiteUpdate[] = [
   {
+    id: "builds-and-runes",
+    date: "2026-11-05",
+    kind: "new",
+    title: "Builds and runes",
+    summary:
+      "Every game on a series page now has Builds and Runes tabs next to the stats, and every champion page shows the pro builds.",
+    items: [
+      "Builds: each player's summoner spells, final items and trinket.",
+      "Runes: keystone, primary and secondary runes and stat shards.",
+      "On champion pages: the most built items, boots, keystones, the most used rune page and summoner spells, plus the build of every game.",
+    ],
+    link: { href: "/champions", label: "Champions" },
+  },
+  {
     id: "gold-graph",
     date: "2026-11-05",
     kind: "new",

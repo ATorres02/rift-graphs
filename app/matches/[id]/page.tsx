@@ -7,7 +7,9 @@ import { ExternalLinkIcon, GitCompareArrowsIcon } from "lucide-react";
 import { LocalTime } from "@/components/local-time";
 import { CompareBars } from "@/components/match/compare-bars";
 import { DraftBoard, type DraftPlayer } from "@/components/match/draft-board";
+import { GameTabs } from "@/components/match/game-tabs";
 import { GoldGraph } from "@/components/match/gold-graph";
+import { BuildTable, RunesTable } from "@/components/match/loadout-tables";
 import { LineupTable } from "@/components/match/lineup";
 import { Scoreboard } from "@/components/match/scoreboard";
 import { Breadcrumbs } from "@/components/breadcrumbs";
@@ -19,7 +21,7 @@ import { ProvisionalBadge } from "@/components/provisional";
 import { StatusLabel } from "@/components/series-card";
 import { Spoiler } from "@/components/spoilers";
 import { TeamPill } from "@/components/team-pill";
-import { getData, getTimelines, seriesHasPendingGames, seriesTeams, teamRef } from "@/lib/data/load";
+import { getData, getLoadout, getTimelines, seriesHasPendingGames, seriesTeams, teamRef } from "@/lib/data/load";
 import type { Game, Side } from "@/lib/data/types";
 import { lockedChampionsBefore } from "@/lib/draft";
 import { bestOfLabel, fmt, roundLabel, STAGE_LABEL } from "@/lib/format";
@@ -85,6 +87,7 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
   const missing = Math.max(0, s.gamesPlayed - games.length);
   const preview = showsPreview(s, games.length);
   const timelines = getTimelines();
+  const loadout = getLoadout();
 
   /** Who played what, from the scoreboard rows or, for a manual game, the typed line-up. */
   const lineupFor = (g: Game, side: Side): DraftPlayer[] => {
@@ -213,6 +216,7 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
           const dmg = (side: "blue" | "red") =>
             rows.filter((r) => r.side === side).reduce((a, r) => a + r.damageToChampions, 0);
           const hasLineup = Boolean(g.blue.lineup || g.red.lineup);
+          const sideName = (side: "blue" | "red") => (side === "blue" ? (blue?.name ?? "Blue") : (red?.name ?? "Red"));
           return (
             <Section
               key={g.id}
@@ -269,22 +273,55 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
                 <div className="grid grid-cols-1 gap-3 lg:grid-cols-[minmax(0,1fr)_320px]">
                   <div className="space-y-3">
                     {rows.length ? (
-                      <>
-                        <Scoreboard
-                          rows={rows.filter((r) => r.side === "blue")}
-                          players={data.playersById}
-                          icon={icon}
-                          side="blue"
-                          teamName={blue?.name ?? "Blue"}
-                        />
-                        <Scoreboard
-                          rows={rows.filter((r) => r.side === "red")}
-                          players={data.playersById}
-                          icon={icon}
-                          side="red"
-                          teamName={red?.name ?? "Red"}
-                        />
-                      </>
+                      <GameTabs
+                        id={g.id}
+                        tabs={[
+                          {
+                            key: "stats",
+                            label: "Stats",
+                            panel: (["blue", "red"] as const).map((side) => (
+                              <Scoreboard
+                                key={side}
+                                rows={rows.filter((r) => r.side === side)}
+                                players={data.playersById}
+                                icon={icon}
+                                side={side}
+                                teamName={sideName(side)}
+                              />
+                            )),
+                          },
+                          {
+                            key: "builds",
+                            label: "Builds",
+                            panel: (["blue", "red"] as const).map((side) => (
+                              <BuildTable
+                                key={side}
+                                rows={rows.filter((r) => r.side === side)}
+                                players={data.playersById}
+                                icon={icon}
+                                loadout={loadout}
+                                side={side}
+                                teamName={sideName(side)}
+                              />
+                            )),
+                          },
+                          {
+                            key: "runes",
+                            label: "Runes",
+                            panel: (["blue", "red"] as const).map((side) => (
+                              <RunesTable
+                                key={side}
+                                rows={rows.filter((r) => r.side === side)}
+                                players={data.playersById}
+                                icon={icon}
+                                loadout={loadout}
+                                side={side}
+                                teamName={sideName(side)}
+                              />
+                            )),
+                          },
+                        ]}
+                      />
                     ) : hasLineup ? (
                       <>
                         {g.blue.lineup ? (

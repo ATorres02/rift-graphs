@@ -62,6 +62,7 @@ import {
   normalizeChampionName,
   pickDdragonVersion,
 } from "../lib/sources/ddragon";
+import { fetchLoadoutIndex, loadoutNames, type LoadoutIndex } from "../lib/sources/loadout";
 import { fetchEarly, type EarlyCache } from "../lib/ingest/early";
 import { fetchTimelines, timelineJson, type TimelineCache } from "../lib/ingest/timeline";
 import { mergeSources } from "../lib/ingest/merge";
@@ -904,6 +905,20 @@ async function updateTimelines(series: Series[], games: Game[], teams: Team[]): 
   return result.cache;
 }
 
+/** Item, rune and spell icons for the names in the player rows. Fails soft: keeps the last file if Data Dragon is down. */
+async function updateLoadout(version: string, rows: PlayerGame[]): Promise<LoadoutIndex> {
+  try {
+    const { index, missing } = await fetchLoadoutIndex(version, loadoutNames(rows));
+    if (missing.length) warn(`not found in Data Dragon ${version}: ${missing.join(", ")}`);
+    return index;
+  } catch (err) {
+    warn(`loadout icons not updated: ${err instanceof Error ? err.message : String(err)}`);
+    return (
+      ((await readExisting("loadout.json")) as LoadoutIndex | null) ?? { version, items: {}, runes: {}, spells: {} }
+    );
+  }
+}
+
 async function readExisting(file: string): Promise<unknown | null> {
   try {
     return JSON.parse(await readFile(path.join(OUT_DIR, file), "utf8"));
@@ -973,6 +988,10 @@ async function main(): Promise<void> {
   }
   if (unresolved.size)
     warn(`champions not found in Data Dragon ${ddragonVersion}: ${Array.from(unresolved).join(", ")}`);
+  const loadout = await updateLoadout(
+    ddragonVersion,
+    builds.flatMap((b) => b.playerGames),
+  );
 
   // Provisional sources: manual files and the lolesports schedule, merged by priority.
   const manual = await loadManualDir(MANUAL_DIR);
@@ -1051,6 +1070,7 @@ async function main(): Promise<void> {
     "conflicts.json": merged.conflicts,
     "early-game.json": early,
     "gold-timeline.json": timelines,
+    "loadout.json": loadout,
   };
 
   // Clean what the readers above did not (any source), then validate everything before touching the disk.
