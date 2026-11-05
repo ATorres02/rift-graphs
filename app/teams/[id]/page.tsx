@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ChampionIcon } from "@/components/champion-icon";
 import { Chart } from "@/components/charts/chart";
 import { Headlines, type Headline } from "@/components/headlines";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { PageHeader, Section } from "@/components/page-header";
 import { SeriesCard } from "@/components/series-card";
 import { Spoiler } from "@/components/spoilers";
@@ -139,6 +140,7 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
 
   return (
     <div className="space-y-8">
+      <Breadcrumbs items={[{ label: "Teams", href: "/teams" }, { label: team.name }]} />
       <PageHeader
         art={mostPlayedArt(data, data.playerGamesByTeam.get(team.id) ?? [])}
         eyebrow={<RegionTag region={team.region} />}

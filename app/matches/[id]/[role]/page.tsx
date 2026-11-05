@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeftIcon, GitCompareArrowsIcon } from "lucide-react";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ChampionIcon } from "@/components/champion-icon";
 import { LocalTime } from "@/components/local-time";
 import { ChartsLink, MetricRow } from "@/components/match/series-preview";
@@ -12,7 +13,7 @@ import { TeamPill } from "@/components/team-pill";
 import { chartHref, compareChart } from "@/lib/charts/page-charts";
 import { championRef, getData, teamRef, type IndexedDataset } from "@/lib/data/load";
 import { duelHref, duelSeries, DUEL_LABEL, isRole, laneDuel, type DuelSide, type LaneDuel } from "@/lib/duels";
-import { bestOfLabel, fmt, roundLabel, ROLE_LABEL } from "@/lib/format";
+import { bestOfLabel, fmt, roundLabel, ROLE_LABEL, STAGE_LABEL } from "@/lib/format";
 import { comparePlayersHref } from "@/lib/links";
 import { ROLES } from "@/lib/metrics";
 import { LANE_CHART_MEASURES, previewRound } from "@/lib/preview";
@@ -49,7 +50,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const title = `${names}: ${ta?.short} vs ${tb?.short} ${DUEL_LABEL[duel.role].toLowerCase()} duel, Worlds 2026`;
   return {
     title,
-    description: `${duel.a.player.name} (${ta?.name}) and ${duel.b.player.name} (${tb?.name}) before their Worlds 2026 ${round}: KDA, damage, gold and CS at 15 side by side, their champions and every game they met in lane.`,
+    description: `${duel.a.player.name} (${ta?.name}) and ${duel.b.player.name} (${tb?.name}) before their Worlds 2026 ${round}: KDA, damage, gold and CS at 15 side by side, plus their champions and past meetings.`,
     openGraph: { ...baseOpenGraph, title },
   };
 }
@@ -130,8 +131,19 @@ export default async function DuelPage({ params }: { params: Params }) {
   const top = [a, b].flatMap((x) => (x?.champions[0] ? [x.champions[0]] : [])).sort((x, y) => y.games - x.games)[0];
   const art = top ? championRef(data, top.champion) : null;
 
+  const t1 = data.teamsById.get(s.team1Id ?? "");
+  const t2 = data.teamsById.get(s.team2Id ?? "");
+
   return (
     <div className="space-y-8">
+      <Breadcrumbs
+        items={[
+          { label: "Matches", href: "/matches" },
+          { label: STAGE_LABEL[s.stage], href: `/matches?stage=${s.stage}` },
+          { label: `${t1?.short ?? "TBD"} vs ${t2?.short ?? "TBD"}`, href: `/matches/${s.id}` },
+          { label: `${DUEL_LABEL[duel.role]} duel` },
+        ]}
+      />
       <PageHeader
         art={art ? { ddragonId: art.id } : null}
         eyebrow={`${roundLabel(s.stage, s.round, s.tab)} / ${bestOfLabel(s.bestOf)} / ${DUEL_LABEL[duel.role]} duel`}

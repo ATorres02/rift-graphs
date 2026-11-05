@@ -24,3 +24,8 @@
   Content-Type: image/png
 /matches/:id/:role/opengraph-image
   Content-Type: image/png
+# Data and Next.js payloads are for the pages, not for search results.
+/api/*
+  X-Robots-Tag: noindex
+/*.txt
+  X-Robots-Tag: noindex

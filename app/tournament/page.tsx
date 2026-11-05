@@ -15,9 +15,9 @@ import { SWISS_TARGET, swissStandings } from "@/lib/standings";
 import { seriesView } from "@/lib/views";
 
 export const metadata: Metadata = {
-  title: "Worlds 2026 format, Swiss stage and bracket",
+  title: "Worlds 2026 bracket, standings and format",
   description:
-    "How the 2026 World Championship works: Play-In, the Swiss stage bracket round by round and the knockout bracket.",
+    "The Worlds 2026 knockout bracket from the quarterfinals to the final, the Swiss stage standings round by round, the Play-In and how the format works.",
 };
 
 const KNOCKOUT: { id: StageId; title: string }[] = [
@@ -162,7 +162,7 @@ export default function TournamentPage() {
       <Section
         collapsible
         title="Swiss bracket"
-        description="Teams with the same record meet each round. Point at a team to follow its path; every series links to its page."
+        description="Standings round by round: teams with the same record meet each round. Point at a team to follow its path; every series links to its page."
       >
         <SwissBracket data={data} />
       </Section>

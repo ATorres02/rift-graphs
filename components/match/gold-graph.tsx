@@ -167,16 +167,20 @@ export function GoldGraph({
               vectorEffect="non-scaling-stroke"
               strokeLinejoin="round"
             />
-            {g.points.slice(1).map((p, i) => {
-              const prev = g.points[i];
-              const lead =
-                p.diff === 0 ? "level" : `${names[p.diff > 0 ? "blue" : "red"]} ${goldLabel(Math.abs(p.diff))}`;
-              return (
-                <rect key={p.t} x={x(prev.t)} y={0} width={x(p.t) - x(prev.t)} height={H} className="fill-transparent">
-                  <title>{`${clock(p.t)}: ${lead}`}</title>
-                </rect>
-              );
-            })}
+            {/* One hover stretch per minute (and the end): enough to read the graph, without hundreds of labels
+                in the page's text. */}
+            {g.points
+              .filter((p, i) => i > 0 && (p.t % 60 === 0 || i === g.points.length - 1))
+              .map((p, i, kept) => {
+                const from = i ? kept[i - 1].t : 0;
+                const lead =
+                  p.diff === 0 ? "level" : `${names[p.diff > 0 ? "blue" : "red"]} ${goldLabel(Math.abs(p.diff))}`;
+                return (
+                  <rect key={p.t} x={x(from)} y={0} width={x(p.t) - x(from)} height={H} className="fill-transparent">
+                    <title>{`${clock(p.t)}: ${lead}`}</title>
+                  </rect>
+                );
+              })}
           </svg>
 
           {stacked(g.events, g.end).map((e, i) => (
