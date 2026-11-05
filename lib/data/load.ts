@@ -6,6 +6,7 @@ import { indexDataset, type IndexedDataset } from "./index";
 import { datasetFiles, type DatasetFileName } from "./schema";
 import type { ChampionRef, Dataset, Series, Team } from "./types";
 import { normalizeChampionName } from "@/lib/sources/ddragon";
+import type { GameTimeline } from "@/lib/sources/livestats";
 import { teamLogo, type TeamLogo } from "./team-logos";
 
 export type { IndexedDataset } from "./index";
@@ -88,4 +89,20 @@ export function seriesTeams(data: IndexedDataset, s: Series): { team1: TeamRef |
 /** Series the dataset reports as played but for which scoreboard data is still missing. */
 export function seriesHasPendingGames(s: Series): boolean {
   return s.status !== "scheduled" && s.gameIds.length < s.gamesPlayed;
+}
+
+let timelineMemo: Map<string, GameTimeline> | null = null;
+
+/**
+ * Gold graph timelines by game id, for the games the live stats feed had. Read on the server only: they are not part
+ * of the dataset, so /api/dataset stays small.
+ */
+export function getTimelines(): Map<string, GameTimeline> {
+  if (timelineMemo) return timelineMemo;
+  const dir = path.join(process.cwd(), "data", TOURNAMENT_ID);
+  const raw = existsSync(path.join(dir, "gold-timeline.json")) ? readJson(dir, "gold-timeline.json") : {};
+  timelineMemo = new Map(
+    Object.entries(raw).flatMap(([id, v]) => ("esportsGameId" in v ? [[id, v] as [string, GameTimeline]] : [])),
+  );
+  return timelineMemo;
 }

@@ -243,3 +243,132 @@ export function feedReader(
     return cache.get(key)!;
   };
 }
+
+export interface TimelineTeam {
+  /** One value per sample, at the game times in `GameTimeline.t`. */
+  gold: number[];
+  kills: number[];
+  towers: number[];
+  inhibitors: number[];
+  barons: number[];
+  dragons: number[];
+  /** Dragons in the order taken, as the feed names them (ocean, infernal, chemtech, elder...). */
+  dragonTypes: string[];
+}
+
+/** A whole game every `step` seconds of game time, as stored by the ingest (data/<tournament>/gold-timeline.json). */
+export interface GameTimeline {
+  esportsGameId: string;
+  /** Seconds of game time between samples. */
+  step: number;
+  /** Game time of each sample, in seconds: every `step`, the last one at the end. */
+  t: number[];
+  /** Game time of the last sample, in seconds: the end of the game, or where the frames stop. */
+  end: number;
+  /** Pauses found and taken out, in seconds. */
+  pausedSeconds: number;
+  blue: TimelineTeam;
+  red: TimelineTeam;
+}
+
+/**
+ * The whole game, sampled every `stepMs` of game time with pauses taken out (a pause shorter than the step can slip
+ * through between two samples, as in readEarlyGame). The last sample is the first finished frame, with the final
+ * totals. About two feed requests per minute of game, plus a few per pause.
+ */
+export async function readTimeline(
+  esportsGameId: string,
+  read: WindowReader,
+  maxGameMs: number,
+  stepMs = 30_000,
+): Promise<GameTimeline | null> {
+  const opening = await read();
+  if (!opening.frames.length) return null;
+  const t0 = time(opening.frames[0]);
+  const start = await firstFrame(read, t0, t0 + 20 * 60_000, (f) => f.blueTeam.totalGold > 0);
+  if (!start) return null;
+  const ts = time(start);
+  /**
+   * The first frame at or after a wall-clock time, looking at most one window ahead. During a pause the feed sends no
+   * new frames: a window then repeats the frames before it, the last one paused, and `before` is that frame.
+   */
+  const frameAt = async (at: number) => {
+    const frames = (await read(at)).frames;
+    const f = frames.find((x) => time(x) >= at) ?? (await read(at + STEP)).frames.find((x) => time(x) >= at) ?? null;
+    return { f, before: frames.filter((x) => time(x) < at).at(-1) ?? null };
+  };
+
+  /**
+   * The first frame of play after a pause, window by window: a long stop can resume briefly and pause again, which a
+   * binary search skips (seen in a 40-minute stop on 29 Oct 2026). Pauses are rare, so the extra requests are few.
+   */
+  const resumeAfter = async (from: number) => {
+    for (let at = from; at <= from + 60 * 60_000; at += STEP) {
+      const hit = (await read(at)).frames.find((x) => time(x) > from && x.gameState !== "paused");
+      if (hit) return hit;
+    }
+    return null;
+  };
+
+  const samples: { t: number; f: FeedFrame }[] = [];
+  /** Each pause: where it started, the frame play resumed with, and the first sample after it. */
+  const pauses: { start: FeedFrame; resume: FeedFrame; index: number }[] = [];
+  let paused = 0;
+  let prev = ts;
+  // Some slack past the scoreboard's length: the feed's clock and Leaguepedia's can differ by a few seconds.
+  for (let i = 0; i * stepMs <= maxGameMs + 3 * 60_000; i++) {
+    const at = ts + i * stepMs + paused;
+    const { f, before } = await frameAt(at);
+    const pause = f?.gameState === "paused" ? f : !f && before?.gameState === "paused" ? before : null;
+    if (pause) {
+      const pauseStart = await firstFrame(read, prev, time(pause), (x) => x.gameState === "paused");
+      const resume = await resumeAfter(time(pause));
+      if (!resume) break;
+      paused += time(resume) - time(pauseStart ?? pause);
+      pauses.push({ start: pauseStart ?? pause, resume, index: samples.length });
+      i -= 1; // the same game time again, past the pause
+      continue;
+    }
+    // The game can end between two samples, after which the feed may only repeat its last frames.
+    const finished = f?.gameState === "finished" ? f : !f && before?.gameState === "finished" ? before : null;
+    if (finished) {
+      const last = (await firstFrame(read, prev, time(finished), (x) => x.gameState === "finished")) ?? finished;
+      samples.push({ t: time(last) - ts - paused, f: last });
+      break;
+    }
+    if (!f) break;
+    samples.push({ t: i * stepMs, f });
+    prev = time(f);
+  }
+  if (samples.length < 2) return null;
+  // The feed can go quiet for a while as play resumes, which reads as more pause than there was. When the game ended
+  // in the feed short of the scoreboard's length, give the missing time back after the pause where gold jumps most.
+  const ended = samples[samples.length - 1].f.gameState === "finished";
+  const missing = maxGameMs - samples[samples.length - 1].t;
+  if (ended && pauses.length && missing > 20_000) {
+    const total = (f: FeedFrame) => f.blueTeam.totalGold + f.redTeam.totalGold;
+    const worst = pauses.reduce((a, b) =>
+      total(b.resume) - total(b.start) > total(a.resume) - total(a.start) ? b : a,
+    );
+    for (let k = worst.index; k < samples.length; k++) samples[k].t += missing;
+    paused -= missing;
+  }
+  const side = (pick: (f: FeedFrame) => FeedTeam): TimelineTeam => ({
+    gold: samples.map((s) => pick(s.f).totalGold),
+    kills: samples.map((s) => pick(s.f).totalKills),
+    towers: samples.map((s) => pick(s.f).towers),
+    inhibitors: samples.map((s) => pick(s.f).inhibitors),
+    barons: samples.map((s) => pick(s.f).barons),
+    dragons: samples.map((s) => pick(s.f).dragons.length),
+    dragonTypes: [...pick(samples[samples.length - 1].f).dragons],
+  });
+  return {
+    esportsGameId,
+    step: stepMs / 1000,
+    t: samples.map((x) => Math.round(x.t / 1000)),
+    end: Math.round(samples[samples.length - 1].t / 1000),
+    pausedSeconds: Math.round(paused / 1000),
+    blue: side((f) => f.blueTeam),
+    red: side((f) => f.redTeam),
+  };
+}

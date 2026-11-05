@@ -62,6 +62,11 @@ test("a finished series shows its games, draft and scoreboards", async ({ page }
   await expect(page.getByRole("heading", { name: /^Game 1/ })).toBeVisible();
   await expect(page.getByRole("table").first()).toBeVisible();
   await expect(page.getByText(/Watch on lolesports\.com/)).toBeVisible();
+  // Every game of the series has its gold graph, with the largest lead in the caption.
+  const graphs = page.locator("figure").filter({ hasText: "Gold difference" });
+  await expect(graphs.first()).toBeVisible();
+  expect(await graphs.count()).toBe(await page.getByRole("heading", { name: /^Game \d/ }).count());
+  await expect(graphs.first()).toContainText(/Largest lead|Level all game/);
   expect(errors).toEqual([]);
 });
 
