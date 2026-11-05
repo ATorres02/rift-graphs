@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { jsonLdHtml, seriesEventJsonLd, STAGE_VENUE, venueLabel, venueTown } from "@/lib/jsonld";
+import { jsonLdHtml, seriesEndDate, seriesEventJsonLd, STAGE_VENUE, venueLabel, venueTown } from "@/lib/jsonld";
+import { gameEnd } from "@/lib/last-modified";
 import { notFound } from "next/navigation";
 import { ExternalLinkIcon, GitCompareArrowsIcon } from "lucide-react";
 import { LocalTime } from "@/components/local-time";
@@ -111,6 +112,13 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
     url: `${site.url}/matches/${s.id}`,
     image: `${site.url}/matches/${s.id}/opengraph-image`,
     startDate: s.dateTimeUtc,
+    endDate: seriesEndDate(
+      s.dateTimeUtc,
+      s.bestOf,
+      s.status === "finished" && games.length
+        ? Math.max(...games.map((g) => gameEnd(data, g) ?? Date.parse(s.dateTimeUtc)))
+        : null,
+    ),
     stage: s.stage,
     competitors: [team1, team2].flatMap((t) => (t ? [t.name] : [])),
     streamUrl: s.streamUrl ?? data.tournament.officialUrl ?? site.lolesportsUrl,
