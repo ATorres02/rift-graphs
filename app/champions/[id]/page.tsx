@@ -9,7 +9,7 @@ import { Headlines, type Headline } from "@/components/headlines";
 import { Inventory, RuneIcon } from "@/components/loadout-icons";
 import { Section } from "@/components/page-header";
 import { Spoiler } from "@/components/spoilers";
-import { TeamPill } from "@/components/team-pill";
+import { TeamLogo, TeamPill } from "@/components/team-pill";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { championBuild } from "@/lib/builds";
 import { draftedChampions, getData, getLoadout, teamRef } from "@/lib/data/load";
@@ -276,18 +276,21 @@ export default async function ChampionPage({ params }: { params: Promise<{ id: s
         >
           <ul className="divide-y rounded-xl border bg-card">
             {gameRows.map(({ r, g, s }) => {
-              const team = data.teamsById.get(r.teamId);
-              const opponent = data.teamsById.get(r.opponentTeamId);
+              const team = teamRef(data.teamsById.get(r.teamId));
+              const opponent = teamRef(data.teamsById.get(r.opponentTeamId));
               const pl = data.playersById.get(r.playerId);
               return (
                 <li key={r.gameId} className="relative space-y-1.5 px-3 py-2.5 transition-colors hover:bg-brand-soft">
-                  <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
+                  <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-0.5">
                     <Link
                       href={`/matches/${s.id}`}
-                      className="text-base font-semibold after:absolute after:inset-0 after:content-[''] hover:underline sm:text-lg"
+                      className="inline-flex flex-wrap items-center gap-x-1.5 text-base font-semibold after:absolute after:inset-0 after:content-[''] hover:underline sm:text-lg"
                     >
-                      {team?.short ?? "TBD"} {pl?.name ?? r.playerId}{" "}
-                      <span className="font-normal text-muted-foreground">vs</span> {opponent?.short ?? "TBD"}
+                      {team ? <TeamLogo team={team} className="size-5 sm:size-6" /> : null}
+                      <span>{team?.short ?? "TBD"}</span> <span>{pl?.name ?? r.playerId}</span>{" "}
+                      <span className="font-normal text-muted-foreground">vs</span>{" "}
+                      {opponent ? <TeamLogo team={opponent} className="size-5 sm:size-6" /> : null}
+                      <span>{opponent?.short ?? "TBD"}</span>
                     </Link>
                     <span className="text-xs text-muted-foreground sm:text-sm">
                       {roundLabel(s.stage, s.round, s.tab)} – Game {g.gameNumber}
