@@ -90,7 +90,7 @@ export function leader(m: PreviewMetric): "a" | "b" | null {
   return (m.better === "higher") === m.a > m.b ? "a" : "b";
 }
 
-interface MetricDef<T> {
+export interface MetricDef<T> {
   key: string;
   label: string;
   format: PreviewFormat;
@@ -98,7 +98,7 @@ interface MetricDef<T> {
   get: (x: T) => number | null;
 }
 
-function buildMetric<T>(def: MetricDef<T>, a: T | null, b: T | null, reference: T[]): PreviewMetric {
+export function buildMetric<T>(def: MetricDef<T>, a: T | null, b: T | null, reference: T[]): PreviewMetric {
   const values = reference.map(def.get).filter((v): v is number => v !== null && !Number.isNaN(v));
   const va = a ? def.get(a) : null;
   const vb = b ? def.get(b) : null;
@@ -258,8 +258,14 @@ function lanePlayer(data: IndexedDataset, rows: PlayerGame[], teamId: string, ro
   };
 }
 
-export function laneMatchups(data: IndexedDataset, a: string, b: string): LaneMatchup[] {
-  const confirmed = new Set(data.confirmedGames.map((g) => g.id));
+/** `games` narrows the sample, e.g. to the games played before a series for its lane duels. */
+export function laneMatchups(
+  data: IndexedDataset,
+  a: string,
+  b: string,
+  games: Game[] = data.confirmedGames,
+): LaneMatchup[] {
+  const confirmed = new Set(games.map((g) => g.id));
   const rows = data.playerGames.filter((r) => confirmed.has(r.gameId));
   const byRolePlayer = groupBy(rows, (r) => `${r.role}|${r.playerId}`);
   return ROLES.map((role) => {

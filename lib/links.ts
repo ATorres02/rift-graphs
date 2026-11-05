@@ -4,3 +4,8 @@
 export function compareTeamsHref(a: string, b: string): string {
   return `/compare?${new URLSearchParams({ type: "teams", a, b })}`;
 }
+
+/** The comparison page with two players preselected. */
+export function comparePlayersHref(a: string, b: string): string {
+  return `/compare?${new URLSearchParams({ type: "players", a, b })}`;
+}

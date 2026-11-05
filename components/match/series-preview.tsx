@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { ArrowUpRightIcon } from "lucide-react";
+import { ArrowRightIcon, ArrowUpRightIcon } from "lucide-react";
 import { ChampionIcon } from "@/components/champion-icon";
 import { Section } from "@/components/page-header";
 import { RoleGlyph } from "@/components/rift/role-glyph";
@@ -25,12 +25,13 @@ import {
   type PreviewMetric,
 } from "@/lib/preview";
 import { swissStandings } from "@/lib/standings";
+import { duelHref, hasDuels } from "@/lib/duels";
 import { cn } from "@/lib/utils";
 import { champIcon, seriesView } from "@/lib/views";
 
 const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? "" : "s"}`;
 
-function ChartsLink({ href, label }: { href: string; label: string }) {
+export function ChartsLink({ href, label }: { href: string; label: string }) {
   return (
     <Link
       href={href}
@@ -46,7 +47,7 @@ function ChartsLink({ href, label }: { href: string; label: string }) {
  * One metric for both sides: the values at the ends and a bar growing out of the centre towards each side, scaled to
  * the best in the reference group, with a tick at its average. The better of the two is drawn in the brand colour.
  */
-function MetricRow({ m, aName, bName }: { m: PreviewMetric; aName: string; bName: string }) {
+export function MetricRow({ m, aName, bName }: { m: PreviewMetric; aName: string; bName: string }) {
   const lead = leader(m);
   const fa = formatPreview(m.a, m.format);
   const fb = formatPreview(m.b, m.format);
@@ -170,7 +171,8 @@ function ChampionList({ title, team, rows }: { title: string; team: string; rows
 }
 
 /** Both teams side by side before the series: team numbers, lane by lane, and champion pools. */
-function Matchup({ data, a, b }: { data: IndexedDataset; a: Team; b: Team }) {
+/** `duelsOf`: the series whose lane duel pages the lanes link to, when it has them. */
+function Matchup({ data, a, b, duelsOf }: { data: IndexedDataset; a: Team; b: Team; duelsOf: string | null }) {
   const ra = teamRef(a)!;
   const rb = teamRef(b)!;
   const teams = teamMatchup(data, a.id, b.id);
@@ -226,7 +228,18 @@ function Matchup({ data, a, b }: { data: IndexedDataset; a: Team; b: Team }) {
                 ))}
               </ul>
               {lane.a && lane.b ? (
-                <div className="flex justify-end border-t pt-2">
+                <div className="flex items-center justify-between gap-2 border-t pt-2">
+                  {duelsOf ? (
+                    <Link
+                      href={duelHref(duelsOf, lane.role)}
+                      aria-label={`Full duel: ${lane.a.name} vs ${lane.b.name}`}
+                      className="inline-flex items-center gap-1 text-xs font-semibold text-brand no-underline hover:underline"
+                    >
+                      Full duel <ArrowRightIcon className="size-3.5" aria-hidden />
+                    </Link>
+                  ) : (
+                    <span />
+                  )}
                   <ChartsLink
                     href={chartHref(compareChart("players", lane.a.playerId, lane.b.playerId, LANE_CHART_MEASURES))}
                     label={`${lane.a.name} and ${lane.b.name}`}
@@ -372,7 +385,17 @@ export function SeriesPreview({
           );
         })}
       </div>
-      {a && b ? <Matchup data={data} a={a} b={b} /> : null}
+      {a && b ? (
+        <Matchup
+          data={data}
+          a={a}
+          b={b}
+          duelsOf={(() => {
+            const s = data.seriesById.get(seriesId);
+            return s && hasDuels(s) ? s.id : null;
+          })()}
+        />
+      ) : null}
       {a && b ? (
         <Section
           title="Head to head"
