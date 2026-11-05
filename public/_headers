@@ -22,3 +22,5 @@
   Content-Type: image/png
 /matches/:id/opengraph-image
   Content-Type: image/png
+/matches/:id/:role/opengraph-image
+  Content-Type: image/png
