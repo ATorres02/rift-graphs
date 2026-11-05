@@ -47,6 +47,9 @@ export function Footer() {
           ))}
         </nav>
         <nav aria-label="Legal" className="flex flex-wrap gap-x-4 gap-y-1">
+          <Link href="/updates" className="underline hover:text-foreground">
+            Updates
+          </Link>
           <Link href="/about" className="underline hover:text-foreground">
             About
           </Link>

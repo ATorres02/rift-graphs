@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { draftedChampions, getData } from "@/lib/data/load";
 import { championSlug } from "@/lib/sources/ddragon";
 import { site } from "@/lib/site";
+import { UPDATES } from "@/lib/updates";
 
 export const dynamic = "force-static";
 
@@ -18,6 +19,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: url("/champions"), lastModified: updated, changeFrequency: "daily", priority: 0.7 },
     { url: url("/charts"), lastModified: updated, changeFrequency: "daily", priority: 0.6 },
     { url: url("/compare"), lastModified: updated, changeFrequency: "daily", priority: 0.5 },
+    {
+      url: url("/updates"),
+      lastModified: new Date(`${UPDATES[0].date}T00:00:00Z`),
+      changeFrequency: "weekly",
+      priority: 0.4,
+    },
     { url: url("/about"), lastModified: updated, changeFrequency: "monthly", priority: 0.3 },
     { url: url("/privacy"), lastModified: updated, changeFrequency: "yearly", priority: 0.1 },
     { url: url("/imprint"), lastModified: updated, changeFrequency: "yearly", priority: 0.1 },
