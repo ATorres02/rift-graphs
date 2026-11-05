@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { breadcrumbJsonLd, jsonLdHtml, seriesEventJsonLd, STAGE_VENUE } from "./jsonld";
+import { breadcrumbJsonLd, jsonLdHtml, seriesEndDate, seriesEventJsonLd, STAGE_VENUE } from "./jsonld";
 
 describe("jsonLdHtml", () => {
   it("does not let a value close the script element", () => {
@@ -21,6 +21,7 @@ describe("seriesEventJsonLd", () => {
     url: "https://riftgraphs.com/matches/main-event-semifinals-1",
     image: "https://riftgraphs.com/matches/main-event-semifinals-1/opengraph-image",
     startDate: "2026-11-07T22:00:00Z",
+    endDate: "2026-11-08T02:00:00Z",
     stage: "semifinals",
     competitors: ["Invictus Gaming", "Gen.G"],
     streamUrl: "https://lolesports.com",
@@ -31,6 +32,14 @@ describe("seriesEventJsonLd", () => {
     expect(event.location[1]).toEqual({ "@type": "VirtualLocation", url: "https://lolesports.com" });
     expect(event.eventAttendanceMode).toBe("https://schema.org/MixedEventAttendanceMode");
     expect(event.competitor).toHaveLength(2);
+    expect(event.performer).toEqual(event.competitor);
+    expect(event.endDate).toBe("2026-11-08T02:00:00Z");
+  });
+
+  it("ends a series at its last game, or a few hours after the start by format", () => {
+    expect(seriesEndDate("2026-11-07T22:00:00Z", 5, null)).toBe("2026-11-08T02:00:00Z");
+    expect(seriesEndDate("2026-10-23T18:00:00Z", 1, null)).toBe("2026-10-23T19:00:00Z");
+    expect(seriesEndDate("2026-11-03T22:00:00Z", 5, Date.parse("2026-11-04T01:37:12Z"))).toBe("2026-11-04T01:37:12Z");
   });
 
   it("leaves the teams out while they are not known, and every stage has a venue", () => {
@@ -41,6 +50,7 @@ describe("seriesEventJsonLd", () => {
       streamUrl: "https://lolesports.com",
     } as never);
     expect("competitor" in tbd).toBe(false);
+    expect("performer" in tbd).toBe(false);
     for (const stage of ["playin", "swiss", "quarterfinals", "semifinals", "final"] as const)
       expect(STAGE_VENUE[stage].name.length).toBeGreaterThan(0);
   });

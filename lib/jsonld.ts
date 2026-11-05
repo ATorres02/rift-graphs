@@ -44,6 +44,8 @@ export interface SeriesEventInput {
   url: string;
   image: string;
   startDate: string;
+  /** When it ended (the last game) or is expected to end. */
+  endDate: string;
   stage: StageId;
   competitors: string[];
   /** Where it can be watched online. */
@@ -61,6 +63,7 @@ export function seriesEventJsonLd(e: SeriesEventInput) {
     url: e.url,
     image: [e.image],
     startDate: e.startDate,
+    endDate: e.endDate,
     eventStatus: "https://schema.org/EventScheduled",
     eventAttendanceMode: "https://schema.org/MixedEventAttendanceMode",
     location: [
@@ -77,7 +80,13 @@ export function seriesEventJsonLd(e: SeriesEventInput) {
       { "@type": "VirtualLocation", url: e.streamUrl },
     ],
     sport: "League of Legends",
-    ...(e.competitors.length ? { competitor: e.competitors.map((name) => ({ "@type": "SportsTeam", name })) } : {}),
+    // The teams both compete and perform: Google reads `performer`, schema.org's SportsEvent has `competitor`.
+    ...(e.competitors.length
+      ? {
+          competitor: e.competitors.map((name) => ({ "@type": "SportsTeam", name })),
+          performer: e.competitors.map((name) => ({ "@type": "SportsTeam", name })),
+        }
+      : {}),
     organizer: { "@type": "Organization", name: "Riot Games", url: "https://lolesports.com" },
   };
 }
@@ -100,4 +109,13 @@ export function breadcrumbJsonLd(crumbs: Crumb[], base: string) {
       ...(c.href ? { item: new URL(c.href, base).toString() } : {}),
     })),
   };
+}
+
+/** Expected length of a series by format, for an end date before it is played: a Bo5 with breaks runs about 4 h. */
+const EXPECTED_HOURS: Record<number, number> = { 1: 1, 3: 2.5, 5: 4 };
+
+/** The series' end: its last game's end once finished, else the start plus the usual length of its format. */
+export function seriesEndDate(start: string, bestOf: number, finishedAt: number | null): string {
+  const t = finishedAt ?? Date.parse(start) + (EXPECTED_HOURS[bestOf] ?? bestOf) * 3_600_000;
+  return new Date(t).toISOString().replace(/\.\d{3}Z$/, "Z");
 }
