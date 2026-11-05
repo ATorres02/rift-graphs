@@ -223,6 +223,50 @@ test("a series yet to be played previews both teams lane by lane", async ({ page
   expect(errors).toEqual([]);
 });
 
+test("a lane duel opens from a knockout preview and links the other lanes", async ({ page }) => {
+  const series = JSON.parse(readFileSync(path.join("data", "worlds-2026", "series.json"), "utf8")) as {
+    id: string;
+    stage: string;
+    status: string;
+    team1Id: string | null;
+    team2Id: string | null;
+  }[];
+  const next = series.find(
+    (s) =>
+      ["quarterfinals", "semifinals", "final"].includes(s.stage) && s.status === "scheduled" && s.team1Id && s.team2Id,
+  );
+  test.skip(!next, "no scheduled knockout series with both teams known");
+  const errors = watchErrors(page);
+  await page.goto(`/matches/${next!.id}`);
+  await page
+    .getByRole("link", { name: /^Full duel/ })
+    .first()
+    .click();
+  await expect(page).toHaveURL(new RegExp(`/matches/${next!.id}/top$`));
+  await expect(page).toHaveTitle(/ top lane duel, Worlds 2026 \| Rift Graphs$/);
+  expect(await page.getByRole("heading", { level: 1 }).textContent()).toMatch(/\S vs \S/);
+  await expect(page.getByRole("heading", { name: "Side by side", level: 2 })).toBeVisible();
+  const lanes = page.getByRole("navigation", { name: "Lanes of this series" }).getByRole("link");
+  await expect(lanes).toHaveCount(5);
+  await expect(lanes.first()).toHaveAttribute("aria-current", "page");
+  expect(errors).toEqual([]);
+});
+
+test("a played knockout series links its five lane duels", async ({ page }) => {
+  const series = JSON.parse(readFileSync(path.join("data", "worlds-2026", "series.json"), "utf8")) as {
+    id: string;
+    stage: string;
+    status: string;
+  }[];
+  const played = series.find((s) => s.stage === "quarterfinals" && s.status === "finished");
+  test.skip(!played, "no knockout series played yet");
+  await page.goto(`/matches/${played!.id}`);
+  const strip = page.locator("section").filter({ has: page.getByRole("heading", { name: "Lane duels", level: 2 }) });
+  await expect(strip.getByRole("link")).toHaveCount(5);
+  await strip.getByRole("link", { name: /^Mid duel/ }).click();
+  await expect(page).toHaveURL(new RegExp(`/matches/${played!.id}/mid$`));
+});
+
 test("the homepage leaders switch ranking with tabs on a phone", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");

@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "tsx scripts/hero-art.ts && next build --turbopack",
+    "build": "tsx scripts/hero-art.ts && tsx scripts/duel-art.ts && next build --turbopack",
     "start": "next start",
     "lint": "eslint",
     "ingest": "tsx scripts/ingest.ts",

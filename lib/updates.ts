@@ -21,6 +21,20 @@ export const UPDATE_KIND_LABEL: Record<UpdateKind, string> = { new: "New", impro
 
 export const UPDATES: SiteUpdate[] = [
   {
+    id: "lane-duels",
+    date: "2026-11-05",
+    kind: "new",
+    title: "Lane duels",
+    summary:
+      "A page for each lane of every knockout series: the two players side by side, with their numbers from the games before the series.",
+    items: [
+      "KDA, damage, gold, CS and vision, against the best and the average in the role.",
+      "Every champion each one played, and the games they already met in lane.",
+      "Open them from any knockout series page. Each duel has its own card for sharing.",
+    ],
+    link: { href: "/matches", label: "Matches" },
+  },
+  {
     id: "updates-page",
     date: "2026-11-05",
     kind: "new",

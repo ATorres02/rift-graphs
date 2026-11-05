@@ -8,6 +8,7 @@ import { CompareBars } from "@/components/match/compare-bars";
 import { DraftBoard, type DraftPlayer } from "@/components/match/draft-board";
 import { LineupTable } from "@/components/match/lineup";
 import { Scoreboard } from "@/components/match/scoreboard";
+import { DuelStrip } from "@/components/match/duel-strip";
 import { SeriesPreview } from "@/components/match/series-preview";
 import { PageHeader, Section } from "@/components/page-header";
 import { PendingData } from "@/components/pending-data";
@@ -19,6 +20,7 @@ import { getData, seriesHasPendingGames, seriesTeams, teamRef } from "@/lib/data
 import type { Game, Side } from "@/lib/data/types";
 import { lockedChampionsBefore } from "@/lib/draft";
 import { bestOfLabel, fmt, roundLabel, STAGE_LABEL, STAGE_SHORT } from "@/lib/format";
+import { hasDuels } from "@/lib/duels";
 import { previewRound, showsPreview } from "@/lib/preview";
 import { baseOpenGraph, site } from "@/lib/site";
 import { compareTeamsHref } from "@/lib/links";
@@ -166,6 +168,9 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
           teams={[data.teamsById.get(s.team1Id ?? ""), data.teamsById.get(s.team2Id ?? "")]}
         />
       ) : null}
+
+      {/* Once the preview (and its Full duel links) is gone, the duels stay one tap away. */}
+      {!preview && hasDuels(s) ? <DuelStrip series={s} /> : null}
 
       <div className="space-y-12">
         {games.map((g) => {

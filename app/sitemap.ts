@@ -3,6 +3,8 @@ import { draftedChampions, getData } from "@/lib/data/load";
 import { championSlug } from "@/lib/sources/ddragon";
 import { site } from "@/lib/site";
 import { UPDATES } from "@/lib/updates";
+import { duelHref, duelSeries } from "@/lib/duels";
+import { ROLES } from "@/lib/metrics";
 
 export const dynamic = "force-static";
 
@@ -34,6 +36,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "hourly" as const,
       priority: 0.6,
     })),
+    ...duelSeries(data).flatMap((s) =>
+      ROLES.map((role) => ({
+        url: url(duelHref(s.id, role)),
+        lastModified: updated,
+        changeFrequency: "daily" as const,
+        priority: 0.5,
+      })),
+    ),
     ...data.teams.map((t) => ({
       url: url(`/teams/${t.id}`),
       lastModified: updated,
