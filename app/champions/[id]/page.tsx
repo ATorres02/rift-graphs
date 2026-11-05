@@ -3,13 +3,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChampionIcon } from "@/components/champion-icon";
+import { ProBuilds } from "@/components/champions/pro-builds";
 import { Chart } from "@/components/charts/chart";
 import { Headlines, type Headline } from "@/components/headlines";
+import { Inventory, RuneIcon } from "@/components/loadout-icons";
 import { Section } from "@/components/page-header";
 import { Spoiler } from "@/components/spoilers";
-import { TeamPill } from "@/components/team-pill";
+import { TeamLogo, TeamPill } from "@/components/team-pill";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { draftedChampions, getData, seriesTeams, teamRef } from "@/lib/data/load";
+import { championBuild } from "@/lib/builds";
+import { draftedChampions, getData, getLoadout, teamRef } from "@/lib/data/load";
 import type { BarSpec } from "@/lib/charts/spec";
 import type { ChampionRef, StageId } from "@/lib/data/types";
 import { fmt, ROLE_LABEL, roundLabel, STAGE_LABEL } from "@/lib/format";
@@ -38,10 +41,13 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   const c = find(id);
   if (!c) return {};
-  const title = `${c.name}, Worlds 2026 stats`;
+  const key = normalizeChampionName(c.name);
+  const played = getData().playerGames.some((r) => normalizeChampionName(r.champion) === key);
+  // "<champion> build" is what people search; a champion that was only banned has no build to show.
+  const title = played ? `${c.name} build, runes and stats at Worlds 2026` : `${c.name}, Worlds 2026 stats`;
   return {
     title,
-    description: `${c.name}${c.title ? `, ${c.title}` : ""} at the 2026 World Championship: presence, picks, bans, win rate by role and every game it was played in.`,
+    description: `${c.name}${c.title ? `, ${c.title}` : ""} at the 2026 World Championship: ${played ? "pro builds and runes, " : ""}presence, picks, bans, win rate by role and every game it was played in.`,
     openGraph: { ...baseOpenGraph, title, images: [defaultOgImage] },
   };
 }
@@ -133,6 +139,9 @@ export default async function ChampionPage({ params }: { params: Promise<{ id: s
       ? { label: "Win rate", value: fmt.pct(agg.winRate), detail: `${agg.wins}–${agg.picks - agg.wins}`, spoiler: true }
       : { label: "Win rate", value: "–", detail: "Never picked" },
   ];
+  const loadout = getLoadout();
+  const build = rows.length && loadout.version ? championBuild(rows, loadout) : null;
+
   const art = championPageArt(c.id);
   const splash = championSplashUrl(c.id, art.skin);
 
@@ -176,6 +185,15 @@ export default async function ChampionPage({ params }: { params: Promise<{ id: s
       </header>
 
       <Headlines items={headlines} className="lg:grid-cols-4" />
+
+      {build ? (
+        <Section
+          title="Pro builds"
+          description={`What the pros ended their games with on ${c.name}, over ${build.games} ${build.games === 1 ? "game" : "games"}: items from the final inventory, so an item still being built does not count.`}
+        >
+          <ProBuilds build={build} loadout={loadout} />
+        </Section>
+      ) : null}
 
       <div className="grid gap-8 lg:grid-cols-2">
         <Section title="By role" description="Games and wins when picked in each role.">
@@ -252,31 +270,48 @@ export default async function ChampionPage({ params }: { params: Promise<{ id: s
       </Section>
 
       {gameRows.length ? (
-        <Section title="Every game" description="Newest first. Results stay hidden in spoiler mode.">
+        <Section
+          title="Every game"
+          description="Newest first, with the keystone and final items of each game. Results stay hidden in spoiler mode."
+        >
           <ul className="divide-y rounded-xl border bg-card">
             {gameRows.map(({ r, g, s }) => {
-              const { team1, team2 } = seriesTeams(data, s);
+              const team = teamRef(data.teamsById.get(r.teamId));
+              const opponent = teamRef(data.teamsById.get(r.opponentTeamId));
               const pl = data.playersById.get(r.playerId);
               return (
-                <li
-                  key={r.gameId}
-                  className="relative flex flex-wrap items-center gap-x-3 gap-y-1 px-3 py-2 text-sm transition-colors hover:bg-brand-soft"
-                >
-                  <Link
-                    href={`/matches/${s.id}`}
-                    className="font-medium after:absolute after:inset-0 after:content-[''] hover:underline"
-                  >
-                    {team1?.short ?? "TBD"} vs {team2?.short ?? "TBD"}, game {g.gameNumber}
-                  </Link>
-                  <span className="text-xs text-muted-foreground">{roundLabel(s.stage, s.round, s.tab)}</span>
-                  <span className="text-xs text-muted-foreground">
-                    {pl?.name ?? r.playerId}, {ROLE_LABEL[r.role]}, {r.side} side
-                  </span>
-                  <Spoiler label="Result">
-                    <span className={r.win ? "text-xs font-semibold text-win" : "text-xs font-semibold text-loss"}>
-                      {r.win ? "WIN" : "LOSS"} {r.kills}/{r.deaths}/{r.assists}
+                <li key={r.gameId} className="relative space-y-1.5 px-3 py-2.5 transition-colors hover:bg-brand-soft">
+                  <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-0.5">
+                    <Link
+                      href={`/matches/${s.id}`}
+                      className="inline-flex flex-wrap items-center gap-x-1.5 text-base font-semibold after:absolute after:inset-0 after:content-[''] hover:underline sm:text-lg"
+                    >
+                      {team ? <TeamLogo team={team} className="size-5 sm:size-6" /> : null}
+                      <span>{team?.short ?? "TBD"}</span> <span>{pl?.name ?? r.playerId}</span>{" "}
+                      <span className="font-normal text-muted-foreground">vs</span>{" "}
+                      {opponent ? <TeamLogo team={opponent} className="size-5 sm:size-6" /> : null}
+                      <span>{opponent?.short ?? "TBD"}</span>
+                    </Link>
+                    <span className="text-xs text-muted-foreground sm:text-sm">
+                      {roundLabel(s.stage, s.round, s.tab)} – Game {g.gameNumber}
                     </span>
-                  </Spoiler>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-muted-foreground">
+                    <span>
+                      {ROLE_LABEL[r.role]}, {r.side} side
+                    </span>
+                    <Spoiler label="Result">
+                      <span className={r.win ? "font-semibold text-win" : "font-semibold text-loss"}>
+                        {r.win ? "WIN" : "LOSS"} {r.kills}/{r.deaths}/{r.assists}
+                      </span>
+                    </Spoiler>
+                    {loadout.version ? (
+                      <span className="flex w-full items-center gap-1.5 sm:ml-auto sm:w-auto">
+                        {r.keystone ? <RuneIcon name={r.keystone} loadout={loadout} size="md" /> : null}
+                        <Inventory items={r.items} trinket={r.trinket} loadout={loadout} size="sm" />
+                      </span>
+                    ) : null}
+                  </div>
                 </li>
               );
             })}

@@ -7,6 +7,7 @@ import { datasetFiles, type DatasetFileName } from "./schema";
 import type { ChampionRef, Dataset, Series, Team } from "./types";
 import { normalizeChampionName } from "@/lib/sources/ddragon";
 import type { GameTimeline } from "@/lib/sources/livestats";
+import type { LoadoutIndex } from "@/lib/sources/loadout";
 import { teamLogo, type TeamLogo } from "./team-logos";
 
 export type { IndexedDataset } from "./index";
@@ -105,4 +106,16 @@ export function getTimelines(): Map<string, GameTimeline> {
     Object.entries(raw).flatMap(([id, v]) => ("esportsGameId" in v ? [[id, v] as [string, GameTimeline]] : [])),
   );
   return timelineMemo;
+}
+
+let loadoutMemo: LoadoutIndex | null = null;
+
+/** Item, rune and summoner spell icons for the names in the player rows (empty until the ingest has written them). */
+export function getLoadout(): LoadoutIndex {
+  if (loadoutMemo) return loadoutMemo;
+  const dir = path.join(process.cwd(), "data", TOURNAMENT_ID);
+  loadoutMemo = existsSync(path.join(dir, "loadout.json"))
+    ? readJson(dir, "loadout.json")
+    : { version: "", items: {}, runes: {}, spells: {} };
+  return loadoutMemo;
 }
