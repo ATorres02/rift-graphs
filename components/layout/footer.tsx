@@ -59,16 +59,6 @@ export function Footer() {
           <Link href="/imprint" className="underline hover:text-foreground">
             Imprint
           </Link>
-          {site.repoUrl ? (
-            <a
-              href={site.repoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:text-foreground"
-            >
-              Source code
-            </a>
-          ) : null}
         </nav>
       </div>
     </footer>

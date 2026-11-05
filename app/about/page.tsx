@@ -109,16 +109,6 @@ export default function AboutPage() {
       <p className="text-muted-foreground">
         Developed with AI by <AuthorLinks />
       </p>
-      {site.repoUrl ? (
-        <p className="text-muted-foreground">
-          The source code is{" "}
-          <a href={site.repoUrl} target="_blank" rel="noopener noreferrer" className="underline">
-            public on GitHub
-          </a>
-          .
-        </p>
-      ) : null}
-
       <h2 className="display mt-8 text-2xl font-bold text-foreground">Privacy and imprint</h2>
       <p className="text-muted-foreground">
         The site sets no cookies and has no accounts. Read the{" "}
