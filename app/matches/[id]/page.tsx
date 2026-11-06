@@ -220,6 +220,7 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
           return (
             <Section
               key={g.id}
+              id={`game-${g.gameNumber}`}
               collapsible
               title={
                 <span className="inline-flex flex-wrap items-center gap-2">

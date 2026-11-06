@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { ArrowRightIcon } from "lucide-react";
 import { KnockoutBracket } from "@/components/bracket/knockout-bracket";
 import { SwissBracket } from "@/components/bracket/swiss-bracket";
 import { Headlines, type Headline } from "@/components/headlines";
@@ -155,7 +157,15 @@ export default function TournamentPage() {
         eyebrow={tournament.name}
         title="Tournament format"
         description="Three stages, from the Play-In to the final. Dates and formats below come straight from the schedule."
-      />
+      >
+        <Link
+          href="/records"
+          className="group inline-flex items-center gap-1 text-sm font-medium text-brand underline-offset-4 hover:underline"
+        >
+          Records of the tournament
+          <ArrowRightIcon aria-hidden className="size-4 motion-safe:transition-transform group-hover:translate-x-0.5" />
+        </Link>
+      </PageHeader>
       <Headlines items={headlines} className="lg:grid-cols-4" />
       <ProvisionalNote meta={data.meta} />
 

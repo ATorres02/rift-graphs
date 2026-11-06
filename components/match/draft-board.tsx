@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { ChampionIcon, type ChampionIconRef } from "@/components/champion-icon";
 import { TeamPill } from "@/components/team-pill";
@@ -76,7 +77,7 @@ export function DraftBoard({ draft, blue, red, lineups, icon, locked }: DraftBoa
                         {who}
                       </span>
                       {ref?.ddragonId ? (
-                        <span className="relative mt-1 block">
+                        <ChampionArtLink href={ref.href} name={champion ?? ""} className="relative mt-1 block">
                           {/* eslint-disable-next-line @next/next/no-img-element -- remote art, fixed box */}
                           <img
                             src={championLoadingUrl(ref.ddragonId)}
@@ -92,16 +93,22 @@ export function DraftBoard({ draft, blue, red, lineups, icon, locked }: DraftBoa
                               {pickNo}
                             </span>
                           ) : null}
-                        </span>
+                        </ChampionArtLink>
                       ) : champion && ref ? (
                         <span className="mt-1 flex aspect-[308/560] flex-col items-center justify-center gap-1 p-1 text-center text-[10px]">
-                          <ChampionIcon champion={ref} size="md" />
+                          <ChampionIcon champion={ref} size="md" linked />
                         </span>
                       ) : (
                         <span className="mt-1 block aspect-[308/560] border-t border-dashed" />
                       )}
                       <span className="block truncate px-1 py-0.5 text-center text-[10px] text-muted-foreground sm:text-[11px]">
-                        {champion ?? "–"}
+                        {champion && ref?.href ? (
+                          <Link href={ref.href} className="no-underline hover:text-brand">
+                            {champion}
+                          </Link>
+                        ) : (
+                          (champion ?? "–")
+                        )}
                       </span>
                     </li>
                   );
@@ -112,7 +119,7 @@ export function DraftBoard({ draft, blue, red, lineups, icon, locked }: DraftBoa
                 {d.bans.map((c, i) => (
                   <li key={i}>
                     {c ? (
-                      <ChampionIcon champion={icon(c)} size="sm" dimmed />
+                      <ChampionIcon champion={icon(c)} size="sm" dimmed linked />
                     ) : (
                       <span className="inline-block size-7 rounded-md border border-dashed" />
                     )}
@@ -138,7 +145,7 @@ export function DraftBoard({ draft, blue, red, lineups, icon, locked }: DraftBoa
               title={`${s.seq}. ${s.side} ${s.type}: ${s.champion ?? "–"}`}
             >
               {s.champion ? (
-                <ChampionIcon champion={icon(s.champion)} size="sm" dimmed={s.type === "ban"} />
+                <ChampionIcon champion={icon(s.champion)} size="sm" dimmed={s.type === "ban"} linked />
               ) : (
                 <span className="inline-block size-7 rounded-md border border-dashed" />
               )}
@@ -156,7 +163,7 @@ export function DraftBoard({ draft, blue, red, lineups, icon, locked }: DraftBoa
           <ul className="mt-2 flex flex-wrap gap-1.5">
             {locked.map((c) => (
               <li key={c}>
-                <ChampionIcon champion={icon(c)} size="xs" dimmed />
+                <ChampionIcon champion={icon(c)} size="xs" dimmed linked />
                 <span className="sr-only">{c}</span>
               </li>
             ))}
@@ -164,5 +171,25 @@ export function DraftBoard({ draft, blue, red, lineups, icon, locked }: DraftBoa
         </div>
       ) : null}
     </div>
+  );
+}
+
+/** A pick's art, linking to the champion's page when it has one. */
+function ChampionArtLink({
+  href,
+  name,
+  className,
+  children,
+}: {
+  href: string | null | undefined;
+  name: string;
+  className?: string;
+  children: ReactNode;
+}) {
+  if (!href) return <span className={className}>{children}</span>;
+  return (
+    <Link href={href} title={name} aria-label={name} className={cn(className, "transition-opacity hover:opacity-85")}>
+      {children}
+    </Link>
   );
 }

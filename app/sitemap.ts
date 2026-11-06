@@ -21,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: url("/teams"), lastModified: updated, changeFrequency: "daily", priority: 0.8 },
     { url: url("/players"), lastModified: updated, changeFrequency: "daily", priority: 0.8 },
     { url: url("/champions"), lastModified: updated, changeFrequency: "daily", priority: 0.7 },
+    { url: url("/records"), lastModified: updated, changeFrequency: "daily", priority: 0.7 },
     { url: url("/charts"), lastModified: updated, changeFrequency: "daily", priority: 0.6 },
     { url: url("/compare"), lastModified: updated, changeFrequency: "daily", priority: 0.5 },
     {

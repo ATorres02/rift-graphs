@@ -42,6 +42,7 @@ export function Section({
   action,
   collapsible = false,
   defaultOpen = true,
+  id,
 }: {
   title: ReactNode;
   description?: ReactNode;
@@ -51,6 +52,8 @@ export function Section({
   /** Render as a native <details> whose summary is the heading. */
   collapsible?: boolean;
   defaultOpen?: boolean;
+  /** Anchor for links to this section (kept clear of the sticky header). */
+  id?: string;
 }) {
   const heading = (
     <div>
@@ -69,7 +72,7 @@ export function Section({
   );
   if (collapsible) {
     return (
-      <details open={defaultOpen} className={cn("group space-y-3", className)}>
+      <details id={id} open={defaultOpen} className={cn("group space-y-3", id && "scroll-mt-24", className)}>
         <summary className="flex cursor-pointer list-none flex-wrap items-end justify-between gap-2 [&::-webkit-details-marker]:hidden">
           {heading}
           {action}
@@ -79,7 +82,7 @@ export function Section({
     );
   }
   return (
-    <section className={cn("space-y-3", className)}>
+    <section id={id} className={cn("space-y-3", id && "scroll-mt-24", className)}>
       <div className="flex flex-wrap items-end justify-between gap-2">
         {heading}
         {action}

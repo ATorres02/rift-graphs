@@ -97,7 +97,7 @@ function ChampionColumn({ data, side, name }: { data: IndexedDataset; side: Duel
     <ol className="space-y-2" aria-label={`${name}'s champions`}>
       {side.champions.map((c) => (
         <li key={c.champion} className="flex items-center gap-2.5">
-          <ChampionIcon champion={champIcon(data, c.champion)} size="sm" />
+          <ChampionIcon champion={champIcon(data, c.champion)} size="sm" linked />
           <span className="min-w-0 flex-1">
             <span className="flex items-baseline justify-between gap-2 text-sm">
               <span className="truncate">{c.champion}</span>
@@ -198,7 +198,7 @@ export default async function DuelPage({ params }: { params: Params }) {
                     <ul className={cn("flex gap-1.5", i === 1 && "flex-row-reverse")}>
                       {side.player.champions.map((c) => (
                         <li key={c.champion} className="relative" title={`${c.champion}, ${plural(c.count, "game")}`}>
-                          <ChampionIcon champion={champIcon(data, c.champion)} size="md" />
+                          <ChampionIcon champion={champIcon(data, c.champion)} size="md" linked />
                           <span className="absolute -right-1 -bottom-1 rounded border bg-background px-0.5 text-[10px] leading-tight font-semibold tabular">
                             {c.count}
                           </span>
@@ -262,7 +262,7 @@ export default async function DuelPage({ params }: { params: Params }) {
                     className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3 p-3 text-sm"
                   >
                     <span className="flex min-w-0 items-center gap-2">
-                      <ChampionIcon champion={champIcon(data, ra.champion)} size="sm" />
+                      <ChampionIcon champion={champIcon(data, ra.champion)} size="sm" linked />
                       <span className="truncate">{ra.champion}</span>
                       <span className="tabular text-muted-foreground">
                         {ra.kills}/{ra.deaths}/{ra.assists}
@@ -280,7 +280,7 @@ export default async function DuelPage({ params }: { params: Params }) {
                       </Spoiler>
                     </Link>
                     <span className="flex min-w-0 flex-row-reverse items-center gap-2 text-right">
-                      <ChampionIcon champion={champIcon(data, rb.champion)} size="sm" />
+                      <ChampionIcon champion={champIcon(data, rb.champion)} size="sm" linked />
                       <span className="truncate">{rb.champion}</span>
                       <span className="tabular text-muted-foreground">
                         {rb.kills}/{rb.deaths}/{rb.assists}

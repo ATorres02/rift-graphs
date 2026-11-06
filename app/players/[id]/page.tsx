@@ -3,14 +3,16 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChampionIcon } from "@/components/champion-icon";
 import { Chart } from "@/components/charts/chart";
-import { DataTable, type TableColumn } from "@/components/data-table";
+import { DataTable, type BuildCell, type TableColumn } from "@/components/data-table";
 import { Headlines, type Headline } from "@/components/headlines";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { PageHeader, Section } from "@/components/page-header";
 import { Spoiler } from "@/components/spoilers";
 import { TeamPill } from "@/components/team-pill";
 import type { BarSpec, LineSpec } from "@/lib/charts/spec";
-import { getData, teamRef } from "@/lib/data/load";
+import { getData, getLoadout, teamRef } from "@/lib/data/load";
+import { inventorySlots } from "@/lib/builds";
+import { itemIconUrl, runeIconUrl } from "@/lib/sources/loadout";
 import { fmt, ROLE_LABEL, STAGE_SHORT } from "@/lib/format";
 import { aggregatePlayerGames, kda, killParticipation, perMinute } from "@/lib/metrics";
 import { champIcon, mostPlayedArt } from "@/lib/views";
@@ -29,8 +31,8 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   if (!p) return {};
   const team = data.teamsById.get(p.teamId);
   return {
-    title: `${p.name}${team ? ` (${team.short})` : ""}, Worlds 2026 stats`,
-    description: `${p.name}'s 2026 World Championship: KDA, kill participation, CS, damage and gold per minute, champion pool and game-by-game numbers.`,
+    title: `${p.name}${team ? ` (${team.short})` : ""} Worlds 2026 stats, champions and builds`,
+    description: `${p.name}'s 2026 World Championship: KDA, kill participation, CS, damage and gold per minute, champion pool, and every game with its numbers, keystone and items.`,
   };
 }
 
@@ -38,6 +40,7 @@ const GAME_COLUMNS: TableColumn[] = [
   { key: "game", header: "Game", kind: "link" },
   { key: "opponent", header: "vs", kind: "team" },
   { key: "champion", header: "Champion", kind: "champion" },
+  { key: "build", header: "Build", kind: "build", sortable: false, title: "Keystone and final items" },
   { key: "result", header: "Result", kind: "result" },
   { key: "kills", header: "K", kind: "int" },
   { key: "deaths", header: "D", kind: "int" },
@@ -147,6 +150,21 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
     ],
   };
 
+  const loadout = getLoadout();
+  const buildCell = (r: (typeof rows)[number]): BuildCell | null => {
+    if (!loadout.version || (!r.items.length && !r.keystone)) return null;
+    const item = (name: string | null) => {
+      if (!name) return null;
+      const known = loadout.items[name];
+      return { name, src: known ? itemIconUrl(loadout.version, known.id) : null };
+    };
+    const rune = r.keystone ? loadout.runes[r.keystone] : undefined;
+    return {
+      keystone: r.keystone ? { name: r.keystone, src: rune ? runeIconUrl(rune) : null } : null,
+      items: inventorySlots(r.items).map(item),
+    };
+  };
+
   const tableRows = rows.map((r) => {
     const g = data.gamesById.get(r.gameId);
     return {
@@ -165,6 +183,7 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
       dpm: perMinute(r.damageToChampions, r.durationSeconds),
       vision: r.visionScore,
       duration: g?.durationSeconds ?? r.durationSeconds,
+      build: buildCell(r),
     };
   });
 
@@ -272,7 +291,10 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
             </ul>
           </Section>
 
-          <Section title="Every game" description="Oldest first. Click a game to open the series.">
+          <Section
+            title="Every game"
+            description="Oldest first, with the keystone and final items of each game. Click a game to open the series."
+          >
             <Spoiler as="div" label="Reveal games (contains results)">
               <DataTable
                 columns={GAME_COLUMNS}
