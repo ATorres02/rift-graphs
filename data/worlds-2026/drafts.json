@@ -3998,5 +3998,155 @@
       ]
     },
     "complete": true
+  },
+  {
+    "gameId": "main-event-quarterfinals-3-1",
+    "blue": {
+      "bans": [
+        "Vi",
+        "Olaf",
+        "Lee Sin",
+        "Kai'Sa",
+        "Syndra"
+      ],
+      "picks": [
+        "Nautilus",
+        "Naafiri",
+        "Ambessa",
+        "Cassiopeia",
+        "Galio"
+      ],
+      "picksByRole": [
+        "Ambessa",
+        "Naafiri",
+        "Galio",
+        "Cassiopeia",
+        "Nautilus"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Renata Glasc",
+        "Nocturne",
+        "Jarvan IV",
+        "Orianna",
+        "Ezreal"
+      ],
+      "picks": [
+        "Qiyana",
+        "Rell",
+        "Rumble",
+        "Corki",
+        "Akali"
+      ],
+      "picksByRole": [
+        "Rumble",
+        "Qiyana",
+        "Akali",
+        "Corki",
+        "Rell"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-quarterfinals-3-2",
+    "blue": {
+      "bans": [
+        "Renata Glasc",
+        "Nocturne",
+        "Jayce",
+        "Locke",
+        "Alistar"
+      ],
+      "picks": [
+        "Jarvan IV",
+        "Yunara",
+        "Lulu",
+        "Ryze",
+        "Kennen"
+      ],
+      "picksByRole": [
+        "Kennen",
+        "Jarvan IV",
+        "Ryze",
+        "Yunara",
+        "Lulu"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Vi",
+        "Olaf",
+        "Lucian",
+        "Vayne",
+        "Syndra"
+      ],
+      "picks": [
+        "Lee Sin",
+        "Ezreal",
+        "Gnar",
+        "Orianna",
+        "Leona"
+      ],
+      "picksByRole": [
+        "Gnar",
+        "Lee Sin",
+        "Orianna",
+        "Ezreal",
+        "Leona"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-quarterfinals-3-3",
+    "blue": {
+      "bans": [
+        "Nocturne",
+        "Renata Glasc",
+        "Locke",
+        "Skarner",
+        "Yone"
+      ],
+      "picks": [
+        "Olaf",
+        "Pantheon",
+        "Viktor",
+        "Aphelios",
+        "Thresh"
+      ],
+      "picksByRole": [
+        "Olaf",
+        "Pantheon",
+        "Viktor",
+        "Aphelios",
+        "Thresh"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Vi",
+        "Caitlyn",
+        "Syndra",
+        "Seraphine",
+        "Rakan"
+      ],
+      "picks": [
+        "Lucian",
+        "Milio",
+        "Jax",
+        "Trundle",
+        "Ahri"
+      ],
+      "picksByRole": [
+        "Jax",
+        "Trundle",
+        "Ahri",
+        "Lucian",
+        "Milio"
+      ]
+    },
+    "complete": true
   }
 ]

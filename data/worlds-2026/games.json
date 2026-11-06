@@ -5598,5 +5598,215 @@
     "source": "leaguepedia",
     "provisional": false,
     "statsComplete": true
+  },
+  {
+    "id": "main-event-quarterfinals-3-1",
+    "seriesId": "main-event-quarterfinals-3",
+    "stage": "quarterfinals",
+    "gameNumber": 1,
+    "dateTimeUtc": "2026-11-05T22:13:00Z",
+    "durationSeconds": 2001,
+    "patch": "26.20",
+    "winnerSide": "blue",
+    "winnerTeamId": "bilibili-gaming",
+    "blue": {
+      "teamId": "bilibili-gaming",
+      "kills": 24,
+      "gold": 72389,
+      "towers": 11,
+      "inhibitors": 3,
+      "dragons": 5,
+      "elders": 1,
+      "barons": 2,
+      "heralds": 1,
+      "voidGrubs": 1,
+      "bans": [
+        "Vi",
+        "Olaf",
+        "Lee Sin",
+        "Kai'Sa",
+        "Syndra"
+      ],
+      "picks": [
+        "Ambessa",
+        "Naafiri",
+        "Galio",
+        "Cassiopeia",
+        "Nautilus"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "dplus-kia",
+      "kills": 9,
+      "gold": 63593,
+      "towers": 3,
+      "inhibitors": 0,
+      "dragons": 0,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 2,
+      "bans": [
+        "Renata Glasc",
+        "Nocturne",
+        "Jarvan IV",
+        "Orianna",
+        "Ezreal"
+      ],
+      "picks": [
+        "Rumble",
+        "Qiyana",
+        "Akali",
+        "Corki",
+        "Rell"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_487095",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
+  },
+  {
+    "id": "main-event-quarterfinals-3-2",
+    "seriesId": "main-event-quarterfinals-3",
+    "stage": "quarterfinals",
+    "gameNumber": 2,
+    "dateTimeUtc": "2026-11-05T23:07:00Z",
+    "durationSeconds": 1931,
+    "patch": "26.20",
+    "winnerSide": "red",
+    "winnerTeamId": "bilibili-gaming",
+    "blue": {
+      "teamId": "dplus-kia",
+      "kills": 10,
+      "gold": 57867,
+      "towers": 2,
+      "inhibitors": 0,
+      "dragons": 0,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 3,
+      "bans": [
+        "Renata Glasc",
+        "Nocturne",
+        "Jayce",
+        "Locke",
+        "Alistar"
+      ],
+      "picks": [
+        "Kennen",
+        "Jarvan IV",
+        "Ryze",
+        "Yunara",
+        "Lulu"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "bilibili-gaming",
+      "kills": 13,
+      "gold": 64067,
+      "towers": 8,
+      "inhibitors": 1,
+      "dragons": 5,
+      "elders": 1,
+      "barons": 0,
+      "heralds": 1,
+      "voidGrubs": 0,
+      "bans": [
+        "Vi",
+        "Olaf",
+        "Lucian",
+        "Vayne",
+        "Syndra"
+      ],
+      "picks": [
+        "Gnar",
+        "Lee Sin",
+        "Orianna",
+        "Ezreal",
+        "Leona"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_488087",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
+  },
+  {
+    "id": "main-event-quarterfinals-3-3",
+    "seriesId": "main-event-quarterfinals-3",
+    "stage": "quarterfinals",
+    "gameNumber": 3,
+    "dateTimeUtc": "2026-11-06T00:00:00Z",
+    "durationSeconds": 1956,
+    "patch": "26.20",
+    "winnerSide": "red",
+    "winnerTeamId": "bilibili-gaming",
+    "blue": {
+      "teamId": "dplus-kia",
+      "kills": 9,
+      "gold": 57568,
+      "towers": 3,
+      "inhibitors": 0,
+      "dragons": 1,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 1,
+      "voidGrubs": 0,
+      "bans": [
+        "Nocturne",
+        "Renata Glasc",
+        "Locke",
+        "Skarner",
+        "Yone"
+      ],
+      "picks": [
+        "Olaf",
+        "Pantheon",
+        "Viktor",
+        "Aphelios",
+        "Thresh"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "bilibili-gaming",
+      "kills": 25,
+      "gold": 67716,
+      "towers": 9,
+      "inhibitors": 2,
+      "dragons": 4,
+      "elders": 0,
+      "barons": 2,
+      "heralds": 0,
+      "voidGrubs": 3,
+      "bans": [
+        "Vi",
+        "Caitlyn",
+        "Syndra",
+        "Seraphine",
+        "Rakan"
+      ],
+      "picks": [
+        "Jax",
+        "Trundle",
+        "Ahri",
+        "Lucian",
+        "Milio"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_488090",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   }
 ]
