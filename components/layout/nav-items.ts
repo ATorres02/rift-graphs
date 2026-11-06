@@ -1,6 +1,7 @@
 import {
   ChartColumnIcon,
   HomeIcon,
+  MedalIcon,
   ScaleIcon,
   ShieldIcon,
   SparklesIcon,
@@ -17,6 +18,7 @@ export const NAV = [
   { href: "/teams", label: "Teams", icon: ShieldIcon },
   { href: "/players", label: "Players", icon: UsersIcon },
   { href: "/champions", label: "Champions", icon: SparklesIcon },
+  { href: "/records", label: "Records", icon: MedalIcon },
   { href: "/charts", label: "Charts", icon: ChartColumnIcon },
   { href: "/compare", label: "Compare", icon: ScaleIcon },
 ] as const;

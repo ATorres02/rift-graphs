@@ -22,6 +22,32 @@ export const UPDATE_KIND_LABEL: Record<UpdateKind, string> = { new: "New", impro
 
 export const UPDATES: SiteUpdate[] = [
   {
+    id: "records",
+    date: "2026-11-06",
+    kind: "new",
+    title: "Records",
+    summary:
+      "A page with the standout numbers of the tournament, each with the two runners-up and a link to the game where it happened.",
+    items: [
+      "Games: the longest and shortest, the most and fewest kills, the biggest gold leads and the biggest comeback.",
+      "Players and teams in one game: kills, assists, damage, CS, gold, vision, barons and dragons, plus every pentakill.",
+      "Champions: the most picked and banned, the highest presence and the best win rate.",
+    ],
+    link: { href: "/records", label: "Records" },
+  },
+  {
+    id: "player-builds",
+    date: "2026-11-06",
+    kind: "improved",
+    title: "Builds on player pages, champion links",
+    summary: "Every game on a player page now shows the keystone and final items, and champions link to their page.",
+    items: [
+      "The build sits next to the champion in the Every game table.",
+      "Click a champion in a draft, a lane duel or a series preview to open its page.",
+    ],
+    link: { href: "/players", label: "Players" },
+  },
+  {
     id: "builds-and-runes",
     date: "2026-11-05",
     kind: "new",

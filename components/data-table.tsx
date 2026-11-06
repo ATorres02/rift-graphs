@@ -32,7 +32,8 @@ export type CellKind =
   | "team"
   | "champion"
   | "result"
-  | "link";
+  | "link"
+  | "build";
 
 export interface TableColumn {
   key: string;
@@ -56,6 +57,17 @@ export interface LinkCell {
   href: string;
   label: string;
 }
+/** One icon of a build: the name for its tooltip, the image when Data Dragon knows it. */
+export interface BuildIcon {
+  name: string;
+  src: string | null;
+}
+/** A player's keystone and final items in one game, with icon addresses resolved on the server. */
+export interface BuildCell {
+  keystone: BuildIcon | null;
+  items: (BuildIcon | null)[];
+}
+
 /** Kills, deaths and assists shown as "12 / 4 / 29"; sorted by kills. */
 export interface KdaCell {
   kills: number;
@@ -114,11 +126,45 @@ function renderCell(kind: CellKind | undefined, value: unknown) {
       return <TeamPill team={value as TeamRef} size="sm" />;
     case "champion": {
       const c = value as ChampionIconRef;
-      return <ChampionIcon champion={c} size="sm" showName />;
+      return <ChampionIcon champion={c} size="sm" showName linked />;
     }
     case "result": {
       const win = value === "W" || value === true;
       return <span className={cn("font-semibold", win ? "text-win" : "text-loss")}>{win ? "Win" : "Loss"}</span>;
+    }
+    case "build": {
+      const b = value as BuildCell;
+      const icon = (i: BuildIcon | null, k: number, round = false) =>
+        i?.src ? (
+          // eslint-disable-next-line @next/next/no-img-element -- remote 64 px icon, fixed box
+          <img
+            key={k}
+            src={i.src}
+            alt={i.name}
+            title={i.name}
+            width={20}
+            height={20}
+            loading="lazy"
+            decoding="async"
+            className={cn("size-5 shrink-0 bg-muted", round ? "rounded-full bg-transparent" : "rounded-[4px]")}
+          />
+        ) : (
+          <span
+            key={k}
+            title={i?.name}
+            aria-label={i?.name}
+            className={cn(
+              "inline-block size-5 shrink-0 border border-dashed border-border/70",
+              round ? "rounded-full" : "rounded-[4px]",
+            )}
+          />
+        );
+      return (
+        <span className="inline-flex items-center gap-0.5">
+          <span className="mr-1 inline-flex">{icon(b.keystone, -1, true)}</span>
+          {b.items.map((i, k) => icon(i, k))}
+        </span>
+      );
     }
     case "link": {
       const l = value as LinkCell;
@@ -145,6 +191,7 @@ function sortValue(kind: CellKind | undefined, value: unknown): number | string 
   if (kind === "link") return (value as LinkCell).label.toLowerCase();
   if (kind === "result") return value === "W" || value === true ? 1 : 0;
   if (kind === "kda") return (value as KdaCell).kills;
+  if (kind === "build") return (value as BuildCell).keystone?.name.toLowerCase() ?? "";
   return typeof value === "number" ? value : String(value).toLowerCase();
 }
 

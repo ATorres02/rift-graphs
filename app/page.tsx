@@ -4,7 +4,8 @@ import { Section } from "@/components/page-header";
 import { KnockoutBracket } from "@/components/bracket/knockout-bracket";
 import { SwissBracket } from "@/components/bracket/swiss-bracket";
 import { homeBracket } from "@/lib/bracket";
-import { getData } from "@/lib/data/load";
+import { getData, getTimelines } from "@/lib/data/load";
+import { computeRecords } from "@/lib/records";
 import { heroArt, heroChampion } from "@/lib/hero-art";
 import { fmt, STAGE_LABEL } from "@/lib/format";
 import { aggregateByPlayer, DEFAULT_MIN_GAMES, rankPlayers } from "@/lib/metrics";
@@ -17,6 +18,7 @@ import { BuildChartButton } from "@/components/home/build-chart-button";
 import { ChartStrip } from "@/components/home/chart-strip";
 import { Leaders, type LeaderBoard } from "@/components/home/leaders";
 import { LatestUpdate } from "@/components/home/latest-update";
+import { RecordsTeaser, type TeaserFact } from "@/components/home/records-teaser";
 import { NextMatch } from "@/components/home/next-match";
 import { playerLabel, seriesView } from "@/lib/views";
 
@@ -94,6 +96,26 @@ export default function HomePage() {
 
   // The newest site update hangs under the hero for a week after it went live (the site is rebuilt every game).
   const update = latestUpdate();
+
+  // Facts for the records strip: none of them gives away a winner.
+  const records = new Map(
+    computeRecords(data, getTimelines()).flatMap((g) => g.records.map((r) => [r.key, r] as const)),
+  );
+  const fact = (key: string, label: string): TeaserFact | null => {
+    const e = records.get(key)?.entries[0];
+    if (!e) return null;
+    const team = (id?: string) => (id ? data.teamsById.get(id)?.short : undefined) ?? "TBD";
+    const who =
+      (e.playerId && data.playersById.get(e.playerId)?.name) ||
+      e.champion ||
+      `${team(e.teamId)} vs ${team(e.opponentTeamId)}`;
+    return { value: e.display, label, who };
+  };
+  const recordFacts = [
+    fact("longest-game", "longest game"),
+    fact("most-kills", "kills in a game"),
+    fact("most-banned", "bans"),
+  ].filter((f): f is TeaserFact => f !== null);
 
   const heroPick = heroChampion(data);
   const art = heroPick ? heroArt(heroPick) : null;
@@ -213,6 +235,7 @@ export default function HomePage() {
             }
           >
             <Leaders boards={boards} />
+            <RecordsTeaser facts={recordFacts} />
           </Section>
         </div>
       ) : null}

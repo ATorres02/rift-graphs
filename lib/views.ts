@@ -4,14 +4,35 @@
  */
 import type { ChampionIconRef } from "@/components/champion-icon";
 import type { PlayerCell } from "@/components/data-table";
-import { championRef, seriesHasPendingGames, seriesTeams, type IndexedDataset, type TeamRef } from "@/lib/data/load";
+import {
+  championRef,
+  draftedChampions,
+  seriesHasPendingGames,
+  seriesTeams,
+  type IndexedDataset,
+  type TeamRef,
+} from "@/lib/data/load";
+import { championSlug, normalizeChampionName } from "@/lib/sources/ddragon";
 import type { ArtRef } from "@/components/art-backdrop";
 import type { Game, Player, PlayerGame, Series } from "@/lib/data/types";
 import { regionInfo } from "@/lib/data/regions";
 
+const pagesMemo = new WeakMap<IndexedDataset, Set<string>>();
+
+/** The champion's page, or null when it has none (never drafted in a confirmed game, or unknown). */
+export function championHref(data: IndexedDataset, name: string): string | null {
+  let pages = pagesMemo.get(data);
+  if (!pages) {
+    pages = new Set(draftedChampions(data).map((c) => normalizeChampionName(c.name)));
+    pagesMemo.set(data, pages);
+  }
+  const ref = championRef(data, name);
+  return ref && pages.has(normalizeChampionName(ref.name)) ? `/champions/${championSlug(ref.id)}` : null;
+}
+
 export function champIcon(data: IndexedDataset, name: string): ChampionIconRef {
   const ref = championRef(data, name);
-  return { name, ddragonId: ref?.id ?? null, version: data.champions.version };
+  return { name, ddragonId: ref?.id ?? null, version: data.champions.version, href: championHref(data, name) };
 }
 
 export function playerCell(p: Player): PlayerCell {
