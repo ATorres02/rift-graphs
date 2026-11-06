@@ -9,7 +9,7 @@
     "realName": "Bai Jia-Hao",
     "nativeName": "白家浩",
     "residency": "China",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "ackerman",
@@ -21,7 +21,7 @@
     "realName": "Gabriel Agustin Aparicio",
     "nativeName": null,
     "residency": "Brazil",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "alvaro",
@@ -33,7 +33,7 @@
     "realName": "Álvaro Fernández del Amo",
     "nativeName": null,
     "residency": "EMEA",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "ayu",
@@ -57,7 +57,7 @@
     "realName": "Kim Min-cheol",
     "nativeName": "김민철",
     "residency": "North America",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "bie",
@@ -69,7 +69,7 @@
     "realName": "Trần Đức Hiếu",
     "nativeName": null,
     "residency": "Asia Pacific",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "bin",
@@ -81,7 +81,7 @@
     "realName": "Chen Ze-Bin",
     "nativeName": "陈泽彬",
     "residency": "China",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "blaber",
@@ -105,7 +105,7 @@
     "realName": "Chen Chen",
     "nativeName": "陈晨",
     "residency": "China",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "brokenblade",
@@ -117,7 +117,7 @@
     "realName": "Sergen Çelik",
     "nativeName": null,
     "residency": "EMEA",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "busio",
@@ -165,7 +165,7 @@
     "realName": "Kim Geon-bu",
     "nativeName": "김건부",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "caps",
@@ -177,7 +177,7 @@
     "realName": "Rasmus Borregaard Winther",
     "nativeName": null,
     "residency": "EMEA",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "career",
@@ -189,7 +189,7 @@
     "realName": "Oh Hyeong-seok",
     "nativeName": "오형석",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "chika",
@@ -213,7 +213,7 @@
     "realName": "Jeong Ji-hoon",
     "nativeName": "정지훈",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "corejj",
@@ -225,7 +225,7 @@
     "realName": "Jo Yong-in",
     "nativeName": "조용인",
     "residency": "North America",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "creme",
@@ -237,7 +237,7 @@
     "realName": "Lin Jian",
     "nativeName": "林坚",
     "residency": "China",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "curse",
@@ -249,7 +249,7 @@
     "realName": "Raí Yamada",
     "nativeName": null,
     "residency": "Brazil",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "delight",
@@ -261,7 +261,7 @@
     "realName": "Yoo Hwan-joong",
     "nativeName": "유환중",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "dhokla",
@@ -273,7 +273,7 @@
     "realName": "Niship Doshi",
     "nativeName": null,
     "residency": "North America",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "dire",
@@ -285,7 +285,7 @@
     "realName": "Trần Duy Đức",
     "nativeName": null,
     "residency": "Asia Pacific",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "doggo",
@@ -297,7 +297,7 @@
     "realName": "Chiu Tzu-Chuan",
     "nativeName": "邱梓銓",
     "residency": "Asia Pacific",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "doran",
@@ -309,7 +309,7 @@
     "realName": "Choi Hyeon-jun",
     "nativeName": "최현준",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "duduhh",
@@ -321,7 +321,7 @@
     "realName": "Wallyson Francisco Queiroz da Silva",
     "nativeName": null,
     "residency": "Brazil",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "duro",
@@ -333,7 +333,7 @@
     "realName": "Joo Min-kyu",
     "nativeName": "주민규",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "eddie",
@@ -345,7 +345,7 @@
     "realName": "Hoàng Công Nghĩa",
     "nativeName": null,
     "residency": "Asia Pacific",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "elyoya",
@@ -357,7 +357,7 @@
     "realName": "Javier Prades Batalla",
     "nativeName": null,
     "residency": "EMEA",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "faker",
@@ -369,7 +369,7 @@
     "realName": "Lee Sang-hyeok",
     "nativeName": "이상혁",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "feisty",
@@ -381,7 +381,7 @@
     "realName": "Jeong Seong-hoon",
     "nativeName": "정성훈",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "guigo",
@@ -405,7 +405,7 @@
     "realName": "Lee Min-hyeong",
     "nativeName": "이민형",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "gury",
@@ -429,7 +429,7 @@
     "realName": "Steven Liv",
     "nativeName": null,
     "residency": "EMEA",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "harky",
@@ -453,7 +453,7 @@
     "realName": "Lê Văn Hoàng Hải",
     "nativeName": null,
     "residency": "Asia Pacific",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "hope",
@@ -465,7 +465,7 @@
     "realName": "Wang Jie",
     "nativeName": "王杰",
     "residency": "China",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "inspired",
@@ -477,7 +477,7 @@
     "realName": "Kacper Słoma",
     "nativeName": null,
     "residency": "North America",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "isles",
@@ -489,7 +489,7 @@
     "realName": "Jonah Rosario",
     "nativeName": null,
     "residency": "North America",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "jackeylove",
@@ -501,7 +501,7 @@
     "realName": "Yu Wen-Bo",
     "nativeName": "喻文波",
     "residency": "China",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "jiaqi",
@@ -513,7 +513,7 @@
     "realName": "Zi Jia-Qi",
     "nativeName": "资嘉琪",
     "residency": "China",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "jojo",
@@ -537,7 +537,7 @@
     "realName": "Joseph Joon Pyun",
     "nativeName": null,
     "residency": "North America",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "josedeodo",
@@ -549,7 +549,7 @@
     "realName": "Brandon Joel Villegas",
     "nativeName": null,
     "residency": "North America",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "kael",
@@ -561,7 +561,7 @@
     "realName": "Kim Jin-hong",
     "nativeName": "김진홍",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "kanavi",
@@ -573,7 +573,7 @@
     "realName": "Seo Jin-hyeok",
     "nativeName": "서진혁",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "keria",
@@ -585,7 +585,7 @@
     "realName": "Ryu Min-seok",
     "nativeName": "류민석",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "kiin",
@@ -597,7 +597,7 @@
     "realName": "Kim Gi-in",
     "nativeName": "김기인",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "kino",
@@ -609,7 +609,7 @@
     "realName": "Chu Wu Hsin-Jung",
     "nativeName": "朱吳欣榮",
     "residency": "Asia Pacific",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "knight",
@@ -621,7 +621,7 @@
     "realName": "Zhuo Ding",
     "nativeName": "卓定",
     "residency": "China",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "kratos",
@@ -657,7 +657,7 @@
     "realName": "Lampros Papoutsakis",
     "nativeName": "Λάμπρος Παπουτσάκης",
     "residency": "EMEA",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "loki",
@@ -681,7 +681,7 @@
     "realName": "Choi Yong-hyeok",
     "nativeName": "최용혁",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "meiko",
@@ -693,7 +693,7 @@
     "realName": "Tian Ye",
     "nativeName": "田野",
     "residency": "China",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "morgan",
@@ -705,7 +705,7 @@
     "realName": "Park Ru-han",
     "nativeName": "박루한",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "myrwn",
@@ -717,7 +717,7 @@
     "realName": "Alex Pastor Villarejo",
     "nativeName": null,
     "residency": "EMEA",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "on",
@@ -729,7 +729,7 @@
     "realName": "Luo Wen-Jun",
     "nativeName": "骆文俊",
     "residency": "China",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "oner",
@@ -741,7 +741,7 @@
     "realName": "Mun Hyeon-jun",
     "nativeName": "문현준",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "peyz",
@@ -753,7 +753,7 @@
     "realName": "Kim Su-hwan",
     "nativeName": "김수환",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "pout",
@@ -765,7 +765,7 @@
     "realName": "Han In-woong",
     "nativeName": "한인웅",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "pun",
@@ -777,7 +777,7 @@
     "realName": "Nguyễn Đăng Khoa",
     "nativeName": null,
     "residency": "Asia Pacific",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "quid",
@@ -789,7 +789,7 @@
     "realName": "Lim Hyeon-seung",
     "nativeName": "임현승",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "rest",
@@ -801,7 +801,7 @@
     "realName": "Hsu Shih-Chieh",
     "nativeName": "徐士傑",
     "residency": "Asia Pacific",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "rookie",
@@ -813,7 +813,7 @@
     "realName": "Song Eui-jin",
     "nativeName": "송의진",
     "residency": "China",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "ruler",
@@ -825,7 +825,7 @@
     "realName": "Park Jae-hyuk",
     "nativeName": "박재혁",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "saint",
@@ -837,7 +837,7 @@
     "realName": "Kang Sung-in",
     "nativeName": "강성인",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "sansan",
@@ -861,7 +861,7 @@
     "realName": "Zhao Zhi-Qiang",
     "nativeName": "赵志强",
     "residency": "China",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "shanks",
@@ -873,7 +873,7 @@
     "realName": "Cui Xiao-Jun",
     "nativeName": "崔校军",
     "residency": "China",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "showmaker",
@@ -885,7 +885,7 @@
     "realName": "Heo Su",
     "nativeName": "허수",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "siuloong",
@@ -909,7 +909,7 @@
     "realName": "Jeon Si-woo",
     "nativeName": "전시우",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "skewmond",
@@ -921,7 +921,7 @@
     "realName": "Rudy Semaan",
     "nativeName": null,
     "residency": "EMEA",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "smash",
@@ -933,7 +933,7 @@
     "realName": "Shin Geum-jae",
     "nativeName": "신금재",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "supa",
@@ -945,7 +945,7 @@
     "realName": "David Martínez García",
     "nativeName": null,
     "residency": "EMEA",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "tactical",
@@ -969,7 +969,7 @@
     "realName": "Lee Seung-yong",
     "nativeName": "이승용",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "tatu",
@@ -1005,7 +1005,7 @@
     "realName": "Kang Seung-lok",
     "nativeName": "강승록",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "tian",
@@ -1017,7 +1017,7 @@
     "realName": "Gao Tian-Liang",
     "nativeName": "高天亮",
     "residency": "China",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "tutsz",
@@ -1041,7 +1041,7 @@
     "realName": "Park Do-hyeon",
     "nativeName": "박도현",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "vulcan",
@@ -1065,7 +1065,7 @@
     "realName": "Yan Yang-Wei",
     "nativeName": "闫扬威",
     "residency": "China",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "xun",
@@ -1077,7 +1077,7 @@
     "realName": "Peng Li-Xun",
     "nativeName": "彭立勋",
     "residency": "China",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "yeon",
@@ -1089,7 +1089,7 @@
     "realName": "Sean Sung",
     "nativeName": "성연호",
     "residency": "North America",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "yike",
@@ -1113,7 +1113,7 @@
     "realName": "Kim Geon-woo",
     "nativeName": "김건우",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "zest",
@@ -1125,7 +1125,7 @@
     "realName": "Kim Dong-min",
     "nativeName": "김동민",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "zeus",
@@ -1137,7 +1137,7 @@
     "realName": "Choi Woo-je",
     "nativeName": "최우제",
     "residency": "Korea",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   },
   {
     "id": "zhuo",
@@ -1149,6 +1149,6 @@
     "realName": "Wang Xu-Zhuo",
     "nativeName": "王旭卓",
     "residency": "China",
-    "fromScoreboardOnly": true
+    "fromScoreboardOnly": false
   }
 ]

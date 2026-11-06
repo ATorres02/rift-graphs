@@ -31,7 +31,10 @@
         "role": "support"
       }
     ],
-    "coaches": [],
+    "coaches": [
+      "BigWei",
+      "Teacherma"
+    ],
     "seed": {
       "league": "LPL",
       "seed": 1,
@@ -72,7 +75,12 @@
         "role": "support"
       }
     ],
-    "coaches": [],
+    "coaches": [
+      "Ben",
+      "Chieh",
+      "Daeny",
+      "zyb"
+    ],
     "seed": {
       "league": "LPL",
       "seed": 2,
@@ -113,7 +121,10 @@
         "role": "support"
       }
     ],
-    "coaches": [],
+    "coaches": [
+      "Chawy",
+      "Wulala"
+    ],
     "seed": {
       "league": "LCP",
       "seed": 2,
@@ -200,7 +211,11 @@
         "role": "support"
       }
     ],
-    "coaches": [],
+    "coaches": [
+      "CvMax",
+      "Hachani",
+      "PoohManDu"
+    ],
     "seed": {
       "league": "LCK",
       "seed": 4,
@@ -286,7 +301,11 @@
         "role": "support"
       }
     ],
-    "coaches": [],
+    "coaches": [
+      "Memento",
+      "Perkz",
+      "Rodrigo"
+    ],
     "seed": {
       "league": "LEC",
       "seed": 1,
@@ -327,7 +346,11 @@
         "role": "support"
       }
     ],
-    "coaches": [],
+    "coaches": [
+      "Lyn",
+      "Nova (Park Chan-ho)",
+      "Ryu"
+    ],
     "seed": {
       "league": "LCK",
       "seed": 1,
@@ -368,7 +391,11 @@
         "role": "support"
       }
     ],
-    "coaches": [],
+    "coaches": [
+      "Homme",
+      "Mowgli",
+      "Sin (Yeon Hyeong-mo)"
+    ],
     "seed": {
       "league": "LCK",
       "seed": 2,
@@ -409,7 +436,12 @@
         "role": "support"
       }
     ],
-    "coaches": [],
+    "coaches": [
+      "Chengz",
+      "Fury (Lee Jin-yong)",
+      "Helper (Kwon Yeong-jae)",
+      "Kezman"
+    ],
     "seed": {
       "league": "LPL",
       "seed": 4,
@@ -495,7 +527,10 @@
         "role": "support"
       }
     ],
-    "coaches": [],
+    "coaches": [
+      "Reignover",
+      "Rigby"
+    ],
     "seed": {
       "league": "LCS",
       "seed": 2,
@@ -536,7 +571,11 @@
         "role": "support"
       }
     ],
-    "coaches": [],
+    "coaches": [
+      "Brandão",
+      "Enatron",
+      "Invokid"
+    ],
     "seed": {
       "league": "CBLOL",
       "seed": 1,
@@ -626,7 +665,11 @@
         "role": "support"
       }
     ],
-    "coaches": [],
+    "coaches": [
+      "Alphari",
+      "Independent",
+      "Melzhet"
+    ],
     "seed": {
       "league": "LEC",
       "seed": 2,
@@ -667,7 +710,11 @@
         "role": "support"
       }
     ],
-    "coaches": [],
+    "coaches": [
+      "Easyhoon",
+      "Mata",
+      "Tom (Im Jae-hyeon)"
+    ],
     "seed": {
       "league": "LCK",
       "seed": 3,
@@ -708,7 +755,10 @@
         "role": "support"
       }
     ],
-    "coaches": [],
+    "coaches": [
+      "Spawn (Jake Tiberi)",
+      "Spookz"
+    ],
     "seed": {
       "league": "LCS",
       "seed": 1,
@@ -749,7 +799,10 @@
         "role": "support"
       }
     ],
-    "coaches": [],
+    "coaches": [
+      "Ciel (Trần Tiến Thịnh)",
+      "WarHorse"
+    ],
     "seed": {
       "league": "LCP",
       "seed": 1,
@@ -790,7 +843,10 @@
         "role": "support"
       }
     ],
-    "coaches": [],
+    "coaches": [
+      "Poppy (Chang Po-Hao)",
+      "Xiaobai"
+    ],
     "seed": {
       "league": "LPL",
       "seed": 3,
