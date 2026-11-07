@@ -4148,5 +4148,205 @@
       ]
     },
     "complete": true
+  },
+  {
+    "gameId": "main-event-quarterfinals-4-1",
+    "blue": {
+      "bans": [
+        "Cassiopeia",
+        "Vi",
+        "Qiyana",
+        "Wukong",
+        "Pantheon"
+      ],
+      "picks": [
+        "Lulu",
+        "Jarvan IV",
+        "Yunara",
+        "Ornn",
+        "Viktor"
+      ],
+      "picksByRole": [
+        "Ornn",
+        "Jarvan IV",
+        "Viktor",
+        "Yunara",
+        "Lulu"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Nocturne",
+        "Renata Glasc",
+        "Galio",
+        "Locke",
+        "Orianna"
+      ],
+      "picks": [
+        "Rumble",
+        "Ezreal",
+        "Leona",
+        "Syndra",
+        "Lee Sin"
+      ],
+      "picksByRole": [
+        "Rumble",
+        "Lee Sin",
+        "Syndra",
+        "Ezreal",
+        "Leona"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-quarterfinals-4-2",
+    "blue": {
+      "bans": [
+        "Vi",
+        "Qiyana",
+        "Nocturne",
+        "Xin Zhao",
+        "Wukong"
+      ],
+      "picks": [
+        "Orianna",
+        "Pantheon",
+        "Ambessa",
+        "Rell",
+        "Tristana"
+      ],
+      "picksByRole": [
+        "Ambessa",
+        "Pantheon",
+        "Orianna",
+        "Tristana",
+        "Rell"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Locke",
+        "Akali",
+        "Renata Glasc",
+        "Alistar",
+        "Xayah"
+      ],
+      "picks": [
+        "Cassiopeia",
+        "Olaf",
+        "Nautilus",
+        "Kai'Sa",
+        "Trundle"
+      ],
+      "picksByRole": [
+        "Olaf",
+        "Trundle",
+        "Cassiopeia",
+        "Kai'Sa",
+        "Nautilus"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-quarterfinals-4-3",
+    "blue": {
+      "bans": [
+        "Vi",
+        "Qiyana",
+        "Nocturne",
+        "Sylas",
+        "Galio"
+      ],
+      "picks": [
+        "Ashe",
+        "Seraphine",
+        "Xin Zhao",
+        "Anivia",
+        "K'Sante"
+      ],
+      "picksByRole": [
+        "K'Sante",
+        "Xin Zhao",
+        "Anivia",
+        "Ashe",
+        "Seraphine"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Renata Glasc",
+        "Locke",
+        "Wukong",
+        "Camille",
+        "Akali"
+      ],
+      "picks": [
+        "Jayce",
+        "Zeri",
+        "Yuumi",
+        "Sejuani",
+        "Taliyah"
+      ],
+      "picksByRole": [
+        "Jayce",
+        "Sejuani",
+        "Taliyah",
+        "Zeri",
+        "Yuumi"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-quarterfinals-4-4",
+    "blue": {
+      "bans": [
+        "Vi",
+        "Qiyana",
+        "Caitlyn",
+        "Ryze",
+        "Sylas"
+      ],
+      "picks": [
+        "Xayah",
+        "Rakan",
+        "Wukong",
+        "Ahri",
+        "Renekton"
+      ],
+      "picksByRole": [
+        "Renekton",
+        "Wukong",
+        "Ahri",
+        "Xayah",
+        "Rakan"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Renata Glasc",
+        "Akali",
+        "Maokai",
+        "Jax",
+        "Galio"
+      ],
+      "picks": [
+        "Nocturne",
+        "Neeko",
+        "Miss Fortune",
+        "Annie",
+        "Camille"
+      ],
+      "picksByRole": [
+        "Camille",
+        "Nocturne",
+        "Annie",
+        "Miss Fortune",
+        "Neeko"
+      ]
+    },
+    "complete": true
   }
 ]

@@ -1279,7 +1279,12 @@
     "patch": "26.20",
     "streamUrl": "https://www.twitch.tv/riotgames",
     "mvp": "Peyz",
-    "gameIds": [],
+    "gameIds": [
+      "main-event-quarterfinals-4-1",
+      "main-event-quarterfinals-4-2",
+      "main-event-quarterfinals-4-3",
+      "main-event-quarterfinals-4-4"
+    ],
     "gamesPlayed": 4,
     "source": "leaguepedia",
     "provisional": false,

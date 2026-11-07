@@ -5808,5 +5808,285 @@
     "source": "leaguepedia",
     "provisional": false,
     "statsComplete": true
+  },
+  {
+    "id": "main-event-quarterfinals-4-1",
+    "seriesId": "main-event-quarterfinals-4",
+    "stage": "quarterfinals",
+    "gameNumber": 1,
+    "dateTimeUtc": "2026-11-06T22:13:00Z",
+    "durationSeconds": 2139,
+    "patch": "26.20",
+    "winnerSide": "blue",
+    "winnerTeamId": "t1",
+    "blue": {
+      "teamId": "t1",
+      "kills": 23,
+      "gold": 78836,
+      "towers": 11,
+      "inhibitors": 4,
+      "dragons": 3,
+      "elders": 0,
+      "barons": 2,
+      "heralds": 1,
+      "voidGrubs": 1,
+      "bans": [
+        "Cassiopeia",
+        "Vi",
+        "Qiyana",
+        "Wukong",
+        "Pantheon"
+      ],
+      "picks": [
+        "Ornn",
+        "Jarvan IV",
+        "Viktor",
+        "Yunara",
+        "Lulu"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "karmine-corp",
+      "kills": 7,
+      "gold": 65510,
+      "towers": 2,
+      "inhibitors": 0,
+      "dragons": 2,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 2,
+      "bans": [
+        "Nocturne",
+        "Renata Glasc",
+        "Galio",
+        "Locke",
+        "Orianna"
+      ],
+      "picks": [
+        "Rumble",
+        "Lee Sin",
+        "Syndra",
+        "Ezreal",
+        "Leona"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_488135",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
+  },
+  {
+    "id": "main-event-quarterfinals-4-2",
+    "seriesId": "main-event-quarterfinals-4",
+    "stage": "quarterfinals",
+    "gameNumber": 2,
+    "dateTimeUtc": "2026-11-06T23:15:00Z",
+    "durationSeconds": 1782,
+    "patch": "26.20",
+    "winnerSide": "red",
+    "winnerTeamId": "t1",
+    "blue": {
+      "teamId": "karmine-corp",
+      "kills": 9,
+      "gold": 55934,
+      "towers": 2,
+      "inhibitors": 0,
+      "dragons": 1,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 0,
+      "bans": [
+        "Vi",
+        "Qiyana",
+        "Nocturne",
+        "Xin Zhao",
+        "Wukong"
+      ],
+      "picks": [
+        "Ambessa",
+        "Pantheon",
+        "Orianna",
+        "Tristana",
+        "Rell"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "t1",
+      "kills": 20,
+      "gold": 65239,
+      "towers": 9,
+      "inhibitors": 1,
+      "dragons": 4,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 1,
+      "voidGrubs": 3,
+      "bans": [
+        "Locke",
+        "Akali",
+        "Renata Glasc",
+        "Alistar",
+        "Xayah"
+      ],
+      "picks": [
+        "Olaf",
+        "Trundle",
+        "Cassiopeia",
+        "Kai'Sa",
+        "Nautilus"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_487158",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
+  },
+  {
+    "id": "main-event-quarterfinals-4-3",
+    "seriesId": "main-event-quarterfinals-4",
+    "stage": "quarterfinals",
+    "gameNumber": 3,
+    "dateTimeUtc": "2026-11-07T00:03:00Z",
+    "durationSeconds": 2204,
+    "patch": "26.20",
+    "winnerSide": "blue",
+    "winnerTeamId": "karmine-corp",
+    "blue": {
+      "teamId": "karmine-corp",
+      "kills": 8,
+      "gold": 70429,
+      "towers": 8,
+      "inhibitors": 1,
+      "dragons": 5,
+      "elders": 1,
+      "barons": 2,
+      "heralds": 0,
+      "voidGrubs": 2,
+      "bans": [
+        "Vi",
+        "Qiyana",
+        "Nocturne",
+        "Sylas",
+        "Galio"
+      ],
+      "picks": [
+        "K'Sante",
+        "Xin Zhao",
+        "Anivia",
+        "Ashe",
+        "Seraphine"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "t1",
+      "kills": 6,
+      "gold": 66373,
+      "towers": 6,
+      "inhibitors": 0,
+      "dragons": 1,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 1,
+      "voidGrubs": 1,
+      "bans": [
+        "Renata Glasc",
+        "Locke",
+        "Wukong",
+        "Camille",
+        "Akali"
+      ],
+      "picks": [
+        "Jayce",
+        "Sejuani",
+        "Taliyah",
+        "Zeri",
+        "Yuumi"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_487168",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
+  },
+  {
+    "id": "main-event-quarterfinals-4-4",
+    "seriesId": "main-event-quarterfinals-4",
+    "stage": "quarterfinals",
+    "gameNumber": 4,
+    "dateTimeUtc": "2026-11-07T01:06:00Z",
+    "durationSeconds": 2115,
+    "patch": "26.20",
+    "winnerSide": "red",
+    "winnerTeamId": "t1",
+    "blue": {
+      "teamId": "karmine-corp",
+      "kills": 8,
+      "gold": 63634,
+      "towers": 5,
+      "inhibitors": 0,
+      "dragons": 2,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 1,
+      "voidGrubs": 1,
+      "bans": [
+        "Vi",
+        "Qiyana",
+        "Caitlyn",
+        "Ryze",
+        "Sylas"
+      ],
+      "picks": [
+        "Renekton",
+        "Wukong",
+        "Ahri",
+        "Xayah",
+        "Rakan"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "t1",
+      "kills": 17,
+      "gold": 73226,
+      "towers": 10,
+      "inhibitors": 2,
+      "dragons": 4,
+      "elders": 0,
+      "barons": 2,
+      "heralds": 0,
+      "voidGrubs": 2,
+      "bans": [
+        "Renata Glasc",
+        "Akali",
+        "Maokai",
+        "Jax",
+        "Galio"
+      ],
+      "picks": [
+        "Camille",
+        "Nocturne",
+        "Annie",
+        "Miss Fortune",
+        "Neeko"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_487172",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   }
 ]
