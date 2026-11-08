@@ -10525,5 +10525,368 @@
       ]
     },
     "pausedSeconds": 0
+  },
+  "main-event-semifinals-1-1": {
+    "esportsGameId": "115660540726095128",
+    "firstBlood": "blue",
+    "at15": {
+      "blue": {
+        "gold": 28168,
+        "kills": 9,
+        "towers": 0,
+        "dragons": 1
+      },
+      "red": {
+        "gold": 25209,
+        "kills": 3,
+        "towers": 1,
+        "dragons": 1
+      },
+      "players": [
+        {
+          "side": "blue",
+          "role": "top",
+          "gold": 5323,
+          "cs": 106,
+          "level": 11,
+          "kills": 1,
+          "deaths": 1,
+          "assists": 4
+        },
+        {
+          "side": "blue",
+          "role": "jungle",
+          "gold": 7543,
+          "cs": 143,
+          "level": 11,
+          "kills": 3,
+          "deaths": 0,
+          "assists": 3
+        },
+        {
+          "side": "blue",
+          "role": "mid",
+          "gold": 5086,
+          "cs": 113,
+          "level": 10,
+          "kills": 1,
+          "deaths": 1,
+          "assists": 4
+        },
+        {
+          "side": "blue",
+          "role": "bot",
+          "gold": 5990,
+          "cs": 137,
+          "level": 10,
+          "kills": 2,
+          "deaths": 0,
+          "assists": 2
+        },
+        {
+          "side": "blue",
+          "role": "support",
+          "gold": 4226,
+          "cs": 19,
+          "level": 7,
+          "kills": 2,
+          "deaths": 1,
+          "assists": 4
+        },
+        {
+          "side": "red",
+          "role": "top",
+          "gold": 4361,
+          "cs": 102,
+          "level": 11,
+          "kills": 0,
+          "deaths": 3,
+          "assists": 1
+        },
+        {
+          "side": "red",
+          "role": "jungle",
+          "gold": 5745,
+          "cs": 95,
+          "level": 9,
+          "kills": 2,
+          "deaths": 2,
+          "assists": 0
+        },
+        {
+          "side": "red",
+          "role": "mid",
+          "gold": 5453,
+          "cs": 119,
+          "level": 10,
+          "kills": 1,
+          "deaths": 2,
+          "assists": 1
+        },
+        {
+          "side": "red",
+          "role": "bot",
+          "gold": 5887,
+          "cs": 148,
+          "level": 10,
+          "kills": 0,
+          "deaths": 1,
+          "assists": 1
+        },
+        {
+          "side": "red",
+          "role": "support",
+          "gold": 3763,
+          "cs": 22,
+          "level": 7,
+          "kills": 0,
+          "deaths": 1,
+          "assists": 2
+        }
+      ]
+    },
+    "pausedSeconds": 0
+  },
+  "main-event-semifinals-1-2": {
+    "esportsGameId": "115660540726095129",
+    "firstBlood": "red",
+    "at15": {
+      "blue": {
+        "gold": 28332,
+        "kills": 6,
+        "towers": 1,
+        "dragons": 1
+      },
+      "red": {
+        "gold": 24299,
+        "kills": 2,
+        "towers": 0,
+        "dragons": 1
+      },
+      "players": [
+        {
+          "side": "blue",
+          "role": "top",
+          "gold": 6111,
+          "cs": 161,
+          "level": 12,
+          "kills": 1,
+          "deaths": 1,
+          "assists": 1
+        },
+        {
+          "side": "blue",
+          "role": "jungle",
+          "gold": 6454,
+          "cs": 126,
+          "level": 10,
+          "kills": 3,
+          "deaths": 0,
+          "assists": 0
+        },
+        {
+          "side": "blue",
+          "role": "mid",
+          "gold": 5310,
+          "cs": 153,
+          "level": 11,
+          "kills": 0,
+          "deaths": 0,
+          "assists": 0
+        },
+        {
+          "side": "blue",
+          "role": "bot",
+          "gold": 6333,
+          "cs": 134,
+          "level": 9,
+          "kills": 1,
+          "deaths": 0,
+          "assists": 3
+        },
+        {
+          "side": "blue",
+          "role": "support",
+          "gold": 4124,
+          "cs": 24,
+          "level": 8,
+          "kills": 1,
+          "deaths": 1,
+          "assists": 3
+        },
+        {
+          "side": "red",
+          "role": "top",
+          "gold": 4704,
+          "cs": 127,
+          "level": 11,
+          "kills": 0,
+          "deaths": 1,
+          "assists": 1
+        },
+        {
+          "side": "red",
+          "role": "jungle",
+          "gold": 5444,
+          "cs": 113,
+          "level": 9,
+          "kills": 1,
+          "deaths": 1,
+          "assists": 1
+        },
+        {
+          "side": "red",
+          "role": "mid",
+          "gold": 4686,
+          "cs": 128,
+          "level": 11,
+          "kills": 0,
+          "deaths": 1,
+          "assists": 1
+        },
+        {
+          "side": "red",
+          "role": "bot",
+          "gold": 5986,
+          "cs": 149,
+          "level": 9,
+          "kills": 1,
+          "deaths": 1,
+          "assists": 0
+        },
+        {
+          "side": "red",
+          "role": "support",
+          "gold": 3479,
+          "cs": 24,
+          "level": 8,
+          "kills": 0,
+          "deaths": 2,
+          "assists": 1
+        }
+      ]
+    },
+    "pausedSeconds": 0
+  },
+  "main-event-semifinals-1-3": {
+    "esportsGameId": "115660540726095130",
+    "firstBlood": "blue",
+    "at15": {
+      "blue": {
+        "gold": 27276,
+        "kills": 3,
+        "towers": 1,
+        "dragons": 2
+      },
+      "red": {
+        "gold": 24620,
+        "kills": 0,
+        "towers": 0,
+        "dragons": 0
+      },
+      "players": [
+        {
+          "side": "blue",
+          "role": "top",
+          "gold": 6846,
+          "cs": 165,
+          "level": 12,
+          "kills": 0,
+          "deaths": 0,
+          "assists": 2
+        },
+        {
+          "side": "blue",
+          "role": "jungle",
+          "gold": 5411,
+          "cs": 113,
+          "level": 9,
+          "kills": 0,
+          "deaths": 0,
+          "assists": 3
+        },
+        {
+          "side": "blue",
+          "role": "mid",
+          "gold": 5854,
+          "cs": 132,
+          "level": 11,
+          "kills": 3,
+          "deaths": 0,
+          "assists": 0
+        },
+        {
+          "side": "blue",
+          "role": "bot",
+          "gold": 5674,
+          "cs": 145,
+          "level": 9,
+          "kills": 0,
+          "deaths": 0,
+          "assists": 0
+        },
+        {
+          "side": "blue",
+          "role": "support",
+          "gold": 3491,
+          "cs": 22,
+          "level": 7,
+          "kills": 0,
+          "deaths": 0,
+          "assists": 2
+        },
+        {
+          "side": "red",
+          "role": "top",
+          "gold": 4531,
+          "cs": 117,
+          "level": 11,
+          "kills": 0,
+          "deaths": 1,
+          "assists": 0
+        },
+        {
+          "side": "red",
+          "role": "jungle",
+          "gold": 5008,
+          "cs": 116,
+          "level": 10,
+          "kills": 0,
+          "deaths": 1,
+          "assists": 0
+        },
+        {
+          "side": "red",
+          "role": "mid",
+          "gold": 5270,
+          "cs": 151,
+          "level": 11,
+          "kills": 0,
+          "deaths": 0,
+          "assists": 0
+        },
+        {
+          "side": "red",
+          "role": "bot",
+          "gold": 6513,
+          "cs": 147,
+          "level": 10,
+          "kills": 0,
+          "deaths": 0,
+          "assists": 0
+        },
+        {
+          "side": "red",
+          "role": "support",
+          "gold": 3298,
+          "cs": 21,
+          "level": 6,
+          "kills": 0,
+          "deaths": 1,
+          "assists": 0
+        }
+      ]
+    },
+    "pausedSeconds": 0
   }
 }

@@ -4348,5 +4348,155 @@
       ]
     },
     "complete": true
+  },
+  {
+    "gameId": "main-event-semifinals-1-1",
+    "blue": {
+      "bans": [
+        "Lulu",
+        "Nocturne",
+        "K'Sante",
+        "Kai'Sa",
+        "Zeri"
+      ],
+      "picks": [
+        "Olaf",
+        "Qiyana",
+        "Cassiopeia",
+        "Jhin",
+        "Leona"
+      ],
+      "picksByRole": [
+        "Olaf",
+        "Qiyana",
+        "Cassiopeia",
+        "Jhin",
+        "Leona"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Locke",
+        "Ezreal",
+        "Renata Glasc",
+        "Nautilus",
+        "Seraphine"
+      ],
+      "picks": [
+        "Vi",
+        "Kled",
+        "Syndra",
+        "Xayah",
+        "Rakan"
+      ],
+      "picksByRole": [
+        "Kled",
+        "Vi",
+        "Syndra",
+        "Xayah",
+        "Rakan"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-semifinals-1-2",
+    "blue": {
+      "bans": [
+        "Lulu",
+        "Orianna",
+        "Zeri",
+        "Lissandra",
+        "Annie"
+      ],
+      "picks": [
+        "Seraphine",
+        "Ashe",
+        "Lee Sin",
+        "Ahri",
+        "Gwen"
+      ],
+      "picksByRole": [
+        "Gwen",
+        "Lee Sin",
+        "Ahri",
+        "Ashe",
+        "Seraphine"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Pantheon",
+        "Galio",
+        "Renata Glasc",
+        "Locke",
+        "Akali"
+      ],
+      "picks": [
+        "Nocturne",
+        "Lucian",
+        "Milio",
+        "Sylas",
+        "Rumble"
+      ],
+      "picksByRole": [
+        "Rumble",
+        "Nocturne",
+        "Sylas",
+        "Lucian",
+        "Milio"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-semifinals-1-3",
+    "blue": {
+      "bans": [
+        "Jayce",
+        "Pantheon",
+        "Jarvan IV",
+        "Kai'Sa",
+        "Corki"
+      ],
+      "picks": [
+        "Alistar",
+        "Naafiri",
+        "Locke",
+        "Ezreal",
+        "Gnar"
+      ],
+      "picksByRole": [
+        "Gnar",
+        "Naafiri",
+        "Locke",
+        "Ezreal",
+        "Alistar"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Renata Glasc",
+        "Orianna",
+        "Lulu",
+        "Sivir",
+        "Renekton"
+      ],
+      "picks": [
+        "Nautilus",
+        "Wukong",
+        "Taliyah",
+        "Camille",
+        "Yunara"
+      ],
+      "picksByRole": [
+        "Camille",
+        "Wukong",
+        "Taliyah",
+        "Yunara",
+        "Nautilus"
+      ]
+    },
+    "complete": true
   }
 ]
