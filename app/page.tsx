@@ -6,7 +6,7 @@ import { SwissBracket } from "@/components/bracket/swiss-bracket";
 import { homeBracket } from "@/lib/bracket";
 import { getData, getTimelines } from "@/lib/data/load";
 import { computeRecords } from "@/lib/records";
-import { heroArt, heroChampion } from "@/lib/hero-art";
+import { heroArt, heroChampion, signatureArt } from "@/lib/hero-art";
 import { fmt, STAGE_LABEL } from "@/lib/format";
 import { aggregateByPlayer, DEFAULT_MIN_GAMES, rankPlayers } from "@/lib/metrics";
 import { showsPreview } from "@/lib/preview";
@@ -16,6 +16,8 @@ import { swissStandings } from "@/lib/standings";
 import { chartHref, playerRankingChart } from "@/lib/charts/page-charts";
 import { BuildChartButton } from "@/components/home/build-chart-button";
 import { ChartStrip } from "@/components/home/chart-strip";
+import { FinalHero } from "@/components/home/final-hero";
+import { FinalSection } from "@/components/home/final-section";
 import { Leaders, type LeaderBoard } from "@/components/home/leaders";
 import { LatestUpdate } from "@/components/home/latest-update";
 import { RecordsTeaser, type TeaserFact } from "@/components/home/records-teaser";
@@ -31,6 +33,15 @@ export default function HomePage() {
   // The series to watch: the one in progress, else the next on the schedule.
   const next = live[0] ?? upcoming[0];
   const nextView = next ? seriesView(data, next) : null;
+
+  // The poster stays from the moment the final is next until the site moves on, with the champion once it is played.
+  const finalSeries = series.find((x) => x.stage === "final");
+  const finalRefs =
+    finalSeries && (finalSeries === next || finalSeries.status === "finished") ? seriesView(data, finalSeries) : null;
+  const finalView =
+    finalSeries && finalRefs?.team1 && finalRefs.team2
+      ? { series: finalSeries, team1: finalRefs.team1, team2: finalRefs.team2 }
+      : null;
 
   const mainTeamIds = data.teams.filter((t) => t.stages.includes("main")).map((t) => t.id);
   const swiss = swissStandings(series, mainTeamIds);
@@ -147,63 +158,77 @@ export default function HomePage() {
     <div className="space-y-14 sm:space-y-20">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(jsonLd) }} />
       <div>
-        <section
-          className={`relative -mx-4 overflow-hidden bg-black sm:mx-0 ${update ? "sm:rounded-t-md" : "sm:rounded-md"}`}
-        >
-          {art ? (
-            <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-full sm:w-3/5">
-              <picture>
-                <source media="(max-width: 640px)" srcSet={art.portrait} />
-                <img
-                  src={art.splash}
-                  alt=""
-                  width={1215}
-                  height={717}
-                  fetchPriority="high"
-                  decoding="async"
-                  className="size-full object-cover object-[70%_20%] opacity-80"
-                />
-              </picture>
-              <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-black/10 sm:via-black/40" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
-            </div>
-          ) : null}
-          <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-1.5 bg-brand" />
-          <div className="relative flex flex-col justify-end p-5 pt-14 sm:min-h-[460px] sm:p-10">
-            <p className="kicker text-xs text-brand sm:text-sm">
-              {tournament.name}
-              {next ? ` / ${STAGE_LABEL[next.stage]}${next.round ? ` / Round ${next.round}` : ""}` : ""}
-            </p>
-            <h1 className="display mt-2 max-w-3xl text-5xl font-extrabold text-white sm:text-7xl lg:text-8xl">
-              {site.tagline}
-            </h1>
-            <p className="mt-4 max-w-xl text-sm text-zinc-300 sm:text-base">
-              Matches, teams, players, champions and drafts of the 2026 World Championship, refreshed within minutes of
-              every game. Free, no ads.
-            </p>
-            <div className="mt-6 grid max-w-3xl gap-3 sm:grid-cols-2">
-              {next && nextView ? (
-                <NextMatch
-                  series={next}
-                  team1={nextView.team1}
-                  team2={nextView.team2}
-                  preview={
-                    !!(nextView.team1 && nextView.team2) &&
-                    showsPreview(next, data.gamesBySeries.get(next.id)?.length ?? 0)
-                  }
-                />
-              ) : null}
-              <BuildChartButton />
-            </div>
+        {finalView ? (
+          <FinalHero
+            series={finalView.series}
+            team1={finalView.team1}
+            team2={finalView.team2}
+            art1={signatureArt(data, finalView.team1.id)}
+            art2={signatureArt(data, finalView.team2.id)}
+          />
+        ) : (
+          <section
+            className={`relative -mx-4 overflow-hidden bg-black sm:mx-0 ${update ? "sm:rounded-t-md" : "sm:rounded-md"}`}
+          >
             {art ? (
-              <p className="kicker mt-6 text-[10px] text-zinc-500">
-                {art.name}, most picked champion of the tournament
-              </p>
+              <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-full sm:w-3/5">
+                <picture>
+                  <source media="(max-width: 640px)" srcSet={art.portrait} />
+                  <img
+                    src={art.splash}
+                    alt=""
+                    width={1215}
+                    height={717}
+                    fetchPriority="high"
+                    decoding="async"
+                    className="size-full object-cover object-[70%_20%] opacity-80"
+                  />
+                </picture>
+                <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-black/10 sm:via-black/40" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
+              </div>
             ) : null}
-          </div>
-        </section>
+            <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-1.5 bg-brand" />
+            <div className="relative flex flex-col justify-end p-5 pt-14 sm:min-h-[460px] sm:p-10">
+              <p className="kicker text-xs text-brand sm:text-sm">
+                {tournament.name}
+                {next ? ` / ${STAGE_LABEL[next.stage]}${next.round ? ` / Round ${next.round}` : ""}` : ""}
+              </p>
+              <h1 className="display mt-2 max-w-3xl text-5xl font-extrabold text-white sm:text-7xl lg:text-8xl">
+                {site.tagline}
+              </h1>
+              <p className="mt-4 max-w-xl text-sm text-zinc-300 sm:text-base">
+                Matches, teams, players, champions and drafts of the 2026 World Championship, refreshed within minutes
+                of every game. Free, no ads.
+              </p>
+              <div className="mt-6 grid max-w-3xl gap-3 sm:grid-cols-2">
+                {next && nextView ? (
+                  <NextMatch
+                    series={next}
+                    team1={nextView.team1}
+                    team2={nextView.team2}
+                    preview={
+                      !!(nextView.team1 && nextView.team2) &&
+                      showsPreview(next, data.gamesBySeries.get(next.id)?.length ?? 0)
+                    }
+                  />
+                ) : null}
+                <BuildChartButton />
+              </div>
+              {art ? (
+                <p className="kicker mt-6 text-[10px] text-zinc-500">
+                  {art.name}, most picked champion of the tournament
+                </p>
+              ) : null}
+            </div>
+          </section>
+        )}
         {update ? <LatestUpdate update={update} /> : null}
       </div>
+
+      {finalView ? (
+        <FinalSection data={data} series={finalView.series} team1={finalView.team1} team2={finalView.team2} />
+      ) : null}
 
       {homeBracket(series) === "knockout" ? (
         <Section

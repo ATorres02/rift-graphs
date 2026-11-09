@@ -52,7 +52,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <head>
         <script dangerouslySetInnerHTML={{ __html: SPOILER_INIT_SCRIPT }} />
       </head>
-      <body className="antialiased">
+      <body className="overflow-x-clip antialiased">
         <Providers>
           <a
             href="#main"
