@@ -65,6 +65,7 @@ import {
 import { fetchLoadoutIndex, loadoutNames, type LoadoutIndex } from "../lib/sources/loadout";
 import { fetchEarly, type EarlyCache } from "../lib/ingest/early";
 import { fetchTimelines, timelineJson, type TimelineCache } from "../lib/ingest/timeline";
+import { keepMissingSeries } from "../lib/ingest/keep-series";
 import { mergeSources } from "../lib/ingest/merge";
 import { sanitizeDataset } from "../lib/ingest/sanitize";
 import { LolesportsClient, fetchLeagueId, fetchSchedule, type LolesportsMatch } from "../lib/sources/lolesports";
@@ -958,7 +959,16 @@ async function main(): Promise<void> {
   const { teams, teamIdByPage } = buildTeams(raw);
   await applySeeds(teams);
   const { players, playerIdByPage } = buildPlayers(raw, teams, teamIdByPage);
-  const series = buildSeries(raw, teamIdByPage, now);
+  const kept = keepMissingSeries({
+    current: buildSeries(raw, teamIdByPage, now),
+    previous: (await readExisting("series.json")) as Series[] | null,
+    scheduleMatchIds: new Set(raw.schedule.flatMap((r) => asString(r.MatchId) ?? [])),
+  });
+  const series = kept.series;
+  for (const w of kept.warnings) {
+    warn(w);
+    if (process.env.GITHUB_ACTIONS) console.log(`::warning title=Ingest::${w}`);
+  }
   const { builds, pending } = buildGames(raw, series, teamIdByPage, playerIdByPage);
 
   const seriesById = new Map(series.map((s) => [s.id, s]));

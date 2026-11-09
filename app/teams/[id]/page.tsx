@@ -1,3 +1,5 @@
+import { CareerSection } from "@/components/career/career-section";
+import { getCareer, worldsResult } from "@/lib/career-data";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -49,6 +51,7 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
   const team = data.teamsById.get(id);
   if (!team) notFound();
   const ref = teamRef(team)!;
+  const career = getCareer().teams[team.id] ?? [];
 
   const agg = aggregateTeamGames(data.confirmedGames, team.id);
   const all = aggregateByTeam(
@@ -288,6 +291,12 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
           </ul>
         </Section>
       ) : null}
+
+      <CareerSection
+        entries={career}
+        showTeam={new Set(career.map((e) => e.team)).size > 1}
+        worlds={worldsResult(data, team.id)}
+      />
 
       <Section title="Series" description="Every series, latest first.">
         <div className="grid gap-3 sm:grid-cols-2">

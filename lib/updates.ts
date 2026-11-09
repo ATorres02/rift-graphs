@@ -22,6 +22,26 @@ export const UPDATE_KIND_LABEL: Record<UpdateKind, string> = { new: "New", impro
 
 export const UPDATES: SiteUpdate[] = [
   {
+    id: "career-history",
+    date: "2026-11-09",
+    kind: "new",
+    title: "Trophies and history",
+    summary: "Every player and team page now shows their trophies and the competitions they played before Worlds 2026.",
+    items: [
+      "World, MSI, First Stand, Esports World Cup and league titles, counted across a team's earlier names.",
+      "The full history of each player and team, with the place they finished.",
+    ],
+    link: { href: "/players", label: "Players" },
+  },
+  {
+    id: "final-home",
+    date: "2026-11-09",
+    kind: "new",
+    title: "The final takes over the homepage",
+    summary: "A countdown to the final, a way into both teams and all five lane duels, and a Final tab in the menu.",
+    link: { href: "/matches/main-event-finals-1", label: "The final" },
+  },
+  {
     id: "records",
     date: "2026-11-06",
     kind: "new",

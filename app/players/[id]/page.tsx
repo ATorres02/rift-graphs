@@ -1,3 +1,5 @@
+import { CareerSection } from "@/components/career/career-section";
+import { getCareer, worldsResult } from "@/lib/career-data";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -230,6 +232,8 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
           </div>
         ))}
       </dl>
+
+      <CareerSection entries={getCareer().players[p.id] ?? []} showTeam worlds={worldsResult(data, p.teamId, p.id)} />
 
       {rows.length ? (
         <>

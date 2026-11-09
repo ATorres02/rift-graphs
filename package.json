@@ -14,6 +14,7 @@
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "career": "tsx scripts/career.ts",
     "test:e2e": "playwright test"
   },
   "dependencies": {

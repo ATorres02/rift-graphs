@@ -8,7 +8,7 @@ import path from "node:path";
 import sharp from "sharp";
 import { indexDataset } from "../lib/data/index";
 import { readDataset } from "../lib/data/load";
-import { heroArtFiles, heroChampion } from "../lib/hero-art";
+import { heroArtFiles, homeChampions } from "../lib/hero-art";
 import { championLoadingUrl, championSplashUrl } from "../lib/sources/ddragon";
 
 const PUBLIC = path.join(process.cwd(), "public");
@@ -17,24 +17,26 @@ const DIR = path.join(PUBLIC, "art");
 async function main() {
   // Copies for an earlier champion go first.
   await rm(DIR, { recursive: true, force: true });
-  const champion = heroChampion(indexDataset(readDataset()));
-  if (!champion) {
+  const champions = homeChampions(indexDataset(readDataset()));
+  if (!champions.length) {
     console.log("[hero-art] no champion picked yet, nothing to do");
     return;
   }
   await mkdir(DIR, { recursive: true });
-  const files = heroArtFiles(champion.id);
-  for (const [url, file] of [
-    [championSplashUrl(champion.id), files.splash],
-    [championLoadingUrl(champion.id), files.portrait],
-  ]) {
-    const res = await fetch(url, { signal: AbortSignal.timeout(20_000) });
-    if (!res.ok) throw new Error(`${url}: HTTP ${res.status}`);
-    const webp = await sharp(Buffer.from(await res.arrayBuffer()))
-      .webp({ quality: 78 })
-      .toBuffer();
-    await writeFile(path.join(PUBLIC, file), webp);
-    console.log(`[hero-art] ${file} (${Math.round(webp.length / 1024)} KB)`);
+  for (const champion of champions) {
+    const files = heroArtFiles(champion.id);
+    for (const [url, file] of [
+      [championSplashUrl(champion.id), files.splash],
+      [championLoadingUrl(champion.id), files.portrait],
+    ]) {
+      const res = await fetch(url, { signal: AbortSignal.timeout(20_000) });
+      if (!res.ok) throw new Error(`${url}: HTTP ${res.status}`);
+      const webp = await sharp(Buffer.from(await res.arrayBuffer()))
+        .webp({ quality: 78 })
+        .toBuffer();
+      await writeFile(path.join(PUBLIC, file), webp);
+      console.log(`[hero-art] ${file} (${Math.round(webp.length / 1024)} KB)`);
+    }
   }
 }
 

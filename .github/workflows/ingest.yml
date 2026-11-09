@@ -60,6 +60,11 @@ jobs:
           INGEST_USER_AGENT: ${{ vars.INGEST_USER_AGENT }}
           LOLESPORTS_API_KEY: ${{ secrets.LOLESPORTS_API_KEY }}
 
+      # Fails soft: a bad run keeps the last career file and never holds back the match data.
+      - name: Update career history
+        run: pnpm career
+        continue-on-error: true
+
       - name: Commit data when it changed
         id: commit
         run: |
