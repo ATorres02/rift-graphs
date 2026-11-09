@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "updatedAt": "2026-11-08T23:44:30Z",
+  "updatedAt": "2026-11-09T00:00:42Z",
   "tournamentId": "worlds-2026",
   "source": {
     "name": "Leaguepedia",
@@ -12,21 +12,19 @@
   "counts": {
     "teams": 19,
     "players": 96,
-    "series": 45,
+    "series": 46,
     "games": 90,
     "playerGames": 900,
     "drafts": 90
   },
   "pendingGameIds": [],
-  "warnings": [
-    "lolesports match 115660540726095121 (BLG vs T1, 2026-11-08T22:00:00Z, Semifinals) matched 0 series"
-  ],
+  "warnings": [],
   "sources": {
     "lolesports": {
       "enabled": true,
-      "fetchedAt": "2026-11-08T23:44:54Z",
-      "matchedSeries": 44,
-      "unmatchedEvents": 1,
+      "fetchedAt": "2026-11-09T00:01:06Z",
+      "matchedSeries": 45,
+      "unmatchedEvents": 0,
       "error": null
     },
     "manual": {

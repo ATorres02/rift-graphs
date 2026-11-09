@@ -1322,6 +1322,33 @@
     "lolesportsMatchId": "115660540726095127"
   },
   {
+    "id": "main-event-semifinals-2",
+    "matchId": "2026 Season World Championship/Main Event_Semifinals_2",
+    "stage": "semifinals",
+    "tab": "Semifinals",
+    "round": null,
+    "bestOf": 5,
+    "team1Id": "bilibili-gaming",
+    "team2Id": "t1",
+    "dateTimeUtc": "2026-11-08T22:00:00Z",
+    "hasTime": true,
+    "score": {
+      "team1": 1,
+      "team2": 1
+    },
+    "winnerId": null,
+    "status": "live",
+    "matchDay": 2,
+    "patch": "26.20",
+    "streamUrl": "https://www.twitch.tv/riotgames",
+    "mvp": null,
+    "gameIds": [],
+    "gamesPlayed": 2,
+    "source": "leaguepedia",
+    "provisional": false,
+    "lolesportsMatchId": "115660540726095121"
+  },
+  {
     "id": "main-event-finals-1",
     "matchId": "2026 Season World Championship/Main Event_Finals_1",
     "stage": "final",
