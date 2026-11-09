@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { jsonLdHtml } from "@/lib/jsonld";
 import { Section } from "@/components/page-header";
@@ -11,7 +12,7 @@ import { fmt, STAGE_LABEL } from "@/lib/format";
 import { aggregateByPlayer, DEFAULT_MIN_GAMES, rankPlayers } from "@/lib/metrics";
 import { showsPreview } from "@/lib/preview";
 import { latestUpdate } from "@/lib/updates";
-import { site } from "@/lib/site";
+import { baseOpenGraph, defaultOgImage, site } from "@/lib/site";
 import { swissStandings } from "@/lib/standings";
 import { chartHref, playerRankingChart } from "@/lib/charts/page-charts";
 import { BuildChartButton } from "@/components/home/build-chart-button";
@@ -23,6 +24,21 @@ import { LatestUpdate } from "@/components/home/latest-update";
 import { RecordsTeaser, type TeaserFact } from "@/components/home/records-teaser";
 import { NextMatch } from "@/components/home/next-match";
 import { playerLabel, seriesView } from "@/lib/views";
+
+/** Until the final is played the homepage is found as that match; the result never goes in the title. */
+export function generateMetadata(): Metadata {
+  const data = getData();
+  const final = data.series.find((s) => s.stage === "final");
+  const view = final && final.status !== "finished" ? seriesView(data, final) : null;
+  if (!view?.team1 || !view.team2) return {};
+  const title = `${view.team1.short} vs ${view.team2.short}: LoL Worlds 2026 final, stats and preview | ${site.name}`;
+  const description = `${view.team1.name} vs ${view.team2.name} in the Worlds 2026 final: countdown, match preview, lane duels, bracket and stats for every team and player.`;
+  return {
+    title: { absolute: title },
+    description,
+    openGraph: { ...baseOpenGraph, title, description, images: [defaultOgImage] },
+  };
+}
 
 export default function HomePage() {
   const data = getData();

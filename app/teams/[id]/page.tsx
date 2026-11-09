@@ -1,4 +1,5 @@
 import { CareerSection } from "@/components/career/career-section";
+import { honoursText } from "@/lib/career";
 import { getCareer, worldsResult } from "@/lib/career-data";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -30,9 +31,10 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   const t = getData().teamsById.get(id);
   if (!t) return {};
+  const honours = honoursText(getCareer().teams[t.id] ?? []);
   return {
-    title: `${t.name}${t.short !== t.name ? ` (${t.short})` : ""}, Worlds 2026 stats`,
-    description: `${t.name}'s 2026 World Championship: roster, record, blue/red side performance, objectives, most played champions and every series.`,
+    title: `${t.name}: Worlds 2026 stats, trophies and history`,
+    description: `${t.name} at Worlds 2026 and before: ${honours ? `${honours}, plus roster` : "roster"}, champions and every series.`,
   };
 }
 

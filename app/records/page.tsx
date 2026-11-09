@@ -14,10 +14,10 @@ import { cn } from "@/lib/utils";
 import { champIcon } from "@/lib/views";
 
 const DESCRIPTION =
-  "The records of the 2026 League of Legends World Championship: the longest and shortest games, most kills, damage and CS in one game, pentakills, the biggest gold leads and comebacks, and the most picked and banned champions.";
+  "The records of Worlds 2026: longest games, most kills, damage and CS, pentakills, biggest comebacks and the most picked champions.";
 
 export const metadata: Metadata = {
-  title: "Worlds 2026 records: longest games, most kills and pentakills",
+  title: "Worlds 2026 records: longest games and most kills",
   description: DESCRIPTION,
   openGraph: { ...baseOpenGraph, title: "Worlds 2026 records", description: DESCRIPTION, images: [defaultOgImage] },
 };

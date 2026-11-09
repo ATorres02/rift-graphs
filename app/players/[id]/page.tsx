@@ -1,4 +1,5 @@
 import { CareerSection } from "@/components/career/career-section";
+import { honoursText } from "@/lib/career";
 import { getCareer, worldsResult } from "@/lib/career-data";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -32,9 +33,10 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const p = data.playersById.get(id);
   if (!p) return {};
   const team = data.teamsById.get(p.teamId);
+  const honours = honoursText(getCareer().players[p.id] ?? []);
   return {
-    title: `${p.name}${team ? ` (${team.short})` : ""} Worlds 2026 stats, champions and builds`,
-    description: `${p.name}'s 2026 World Championship: KDA, kill participation, CS, damage and gold per minute, champion pool, and every game with its numbers, keystone and items.`,
+    title: `${p.name}${team ? ` (${team.short})` : ""}: Worlds 2026 stats, builds and trophies`,
+    description: `${p.name}${honours ? `: ${honours}.` : "'s"} Worlds 2026 KDA, damage, champion pool, builds and career history.`,
   };
 }
 
@@ -201,19 +203,18 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
       <PageHeader
         art={mostPlayedArt(data, data.playerGamesByPlayer.get(p.id) ?? [])}
         eyebrow={ROLE_LABEL[p.role]}
-        title={
-          <span className="flex flex-wrap items-center gap-3">
-            <span>{p.name}</span> <TeamPill team={teamRef(team)} size="md" />
-          </span>
-        }
+        title={p.name}
         description={[p.realName, p.nativeName, p.country].filter(Boolean).join(", ") || undefined}
       >
-        <Link
-          href={`/compare?type=players&a=${p.id}`}
-          className="cut-corner inline-block bg-brand px-3 py-1 text-xs font-semibold text-brand-foreground no-underline hover:brightness-110"
-        >
-          Compare
-        </Link>
+        <div className="flex flex-wrap items-center gap-3">
+          <TeamPill team={teamRef(team)} size="md" />
+          <Link
+            href={`/compare?type=players&a=${p.id}`}
+            className="cut-corner inline-block bg-brand px-3 py-1 text-xs font-semibold text-brand-foreground no-underline hover:brightness-110"
+          >
+            Compare
+          </Link>
+        </div>
       </PageHeader>
       <Headlines items={headlines} className="lg:grid-cols-4" />
 
