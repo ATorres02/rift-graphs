@@ -6298,5 +6298,285 @@
     "source": "leaguepedia",
     "provisional": false,
     "statsComplete": true
+  },
+  {
+    "id": "main-event-semifinals-2-1",
+    "seriesId": "main-event-semifinals-2",
+    "stage": "semifinals",
+    "gameNumber": 1,
+    "dateTimeUtc": "2026-11-08T22:14:00Z",
+    "durationSeconds": 1825,
+    "patch": "26.20",
+    "winnerSide": "blue",
+    "winnerTeamId": "bilibili-gaming",
+    "blue": {
+      "teamId": "bilibili-gaming",
+      "kills": 18,
+      "gold": 61987,
+      "towers": 10,
+      "inhibitors": 2,
+      "dragons": 3,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 1,
+      "voidGrubs": 3,
+      "bans": [
+        "Lulu",
+        "Cassiopeia",
+        "Olaf",
+        "Alistar",
+        "Seraphine"
+      ],
+      "picks": [
+        "K'Sante",
+        "Naafiri",
+        "Orianna",
+        "Corki",
+        "Nautilus"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "t1",
+      "kills": 6,
+      "gold": 54203,
+      "towers": 3,
+      "inhibitors": 0,
+      "dragons": 1,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 0,
+      "bans": [
+        "Renata Glasc",
+        "Ezreal",
+        "Jax",
+        "Lee Sin",
+        "Jarvan IV"
+      ],
+      "picks": [
+        "Rumble",
+        "Nocturne",
+        "Locke",
+        "Xayah",
+        "Rakan"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_488293",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
+  },
+  {
+    "id": "main-event-semifinals-2-2",
+    "seriesId": "main-event-semifinals-2",
+    "stage": "semifinals",
+    "gameNumber": 2,
+    "dateTimeUtc": "2026-11-08T23:04:00Z",
+    "durationSeconds": 1935,
+    "patch": "26.20",
+    "winnerSide": "blue",
+    "winnerTeamId": "t1",
+    "blue": {
+      "teamId": "t1",
+      "kills": 22,
+      "gold": 70035,
+      "towers": 10,
+      "inhibitors": 2,
+      "dragons": 5,
+      "elders": 1,
+      "barons": 2,
+      "heralds": 1,
+      "voidGrubs": 3,
+      "bans": [
+        "Renata Glasc",
+        "Ezreal",
+        "Jax",
+        "Galio",
+        "Shen"
+      ],
+      "picks": [
+        "Olaf",
+        "Lee Sin",
+        "Syndra",
+        "Jhin",
+        "Poppy"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "bilibili-gaming",
+      "kills": 10,
+      "gold": 60214,
+      "towers": 2,
+      "inhibitors": 0,
+      "dragons": 0,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 0,
+      "bans": [
+        "Lulu",
+        "Cassiopeia",
+        "Vi",
+        "Taliyah",
+        "Annie"
+      ],
+      "picks": [
+        "Camille",
+        "Qiyana",
+        "LeBlanc",
+        "Kai'Sa",
+        "Alistar"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_488295",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
+  },
+  {
+    "id": "main-event-semifinals-2-3",
+    "seriesId": "main-event-semifinals-2",
+    "stage": "semifinals",
+    "gameNumber": 3,
+    "dateTimeUtc": "2026-11-08T23:58:00Z",
+    "durationSeconds": 2218,
+    "patch": "26.20",
+    "winnerSide": "blue",
+    "winnerTeamId": "bilibili-gaming",
+    "blue": {
+      "teamId": "bilibili-gaming",
+      "kills": 19,
+      "gold": 77619,
+      "towers": 11,
+      "inhibitors": 2,
+      "dragons": 4,
+      "elders": 0,
+      "barons": 2,
+      "heralds": 1,
+      "voidGrubs": 3,
+      "bans": [
+        "Renata Glasc",
+        "Lulu",
+        "Jayce",
+        "Caitlyn",
+        "Viktor"
+      ],
+      "picks": [
+        "Gnar",
+        "Pantheon",
+        "Taliyah",
+        "Ezreal",
+        "Nami"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "t1",
+      "kills": 10,
+      "gold": 68255,
+      "towers": 4,
+      "inhibitors": 0,
+      "dragons": 2,
+      "elders": 0,
+      "barons": 0,
+      "heralds": 0,
+      "voidGrubs": 0,
+      "bans": [
+        "Cassiopeia",
+        "Vi",
+        "Seraphine",
+        "Leona",
+        "Bard"
+      ],
+      "picks": [
+        "Ambessa",
+        "Jarvan IV",
+        "Ahri",
+        "Sivir",
+        "Karma"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_488296",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
+  },
+  {
+    "id": "main-event-semifinals-2-4",
+    "seriesId": "main-event-semifinals-2",
+    "stage": "semifinals",
+    "gameNumber": 4,
+    "dateTimeUtc": "2026-11-09T00:56:00Z",
+    "durationSeconds": 2267,
+    "patch": "26.20",
+    "winnerSide": "red",
+    "winnerTeamId": "bilibili-gaming",
+    "blue": {
+      "teamId": "t1",
+      "kills": 9,
+      "gold": 68791,
+      "towers": 4,
+      "inhibitors": 0,
+      "dragons": 2,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 0,
+      "voidGrubs": 1,
+      "bans": [
+        "Cassiopeia",
+        "Vi",
+        "Jayce",
+        "Kindred",
+        "Xin Zhao"
+      ],
+      "picks": [
+        "Vayne",
+        "Wukong",
+        "Akali",
+        "Lucian",
+        "Milio"
+      ],
+      "lineup": null
+    },
+    "red": {
+      "teamId": "bilibili-gaming",
+      "kills": 21,
+      "gold": 77713,
+      "towers": 9,
+      "inhibitors": 1,
+      "dragons": 4,
+      "elders": 0,
+      "barons": 1,
+      "heralds": 1,
+      "voidGrubs": 2,
+      "bans": [
+        "Renata Glasc",
+        "Lulu",
+        "Anivia",
+        "Trundle",
+        "Gragas"
+      ],
+      "picks": [
+        "Renekton",
+        "Skarner",
+        "Viktor",
+        "Ashe",
+        "Seraphine"
+      ],
+      "lineup": null
+    },
+    "riotGameId": "LOLTMNT02_488304",
+    "vodUrl": null,
+    "source": "leaguepedia",
+    "provisional": false,
+    "statsComplete": true
   }
 ]

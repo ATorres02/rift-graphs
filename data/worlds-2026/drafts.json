@@ -4498,5 +4498,205 @@
       ]
     },
     "complete": true
+  },
+  {
+    "gameId": "main-event-semifinals-2-1",
+    "blue": {
+      "bans": [
+        "Lulu",
+        "Cassiopeia",
+        "Olaf",
+        "Alistar",
+        "Seraphine"
+      ],
+      "picks": [
+        "Nautilus",
+        "Orianna",
+        "K'Sante",
+        "Naafiri",
+        "Corki"
+      ],
+      "picksByRole": [
+        "K'Sante",
+        "Naafiri",
+        "Orianna",
+        "Corki",
+        "Nautilus"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Renata Glasc",
+        "Ezreal",
+        "Jax",
+        "Lee Sin",
+        "Jarvan IV"
+      ],
+      "picks": [
+        "Nocturne",
+        "Locke",
+        "Rumble",
+        "Xayah",
+        "Rakan"
+      ],
+      "picksByRole": [
+        "Rumble",
+        "Nocturne",
+        "Locke",
+        "Xayah",
+        "Rakan"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-semifinals-2-2",
+    "blue": {
+      "bans": [
+        "Renata Glasc",
+        "Ezreal",
+        "Jax",
+        "Galio",
+        "Shen"
+      ],
+      "picks": [
+        "Olaf",
+        "Lee Sin",
+        "Jhin",
+        "Poppy",
+        "Syndra"
+      ],
+      "picksByRole": [
+        "Olaf",
+        "Lee Sin",
+        "Syndra",
+        "Jhin",
+        "Poppy"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Lulu",
+        "Cassiopeia",
+        "Vi",
+        "Taliyah",
+        "Annie"
+      ],
+      "picks": [
+        "Qiyana",
+        "Camille",
+        "Kai'Sa",
+        "Alistar",
+        "LeBlanc"
+      ],
+      "picksByRole": [
+        "Camille",
+        "Qiyana",
+        "LeBlanc",
+        "Kai'Sa",
+        "Alistar"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-semifinals-2-3",
+    "blue": {
+      "bans": [
+        "Renata Glasc",
+        "Lulu",
+        "Jayce",
+        "Caitlyn",
+        "Viktor"
+      ],
+      "picks": [
+        "Ezreal",
+        "Pantheon",
+        "Gnar",
+        "Nami",
+        "Taliyah"
+      ],
+      "picksByRole": [
+        "Gnar",
+        "Pantheon",
+        "Taliyah",
+        "Ezreal",
+        "Nami"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Cassiopeia",
+        "Vi",
+        "Seraphine",
+        "Leona",
+        "Bard"
+      ],
+      "picks": [
+        "Karma",
+        "Jarvan IV",
+        "Ambessa",
+        "Sivir",
+        "Ahri"
+      ],
+      "picksByRole": [
+        "Ambessa",
+        "Jarvan IV",
+        "Ahri",
+        "Sivir",
+        "Karma"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-semifinals-2-4",
+    "blue": {
+      "bans": [
+        "Cassiopeia",
+        "Vi",
+        "Jayce",
+        "Kindred",
+        "Xin Zhao"
+      ],
+      "picks": [
+        "Lucian",
+        "Milio",
+        "Akali",
+        "Wukong",
+        "Vayne"
+      ],
+      "picksByRole": [
+        "Vayne",
+        "Wukong",
+        "Akali",
+        "Lucian",
+        "Milio"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Renata Glasc",
+        "Lulu",
+        "Anivia",
+        "Trundle",
+        "Gragas"
+      ],
+      "picks": [
+        "Viktor",
+        "Ashe",
+        "Seraphine",
+        "Skarner",
+        "Renekton"
+      ],
+      "picksByRole": [
+        "Renekton",
+        "Skarner",
+        "Viktor",
+        "Ashe",
+        "Seraphine"
+      ]
+    },
+    "complete": true
   }
 ]

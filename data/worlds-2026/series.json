@@ -1342,7 +1342,12 @@
     "patch": "26.20",
     "streamUrl": "https://www.twitch.tv/riotgames",
     "mvp": "Bin (Chen Ze-Bin)",
-    "gameIds": [],
+    "gameIds": [
+      "main-event-semifinals-2-1",
+      "main-event-semifinals-2-2",
+      "main-event-semifinals-2-3",
+      "main-event-semifinals-2-4"
+    ],
     "gamesPlayed": 4,
     "source": "leaguepedia",
     "provisional": false,
