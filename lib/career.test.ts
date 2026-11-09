@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildCareer, inHistory, isTitle, placeLabel, type CareerRow } from "./career";
+import { buildCareer, honoursText, inHistory, isTitle, placeLabel, type CareerEntry, type CareerRow } from "./career";
 import { careerFileSchema } from "./data/schema";
 
 const row = (over: Partial<CareerRow> = {}): CareerRow => ({
@@ -89,5 +89,28 @@ describe("careerFileSchema", () => {
     expect(careerFileSchema.safeParse(file({ ...entry, event: "<script>x</script>" })).success).toBe(false);
     expect(careerFileSchema.safeParse(file({ ...entry, date: "soon" })).success).toBe(false);
     expect(careerFileSchema.safeParse(file({ ...entry, tier: "fake" })).success).toBe(false);
+  });
+});
+
+describe("honoursText", () => {
+  const won = (tier: CareerEntry["tier"], n: number): CareerEntry[] =>
+    Array.from({ length: n }, (_, i) => ({
+      event: `${tier} ${i}`,
+      date: "2025-01-01",
+      place: "1",
+      team: "T1",
+      tier,
+      title: true,
+    }));
+
+  it("lists the titles in order of weight", () => {
+    expect(honoursText([...won("league", 10), ...won("msi", 2), ...won("worlds", 6)])).toBe(
+      "6 World titles, 2 MSI and 10 league titles",
+    );
+  });
+
+  it("uses the singular, and gives nothing without a title", () => {
+    expect(honoursText(won("worlds", 1))).toBe("1 World title");
+    expect(honoursText([{ ...won("worlds", 1)[0], title: false }])).toBeNull();
   });
 });

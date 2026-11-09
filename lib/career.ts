@@ -98,3 +98,21 @@ export function placeLabel(place: string): string {
   if (place === "NQ") return "Not qualified";
   return place.split("-").map(ordinal).join("-");
 }
+
+const HONOURS: [CareerTier, string, string][] = [
+  ["worlds", "World title", "World titles"],
+  ["msi", "MSI", "MSI"],
+  ["first-stand", "First Stand", "First Stands"],
+  ["ewc", "Esports World Cup", "Esports World Cups"],
+  ["league", "league title", "league titles"],
+];
+
+/** "6 World titles, 2 MSI and 10 league titles" for search snippets; null without a title. */
+export function honoursText(entries: CareerEntry[]): string | null {
+  const parts = HONOURS.flatMap(([tier, one, many]) => {
+    const n = entries.filter((e) => e.title && e.tier === tier).length;
+    return n ? [`${n} ${n === 1 ? one : many}`] : [];
+  });
+  if (!parts.length) return null;
+  return parts.length === 1 ? parts[0] : `${parts.slice(0, -1).join(", ")} and ${parts.at(-1)}`;
+}
