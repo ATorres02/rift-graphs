@@ -6,6 +6,7 @@
 import type { IndexedDataset } from "@/lib/data/load";
 import type { Game, Series } from "@/lib/data/types";
 import { gamesBefore } from "@/lib/duels";
+import { normalizeChampionName } from "@/lib/sources/ddragon";
 
 /** When a game ended: its start (or its series' start) plus its length; null without a start. */
 export function gameEnd(data: IndexedDataset, g: Game): number | null {
@@ -24,7 +25,14 @@ function latest(data: IndexedDataset, games: Game[]): Date | null {
  */
 export const PROFILES_CHANGED = new Date("2026-11-09T12:25:22Z");
 
-export function lastModifiedDates(data: IndexedDataset, profilesChanged: Date = PROFILES_CHANGED) {
+/** The same for champion pages (build titles and pro builds, PR #17). */
+export const CHAMPIONS_CHANGED = new Date("2026-11-05T15:48:10Z");
+
+export function lastModifiedDates(
+  data: IndexedDataset,
+  profilesChanged: Date = PROFILES_CHANGED,
+  championsChanged: Date = CHAMPIONS_CHANGED,
+) {
   const fallback = new Date(data.meta.updatedAt);
   const overall = latest(data, data.games) ?? fallback;
   const gamesById = new Map(data.games.map((g) => [g.id, g]));
@@ -43,5 +51,14 @@ export function lastModifiedDates(data: IndexedDataset, profilesChanged: Date = 
     duel: (s: Series) => (s.status === "scheduled" ? overall : (latest(data, gamesBefore(data, s)) ?? overall)),
     team: (id: string) => profile(ofRows(data.playerGamesByTeam.get(id)) ?? overall),
     player: (id: string) => profile(ofRows(data.playerGamesByPlayer.get(id)) ?? overall),
+    /** A champion page changes when the champion is picked or banned, not with every game of the tournament. */
+    champion: (name: string) => {
+      const key = normalizeChampionName(name);
+      const drafted = data.confirmedGames.filter((g) =>
+        [...g.blue.picks, ...g.blue.bans, ...g.red.picks, ...g.red.bans].some((n) => normalizeChampionName(n) === key),
+      );
+      const date = latest(data, drafted) ?? overall;
+      return date > championsChanged ? date : championsChanged;
+    },
   };
 }
