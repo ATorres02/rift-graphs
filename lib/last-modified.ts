@@ -18,7 +18,13 @@ function latest(data: IndexedDataset, games: Game[]): Date | null {
   return ends.length ? new Date(Math.max(...ends)) : null;
 }
 
-export function lastModifiedDates(data: IndexedDataset) {
+/**
+ * When the player and team pages last changed for everyone, whatever their games: trophies and history, new titles and
+ * descriptions. Move it only when a release really changes all of those pages, or the dates stop meaning anything.
+ */
+export const PROFILES_CHANGED = new Date("2026-11-09T12:25:22Z");
+
+export function lastModifiedDates(data: IndexedDataset, profilesChanged: Date = PROFILES_CHANGED) {
   const fallback = new Date(data.meta.updatedAt);
   const overall = latest(data, data.games) ?? fallback;
   const gamesById = new Map(data.games.map((g) => [g.id, g]));
@@ -27,6 +33,7 @@ export function lastModifiedDates(data: IndexedDataset) {
       data,
       (rows ?? []).flatMap((r) => (gamesById.has(r.gameId) ? [gamesById.get(r.gameId)!] : [])),
     );
+  const profile = (d: Date) => (d > profilesChanged ? d : profilesChanged);
   return {
     /** Pages that sum up the whole tournament change with every game. */
     overall,
@@ -34,7 +41,7 @@ export function lastModifiedDates(data: IndexedDataset) {
     series: (s: Series) => latest(data, data.gamesBySeries.get(s.id) ?? []) ?? overall,
     /** A duel uses the games before its series, so it stops changing once the series starts. */
     duel: (s: Series) => (s.status === "scheduled" ? overall : (latest(data, gamesBefore(data, s)) ?? overall)),
-    team: (id: string) => ofRows(data.playerGamesByTeam.get(id)) ?? overall,
-    player: (id: string) => ofRows(data.playerGamesByPlayer.get(id)) ?? overall,
+    team: (id: string) => profile(ofRows(data.playerGamesByTeam.get(id)) ?? overall),
+    player: (id: string) => profile(ofRows(data.playerGamesByPlayer.get(id)) ?? overall),
   };
 }
