@@ -361,6 +361,21 @@ export const loadoutSchema: z.ZodType<LoadoutIndex> = z.object({
   spells: z.record(text(120), z.string().regex(/^[A-Za-z0-9]{1,40}$/)),
 });
 
+/** data/career.json: validated by scripts/career.ts before it replaces the last good file. */
+const careerEntrySchema = z.object({
+  event: text(),
+  date: isoDate,
+  place: text(16),
+  team: text(),
+  tier: z.enum(["worlds", "msi", "first-stand", "ewc", "league", "other"]),
+  title: z.boolean(),
+});
+export const careerFileSchema = z.object({
+  updatedAt: isoDateTime,
+  players: z.record(z.string(), z.array(careerEntrySchema)),
+  teams: z.record(z.string(), z.array(careerEntrySchema)),
+});
+
 export const SCHEMA_VERSION = 2;
 
 /** File name → schema, used by both the pipeline (write) and the app (read). */

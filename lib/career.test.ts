@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildCareer, inHistory, isTitle, placeLabel, type CareerRow } from "./career";
+import { careerFileSchema } from "./data/schema";
 
 const row = (over: Partial<CareerRow> = {}): CareerRow => ({
   event: "LCK 2022 Spring Playoffs",
@@ -73,5 +74,20 @@ describe("placeLabel", () => {
     expect(placeLabel("11-12")).toBe("11th-12th");
     expect(placeLabel("5-8")).toBe("5th-8th");
     expect(placeLabel("Q")).toBe("Qualified");
+  });
+});
+
+describe("careerFileSchema", () => {
+  const entry = { event: "Worlds 2025", date: "2025-11-09", place: "1", team: "T1", tier: "worlds", title: true };
+  const file = (e: object) => ({ updatedAt: "2026-11-09T12:00:00.000Z", players: { faker: [e] }, teams: {} });
+
+  it("accepts a valid file", () => {
+    expect(careerFileSchema.safeParse(file(entry)).success).toBe(true);
+  });
+
+  it("rejects markup, a bad date and an unknown tier", () => {
+    expect(careerFileSchema.safeParse(file({ ...entry, event: "<script>x</script>" })).success).toBe(false);
+    expect(careerFileSchema.safeParse(file({ ...entry, date: "soon" })).success).toBe(false);
+    expect(careerFileSchema.safeParse(file({ ...entry, tier: "fake" })).success).toBe(false);
   });
 });

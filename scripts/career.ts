@@ -3,13 +3,16 @@
  *
  * Usage: pnpm career [--force]
  *
- * Careers change slowly, so a run within 6 hours of the last one does nothing unless forced. The tournament being
+ * Careers change slowly, so a run within 6 hours of the last change does nothing unless forced. The tournament being
  * played is left out: its results live on the site already and would spoil them here.
  * data/team-lineage.json lists, per team, the older names of the same organization (reviewed by hand).
  */
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { buildCareer, type CareerEntry, type CareerRow } from "../lib/career";
+import { careerFileSchema } from "../lib/data/schema";
+import { cleanText } from "../lib/data/ids";
+import { sanitizeDataset } from "../lib/ingest/sanitize";
 import { asString, LeaguepediaClient, type CargoRow } from "../lib/sources/leaguepedia";
 
 const CURRENT = /^2026 Season World Championship/;
@@ -34,10 +37,10 @@ function toRow(r: CargoRow): CareerRow | null {
   const overviewPage = asString(r.Page);
   if (!event || !date || !place || !team || !overviewPage || CURRENT.test(overviewPage)) return null;
   return {
-    event,
+    event: cleanText(event),
     date: date.slice(0, 10),
-    place,
-    team,
+    place: cleanText(place),
+    team: cleanText(team),
     overviewPage,
     league: asString(r.League),
     split: asString(r.Split),
@@ -53,7 +56,7 @@ async function main() {
   try {
     const last = await json<{ updatedAt: string }>("data/career.json");
     if (!force && Date.now() - Date.parse(last.updatedAt) < MAX_AGE_MS) {
-      console.log("[career] updated less than 6 hours ago; nothing to do");
+      console.log("[career] changed less than 6 hours ago; nothing to do");
       return;
     }
   } catch {
@@ -110,7 +113,17 @@ async function main() {
     Object.fromEntries(
       [...m].sort(([a], [b]) => a.localeCompare(b)).map(([id, rows]) => [id, buildCareer(rows)]),
     ) as Record<string, CareerEntry[]>;
-  const out = { updatedAt: new Date().toISOString(), players: build(playerRows), teams: build(teamRows) };
+  const out = sanitizeDataset(
+    { updatedAt: new Date().toISOString(), players: build(playerRows), teams: build(teamRows) },
+    (message) => console.warn(`[career] warning: ${message}`),
+  );
+  careerFileSchema.parse(out);
+  // The date only moves when a result does, so an unchanged history makes no commit and no deploy.
+  const previous = await json<typeof out>("data/career.json").catch(() => null);
+  if (previous && JSON.stringify([previous.players, previous.teams]) === JSON.stringify([out.players, out.teams])) {
+    console.log(`[career] no changes (${client.requestCount} requests)`);
+    return;
+  }
   await writeFile(OUT, JSON.stringify(out, null, 1) + "\n");
   console.log(
     `[career] ${Object.keys(out.players).length} players, ${Object.keys(out.teams).length} teams (${client.requestCount} requests)`,
