@@ -61,7 +61,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     ...draftedChampions(data).map((c) => ({
       url: url(`/champions/${championSlug(c.id)}`),
-      lastModified: updated,
+      lastModified: when.champion(c.name),
       changeFrequency: "daily" as const,
       priority: 0.5,
     })),

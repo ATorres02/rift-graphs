@@ -19,6 +19,17 @@ describe("lastModifiedDates", () => {
     expect(dates.size).toBeGreaterThan(1);
   });
 
+  it("dates a champion page by its own last draft, never before the last change to all of them", () => {
+    const when = lastModifiedDates(data, new Date(0), new Date(0));
+    const names = data.champions.champions.map((c) => c.name);
+    const dates = new Set(names.map((n) => when.champion(n).getTime()));
+    expect(dates.size).toBeGreaterThan(1);
+    for (const n of names) expect(when.champion(n).getTime()).toBeLessThanOrEqual(when.overall.getTime());
+
+    const floor = new Date("2099-01-01T00:00:00Z");
+    expect(lastModifiedDates(data, new Date(0), floor).champion(names[0])).toEqual(floor);
+  });
+
   it("never dates a player or team page before the last change to all of them", () => {
     const floor = new Date("2099-01-01T00:00:00Z");
     const when = lastModifiedDates(data, floor);
