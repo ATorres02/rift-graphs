@@ -15,11 +15,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const updated = when.overall;
   const url = (p: string) => `${site.url}${p}`;
   return [
-    { url: url("/"), lastModified: updated, changeFrequency: "hourly", priority: 1 },
+    { url: url("/"), lastModified: when.profiles, changeFrequency: "hourly", priority: 1 },
     { url: url("/tournament"), lastModified: updated, changeFrequency: "hourly", priority: 0.9 },
     { url: url("/matches"), lastModified: updated, changeFrequency: "hourly", priority: 0.9 },
-    { url: url("/teams"), lastModified: updated, changeFrequency: "daily", priority: 0.8 },
-    { url: url("/players"), lastModified: updated, changeFrequency: "daily", priority: 0.8 },
+    { url: url("/teams"), lastModified: when.profiles, changeFrequency: "daily", priority: 0.8 },
+    { url: url("/players"), lastModified: when.profiles, changeFrequency: "daily", priority: 0.8 },
     { url: url("/champions"), lastModified: updated, changeFrequency: "daily", priority: 0.7 },
     { url: url("/records"), lastModified: updated, changeFrequency: "daily", priority: 0.7 },
     { url: url("/charts"), lastModified: updated, changeFrequency: "daily", priority: 0.6 },

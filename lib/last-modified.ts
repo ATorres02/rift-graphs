@@ -45,6 +45,8 @@ export function lastModifiedDates(
   return {
     /** Pages that sum up the whole tournament change with every game. */
     overall,
+    /** Pages that list the players and teams (and the homepage, which shows them) changed with them too. */
+    profiles: profile(overall),
     /** A played series changes with its own games; one to come changes with every game (its preview). */
     series: (s: Series) => latest(data, data.gamesBySeries.get(s.id) ?? []) ?? overall,
     /** A duel uses the games before its series, so it stops changing once the series starts. */

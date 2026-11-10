@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeftIcon, GitCompareArrowsIcon } from "lucide-react";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { stageCrumbHref } from "@/lib/links";
 import { ChampionIcon } from "@/components/champion-icon";
 import { LocalTime } from "@/components/local-time";
 import { ChartsLink, MetricRow } from "@/components/match/series-preview";
@@ -139,7 +140,7 @@ export default async function DuelPage({ params }: { params: Params }) {
       <Breadcrumbs
         items={[
           { label: "Matches", href: "/matches" },
-          { label: STAGE_LABEL[s.stage], href: `/matches?stage=${s.stage}` },
+          { label: STAGE_LABEL[s.stage], href: stageCrumbHref(s.stage) },
           { label: `${t1?.short ?? "TBD"} vs ${t2?.short ?? "TBD"}`, href: `/matches/${s.id}` },
           { label: `${DUEL_LABEL[duel.role]} duel` },
         ]}

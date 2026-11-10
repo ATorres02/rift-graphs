@@ -4,8 +4,39 @@ import { useEffect, useState } from "react";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-/** Days, hours, minutes and seconds to the final, as four large tiles. Empty until mounted, so hydration matches. */
-export function FinalCountdown({ iso }: { iso: string }) {
+/** One split-flap digit: on a change the old top half falls and the new bottom half lands (CSS in globals.css). */
+function Flap({ char }: { char: string }) {
+  const [flip, setFlip] = useState({ cur: char, prev: char, n: 0 });
+  // Derived during render, React's pattern for state that follows a prop: no extra paint with the stale digit.
+  if (flip.cur !== char) setFlip({ cur: char, prev: flip.cur, n: flip.n + 1 });
+  const flipping = flip.n > 0 && flip.prev !== flip.cur;
+  return (
+    <span className="flap block flex-1">
+      <span className="flap-half flap-top">
+        <span>{flip.cur}</span>
+      </span>
+      <span className="flap-half flap-bottom">
+        <span>{flipping ? flip.prev : flip.cur}</span>
+      </span>
+      {flipping ? (
+        <>
+          <span key={`f${flip.n}`} aria-hidden className="flap-half flap-top flap-fall">
+            <span>{flip.prev}</span>
+          </span>
+          <span key={`l${flip.n}`} aria-hidden className="flap-half flap-bottom flap-land">
+            <span>{flip.cur}</span>
+          </span>
+        </>
+      ) : null}
+    </span>
+  );
+}
+
+/**
+ * Days, hours, minutes and seconds to the final. Empty until mounted, so hydration matches. `poster`: four white tiles
+ * on the homepage poster. `page`: the final's own page, a full-width split-flap board in the page's colours.
+ */
+export function FinalCountdown({ iso, tone = "poster" }: { iso: string; tone?: "poster" | "page" }) {
   const [now, setNow] = useState<number | null>(null);
   useEffect(() => {
     setNow(Date.now());
@@ -19,6 +50,30 @@ export function FinalCountdown({ iso }: { iso: string }) {
     ["Min", left === null ? null : Math.floor(left / 60) % 60],
     ["Sec", left === null ? null : left % 60],
   ];
+  if (tone === "page") {
+    const label = left === null ? undefined : parts.map(([l, v]) => `${v} ${l.toLowerCase()}`).join(", ");
+    return (
+      <div
+        role="timer"
+        aria-label={label ? `Time until the final: ${label}` : "Time until the final"}
+        className="grid grid-cols-4 gap-3 sm:gap-10"
+      >
+        {parts.map(([unit, value]) => (
+          <div key={unit} className="@container">
+            <div
+              aria-hidden
+              className="display flex gap-1 text-[74cqw] leading-none font-extrabold text-foreground sm:gap-2"
+            >
+              {(value === null ? "--" : pad(value)).split("").map((c, i) => (
+                <Flap key={i} char={c} />
+              ))}
+            </div>
+            <div className="kicker mt-2 text-center text-[10px] text-muted-foreground sm:mt-4 sm:text-base">{unit}</div>
+          </div>
+        ))}
+      </div>
+    );
+  }
   return (
     <div role="timer" aria-label="Time until the final" className="flex gap-2">
       {parts.map(([label, value]) => (

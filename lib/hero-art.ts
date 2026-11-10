@@ -2,7 +2,9 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { championRef, type IndexedDataset } from "@/lib/data/load";
 import type { ChampionRef } from "@/lib/data/types";
-import { aggregateChampions } from "@/lib/metrics";
+import { laneDuel } from "@/lib/duels";
+import { aggregateChampions, ROLES } from "@/lib/metrics";
+import { championPool } from "@/lib/preview";
 import { championLoadingUrl, championSplashUrl } from "@/lib/sources/ddragon";
 
 /** The homepage hero shows the most picked champion of the tournament. */
@@ -55,5 +57,44 @@ export function heroArt(champion: ChampionRef, exists: (file: string) => boolean
     name: champion.name,
     splash: selfHosted ? local.splash : championSplashUrl(champion.id),
     portrait: selfHosted ? local.portrait : championLoadingUrl(champion.id),
+  };
+}
+
+/** The final once both teams are known. */
+export function finalWithTeams(data: IndexedDataset) {
+  const s = data.series.find((x) => x.stage === "final");
+  return s?.team1Id && s.team2Id ? s : null;
+}
+
+/**
+ * Art the final's page shows: each lane player's most played champion (the duel splashes) and each finalist's most
+ * played champions (the portraits).
+ */
+export function finalChampions(data: IndexedDataset): ChampionRef[] {
+  const s = finalWithTeams(data);
+  if (!s) return [];
+  const names = [
+    ...ROLES.flatMap((role) => {
+      const duel = laneDuel(data, s, role);
+      return [duel?.a?.champions[0]?.champion, duel?.b?.champions[0]?.champion];
+    }),
+    ...[s.team1Id!, s.team2Id!].flatMap((id) => championPool(data.confirmedGames, id).played.map((c) => c.champion)),
+  ];
+  const refs = names.flatMap((n) => (n ? [championRef(data, n)] : [])).filter((c): c is ChampionRef => !!c);
+  return [...new Map(refs.map((c) => [c.id, c])).values()];
+}
+
+/** Smaller WebP copies for the final's page, made by scripts/hero-art.ts next to the hero's. */
+export function finalArtFiles(ddragonId: string) {
+  return { splash: `/art/final-${ddragonId}-splash.webp`, portrait: `/art/final-${ddragonId}-loading.webp` };
+}
+
+/** A champion's art for the final's page: the site's own copies when the build made them, Data Dragon otherwise. */
+export function finalArt(champion: ChampionRef, exists: (file: string) => boolean = inPublic) {
+  const local = finalArtFiles(champion.id);
+  return {
+    name: champion.name,
+    splash: exists(local.splash) ? local.splash : championSplashUrl(champion.id),
+    portrait: exists(local.portrait) ? local.portrait : championLoadingUrl(champion.id),
   };
 }

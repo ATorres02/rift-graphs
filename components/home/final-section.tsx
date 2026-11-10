@@ -41,7 +41,17 @@ function DuelPlayer({ data, side, right }: { data: IndexedDataset; side: DuelSid
       className={`flex min-w-0 items-center gap-2 ${right ? "flex-row-reverse text-right max-sm:order-3" : "max-sm:order-1"}`}
     >
       {champion ? <ChampionIcon champion={champIcon(data, champion)} size="sm" /> : null}
-      <span className="display truncate text-xl leading-none font-bold sm:text-2xl">{side?.player.name ?? "TBD"}</span>
+      {side ? (
+        // Above the card's own link: the name opens the player's page, the rest of the card the duel.
+        <Link
+          href={`/players/${side.player.playerId}`}
+          className="display relative z-10 truncate text-xl leading-none font-bold text-white no-underline hover:underline sm:text-2xl"
+        >
+          {side.player.name}
+        </Link>
+      ) : (
+        <span className="display truncate text-xl leading-none font-bold sm:text-2xl">TBD</span>
+      )}
     </span>
   );
 }
@@ -61,13 +71,16 @@ function DuelCard({
 }) {
   const duel = laneDuel(data, series, role);
   return (
-    <Link
-      href={duelHref(series.id, role)}
-      aria-label={`${ROLE_LABEL[role]} duel: ${duel?.a?.player.name ?? "TBD"} vs ${duel?.b?.player.name ?? "TBD"}`}
-      className="group relative block overflow-hidden text-white no-underline"
+    <div
+      className="group relative block overflow-hidden text-white"
       style={{ background: `linear-gradient(115deg, ${a} 0 49.4%, #fff 49.4% 50.6%, ${b} 50.6%)` }}
     >
       <span className="relative flex h-full flex-col gap-2.5 bg-black/60 p-3.5 transition-colors group-hover:bg-black/45 max-sm:grid max-sm:grid-cols-[1fr_auto_1fr] max-sm:items-center max-sm:px-3 max-sm:py-2">
+        <Link
+          href={duelHref(series.id, role)}
+          aria-label={`${ROLE_LABEL[role]} duel: ${duel?.a?.player.name ?? "TBD"} vs ${duel?.b?.player.name ?? "TBD"}`}
+          className="absolute inset-0"
+        />
         <span className="kicker flex items-center gap-1.5 text-[11px] text-white/85 max-sm:order-2">
           <RoleGlyph kind={role} className="size-4" />
           <span className="max-sm:sr-only">{ROLE_LABEL[role]}</span>
@@ -75,7 +88,7 @@ function DuelCard({
         <DuelPlayer data={data} side={duel?.a ?? null} />
         <DuelPlayer data={data} side={duel?.b ?? null} right />
       </span>
-    </Link>
+    </div>
   );
 }
 
