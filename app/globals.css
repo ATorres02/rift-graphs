@@ -275,6 +275,77 @@
   }
 }
 
+/* Split-flap digits for the final's countdown (components/home/final-countdown.tsx): when a digit changes, the old
+   top half falls forward and the new bottom half lands, like an airport board. */
+@layer components {
+  .flap {
+    position: relative;
+    aspect-ratio: 5 / 8;
+    perspective: 600px;
+    font-variant-numeric: tabular-nums;
+  }
+  .flap-half {
+    position: absolute;
+    inset-inline: 0;
+    height: 50%;
+    overflow: hidden;
+    background: var(--card);
+    border: 1px solid var(--border);
+    backface-visibility: hidden;
+  }
+  .flap-half > span {
+    position: absolute;
+    inset-inline: 0;
+    height: 200%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .flap-top {
+    top: 0;
+    transform-origin: bottom;
+    border-bottom: 0;
+    border-radius: 0.5rem 0.5rem 0 0;
+  }
+  .flap-top > span {
+    top: 0;
+  }
+  .flap-bottom {
+    bottom: 0;
+    transform-origin: top;
+    border-top: 1px solid var(--background);
+    border-radius: 0 0 0.5rem 0.5rem;
+  }
+  .flap-bottom > span {
+    bottom: 0;
+  }
+  .flap-fall {
+    animation: flap-fall 0.28s ease-in both;
+    filter: brightness(0.85);
+  }
+  .flap-land {
+    animation: flap-land 0.28s ease-out 0.28s both;
+  }
+}
+
+@keyframes flap-fall {
+  from {
+    transform: rotateX(0deg);
+  }
+  to {
+    transform: rotateX(-90deg);
+  }
+}
+
+@keyframes flap-land {
+  from {
+    transform: rotateX(90deg);
+  }
+  to {
+    transform: rotateX(0deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

@@ -75,24 +75,31 @@ function Side({ team, className, right }: { team: TeamRef; className: string; ri
   );
 }
 
-/** The homepage poster while the final is the next series: full width, one diagonal half per team. */
+/**
+ * The final's poster, full width, one diagonal half per team: on the homepage while the final is the next series, and
+ * at the top of the final's own page (`onSeriesPage`: the teams join the heading, and the time and buttons move to their own band).
+ */
 export function FinalHero({
   series: s,
   team1,
   team2,
   art1,
   art2,
+  onSeriesPage = false,
 }: {
   series: Series;
   team1: TeamRef;
   team2: TeamRef;
   art1: Art | null;
   art2: Art | null;
+  onSeriesPage?: boolean;
 }) {
   const live = s.status === "live";
   const champion = s.status === "finished" ? [team1, team2].find((t) => t.id === s.winnerId) : undefined;
   return (
-    <section className="dark -mt-6 ml-[calc(50%-50vw)] w-screen bg-black text-white sm:-mt-8">
+    <section
+      className={`dark ml-[calc(50%-50vw)] w-screen bg-black text-white ${onSeriesPage ? "" : "-mt-6 sm:-mt-8"}`}
+    >
       <div className="relative h-[400px] overflow-hidden sm:h-[min(640px,72vh)] sm:min-h-[520px]">
         <Panel team={team1} art={art1} at="first" />
         <Panel team={team2} art={art2} at="second" />
@@ -126,10 +133,17 @@ export function FinalHero({
         <div className="pointer-events-none absolute inset-x-0 top-3 z-10 text-center sm:top-6">
           <h1 className="display text-2xl font-extrabold tracking-wide uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)] sm:text-5xl">
             The Worlds 2026 Final
+            {onSeriesPage ? (
+              <span className="sr-only">
+                : {team1.name} vs {team2.name}
+              </span>
+            ) : null}
           </h1>
-          <p className="sr-only">
-            {team1.name} vs {team2.name}
-          </p>
+          {onSeriesPage ? null : (
+            <p className="sr-only">
+              {team1.name} vs {team2.name}
+            </p>
+          )}
         </div>
         <Side team={team1} className="top-14 left-5 sm:top-auto sm:bottom-10 sm:left-[max(2rem,calc(50vw-36rem))]" />
         <Side team={team2} right className="right-5 bottom-4 sm:right-[max(2rem,calc(50vw-36rem))] sm:bottom-10" />
@@ -165,23 +179,26 @@ export function FinalHero({
           </Spoiler>
         </div>
       ) : null}
-      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-5 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          {champion ? null : live ? (
-            <p className="display text-5xl font-extrabold">Live now</p>
-          ) : (
-            <FinalCountdown iso={s.dateTimeUtc} />
-          )}
-          <p className="mt-2 flex flex-wrap gap-x-3 text-xs text-zinc-300 sm:text-sm">
-            <LocalTime iso={s.dateTimeUtc} hasTime={s.hasTime} />
-            <span>{bestOfLabel(s.bestOf)}</span>
-            <span>{venueLabel(STAGE_VENUE.final)}</span>
-          </p>
+      {/* On the final's own page the time, place and buttons sit in their own band below the poster. */}
+      {onSeriesPage ? null : (
+        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-5 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            {champion ? null : live ? (
+              <p className="display text-5xl font-extrabold">Live now</p>
+            ) : (
+              <FinalCountdown iso={s.dateTimeUtc} />
+            )}
+            <p className="mt-2 flex flex-wrap gap-x-3 text-xs text-zinc-300 sm:text-sm">
+              <LocalTime iso={s.dateTimeUtc} hasTime={s.hasTime} />
+              <span>{bestOfLabel(s.bestOf)}</span>
+              <span>{venueLabel(STAGE_VENUE.final)}</span>
+            </p>
+          </div>
+          <PosterButton href={`/matches/${s.id}`} label={`Final preview: ${team1.name} vs ${team2.name}`}>
+            {champion ? "Relive the final" : live ? "Follow the series" : "Match preview"}
+          </PosterButton>
         </div>
-        <PosterButton href={`/matches/${s.id}`} label={`Final preview: ${team1.name} vs ${team2.name}`}>
-          {champion ? "Relive the final" : live ? "Follow the series" : "Match preview"}
-        </PosterButton>
-      </div>
+      )}
     </section>
   );
 }

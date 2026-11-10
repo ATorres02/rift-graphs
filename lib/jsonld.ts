@@ -16,6 +16,9 @@ export interface Venue {
   locality: string;
   region: string;
   country: string;
+  /** Street and postcode, only where they are public and certain (Google lists them as recommended). */
+  street?: string;
+  postalCode?: string;
 }
 
 /**
@@ -27,7 +30,14 @@ export const STAGE_VENUE: Record<StageId, Venue> = {
   swiss: { name: "Credit Union of Texas Event Center", locality: "Allen", region: "TX", country: "US" },
   quarterfinals: { name: "Credit Union of Texas Event Center", locality: "Allen", region: "TX", country: "US" },
   semifinals: { name: "Credit Union of Texas Event Center", locality: "Allen", region: "TX", country: "US" },
-  final: { name: "Barclays Center", locality: "Brooklyn", region: "NY", country: "US" },
+  final: {
+    name: "Barclays Center",
+    locality: "Brooklyn",
+    region: "NY",
+    country: "US",
+    street: "620 Atlantic Avenue",
+    postalCode: "11217",
+  },
 };
 
 /** "Barclays Center, Brooklyn": a venue as it reads in a sentence. */
@@ -47,7 +57,8 @@ export interface SeriesEventInput {
   /** When it ended (the last game) or is expected to end. */
   endDate: string;
   stage: StageId;
-  competitors: string[];
+  /** Each team with its page on the site, once known. */
+  competitors: { name: string; url: string }[];
   /** Where it can be watched online. */
   streamUrl: string;
 }
@@ -72,9 +83,11 @@ export function seriesEventJsonLd(e: SeriesEventInput) {
         name: v.name,
         address: {
           "@type": "PostalAddress",
+          ...(v.street ? { streetAddress: v.street } : {}),
           addressLocality: v.locality,
           addressRegion: v.region,
           addressCountry: v.country,
+          ...(v.postalCode ? { postalCode: v.postalCode } : {}),
         },
       },
       { "@type": "VirtualLocation", url: e.streamUrl },
@@ -83,8 +96,8 @@ export function seriesEventJsonLd(e: SeriesEventInput) {
     // The teams both compete and perform: Google reads `performer`, schema.org's SportsEvent has `competitor`.
     ...(e.competitors.length
       ? {
-          competitor: e.competitors.map((name) => ({ "@type": "SportsTeam", name })),
-          performer: e.competitors.map((name) => ({ "@type": "SportsTeam", name })),
+          competitor: e.competitors.map((t) => ({ "@type": "SportsTeam", ...t })),
+          performer: e.competitors.map((t) => ({ "@type": "SportsTeam", ...t })),
         }
       : {}),
     organizer: { "@type": "Organization", name: "Riot Games", url: "https://lolesports.com" },

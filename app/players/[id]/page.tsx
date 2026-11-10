@@ -17,8 +17,11 @@ import { getData, getLoadout, teamRef } from "@/lib/data/load";
 import { inventorySlots } from "@/lib/builds";
 import { itemIconUrl, runeIconUrl } from "@/lib/sources/loadout";
 import { fmt, ROLE_LABEL, STAGE_SHORT } from "@/lib/format";
-import { aggregatePlayerGames, kda, killParticipation, perMinute } from "@/lib/metrics";
+import { aggregatePlayerGames, kda, killParticipation, perMinute, ROLES } from "@/lib/metrics";
 import { champIcon, mostPlayedArt } from "@/lib/views";
+import { duelHref, laneDuel } from "@/lib/duels";
+import { FinalDuelBanner } from "@/components/match/final-page";
+import { finalWithTeams } from "@/lib/hero-art";
 import { chartHref, championRecordChart, playerGamesChart } from "@/lib/charts/page-charts";
 
 export const dynamicParams = false;
@@ -191,6 +194,15 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
     };
   });
 
+  // A finalist's way into their lane of the final.
+  const final = finalWithTeams(data);
+  const finalDuel = final
+    ? ROLES.map((role) => laneDuel(data, final, role)).find(
+        (d) => d?.a?.player.playerId === p.id || d?.b?.player.playerId === p.id,
+      )
+    : undefined;
+  const finalOpponent = finalDuel ? (finalDuel.a?.player.playerId === p.id ? finalDuel.b : finalDuel.a) : null;
+
   return (
     <div className="space-y-8">
       <Breadcrumbs
@@ -216,6 +228,15 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
           </Link>
         </div>
       </PageHeader>
+      {finalDuel && final ? (
+        <FinalDuelBanner
+          href={duelHref(final.id, finalDuel.role)}
+          role={finalDuel.role}
+          player={p.name}
+          opponent={finalOpponent?.player.name ?? null}
+          teamIds={[p.teamId, finalOpponent?.teamId ?? null]}
+        />
+      ) : null}
       <Headlines items={headlines} className="lg:grid-cols-4" />
 
       <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">

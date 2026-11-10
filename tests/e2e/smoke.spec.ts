@@ -214,6 +214,7 @@ test("a series yet to be played previews both teams lane by lane", async ({ page
   const series = JSON.parse(readFileSync(path.join("data", "worlds-2026", "series.json"), "utf8")) as {
     id: string;
     status: string;
+    stage: string;
     team1Id: string | null;
     team2Id: string | null;
   }[];
@@ -222,12 +223,27 @@ test("a series yet to be played previews both teams lane by lane", async ({ page
   const errors = watchErrors(page);
   await page.goto(`/matches/${next!.id}`);
   await expect(page).toHaveTitle(/ preview \| Rift Graphs$/);
-  // Read as text, the heading keeps its words apart: "TES Top Esports vs iG Invictus Gaming".
-  expect(await page.getByRole("heading", { level: 1 }).textContent()).toMatch(/\S \S+ vs \S+ \S/);
+  if (next!.stage === "final") {
+    // The final's poster page: the teams in the heading, five duel posters, the full preview folded under them.
+    expect(await page.getByRole("heading", { level: 1 }).textContent()).toMatch(/^The Worlds 2026 Final: .+ vs .+$/);
+    const duels = page
+      .locator("section")
+      .filter({ has: page.getByRole("heading", { name: "The five duels", level: 2 }) });
+    await expect(duels.getByRole("article")).toHaveCount(5);
+    await expect(duels.getByRole("link", { name: /^Full duel: / })).toHaveCount(5);
+    await expect(page.getByRole("heading", { name: "Tale of the tape", level: 2 })).toBeHidden();
+    await page.getByText("Every number", { exact: true }).click();
+  } else {
+    // Read as text, the heading keeps its words apart: "TES Top Esports vs iG Invictus Gaming".
+    expect(await page.getByRole("heading", { level: 1 }).textContent()).toMatch(/\S \S+ vs \S+ \S/);
+  }
   await expect(page.getByRole("heading", { name: "Tale of the tape", level: 2 })).toBeVisible();
   const lanes = page.locator("section").filter({ has: page.getByRole("heading", { name: "Lane by lane", level: 2 }) });
   await expect(lanes.getByRole("article")).toHaveCount(5);
-  await expect(page.getByRole("link", { name: /^Open in Charts/ })).toHaveCount(8);
+  // The preview's own: team stats, five lanes, two champion pools (the final adds its posters' links on top).
+  const charts = page.getByRole("link", { name: /^Open in Charts/ });
+  if (next!.stage === "final") expect(await charts.count()).toBeGreaterThan(8);
+  else await expect(charts).toHaveCount(8);
   expect(errors).toEqual([]);
 });
 

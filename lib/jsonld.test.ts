@@ -23,7 +23,10 @@ describe("seriesEventJsonLd", () => {
     startDate: "2026-11-07T22:00:00Z",
     endDate: "2026-11-08T02:00:00Z",
     stage: "semifinals",
-    competitors: ["Invictus Gaming", "Gen.G"],
+    competitors: [
+      { name: "Invictus Gaming", url: "https://riftgraphs.com/teams/invictus-gaming" },
+      { name: "Gen.G", url: "https://riftgraphs.com/teams/gen-g" },
+    ],
     streamUrl: "https://lolesports.com",
   });
 
@@ -33,7 +36,20 @@ describe("seriesEventJsonLd", () => {
     expect(event.eventAttendanceMode).toBe("https://schema.org/MixedEventAttendanceMode");
     expect(event.competitor).toHaveLength(2);
     expect(event.performer).toEqual(event.competitor);
+    expect(event.competitor?.[1]).toEqual({
+      "@type": "SportsTeam",
+      name: "Gen.G",
+      url: "https://riftgraphs.com/teams/gen-g",
+    });
     expect(event.endDate).toBe("2026-11-08T02:00:00Z");
+  });
+
+  it("gives the street address only where it is known", () => {
+    expect(event.location[0]).not.toHaveProperty("address.streetAddress");
+    const final = seriesEventJsonLd({ ...event, stage: "final", competitors: [] } as never);
+    expect(final.location[0]).toMatchObject({
+      address: { streetAddress: "620 Atlantic Avenue", addressLocality: "Brooklyn", postalCode: "11217" },
+    });
   });
 
   it("ends a series at its last game, or a few hours after the start by format", () => {

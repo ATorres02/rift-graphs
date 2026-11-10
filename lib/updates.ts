@@ -22,6 +22,19 @@ export const UPDATE_KIND_LABEL: Record<UpdateKind, string> = { new: "New", impro
 
 export const UPDATES: SiteUpdate[] = [
   {
+    id: "final-page",
+    date: "2026-11-10",
+    kind: "new",
+    title: "A page for the final",
+    summary:
+      "The final's page is now a poster: both teams, the five lane duels over their champions' art, and each finalist's signature picks.",
+    items: [
+      "Each duel opens its full comparison, and every finalist's page links to their duel.",
+      "All the numbers stay one tap away: compare the teams, charts, records and the full preview.",
+    ],
+    link: { href: "/matches/main-event-finals-1", label: "The final" },
+  },
+  {
     id: "career-history",
     date: "2026-11-09",
     kind: "new",

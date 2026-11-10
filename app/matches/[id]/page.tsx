@@ -13,7 +13,11 @@ import { BuildTable, RunesTable } from "@/components/match/loadout-tables";
 import { LineupTable } from "@/components/match/lineup";
 import { Scoreboard } from "@/components/match/scoreboard";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { stageCrumbHref } from "@/lib/links";
 import { DuelStrip } from "@/components/match/duel-strip";
+import { FinalDeeper, FinalDuels, FinalMatchInfo, FinalPicks } from "@/components/match/final-page";
+import { FinalHero } from "@/components/home/final-hero";
+import { signatureArt } from "@/lib/hero-art";
 import { SeriesPreview } from "@/components/match/series-preview";
 import { PageHeader, Section } from "@/components/page-header";
 import { PendingData } from "@/components/pending-data";
@@ -108,6 +112,9 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
     }));
   };
 
+  // The final, once both teams are known, gets its own poster page: big art first, the numbers one tap away.
+  const final = s.stage === "final" && team1 && team2 ? { team1, team2 } : null;
+
   const label = seriesTitleLabel(s, seriesNumberInStage(data.series, s));
   const jsonLd = seriesEventJsonLd({
     name: team1 && team2 ? `${team1.name} vs ${team2.name}, Worlds 2026 ${label}` : `Worlds 2026 ${label}`,
@@ -123,7 +130,7 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
         : null,
     ),
     stage: s.stage,
-    competitors: [team1, team2].flatMap((t) => (t ? [t.name] : [])),
+    competitors: [team1, team2].flatMap((t) => (t ? [{ name: t.name, url: `${site.url}/teams/${t.id}` }] : [])),
     streamUrl: s.streamUrl ?? data.tournament.officialUrl ?? site.lolesportsUrl,
   });
 
@@ -133,69 +140,112 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
       <Breadcrumbs
         items={[
           { label: "Matches", href: "/matches" },
-          { label: STAGE_LABEL[s.stage], href: `/matches?stage=${s.stage}` },
+          { label: STAGE_LABEL[s.stage], href: stageCrumbHref(s.stage) },
           { label: team1 && team2 ? `${team1.short} vs ${team2.short}` : label },
         ]}
       />
-      <PageHeader
-        art={seriesArt(data, s, games)}
-        eyebrow={`${roundLabel(s.stage, s.round, s.tab)} / ${bestOfLabel(s.bestOf)}${s.patch ? ` / Patch ${s.patch}` : ""}`}
-        title={
-          // The spaces are for search engines and screen readers, which read the heading as text; flex hides them.
-          <span className="flex flex-wrap items-center gap-3">
-            <TeamPill team={team1} size="lg" withName /> <span className="text-muted-foreground">vs</span>{" "}
-            <TeamPill team={team2} size="lg" withName />
-          </span>
-        }
-      >
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
-          <LocalTime iso={s.dateTimeUtc} hasTime={s.hasTime} />
-          <StatusLabel series={s} />
-          {s.provisional ? <ProvisionalBadge source={s.source} /> : null}
-          {s.score ? (
-            <Spoiler label="Reveal score">
-              <span className="text-lg font-semibold tabular text-foreground">
-                {s.score.team1} – {s.score.team2}
-              </span>
-            </Spoiler>
+      {final ? (
+        <div className="space-y-6 sm:space-y-10">
+          <FinalHero
+            onSeriesPage
+            series={s}
+            team1={final.team1}
+            team2={final.team2}
+            art1={signatureArt(data, final.team1.id)}
+            art2={signatureArt(data, final.team2.id)}
+          />
+          <FinalMatchInfo
+            series={s}
+            team1={final.team1}
+            team2={final.team2}
+            watchUrl={s.streamUrl ?? data.tournament.officialUrl ?? site.lolesportsUrl}
+          />
+          {pending || s.provisional ? (
+            <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+              {s.provisional ? <ProvisionalBadge source={s.source} /> : null}
+              {pending ? <PendingData /> : null}
+            </div>
           ) : null}
-          {pending ? <PendingData /> : null}
-          {s.mvp ? (
-            <Spoiler label="MVP">
-              <span>MVP: {s.mvp}</span>
-            </Spoiler>
-          ) : null}
-          {team1 && team2 ? (
-            <Link
-              href={compareTeamsHref(team1.id, team2.id)}
-              className="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 font-medium text-foreground no-underline transition-colors hover:border-brand"
-            >
-              <GitCompareArrowsIcon className="size-4" aria-hidden />
-              Compare teams
-            </Link>
-          ) : null}
-          <a
-            href={data.tournament.officialUrl ?? site.lolesportsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 underline hover:text-foreground"
-          >
-            Watch on lolesports.com <ExternalLinkIcon className="size-3.5" aria-hidden />
-          </a>
-          {s.streamUrl ? (
+        </div>
+      ) : (
+        <PageHeader
+          art={seriesArt(data, s, games)}
+          eyebrow={`${roundLabel(s.stage, s.round, s.tab)} / ${bestOfLabel(s.bestOf)}${s.patch ? ` / Patch ${s.patch}` : ""}`}
+          title={
+            // The spaces are for search engines and screen readers, which read the heading as text; flex hides them.
+            <span className="flex flex-wrap items-center gap-3">
+              <TeamPill team={team1} size="lg" withName /> <span className="text-muted-foreground">vs</span>{" "}
+              <TeamPill team={team2} size="lg" withName />
+            </span>
+          }
+        >
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
+            <LocalTime iso={s.dateTimeUtc} hasTime={s.hasTime} />
+            <StatusLabel series={s} />
+            {s.provisional ? <ProvisionalBadge source={s.source} /> : null}
+            {s.score ? (
+              <Spoiler label="Reveal score">
+                <span className="text-lg font-semibold tabular text-foreground">
+                  {s.score.team1} – {s.score.team2}
+                </span>
+              </Spoiler>
+            ) : null}
+            {pending ? <PendingData /> : null}
+            {s.mvp ? (
+              <Spoiler label="MVP">
+                <span>MVP: {s.mvp}</span>
+              </Spoiler>
+            ) : null}
+            {team1 && team2 ? (
+              <Link
+                href={compareTeamsHref(team1.id, team2.id)}
+                className="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 font-medium text-foreground no-underline transition-colors hover:border-brand"
+              >
+                <GitCompareArrowsIcon className="size-4" aria-hidden />
+                Compare teams
+              </Link>
+            ) : null}
             <a
-              href={s.streamUrl}
+              href={data.tournament.officialUrl ?? site.lolesportsUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 underline hover:text-foreground"
             >
-              Stream <ExternalLinkIcon className="size-3.5" aria-hidden />
+              Watch on lolesports.com <ExternalLinkIcon className="size-3.5" aria-hidden />
             </a>
-          ) : null}
-        </div>
-      </PageHeader>
+            {s.streamUrl ? (
+              <a
+                href={s.streamUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 underline hover:text-foreground"
+              >
+                Stream <ExternalLinkIcon className="size-3.5" aria-hidden />
+              </a>
+            ) : null}
+          </div>
+        </PageHeader>
+      )}
 
-      {preview ? (
+      {final && preview ? (
+        <>
+          <FinalDuels data={data} series={s} team1={final.team1} team2={final.team2} />
+          <FinalPicks data={data} team1={final.team1} team2={final.team2} />
+          <FinalDeeper team1={final.team1} team2={final.team2} />
+          <Section
+            collapsible
+            defaultOpen={false}
+            title="Every number"
+            description="The full preview: tale of the tape, lane by lane, champions and head to head."
+          >
+            <SeriesPreview
+              seriesId={s.id}
+              live={s.status === "live"}
+              teams={[data.teamsById.get(s.team1Id ?? ""), data.teamsById.get(s.team2Id ?? "")]}
+            />
+          </Section>
+        </>
+      ) : preview ? (
         <SeriesPreview
           seriesId={s.id}
           live={s.status === "live"}
@@ -204,7 +254,7 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
       ) : null}
 
       {/* Once the preview (and its Full duel links) is gone, the duels stay one tap away. */}
-      {!preview && hasDuels(s) ? <DuelStrip series={s} /> : null}
+      {!preview && !final && hasDuels(s) ? <DuelStrip series={s} /> : null}
 
       <div className="space-y-12">
         {games.map((g) => {
@@ -386,6 +436,13 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
           </Section>
         ))}
       </div>
+
+      {final && !preview ? (
+        <>
+          <FinalDuels data={data} series={s} team1={final.team1} team2={final.team2} />
+          <FinalDeeper team1={final.team1} team2={final.team2} />
+        </>
+      ) : null}
 
       <p className="text-sm text-muted-foreground">
         <Link href="/matches" className="underline hover:text-foreground">

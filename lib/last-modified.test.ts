@@ -36,5 +36,6 @@ describe("lastModifiedDates", () => {
     expect(when.team(data.teams[0].id)).toEqual(floor);
     expect(when.player(data.players[0].id)).toEqual(floor);
     expect(when.overall.getTime()).toBeLessThan(floor.getTime());
+    expect(when.profiles).toEqual(floor);
   });
 });
