@@ -8,7 +8,6 @@ import { cn } from "@/lib/utils";
 const FINAL_STYLE = "bg-gradient-to-r from-[#17B7E6] to-[#C39A4E] font-semibold text-black hover:text-black";
 
 function isActive(pathname: string, href: string) {
-  if (href === "/matches" && pathname.startsWith(FINAL_HREF)) return false;
   return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 }
 
@@ -46,8 +45,10 @@ export function TopNav({ className }: { className?: string }) {
 export function BottomNav() {
   const pathname = usePathname();
   // Six slots on mobile; champions, compare and about are reachable from the footer and in-page links.
-  // Until the final is over its tab takes Tournament's place: the bracket is on the homepage.
-  const items = NAV.filter((n) => ["/", FINAL_HREF, "/matches", "/teams", "/players", "/charts"].includes(n.href));
+  // The final's tab is the home tab, and the bracket lives on Tournament while the homepage is the final.
+  const items = NAV.filter((n) =>
+    [FINAL_HREF, "/tournament", "/matches", "/teams", "/players", "/charts"].includes(n.href),
+  );
   return (
     <nav
       aria-label="Main (mobile)"
