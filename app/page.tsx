@@ -7,7 +7,7 @@ import { SwissBracket } from "@/components/bracket/swiss-bracket";
 import { homeBracket } from "@/lib/bracket";
 import { getData, getTimelines } from "@/lib/data/load";
 import { computeRecords } from "@/lib/records";
-import { heroArt, heroChampion, signatureArt } from "@/lib/hero-art";
+import { heroArt, heroChampion } from "@/lib/hero-art";
 import { fmt, STAGE_LABEL } from "@/lib/format";
 import { aggregateByPlayer, DEFAULT_MIN_GAMES, rankPlayers } from "@/lib/metrics";
 import { showsPreview } from "@/lib/preview";
@@ -17,12 +17,11 @@ import { swissStandings } from "@/lib/standings";
 import { chartHref, playerRankingChart } from "@/lib/charts/page-charts";
 import { BuildChartButton } from "@/components/home/build-chart-button";
 import { ChartStrip } from "@/components/home/chart-strip";
-import { FinalHero } from "@/components/home/final-hero";
-import { FinalSection } from "@/components/home/final-section";
 import { Leaders, type LeaderBoard } from "@/components/home/leaders";
 import { LatestUpdate } from "@/components/home/latest-update";
 import { RecordsTeaser, type TeaserFact } from "@/components/home/records-teaser";
 import { NextMatch } from "@/components/home/next-match";
+import { SeriesPage } from "@/components/match/series-page";
 import { playerLabel, seriesView } from "@/lib/views";
 
 /** Until the final is played the homepage is found as that match; the result never goes in the title. */
@@ -40,24 +39,45 @@ export function generateMetadata(): Metadata {
   };
 }
 
+/** The final, once both teams are known: until the site moves on from Worlds 2026 the homepage is its page. */
+function homeFinal(data: ReturnType<typeof getData>) {
+  const final = data.series.find((s) => s.stage === "final");
+  const view = final ? seriesView(data, final) : null;
+  return final && view?.team1 && view.team2 ? final : null;
+}
+
 export default function HomePage() {
   const data = getData();
   const { series, tournament } = data;
+
+  // WebSite markup: search engines read the site name shown in results from it.
+  const sameAs = [site.author.linkedin, site.author.x].filter(Boolean);
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: site.name,
+    url: `${site.url}/`,
+    description: site.description,
+    inLanguage: "en",
+    author: { "@type": "Person", name: site.author.name, ...(sameAs.length ? { sameAs } : {}) },
+  };
+  const websiteLd = <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(jsonLd) }} />;
+
+  const final = homeFinal(data);
+  if (final) {
+    return (
+      <>
+        {websiteLd}
+        <SeriesPage series={final} home />
+      </>
+    );
+  }
 
   const upcoming = series.filter((s) => s.status !== "finished");
   const live = series.filter((s) => s.status === "live");
   // The series to watch: the one in progress, else the next on the schedule.
   const next = live[0] ?? upcoming[0];
   const nextView = next ? seriesView(data, next) : null;
-
-  // The poster stays from the moment the final is next until the site moves on, with the champion once it is played.
-  const finalSeries = series.find((x) => x.stage === "final");
-  const finalRefs =
-    finalSeries && (finalSeries === next || finalSeries.status === "finished") ? seriesView(data, finalSeries) : null;
-  const finalView =
-    finalSeries && finalRefs?.team1 && finalRefs.team2
-      ? { series: finalSeries, team1: finalRefs.team1, team2: finalRefs.team2 }
-      : null;
 
   const mainTeamIds = data.teams.filter((t) => t.stages.includes("main")).map((t) => t.id);
   const swiss = swissStandings(series, mainTeamIds);
@@ -147,18 +167,6 @@ export default function HomePage() {
   const heroPick = heroChampion(data);
   const art = heroPick ? heroArt(heroPick) : null;
 
-  // WebSite markup: search engines read the site name shown in results from it.
-  const sameAs = [site.author.linkedin, site.author.x].filter(Boolean);
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: site.name,
-    url: `${site.url}/`,
-    description: site.description,
-    inLanguage: "en",
-    author: { "@type": "Person", name: site.author.name, ...(sameAs.length ? { sameAs } : {}) },
-  };
-
   const links = (
     <div className="flex gap-4 text-sm">
       <Link href="/matches" className="text-brand underline">
@@ -172,17 +180,9 @@ export default function HomePage() {
 
   return (
     <div className="space-y-14 sm:space-y-20">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(jsonLd) }} />
+      {websiteLd}
       <div>
-        {finalView ? (
-          <FinalHero
-            series={finalView.series}
-            team1={finalView.team1}
-            team2={finalView.team2}
-            art1={signatureArt(data, finalView.team1.id)}
-            art2={signatureArt(data, finalView.team2.id)}
-          />
-        ) : (
+        {
           <section
             className={`relative -mx-4 overflow-hidden bg-black sm:mx-0 ${update ? "sm:rounded-t-md" : "sm:rounded-md"}`}
           >
@@ -238,13 +238,9 @@ export default function HomePage() {
               ) : null}
             </div>
           </section>
-        )}
+        }
         {update ? <LatestUpdate update={update} /> : null}
       </div>
-
-      {finalView ? (
-        <FinalSection data={data} series={finalView.series} team1={finalView.team1} team2={finalView.team2} />
-      ) : null}
 
       {homeBracket(series) === "knockout" ? (
         <Section

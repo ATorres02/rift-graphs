@@ -86,6 +86,7 @@ export function FinalHero({
   art1,
   art2,
   onSeriesPage = false,
+  flush = false,
 }: {
   series: Series;
   team1: TeamRef;
@@ -93,12 +94,14 @@ export function FinalHero({
   art1: Art | null;
   art2: Art | null;
   onSeriesPage?: boolean;
+  /** Tucked under the header, as at the top of the homepage. */
+  flush?: boolean;
 }) {
   const live = s.status === "live";
   const champion = s.status === "finished" ? [team1, team2].find((t) => t.id === s.winnerId) : undefined;
   return (
     <section
-      className={`dark ml-[calc(50%-50vw)] w-screen bg-black text-white ${onSeriesPage ? "" : "-mt-6 sm:-mt-8"}`}
+      className={`dark ml-[calc(50%-50vw)] w-screen bg-black text-white ${onSeriesPage && !flush ? "" : "-mt-6 sm:-mt-8"}`}
     >
       <div className="relative h-[400px] overflow-hidden sm:h-[min(640px,72vh)] sm:min-h-[520px]">
         <Panel team={team1} art={art1} at="first" />
