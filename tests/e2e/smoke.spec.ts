@@ -143,7 +143,7 @@ test("the legal notice and attribution are in the footer of every page", async (
 });
 
 test("every bracket series links to its page", async ({ page, request }) => {
-  await page.goto("/");
+  await page.goto("/tournament");
   const bracket = page.getByRole("region", { name: /bracket/ });
   const hrefs = await bracket.locator("a[data-cell]").evaluateAll((links) => links.map((a) => a.getAttribute("href")));
   expect(hrefs.length).toBeGreaterThan(0);
@@ -181,7 +181,7 @@ test("only the round being played is marked as now", async ({ page }) => {
 
 test("the bracket scrolls inside its frame on a 390 px phone", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  for (const path of ["/", "/tournament"]) {
+  for (const path of ["/tournament"]) {
     await page.goto(path);
     await expect(page.getByRole("region", { name: /bracket/ }).first()).toBeVisible();
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
@@ -291,7 +291,17 @@ test("a played knockout series links its five lane duels", async ({ page }) => {
   await expect(page).toHaveURL(new RegExp(`/matches/${played!.id}/mid$`));
 });
 
+// Until the site moves on from Worlds 2026 the homepage is the final's page, without leaders or chart strip.
+const finalIsHome = (
+  JSON.parse(readFileSync(path.join("data", "worlds-2026", "series.json"), "utf8")) as {
+    stage: string;
+    team1Id: string | null;
+    team2Id: string | null;
+  }[]
+).some((s) => s.stage === "final" && s.team1Id && s.team2Id);
+
 test("the homepage leaders switch ranking with tabs on a phone", async ({ page }) => {
+  test.skip(finalIsHome, "the homepage is the final's page");
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
   await page.getByRole("tab", { name: "Damage/min" }).click();
@@ -300,6 +310,7 @@ test("the homepage leaders switch ranking with tabs on a phone", async ({ page }
 });
 
 test("the homepage charts open in the chart builder", async ({ page }) => {
+  test.skip(finalIsHome, "the homepage is the final's page");
   const errors = watchErrors(page);
   await page.goto("/");
   const strip = page.locator("section").filter({ has: page.getByRole("heading", { name: "Charts", level: 2 }) });
