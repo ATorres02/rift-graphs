@@ -1373,8 +1373,13 @@
     "matchDay": 1,
     "patch": "26.20",
     "streamUrl": "https://www.twitch.tv/riotgames",
-    "mvp": null,
-    "gameIds": [],
+    "mvp": "Knight (Zhuo Ding)",
+    "gameIds": [
+      "main-event-finals-1-1",
+      "main-event-finals-1-2",
+      "main-event-finals-1-3",
+      "main-event-finals-1-4"
+    ],
     "gamesPlayed": 4,
     "source": "leaguepedia",
     "provisional": false,

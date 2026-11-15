@@ -4698,5 +4698,205 @@
       ]
     },
     "complete": true
+  },
+  {
+    "gameId": "main-event-finals-1-1",
+    "blue": {
+      "bans": [
+        "Nocturne",
+        "Orianna",
+        "Vi",
+        "Jax",
+        "Camille"
+      ],
+      "picks": [
+        "Lee Sin",
+        "Syndra",
+        "Olaf",
+        "Corki",
+        "Nami"
+      ],
+      "picksByRole": [
+        "Olaf",
+        "Lee Sin",
+        "Syndra",
+        "Corki",
+        "Nami"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Qiyana",
+        "Cassiopeia",
+        "Lulu",
+        "Ezreal",
+        "Seraphine"
+      ],
+      "picks": [
+        "Renata Glasc",
+        "Kalista",
+        "Locke",
+        "K'Sante",
+        "Jarvan IV"
+      ],
+      "picksByRole": [
+        "K'Sante",
+        "Jarvan IV",
+        "Locke",
+        "Kalista",
+        "Renata Glasc"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-finals-1-2",
+    "blue": {
+      "bans": [
+        "Nocturne",
+        "Qiyana",
+        "Nautilus",
+        "Lulu",
+        "Akali"
+      ],
+      "picks": [
+        "Ezreal",
+        "Karma",
+        "Cho'Gath",
+        "Orianna",
+        "Vayne"
+      ],
+      "picksByRole": [
+        "Vayne",
+        "Cho'Gath",
+        "Orianna",
+        "Ezreal",
+        "Karma"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Jayce",
+        "Vi",
+        "Galio",
+        "Renekton",
+        "Viktor"
+      ],
+      "picks": [
+        "Cassiopeia",
+        "Camille",
+        "Naafiri",
+        "Gnar",
+        "Ziggs"
+      ],
+      "picksByRole": [
+        "Gnar",
+        "Naafiri",
+        "Cassiopeia",
+        "Ziggs",
+        "Camille"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-finals-1-3",
+    "blue": {
+      "bans": [
+        "Nautilus",
+        "Renekton",
+        "Seraphine",
+        "Kai'Sa",
+        "Sivir"
+      ],
+      "picks": [
+        "Ambessa",
+        "Wukong",
+        "Annie",
+        "Rakan",
+        "Jhin"
+      ],
+      "picksByRole": [
+        "Ambessa",
+        "Wukong",
+        "Annie",
+        "Jhin",
+        "Rakan"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Qiyana",
+        "Jayce",
+        "Lulu",
+        "Xayah",
+        "Poppy"
+      ],
+      "picks": [
+        "Jax",
+        "Vi",
+        "Viktor",
+        "Alistar",
+        "Taliyah"
+      ],
+      "picksByRole": [
+        "Jax",
+        "Vi",
+        "Viktor",
+        "Taliyah",
+        "Alistar"
+      ]
+    },
+    "complete": true
+  },
+  {
+    "gameId": "main-event-finals-1-4",
+    "blue": {
+      "bans": [
+        "Qiyana",
+        "Jayce",
+        "Seraphine",
+        "Sylas",
+        "Rumble"
+      ],
+      "picks": [
+        "Nocturne",
+        "Yunara",
+        "Neeko",
+        "Gwen",
+        "Twisted Fate"
+      ],
+      "picksByRole": [
+        "Gwen",
+        "Nocturne",
+        "Twisted Fate",
+        "Yunara",
+        "Neeko"
+      ]
+    },
+    "red": {
+      "bans": [
+        "Nautilus",
+        "Skarner",
+        "Kindred",
+        "Renekton",
+        "Galio"
+      ],
+      "picks": [
+        "Lulu",
+        "Xayah",
+        "Pantheon",
+        "Akali",
+        "Aurora"
+      ],
+      "picksByRole": [
+        "Aurora",
+        "Pantheon",
+        "Akali",
+        "Xayah",
+        "Lulu"
+      ]
+    },
+    "complete": true
   }
 ]
