@@ -18,7 +18,7 @@
     "teamId": "los",
     "role": "support",
     "country": "Argentina",
-    "realName": "Gabriel Agustin Aparicio",
+    "realName": "Gabriel Agustín Aparicio",
     "nativeName": null,
     "residency": "Brazil",
     "fromScoreboardOnly": false
@@ -1133,10 +1133,10 @@
     "page": "Zeus",
     "teamId": "hanwha-life-esports",
     "role": "top",
-    "country": "South Korea",
-    "realName": "Choi Woo-je",
-    "nativeName": "최우제",
-    "residency": "Korea",
+    "country": null,
+    "realName": null,
+    "nativeName": null,
+    "residency": null,
     "fromScoreboardOnly": false
   },
   {
